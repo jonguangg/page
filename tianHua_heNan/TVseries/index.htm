@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=gb2312" />
-<title>ÌìÌì¾ç³¡Ê×Ò³</title>
+<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=UTF-8" />
+<title>å¤©å¤©å‰§åœºé¦–é¡µ</title>
 <style>
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
 
@@ -23,8 +23,8 @@ var areaTV = getCookie("areaTV")?getCookie("areaTV"):"nav";
 var focusListPosTV = parseInt(getCookie("focusListPosTV"))?parseInt(getCookie("focusListPosTV")):0;
 var focusNavPosTV = parseInt(getCookie("focusNavPosTV"))?parseInt(getCookie("focusNavPosTV")):0;
 var hiddenTV = parseInt(getCookie("hiddenTV"))?parseInt(getCookie("hiddenTV")):0;
-var changePos=0;  //ÂÖ»»Í¼Æ¬½¹µãÎ»ÖÃ
-var listSize = 10; //ÌõÄ¿Êı
+var changePos=0;  //è½®æ¢å›¾ç‰‡ç„¦ç‚¹ä½ç½®
+var listSize = 10; //æ¡ç›®æ•°
 var url = window.location.href;
 var wordSize = 5;
 	var listEnds=2;
@@ -35,37 +35,37 @@ var wordSize = 5;
 		
 function $(id){return document.getElementById(id);}
 
-var navArray = [//µ¼º½À¸Ä¿
-  {name:"ÌìÌì¾ç³¡Ò»",url:"../movie/index.htm"},
-  {name:"ÌìÌì¾ç³¡¶ş",url:"../TVseries/index.htm"},
-  {name:"ÌìÌì¾ç³¡Èı",url:"../movie/index.htm"},
-  {name:"ÌìÌì¾ç³¡ËÄ",url:"../TVseries/index.htm"},
-  {name:"ÌìÌì¾ç³¡Îå",url:"../TVseries/index.htm"},
-  {name:"ÌìÌì¾ç³¡Áù",url:"../TVseries/index.htm"},
-  {name:"ÌìÌì¾ç³¡Æß",url:"../TVseries/index.htm"},
-  {name:"ÌìÌì¾ç³¡°Ë",url:"../movie/index.htm"}
+var navArray = [//å¯¼èˆªæ ç›®
+  {name:"å¤©å¤©å‰§åœºä¸€",url:"../movie/index.htm"},
+  {name:"å¤©å¤©å‰§åœºäºŒ",url:"../TVseries/index.htm"},
+  {name:"å¤©å¤©å‰§åœºä¸‰",url:"../movie/index.htm"},
+  {name:"å¤©å¤©å‰§åœºå››",url:"../TVseries/index.htm"},
+  {name:"å¤©å¤©å‰§åœºäº”",url:"../TVseries/index.htm"},
+  {name:"å¤©å¤©å‰§åœºå…­",url:"../TVseries/index.htm"},
+  {name:"å¤©å¤©å‰§åœºä¸ƒ",url:"../TVseries/index.htm"},
+  {name:"å¤©å¤©å‰§åœºå…«",url:"../movie/index.htm"}
 ];
 
-var listArray=[//×¨ÌâÁĞ±í
-	{nums:"1",title:"1´Ò´ÒÄÇÄê",url:"../TVseries/TVseries01.htm",img:"url(listImg0.png)"},
-	{nums:"2",title:"2³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../TVseries/TVseries02.htm",img:"url(listImg1.png)"},
-	{nums:"3",title:"3´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../TVseries/TVseries03.htm",img:"url(listImg2.png)"},
-	{nums:"4",title:"4µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../TVseries/TVseries04.htm",img:"url(listImg3.png)"},
-	{nums:"5",title:"5´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../TVseries/TVseries05.htm",img:"url(listImg4.png)"},
-	{nums:"6",title:"6³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang6.htm",img:"url(listImg5.png)"},
-	{nums:"7",title:"7´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang7.htm",img:"url(listImg6.png)"},
-	{nums:"8",title:"8µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang8.htm",img:"url(listImg7.png)"},
-	{nums:"9",title:"9´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang9.htm",img:"url(listImg8.png)"},
-	{nums:"10",title:"10³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang10.htm",img:"url(listImg9.png)"},
-	{nums:"11",title:"11´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang11.htm",img:"url(listImg10.png)"},
-	{nums:"12",title:"12µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang12.htm",img:"url(listImg11.png)"},
-	{nums:"13",title:"13´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang13.htm",img:"url(listImg12.png)"},
-	{nums:"14",title:"14³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang14.htm",img:"url(listImg13.png)"},
-	{nums:"15",title:"15´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang15.htm",img:"url(listImg14.png)"},
-	{nums:"16",title:"16µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang16.htm",img:"url(listImg15.png)"},			
-	{nums:"17",title:"17µÚÆß»ÑÑÔ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang17.htm",img:"url(listImg16.png)"}
+var listArray=[//ä¸“é¢˜åˆ—è¡¨
+	{nums:"1",title:"1åŒ†åŒ†é‚£å¹´",url:"../TVseries/TVseries01.htm",img:"url(listImg0.png)"},
+	{nums:"2",title:"2è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../TVseries/TVseries02.htm",img:"url(listImg1.png)"},
+	{nums:"3",title:"3å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../TVseries/TVseries03.htm",img:"url(listImg2.png)"},
+	{nums:"4",title:"4åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../TVseries/TVseries04.htm",img:"url(listImg3.png)"},
+	{nums:"5",title:"5åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../TVseries/TVseries05.htm",img:"url(listImg4.png)"},
+	{nums:"6",title:"6è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang6.htm",img:"url(listImg5.png)"},
+	{nums:"7",title:"7å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang7.htm",img:"url(listImg6.png)"},
+	{nums:"8",title:"8åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang8.htm",img:"url(listImg7.png)"},
+	{nums:"9",title:"9åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang9.htm",img:"url(listImg8.png)"},
+	{nums:"10",title:"10è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang10.htm",img:"url(listImg9.png)"},
+	{nums:"11",title:"11å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang11.htm",img:"url(listImg10.png)"},
+	{nums:"12",title:"12åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang12.htm",img:"url(listImg11.png)"},
+	{nums:"13",title:"13åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang13.htm",img:"url(listImg12.png)"},
+	{nums:"14",title:"14è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang14.htm",img:"url(listImg13.png)"},
+	{nums:"15",title:"15å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang15.htm",img:"url(listImg14.png)"},
+	{nums:"16",title:"16åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang16.htm",img:"url(listImg15.png)"},			
+	{nums:"17",title:"17ç¬¬ä¸ƒè°è¨€åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang17.htm",img:"url(listImg16.png)"}
 ];
-function showNav(){//ÏÔÊ¾µ¼º½
+function showNav(){//æ˜¾ç¤ºå¯¼èˆª
 	for(var i=0;i<navArray.length;i++){
 			$("nav"+i).style.left=85+185*(i-hiddenTV)+"px";
 			$("nav"+i).innerHTML =navArray[i].name;
@@ -74,11 +74,11 @@ function showNav(){//ÏÔÊ¾µ¼º½
 			}else $("nav"+i).style.display="block";
 		}
 }
-var position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö	
-var currPage = parseInt((focusListPosTV+listSize)/listSize);//µ±Ç°µÚ¼¸Ò³
-var allPage = parseInt((listArray.length-1+listSize)/listSize);//×Ü¹²¶àÉÙÒ³	
-function showList(){//ÏÔÊ¾ÁĞ±í
-	position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö	
+var position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª	
+var currPage = parseInt((focusListPosTV+listSize)/listSize);//å½“å‰ç¬¬å‡ é¡µ
+var allPage = parseInt((listArray.length-1+listSize)/listSize);//æ€»å…±å¤šå°‘é¡µ	
+function showList(){//æ˜¾ç¤ºåˆ—è¡¨
+	position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª	
 	for(i=0; i<listSize; i++){
 		if(position+i<listArray.length){
 			if(listArray[position+i].title.length>wordSize){
@@ -97,8 +97,8 @@ function showList(){//ÏÔÊ¾ÁĞ±í
 			}
 }
 
-function focusImg(num){//½¹µãÍ¼Æ¬,numĞ¡ÓÚ1½¹µãÀë¿ªÍ¼Æ¬»¹Ô­£¬·ñÔò¶¨Î»½¹µã½¹µã¸ü»»Í¼Æ¬
-	if(num<1){//Ğ¡ÓÚ1£¬±³¾°´Ó»ÆÉ«½¹µã¿òÇĞ»ØÔ­À´°ëÍ¸Ã÷¿ò
+function focusImg(num){//ç„¦ç‚¹å›¾ç‰‡,numå°äº1ç„¦ç‚¹ç¦»å¼€å›¾ç‰‡è¿˜åŸï¼Œå¦åˆ™å®šä½ç„¦ç‚¹ç„¦ç‚¹æ›´æ¢å›¾ç‰‡
+	if(num<1){//å°äº1ï¼ŒèƒŒæ™¯ä»é»„è‰²ç„¦ç‚¹æ¡†åˆ‡å›åŸæ¥åŠé€æ˜æ¡†
 		if(areaTV=="listTxt"){
 			$("listTxt"+focusListPosTV%10).style.backgroundImage = "url(../img/listTxt.png)";
 			$("listTxt"+focusListPosTV%10).style.color = "white";
@@ -138,7 +138,7 @@ function focusImg(num){//½¹µãÍ¼Æ¬,numĞ¡ÓÚ1½¹µãÀë¿ªÍ¼Æ¬»¹Ô­£¬·ñÔò¶¨Î»½¹µã½¹µã¸ü»»
     }
 	
 }
-function focusNav(num){//µ¼º½½¹µã
+function focusNav(num){//å¯¼èˆªç„¦ç‚¹
 	$("nav"+focusNavPosTV).style.color = "white";
 	focusNavPosTV+=num;
 	if(focusNavPosTV<0){
@@ -170,7 +170,7 @@ function focusNav(num){//µ¼º½½¹µã
 }	
 
 function pageDown(){
-	position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö
+	position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª
 	if(position+listSize<listArray.length){
 		focusListPosTV+=listSize;
 		showList();
@@ -178,7 +178,7 @@ function pageDown(){
 	}
 }
 function pageUp(){
-	position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö
+	position = (parseInt((focusListPosTV+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª
 	if(position-listSize>-1){
 		focusListPosTV-=listSize;
 		showList();
@@ -186,7 +186,7 @@ function pageUp(){
 	}
 }
 
-function closeWebPage() { //ÍË³öä¯ÀÀÆ÷
+function closeWebPage() { //é€€å‡ºæµè§ˆå™¨
 	 if(navigator.userAgent.indexOf('Mozilla/5.0')!=-1){
 		   Utility.ioctlWrite("JSCommand","gotoDTV");
 	   }else if(navigator.appVersion.indexOf("EIS iPanel 3.0") != -1){
@@ -197,7 +197,7 @@ function closeWebPage() { //ÍË³öä¯ÀÀÆ÷
 //Cookie
 function setCookie(name, value){
     var exp = new Date(); 
-    exp.setTime(exp.getTime() + (1*1*60*1000));//Ğ¡Ê±*·ÖÖÓ*Ãë*ºÁÃë
+    exp.setTime(exp.getTime() + (1*1*60*1000));//å°æ—¶*åˆ†é’Ÿ*ç§’*æ¯«ç§’
     window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
 }
 
@@ -219,7 +219,7 @@ function getCookie(sName){
   return null;
 }
 
-function doSelect(){//È·ÈÏ¼ü
+function doSelect(){//ç¡®è®¤é”®
 	setCookie("areaTV", areaTV);	
 	if(areaTV=="back"){
 		delCookie("areaTV");
@@ -238,7 +238,7 @@ function doSelect(){//È·ÈÏ¼ü
 	}
 } 
 
-//µçÄÔ¿É²Ù×÷µÄ¼üÖµ
+//ç”µè„‘å¯æ“ä½œçš„é”®å€¼
 function eventHandler(e,type){
 	var key_code = e.code;
 	switch(key_code){		
@@ -357,7 +357,7 @@ function eventHandler(e,type){
 }
 
 function init(){
-	//alert("focusNavPosTV£º"+focusNavPosTV+"\nhiddenTV£º"+hiddenTV+"\nareaTV£º"+areaTV);
+	//alert("focusNavPosTVï¼š"+focusNavPosTV+"\nhiddenTVï¼š"+hiddenTV+"\nareaTVï¼š"+areaTV);
 	showList();
 	showNav();
 	focusImg(1);
@@ -374,7 +374,7 @@ function init(){
     
 	<div id="log" style="position: absolute; left: 50px; top: 50px; width: 90px; height: 40px; background: url('../img/logo_tianHuaBtn.png') no-repeat"></div>
 
-	<div id="zoneName" style="position: absolute; left: 180px; top: 50px; width: 200px; height: 40px; line-height:40px; font-size:30px; color:white;"><b> > ÌìÌì¾ç³¡</b></div>    
+	<div id="zoneName" style="position: absolute; left: 180px; top: 50px; width: 200px; height: 40px; line-height:40px; font-size:30px; color:white;"><b> > å¤©å¤©å‰§åœº</b></div>    
     
 	<!--<div id="collect" style="position: absolute; left: 1065px; top: 53px; width: 71px; height: 33px; background: url(../img/collect.png) no-repeat"></div>-->
     
@@ -399,11 +399,11 @@ function init(){
     <div id="listImg3" class="listImg0" style="left: 785px;  background:url() no-repeat;"></div>
     <div id="listImg4" class="listImg0" style="left: 1015px; background:url() no-repeat;"></div>
     
-	<div id="listTxt0" class="listTxt0" style="left: 95px;   background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt1" class="listTxt0" style="left: 325px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt2" class="listTxt0" style="left: 555px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt3" class="listTxt0" style="left: 785px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt4" class="listTxt0" style="left: 1015px; background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
+	<div id="listTxt0" class="listTxt0" style="left: 95px;   background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt1" class="listTxt0" style="left: 325px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt2" class="listTxt0" style="left: 555px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt3" class="listTxt0" style="left: 785px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt4" class="listTxt0" style="left: 1015px; background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
     
 	<div id="listBtn0" class="listBtn0" style="left: 95px;   background:url(../img/listBtn.png) no-repeat;"></div>
     <div id="listBtn1" class="listBtn0" style="left: 325px;  background:url(../img/listBtn.png) no-repeat;"></div>
@@ -417,11 +417,11 @@ function init(){
     <div id="listImg8" class="listImg1" style="left: 785px;  background:url() no-repeat;"></div>
     <div id="listImg9" class="listImg1" style="left: 1015px; background:url() no-repeat;"></div>
     
-	<div id="listTxt5" class="listTxt1" style="left: 95px;   background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt6" class="listTxt1" style="left: 325px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt7" class="listTxt1" style="left: 555px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt8" class="listTxt1" style="left: 785px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt9" class="listTxt1" style="left: 1015px; background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
+	<div id="listTxt5" class="listTxt1" style="left: 95px;   background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt6" class="listTxt1" style="left: 325px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt7" class="listTxt1" style="left: 555px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt8" class="listTxt1" style="left: 785px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt9" class="listTxt1" style="left: 1015px; background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
     
 	<div id="listBtn5" class="listBtn1" style="left: 95px;   background:url(../img/listBtn.png) no-repeat;"></div>
     <div id="listBtn6" class="listBtn1" style="left: 325px;  background:url(../img/listBtn.png) no-repeat;"></div>

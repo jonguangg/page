@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=gb2312" />
-<title>Ê×Ò³</title>
+<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=UTF-8" />
+<title>é¦–é¡µ</title>
 <style>
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
-span{color:blue; font-size:24px;font-weight: bold;}
-.content{position: absolute;line-height: 45px;text-align: left;vertical-align: middle;font-size: 22px;color: white;}
+span{color:#00cbff; font-size:24px;font-weight: bold;}
+.content{position: absolute;line-height: 40px;text-align: left;vertical-align: middle;font-size: 22px;color: white;}
 
-.listImg0{ position:absolute; top: 460px; width: 170px; height: 200px; -webkit-transition-duration: 200ms;}
-.listTxt0{ position:absolute; top: 625px; width: 170px; height: 35px; line-height:35px; text-align:center; vertical-align:middle;font-size:24px; color:white;z-index:2; -webkit-transition-duration: 200ms;}
-.listBtn0{ position:absolute; top: 660px; width: 170px; height: 35px;  -webkit-transition-duration: 200ms;}
+.listImg0{ position:absolute; top: 450px; width: 170px; height: 200px; -webkit-transition-duration: 200ms;}
+.listTxt0{ position:absolute; top: 615px; width: 170px; height: 35px; line-height:35px; text-align:center; vertical-align:middle;font-size:24px; color:white;z-index:2; -webkit-transition-duration: 200ms;}
+.listBtn0{ position:absolute; top: 650px; width: 170px; height: 35px;  -webkit-transition-duration: 200ms;}
 
 </style>
 
@@ -20,8 +20,8 @@ var areaMovies = getCookie("areaMovies")?getCookie("areaMovies"):"play";
 var focusListPosMovies = parseInt(getCookie("focusListPosMovies"))?parseInt(getCookie("focusListPosMovies")):0;
 //var focusNavPos = parseInt(getCookie("focusNavPos"))?parseInt(getCookie("focusNavPos")):0;
 //var hidden = parseInt(getCookie("hidden"))?parseInt(getCookie("hidden")):0;
-var changePos=0;  //ÂÖ»»Í¼Æ¬½¹µãÎ»ÖÃ
-var listSize = 5; //ÌõÄ¿Êı
+var changePos=0;  //è½®æ¢å›¾ç‰‡ç„¦ç‚¹ä½ç½®
+var listSize = 5; //æ¡ç›®æ•°
 var url = window.location.href;
 var wordSize = 5;
 	var listEnds=2;
@@ -32,32 +32,32 @@ var wordSize = 5;
 
 function $(id){return document.getElementById(id);}
 
-var listArray=[//×¨ÌâÁĞ±í
-	{nums:"1",title:"1´Ò´ÒÄÇÄê",url:"../movie/movie01.htm",img:"url(listImg0.png)"},
-	{nums:"2",title:"2³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../movie/movie02.htm",img:"url(listImg1.png)"},
-	{nums:"3",title:"3´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../movie/movie03.htm",img:"url(listImg2.png)"},
-	{nums:"4",title:"4µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../movie/movie04.htm",img:"url(listImg3.png)"},
-	{nums:"5",title:"5´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"../movie/movie05.htm",img:"url(listImg4.png)"},
-	{nums:"6",title:"6³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang6.htm",img:"url(listImg5.png)"},
-	{nums:"7",title:"7´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang7.htm",img:"url(listImg6.png)"},
-	{nums:"8",title:"8µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang8.htm",img:"url(listImg7.png)"},
-	{nums:"9",title:"9´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang9.htm",img:"url(listImg8.png)"},
-	{nums:"10",title:"10³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang10.htm",img:"url(listImg9.png)"},
-	{nums:"11",title:"11´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang11.htm",img:"url(listImg10.png)"},
-	{nums:"12",title:"12µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang12.htm",img:"url(listImg11.png)"},
-	{nums:"13",title:"13´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang13.htm",img:"url(listImg12.png)"},
-	{nums:"14",title:"14³¬ÄÜÂ½Õ½¶Ó£¨ÖĞÎÄÅäÒô£©´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang14.htm",img:"url(listImg13.png)"},
-	{nums:"15",title:"15´óÏ²ÁÙÃÅ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang15.htm",img:"url(listImg14.png)"},
-	{nums:"16",title:"16µØÀÎÎ§¹¥3´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang16.htm",img:"url(listImg15.png)"},			
-	{nums:"17",title:"17µÚÆß»ÑÑÔ´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê´Ò´ÒÄÇÄê",url:"paihang/paihang17.htm",img:"url(listImg16.png)"}
+var listArray=[//ä¸“é¢˜åˆ—è¡¨
+	{nums:"1",title:"1åŒ†åŒ†é‚£å¹´",url:"../movie/movie01.htm",img:"url(listImg0.png)"},
+	{nums:"2",title:"2è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../movie/movie02.htm",img:"url(listImg1.png)"},
+	{nums:"3",title:"3å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../movie/movie03.htm",img:"url(listImg2.png)"},
+	{nums:"4",title:"4åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../movie/movie04.htm",img:"url(listImg3.png)"},
+	{nums:"5",title:"5åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"../movie/movie05.htm",img:"url(listImg4.png)"},
+	{nums:"6",title:"6è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang6.htm",img:"url(listImg5.png)"},
+	{nums:"7",title:"7å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang7.htm",img:"url(listImg6.png)"},
+	{nums:"8",title:"8åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang8.htm",img:"url(listImg7.png)"},
+	{nums:"9",title:"9åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang9.htm",img:"url(listImg8.png)"},
+	{nums:"10",title:"10è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang10.htm",img:"url(listImg9.png)"},
+	{nums:"11",title:"11å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang11.htm",img:"url(listImg10.png)"},
+	{nums:"12",title:"12åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang12.htm",img:"url(listImg11.png)"},
+	{nums:"13",title:"13åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang13.htm",img:"url(listImg12.png)"},
+	{nums:"14",title:"14è¶…èƒ½é™†æˆ˜é˜Ÿï¼ˆä¸­æ–‡é…éŸ³ï¼‰åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang14.htm",img:"url(listImg13.png)"},
+	{nums:"15",title:"15å¤§å–œä¸´é—¨åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang15.htm",img:"url(listImg14.png)"},
+	{nums:"16",title:"16åœ°ç‰¢å›´æ”»3åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang16.htm",img:"url(listImg15.png)"},			
+	{nums:"17",title:"17ç¬¬ä¸ƒè°è¨€åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´åŒ†åŒ†é‚£å¹´",url:"paihang/paihang17.htm",img:"url(listImg16.png)"}
 ];
 
-var position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö	
-var currPage = parseInt((focusListPosMovies+listSize)/listSize);//µ±Ç°µÚ¼¸Ò³
-var allPage = parseInt((listArray.length-1+listSize)/listSize);//×Ü¹²¶àÉÙÒ³	
+var position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª	
+var currPage = parseInt((focusListPosMovies+listSize)/listSize);//å½“å‰ç¬¬å‡ é¡µ
+var allPage = parseInt((listArray.length-1+listSize)/listSize);//æ€»å…±å¤šå°‘é¡µ	
 
-function showList(){//ÏÔÊ¾ÁĞ±í
-	position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö	
+function showList(){//æ˜¾ç¤ºåˆ—è¡¨
+	position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª	
 	for(i=0; i<listSize; i++){
 		if(position+i<listArray.length){
 			if(listArray[position+i].title.length>wordSize){
@@ -74,10 +74,13 @@ function showList(){//ÏÔÊ¾ÁĞ±í
 			$("listTxt"+i).innerHTML = "";
 		}
 			}
+		if($("movieBrief").innerHTML.length > 172){
+				$("movieBrief").innerHTML =$("movieBrief").innerHTML.slice(0,171)+"...";
+			}else $("movieBrief").innerHTML = $("movieBrief").innerHTML;
 }
 
-function focusImg(num){//½¹µãÍ¼Æ¬,numĞ¡ÓÚ1½¹µãÀë¿ªÍ¼Æ¬»¹Ô­£¬·ñÔò¶¨Î»½¹µã½¹µã¸ü»»Í¼Æ¬
-	if(num<1){//Ğ¡ÓÚ1£¬±³¾°´Ó»ÆÉ«½¹µã¿òÇĞ»ØÔ­À´°ëÍ¸Ã÷¿ò
+function focusImg(num){//ç„¦ç‚¹å›¾ç‰‡,numå°äº1ç„¦ç‚¹ç¦»å¼€å›¾ç‰‡è¿˜åŸï¼Œå¦åˆ™å®šä½ç„¦ç‚¹ç„¦ç‚¹æ›´æ¢å›¾ç‰‡
+	if(num<1){//å°äº1ï¼ŒèƒŒæ™¯ä»é»„è‰²ç„¦ç‚¹æ¡†åˆ‡å›åŸæ¥åŠé€æ˜æ¡†
 		if(areaMovies=="listTxt"){
 			$("listTxt"+focusListPosMovies%5).style.backgroundImage = "url(../img/listTxt.png)";
 			$("listTxt"+focusListPosMovies%5).style.color = "white";
@@ -89,24 +92,24 @@ function focusImg(num){//½¹µãÍ¼Æ¬,numĞ¡ÓÚ1½¹µãÀë¿ªÍ¼Æ¬»¹Ô­£¬·ñÔò¶¨Î»½¹µã½¹µã¸ü»»
 	}
 	else{			
 	if(areaMovies=="play"){
-		$("focusBg").style.left   = '350px';
-		$("focusBg").style.top    = '190px';
-		$("focusBg").style.width  = '119px';
-		$("focusBg").style.height = '73px';
+		$("focusBg").style.left   = $("moviePlay").style.left;
+		$("focusBg").style.top    = $("moviePlay").style.top;
+		$("focusBg").style.width  = $("moviePlay").style.width;
+		$("focusBg").style.height = $("moviePlay").style.height;
 		$("focusBg").style.backgroundImage = "url(../img/focus_play.png)";
 	}
 	else if(areaMovies=="collect"){
-		$("focusBg").style.left   = '480px';
-		$("focusBg").style.top    = '190px';
-		$("focusBg").style.width  = '119px';
-		$("focusBg").style.height = '73px';
+		$("focusBg").style.left   = $("movieCollect").style.left;
+		$("focusBg").style.top    = $("movieCollect").style.top;
+		$("focusBg").style.width  = $("movieCollect").style.width;
+		$("focusBg").style.height = $("movieCollect").style.height;
 		$("focusBg").style.backgroundImage = "url(../img/focus_playCollect.png)";
 	}
 	else if(areaMovies=="back"){
-		$("focusBg").style.left   = '1158px';
-		$("focusBg").style.top    = '53px';
-		$("focusBg").style.width  = '71px';
-		$("focusBg").style.height = '33px';
+		$("focusBg").style.left   = $("back").style.left;
+		$("focusBg").style.top    = $("back").style.top;
+		$("focusBg").style.width  = $("back").style.width;
+		$("focusBg").style.height = $("back").style.height;
 		$("focusBg").style.backgroundImage = "url(../img/focus_back.png)";
 	}
 	else if(areaMovies=="listTxt"){
@@ -126,7 +129,7 @@ function focusImg(num){//½¹µãÍ¼Æ¬,numĞ¡ÓÚ1½¹µãÀë¿ªÍ¼Æ¬»¹Ô­£¬·ñÔò¶¨Î»½¹µã½¹µã¸ü»»
 }
 
 function pageDown(){
-	position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö
+	position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª
 	if(position+listSize<listArray.length){
 		focusListPosMovies+=listSize;
 		showList();
@@ -134,7 +137,7 @@ function pageDown(){
 	}
 }
 function pageUp(){
-	position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //µ±Ç°Ò³µÄµÚÒ»¸ö
+	position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //å½“å‰é¡µçš„ç¬¬ä¸€ä¸ª
 	if(position-listSize>-1){
 		focusListPosMovies-=listSize;
 		showList();
@@ -142,7 +145,7 @@ function pageUp(){
 	}
 }
 
-function closeWebPage() { //ÍË³öä¯ÀÀÆ÷
+function closeWebPage() { //é€€å‡ºæµè§ˆå™¨
 	 if(navigator.userAgent.indexOf('Mozilla/5.0')!=-1){
 		   Utility.ioctlWrite("JSCommand","gotoDTV");
 	   }else if(navigator.appVersion.indexOf("EIS iPanel 3.0") != -1){
@@ -153,7 +156,7 @@ function closeWebPage() { //ÍË³öä¯ÀÀÆ÷
 //Cookie
 function setCookie(name, value){
     var exp = new Date(); 
-    exp.setTime(exp.getTime() + (1*1*60*1000));//Ğ¡Ê±*·ÖÖÓ*Ãë*ºÁÃë
+    exp.setTime(exp.getTime() + (1*1*60*1000));//å°æ—¶*åˆ†é’Ÿ*ç§’*æ¯«ç§’
     window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
 }
 
@@ -175,7 +178,7 @@ function getCookie(sName){
   return null;
 }
 
-function doSelect(){//È·ÈÏ¼ü
+function doSelect(){//ç¡®è®¤é”®
 	setCookie("areaMovies", areaMovies);
 	if(areaMovies=="back"){
 		delCookie("areaMovies");
@@ -192,7 +195,7 @@ function doSelect(){//È·ÈÏ¼ü
 	}
 } 
 
-//µçÄÔ¿É²Ù×÷µÄ¼üÖµ
+//ç”µè„‘å¯æ“ä½œçš„é”®å€¼
 function eventHandler(e,type){
 	var key_code = e.code;
 	switch(key_code){		
@@ -313,7 +316,7 @@ function init(){
     
 <div id="log" style="position: absolute; left: 50px; top: 50px; width: 90px; height: 40px; background: url('../img/logo_tianHuaBtn.png') no-repeat"></div>
 
-<div id="zoneName" style="position: absolute; left: 180px; top: 50px; width: 293px; height: 40px; line-height: 40px; font-size: 30px; color: white;"><b> > ÌìÌìÓ°ÔºµÚÒ»Ò³</b></div>    
+<div id="zoneName" style="position: absolute; left: 180px; top: 50px; width: 293px; height: 40px; line-height: 40px; font-size: 30px; color: white;"><b> > å¤©å¤©å½±é™¢ç¬¬ä¸€é¡µ</b></div>    
     
 	<!--<div id="collect" style="position: absolute; left: 1065px; top: 53px; width: 71px; height: 33px; background: url(../img/collect.png) no-repeat"></div>-->
     
@@ -321,36 +324,34 @@ function init(){
     
 <div id="movieBg" style="position: absolute; left: 95px; top: 100px; width: 1090px; height: 355px; background: url(../img/movieBg.png) no-repeat"></div>
 
-<div id="movieImg"style="position: absolute; left: 95px; top: 100px; width: 245px; height: 355px; background: url(../img/movie01.png) no-repeat"></div>
+<div id="movieImg"style="position: absolute; left: 95px; top: 100px; width: 220px; height: 300px; background: url(../img/movie01.png) no-repeat"></div>
  
-<div id="movieTitle" class="content"  style="left:350px; top: 120px; width:260px; height:45px;"><span>Ó°Æ¬Ãû³Æ</span></div>
+<div id="movieTitle" class="content"  style="left:345px; top: 110px; width:260px; height:40px;"><span>å½±ç‰‡åç§°</span></div>
 
-<div id="moviePlay" style="position: absolute; left: 350px; top: 190px; width: 119px; height: 73px; background: url(../img/play.png) no-repeat"></div>
+<div id="moviePlay" style="position: absolute; left: 340px; top: 160px; width: 119px; height: 73px; background: url(../img/play.png) no-repeat"></div>
 
-<div id="movieCollect" style="position: absolute; left: 480px; top: 190px; width: 119px; height: 73px; background: url(../img/playCollect.png) no-repeat"></div>
+<div id="movieCollect" style="position: absolute; left: 480px; top: 160px; width: 119px; height: 73px; background: url(../img/playCollect.png) no-repeat"></div>
 
-<div id="movieLength" class="content" style="left: 354px; top: 272px; width: 258px;"><span>Æ¬³¤£º</span>120·ÖÖÓ</div>
+<div id="movieLength" class="content" style="left: 340px; top: 253px; width: 258px; height:40px;"><span>ç‰‡é•¿ï¼š</span>120åˆ†é’Ÿ</div>
 
-<div id="movieCountry" class="content" style="left: 351px; top: 324px; width: 259px;"><span>¹ú¼Ò£º</span>ÖĞ¹ú</div>
+<div id="movieCountry" class="content" style="left: 340px; top: 303px; width: 259px; height:40px;"><span>å›½å®¶ï¼š</span>ä¸­å›½</div>
 
-<div id="movieTimes" class="content" style="left: 351px; top: 375px; width: 259px;"><span>Äê´ú£º</span>2015Äê</div>
+<div id="movieTimes" class="content" style="left: 340px; top: 353px; width: 259px; height:40px;"><span>å¹´ä»£ï¼š</span>2015å¹´</div>
 
-<div id="movieDirector" class="content" style="left: 620px; top: 100px; width: 550px; height:45px;"><span><b>µ¼Ñİ£º</b></span>µ¼ÑİĞÕÃû</div>
+<div id="movieDirector" class="content" style="left: 620px; top: 110px; width: 550px; height:40px;"><span><b>å¯¼æ¼”ï¼š</b></span>å¯¼æ¼”å§“å</div>
 
-<div id="movieActor" class="content" style="left: 620px; top: 145px; width: 550px; height:90px;"><span><b>Ö÷Ñİ£º</b></span>Ö÷ÑİÒ»¡¢Ö÷Ñİ¶ş¡¢Ö÷ÑİÈı¡¢Ö÷ÑİËÄ¡¢Ö÷ÑİÎå</div>
-
-<div id="movieBrief" class="content" style="left: 620px; top: 190px; width: 550px; height:180px;"><span><b>¼ò½é£º</b></span>¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é ¼ò½é </div>
+<div id="movieBrief" class="content" style="left: 620px; top: 150px; width: 550px; height:260px;"><span><b>ä¸»æ¼”ï¼š</b></span>ä¸»æ¼”ä¸€ã€ä¸»æ¼”äºŒã€ä¸»æ¼”ä¸‰ã€ä¸»æ¼”å››ã€ä¸»æ¼”äº”ã€ä¸»æ¼”å…­ã€ä¸»æ¼”ä¸ƒ<br/><span><b>ç®€ä»‹ï¼š</b></span>ä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åä¸€äºŒä¸‰å››äº”</div>
     <div id="listImg0" class="listImg0" style="left: 95px;   background:url(../img/loop0.png) no-repeat;"></div>
     <div id="listImg1" class="listImg0" style="left: 325px;  background:url(../img/loop1.png) no-repeat;"></div>
     <div id="listImg2" class="listImg0" style="left: 555px;  background:url(../img/loop2.png) no-repeat;"></div>
     <div id="listImg3" class="listImg0" style="left: 785px;  background:url(../img/loop1.png) no-repeat;"></div>
     <div id="listImg4" class="listImg0" style="left: 1015px; background:url(../img/loop0.png) no-repeat;"></div>
     
-	<div id="listTxt0" class="listTxt0" style="left: 95px;   background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt1" class="listTxt0" style="left: 325px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt2" class="listTxt0" style="left: 555px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt3" class="listTxt0" style="left: 785px;  background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
-    <div id="listTxt4" class="listTxt0" style="left: 1015px; background:url(../img/listTxt.png);">½ÚÄ¿Ãû³Æ½ÚÄ¿Ãû³Æ</div>
+	<div id="listTxt0" class="listTxt0" style="left: 95px;   background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt1" class="listTxt0" style="left: 325px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt2" class="listTxt0" style="left: 555px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt3" class="listTxt0" style="left: 785px;  background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
+    <div id="listTxt4" class="listTxt0" style="left: 1015px; background:url(../img/listTxt.png);">èŠ‚ç›®åç§°èŠ‚ç›®åç§°</div>
     
 	<div id="listBtn0" class="listBtn0" style="left: 95px;   background:url(../img/listBtn.png) no-repeat;"></div>
     <div id="listBtn1" class="listBtn0" style="left: 325px;  background:url(../img/listBtn.png) no-repeat;"></div>
@@ -358,8 +359,8 @@ function init(){
     <div id="listBtn3" class="listBtn0" style="left: 785px;  background:url(../img/listBtn.png) no-repeat;"></div>
     <div id="listBtn4" class="listBtn0" style="left: 1015px; background:url(../img/listBtn.png) no-repeat;"></div>  
           
-<div id="arrowLeft" style="position: absolute; left: 50px; top: 550px; width: 30px; height: 60px; background: url(../img/arrowLeft.png) no-repeat"></div>
-<div id="arrowRight" style="position: absolute; left: 1200px; top: 550px; width: 30px; height: 60px; background: url(../img/arrowRight.png) no-repeat"></div> 
+<div id="arrowLeft" style="position: absolute; left: 50px; top: 540px; width: 30px; height: 60px; background: url(../img/arrowLeft.png) no-repeat"></div>
+<div id="arrowRight" style="position: absolute; left: 1200px; top: 540px; width: 30px; height: 60px; background: url(../img/arrowRight.png) no-repeat"></div> 
 
 <div id="focusBg" style="z-index:1; background: url('../img/focushot.png') no-repeat;position: absolute; left: 0px; top: 0px; width: 405px; height: 45px; -webkit-transition-duration: 200ms;"></div>  
 
