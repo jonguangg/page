@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=gb2312" />
+<title>天天影院首页</title>
+<style>
+*{margin:0px;padding:0px;border:0px;font-family:SimHei;}
+
+.nav{z-index:2; position: absolute; top: 100px; width: 185px; height: 45px; line-height:45px; text-align:center; vertical-align:middle;font-size:26px; color:white;}
+
+.listImg0{ position:absolute; top: 155px; width: 170px; height: 225px; -webkit-transition-duration: 200ms;}
+.listTxt0{ position:absolute; top: 345px; width: 170px; height: 35px; line-height:35px; text-align:center; vertical-align:middle;font-size:24px; color:white;z-index:2; -webkit-transition-duration: 200ms;}
+.listBtn0{ position:absolute; top: 380px; width: 170px; height: 35px;  -webkit-transition-duration: 200ms;}
+
+.listImg1{ position:absolute; top: 430px; width: 170px; height: 225px; -webkit-transition-duration: 200ms;}
+.listTxt1{ position:absolute; top: 620px; width: 170px; height: 35px; line-height:35px; text-align:center; vertical-align:middle;font-size:24px; color:white;z-index:2; -webkit-transition-duration: 200ms;}
+.listBtn1{ position:absolute; top: 655px; width: 170px; height: 35px; -webkit-transition-duration: 200ms;}
+</style>
+
+<script type=text/javascript src="../global.js"></script>
+<script>
+var areaMovie = getCookie("areaMovie")?getCookie("areaMovie"):"nav";
+var focusListPosMovie = parseInt(getCookie("focusListPosMovie"))?parseInt(getCookie("focusListPosMovie")):0;
+var focusNavPosMovie = parseInt(getCookie("focusNavPosMovie"))?parseInt(getCookie("focusNavPosMovie")):0;
+var hiddenMovie = parseInt(getCookie("hiddenMovie"))?parseInt(getCookie("hiddenMovie")):0;
+var changePos=0;  //轮换图片焦点位置
+var listSize = 10; //条目数
+var url = window.location.href;
+var wordSize = 5;
+	var listEnds=2;
+	var ListEnd =listEnds+1;	
+	var ListBegin=0;
+	var currPos=0;
+	var currlist =0;
+		
+function $(id){return document.getElementById(id);}
+
+var navArray = [//导航栏目
+  {name:"天天影院一",url:"../movie/index.htm"},
+  {name:"天天影院二",url:"../TVseries/index.htm"},
+  {name:"天天影院三",url:"../movie/index.htm"},
+  {name:"天天影院四",url:"../TVseries/index.htm"},
+  {name:"天天影院五",url:"../TVseries/index.htm"},
+  {name:"天天影院六",url:"../movie/index.htm"}
+];
+
+var listArray=[//专题列表
+	{nums:"1",title:"1匆匆那年",url:"../movie/movie01.htm",money:"5元",img:"url(listImg0.png)"},
+	{nums:"2",title:"2超能陆战队（中文配音）匆匆那年匆匆那年",url:"../TVseries/TVseries02.htm",money:"5元",img:"url(listImg1.png)"},
+	{nums:"3",title:"3大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"../TVseries/TVseries03.htm",money:"5元",img:"url(listImg2.png)"},
+	{nums:"4",title:"4地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"../TVseries/TVseries03.htm",money:"5元",img:"url(listImg3.png)"},
+	{nums:"5",title:"5匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"../TVseries/TVseries05.htm",money:"5元",img:"url(listImg4.png)"},
+	{nums:"6",title:"6超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang6.htm",money:"5元",img:"url(listImg5.png)"},
+	{nums:"7",title:"7大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang7.htm",money:"5元",img:"url(listImg6.png)"},
+	{nums:"8",title:"8地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang8.htm",money:"5元",img:"url(listImg7.png)"},
+	{nums:"9",title:"9匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang9.htm",money:"5元",img:"url(listImg8.png)"},
+	{nums:"10",title:"10超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang10.htm",money:"5元",img:"url(listImg9.png)"},
+	{nums:"11",title:"11大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang11.htm",money:"5元",img:"url(listImg10.png)"},
+	{nums:"12",title:"12地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang12.htm",money:"5元",img:"url(listImg11.png)"},
+	{nums:"13",title:"13匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang13.htm",money:"5元",img:"url(listImg12.png)"},
+	{nums:"14",title:"14超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang14.htm",money:"5元",img:"url(listImg13.png)"},
+	{nums:"15",title:"15大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang15.htm",money:"5元",img:"url(listImg14.png)"},
+	{nums:"16",title:"16地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang16.htm",money:"5元",img:"url(listImg15.png)"},			
+	{nums:"17",title:"17第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang17.htm",money:"5元",img:"url(listImg16.png)"}
+];
+function showNav(){//显示导航
+	for(var i=0;i<navArray.length;i++){
+			$("nav"+i).style.left=85+185*(i-hiddenMovie)+"px";
+			$("nav"+i).innerHTML =navArray[i].name;
+			if(parseInt($("nav"+i).style.left)<85 || parseInt($("nav"+i).style.left)>1010){
+				$("nav"+i).style.display="none";
+			}else $("nav"+i).style.display="block";
+		}
+}
+var position = (parseInt((focusListPosMovie+listSize)/listSize)-1)*listSize; //当前页的第一个	
+var currPage = parseInt((focusListPosMovie+listSize)/listSize);//当前第几页
+var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
+
+function showList(){//显示列表
+	position = (parseInt((focusListPosMovie+listSize)/listSize)-1)*listSize; //当前页的第一个	
+	for(i=0; i<listSize; i++){
+		if(position+i<listArray.length){
+			if(listArray[position+i].title.length>wordSize){
+			$("listTxt"+i).innerHTML = listArray[position+i].title.slice(0,wordSize)+"...";
+		     }
+	        else $("listTxt"+i).innerHTML = listArray[position+i].title;
+			$("listImg"+i).style.backgroundImage = listArray[position+i].img;//"url(listImg"+(position+i)+".png)";
+			$("listBtn"+i).style.backgroundImage = "url(../img/listBtn.png)";	
+		}
+		else{
+			$("listImg"+i).style.backgroundImage = "url()";
+			$("listBtn"+i).style.backgroundImage = "url()";	
+			$("listTxt"+i).style.backgroundImage = "url()";
+			$("listTxt"+i).innerHTML = "";
+		}
+			}
+}
+
+function focusImg(num){//焦点图片,num小于1焦点离开图片还原，否则定位焦点焦点更换图片
+	if(num<1){//小于1，背景从黄色焦点框切回原来半透明框
+		if(areaMovie=="listTxt"){
+			$("listTxt"+focusListPosMovie%10).style.backgroundImage = "url(../img/listTxt.png)";
+			$("listTxt"+focusListPosMovie%10).style.color = "white";
+			if(listArray[focusListPosMovie].title.length>wordSize){
+			$("listTxt"+focusListPosMovie%10).innerHTML = listArray[focusListPosMovie].title.slice(0,wordSize)+"...";
+		    }
+	        else $("listTxt"+focusListPosMovie%10).innerHTML = listArray[focusListPosMovie].title
+		}else $("listBtn"+focusListPosMovie%10).style.backgroundImage = "url(../img/listBtn.png)";
+	}
+	else{			
+	if(areaMovie=="nav"){
+		$("focusBg").style.left   = (focusNavPosMovie-hiddenMovie)*185+85+'px';
+		$("focusBg").style.top    = '100px';
+		$("focusBg").style.width  = '185px';
+		$("focusBg").style.height = '45px';
+		$("focusBg").style.backgroundImage = "url(../img/focus_nav.png)";
+	}
+	else if(areaMovie=="back"){
+		$("focusBg").style.left   = '1158px';
+		$("focusBg").style.top    = '53px';
+		$("focusBg").style.width  = '71px';
+		$("focusBg").style.height = '33px';
+		$("focusBg").style.backgroundImage = "url(../img/focus_back.png)";
+	}
+	else if(areaMovie=="listTxt"){
+		$("focusBg").style.backgroundImage = "url()";
+		$("listTxt"+focusListPosMovie%10).style.color = "black";
+		$("listTxt"+focusListPosMovie%10).style.backgroundImage = "url(../img/focus_listTxt.png)";
+		if(listArray[focusListPosMovie].title.length>wordSize){
+		$("listTxt"+focusListPosMovie%10).innerHTML = '<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+listArray[focusListPosMovie].title +'</marquee>';
+		}else $("listTxt"+focusListPosMovie%10).innerHTML = listArray[focusListPosMovie].title;	
+	}
+	else if(areaMovie=="listBtn"){
+		$("listBtn"+focusListPosMovie%10).style.backgroundImage = "url(../img/focus_listBtn.png)";
+		$("focusBg").style.backgroundImage = "url()";
+	}
+    }
+	
+}
+function focusNav(num){//导航焦点
+	$("nav"+focusNavPosMovie).style.color = "white";
+	focusNavPosMovie+=num;
+	if(focusNavPosMovie<0){
+		if(navArray.length>5){
+			hiddenMovie=navArray.length-6;
+		}
+		focusNavPosMovie=navArray.length-1;
+		showNav();
+	}
+	else if(focusNavPosMovie>navArray.length-1){
+		focusNavPosMovie=0;
+		hiddenMovie=0;
+		for(var i=0;i<navArray.length;i++){
+			$("nav"+i).style.left=85+185*i+"px";
+			if(parseInt($("nav"+i).style.left)<85 || parseInt($("nav"+i).style.left)>1010){
+				$("nav"+i).style.display="none";
+			}else $("nav"+i).style.display="block";
+		}
+	}
+	else if(focusNavPosMovie>5 && focusNavPosMovie<navArray.length && num>0){
+		hiddenMovie++;
+		showNav();
+	}
+	else if(focusNavPosMovie>4 && num<0){
+		hiddenMovie--;
+		showNav();
+		}
+	$("nav"+focusNavPosMovie).style.color = "black";
+}	
+
+function pageDown(){
+	position = (parseInt((focusListPosMovie+listSize)/listSize)-1)*listSize; //当前页的第一个
+	if(position+listSize<listArray.length){
+		focusListPosMovie+=listSize;
+		showList();
+		focusListPosMovie=position;
+	}
+}
+function pageUp(){
+	position = (parseInt((focusListPosMovie+listSize)/listSize)-1)*listSize; //当前页的第一个
+	if(position-listSize>-1){
+		focusListPosMovie-=listSize;
+		showList();
+		focusListPosMovie=position;
+	}
+}
+
+function closeWebPage() { //退出浏览器
+	 if(navigator.userAgent.indexOf('Mozilla/5.0')!=-1){
+		   Utility.ioctlWrite("JSCommand","gotoDTV");
+	   }else if(navigator.appVersion.indexOf("EIS iPanel 3.0") != -1){
+		   iPanel.System.close(1000);  
+	   }               
+}
+
+//Cookie
+function setCookie(name, value){
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){//确认键
+	setCookie("areaMovie", areaMovie);	
+	if(areaMovie=="back"){
+		delCookie("areaMovie");
+		delCookie("focusListPosMovie");
+		delCookie("hiddenMovie");		
+		location.href = "../index.htm";
+	}
+	else if(areaMovie=="nav"){
+		setCookie("focusNavPosMovie", focusNavPosMovie);
+		setCookie("hiddenMovie", hiddenMovie);
+		location.href = navArray[focusNavPosMovie].url;
+	}
+	else if(areaMovie=="listTxt" || areaMovie=="listBtn"){
+		setCookie("focusListPosMovie", focusListPosMovie);
+		location.href = listArray[focusListPosMovie].url;
+	}
+} 
+
+//电脑可操作的键值
+function eventHandler(e,type){
+	var key_code = e.code;
+	switch(key_code){		
+		case "KEY_UP": 
+		  	if(areaMovie=="listBtn"){				
+				focusImg(0);
+				areaMovie="listTxt";
+				focusImg(1);
+			}else if(areaMovie=="listTxt" && (focusListPosMovie%10) >4){
+				focusImg(0);
+				areaMovie="listBtn";	
+				focusListPosMovie -= 5;
+				focusImg(1);
+			}else if(areaMovie=="listTxt" && (focusListPosMovie%10) <5){
+				focusImg(0);
+				areaMovie="nav";
+				focusImg(1);
+			}else if(areaMovie=="nav"){
+				areaMovie="back";
+				focusImg(1);
+			}
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+			if(areaMovie=="back"){
+				areaMovie="nav";
+		    }else if(areaMovie=="nav"){
+				areaMovie="listTxt";
+			}else if(areaMovie=="listTxt"){
+				focusImg(0);
+				areaMovie="listBtn";	
+			}else if(areaMovie=="listBtn" && focusListPosMovie+5<listArray.length && focusListPosMovie%10 < 5){
+				focusImg(0);
+				areaMovie="listTxt";
+				focusListPosMovie += 5;
+			}else if(areaMovie=="listBtn" && focusListPosMovie+6>listArray.length && focusListPosMovie%10 < 5){
+				focusImg(0);
+				areaMovie="listTxt";
+				focusListPosMovie = listArray.length-1;
+				}
+			focusImg(1);
+			return 0;
+			break;
+			
+		case "KEY_LEFT": 
+			if(areaMovie=="nav"){
+				focusNav(-1);
+			}else if((areaMovie=="listTxt" || areaMovie=="listBtn") && focusListPosMovie%5 >0){
+				focusImg(0);
+				focusListPosMovie -= 1;
+			}else if((areaMovie=="listTxt" || areaMovie=="listBtn") && focusListPosMovie%5 ==0){
+				focusImg(0);
+				pageUp();
+			}
+			focusImg(1);
+			return 0;
+			break;
+			
+		case "KEY_RIGHT": 
+			if(areaMovie=="nav"){
+				focusNav(1);
+			}else if((areaMovie=="listTxt" || areaMovie=="listBtn") && focusListPosMovie%5 < 4 && focusListPosMovie < listArray.length-1){
+				focusImg(0);
+				focusListPosMovie += 1;
+			}else if((areaMovie=="listTxt" || areaMovie=="listBtn") && focusListPosMovie%5 == 4){
+				focusImg(0);
+				pageDown();
+			}
+			focusImg(1);
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN":
+		    return 0;
+			break;	
+			
+		case "PAGE_UP":
+		    return 0;
+			break;		
+				
+		case "KEY_SELECT":
+			doSelect();
+			return 0;
+			break;
+			
+		case "KEY_BACK": 
+			delCookie("areaMovie");
+			delCookie("focusNavPosMovie");
+			delCookie("focusListPosMovie");
+			delCookie("hiddenMovie");
+			history.go(-1);
+			return 0;
+			break;	
+			
+		case "KEY_EXIT":
+			closeWebPage();
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC49":
+			location.href = loopArray[0];
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC50":
+			location.href = loopArray[1];
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC51":
+			location.href = loopArray[2];
+			return 0;
+			break;
+	}
+}
+
+function init(){
+	showList();
+	showNav();
+	focusImg(1);
+	focusNav(0);
+	
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+
+	<div style="position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('../img/indexZone.png')")></div>
+    
+	<div id="log" style="position: absolute; left: 50px; top: 50px; width: 90px; height: 40px; background: url('../img/logo_tianHuaBtn.png') no-repeat"></div>
+
+	<div id="zoneName" style="position: absolute; left: 180px; top: 50px; width: 200px; height: 40px; line-height:40px; font-size:30px; color:white;"><b> > 天天影院</b></div>    
+    
+	<!--<div id="collect" style="position: absolute; left: 1065px; top: 53px; width: 71px; height: 33px; background: url(../img/collect.png) no-repeat"></div>-->
+    
+	<div id="back" style="position: absolute; left: 1158px; top: 53px; width: 71px; height: 33px; background: url(../img/indexBack.png) no-repeat"></div>
+    <div id="nav00" style="z-index:1;position: absolute; left: 50px;top:100px; width:1180px; height:45px;background: url('../img/nav.png') no-repeat;"></div>
+    <div id="nav0" class="nav" style="left: 85px;background: url() no-repeat; display:block;"></div>
+    <div id="nav1" class="nav" style="left: 270px;background: url() no-repeat; display:block;"></div>
+    <div id="nav2" class="nav" style="left: 455px;background: url() no-repeat; display:block;"></div>
+    <div id="nav3" class="nav" style="left: 640px;background: url() no-repeat; display:block;"></div>
+    <div id="nav4" class="nav" style="left: 825px;background: url() no-repeat; display:block;"></div>
+    <div id="nav5" class="nav" style="left: 1010px;background: url() no-repeat; display:block;"></div>
+    <div id="nav6" class="nav" style="left: 1195px;background: url() no-repeat; display:none"></div>
+    <div id="nav7" class="nav" style="left: 1380px;background: url() no-repeat; display:none"></div>
+    <div id="nav8" class="nav" style="left: 1565px;background: url() no-repeat; display:none"></div>
+    <div id="nav9" class="nav" style="left: 1750px;background: url() no-repeat; display:none"></div>
+    <div id="nav10" class="nav" style="left: 1935px;background: url() no-repeat; display:none"></div>
+    <div id="nav11" class="nav" style="left: 2120px;background: url() no-repeat; display:none"></div>
+    
+	<div id="listImg0" class="listImg0" style="left: 95px;   background:url(../img/loop0.png) no-repeat;"></div>
+    <div id="listImg1" class="listImg0" style="left: 325px;  background:url(../img/loop1.png) no-repeat;"></div>
+    <div id="listImg2" class="listImg0" style="left: 555px;  background:url(../img/loop2.png) no-repeat;"></div>
+    <div id="listImg3" class="listImg0" style="left: 785px;  background:url(../img/loop1.png) no-repeat;"></div>
+    <div id="listImg4" class="listImg0" style="left: 1015px; background:url(../img/loop0.png) no-repeat;"></div>
+    
+	<div id="listTxt0" class="listTxt0" style="left: 95px;   background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt1" class="listTxt0" style="left: 325px;  background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt2" class="listTxt0" style="left: 555px;  background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt3" class="listTxt0" style="left: 785px;  background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt4" class="listTxt0" style="left: 1015px; background:url(../img/listTxt.png);">节目名称节目名称</div>
+    
+	<div id="listBtn0" class="listBtn0" style="left: 95px;   background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn1" class="listBtn0" style="left: 325px;  background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn2" class="listBtn0" style="left: 555px;  background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn3" class="listBtn0" style="left: 785px;  background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn4" class="listBtn0" style="left: 1015px; background:url(../img/listBtn.png) no-repeat;"></div>  
+    
+	<div id="listImg5" class="listImg1" style="left: 95px;   background:url(../img/loop0.png) no-repeat;"></div>
+    <div id="listImg6" class="listImg1" style="left: 325px;  background:url(../img/loop1.png) no-repeat;"></div>
+    <div id="listImg7" class="listImg1" style="left: 555px;  background:url(../img/loop2.png) no-repeat;"></div>
+    <div id="listImg8" class="listImg1" style="left: 785px;  background:url(../img/loop1.png) no-repeat;"></div>
+    <div id="listImg9" class="listImg1" style="left: 1015px; background:url(../img/loop0.png) no-repeat;"></div>
+    
+	<div id="listTxt5" class="listTxt1" style="left: 95px;   background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt6" class="listTxt1" style="left: 325px;  background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt7" class="listTxt1" style="left: 555px;  background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt8" class="listTxt1" style="left: 785px;  background:url(../img/listTxt.png);">节目名称节目名称</div>
+    <div id="listTxt9" class="listTxt1" style="left: 1015px; background:url(../img/listTxt.png);">节目名称节目名称</div>
+    
+	<div id="listBtn5" class="listBtn1" style="left: 95px;   background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn6" class="listBtn1" style="left: 325px;  background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn7" class="listBtn1" style="left: 555px;  background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn8" class="listBtn1" style="left: 785px;  background:url(../img/listBtn.png) no-repeat;"></div>
+    <div id="listBtn9" class="listBtn1" style="left: 1015px; background:url(../img/listBtn.png) no-repeat;"></div>   
+       
+	<div id="arrowLeft" style="position: absolute; left: 50px; top: 390px; width: 30px; height: 60px; background: url(../img/arrowLeft.png) no-repeat"></div>
+    <div id="arrowRight" style="position: absolute; left: 1200px; top: 390px; width: 30px; height: 60px; background: url(../img/arrowRight.png) no-repeat"></div> 
+
+  <div id="focusBg" style="z-index:1; background: url('../img/focushot.png') no-repeat;position: absolute; left: 0px; top: 0px; width: 405px; height: 45px; -webkit-transition-duration: 200ms;"></div>  
+
+</body>
+</html>
