@@ -14,6 +14,7 @@
 
 .rank_hot{z-index:1; position: absolute; width: 301px;height: 38.25px; line-height:38.25px; text-align:center; vertical-align:middle;font-size:26px; color:white;}
 
+img{width:100%;height:100%; }
 </style>
 
 <script type=text/javascript src="global.js"></script>
@@ -44,25 +45,25 @@ var navArray = [//导航栏目
 ];
 
 var loopArray = [//轮显图片
-  { url:"changeImg/0.htm",img:"url(img/loop0.png)"},
-  { url:"changeImg/1.htm",img:"url(img/loop1.png)"},
-  { url:"changeImg/2.htm",img:"url(img/loop2.png)"}
+  { url:"changeImg/0.htm",img:"img/loop0.png"},
+  { url:"changeImg/1.htm",img:"img/loop1.png"},
+  { url:"changeImg/2.htm",img:"img/loop2.png"}
 ];
 
 var rankArray=[//影视排行
-	{nums:"1",title:"匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie01.htm",money:"5元",img:"url(img/rank0.png)"},
-	{nums:"2",title:"超能陆战队中文配音",url:"movie/movie02.htm",money:"5元",img:"url(img/rank1.png)"},
-	{nums:"3",title:"大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie03.htm",money:"5元",img:"url(img/rank2.png)"},
-	{nums:"4",title:"地牢围攻匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie04.htm",money:"5元",img:"url(img/rank3.png)"},
-	{nums:"5",title:"第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie05.htm",money:"5元",img:"url(img/rank4.png)"}
+	{nums:"1",title:"匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie01.htm",money:"5元",img:"img/rank0.png"},
+	{nums:"2",title:"超能陆战队中文配音",url:"movie/movie02.htm",money:"5元",img:"img/rank1.png"},
+	{nums:"3",title:"大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie03.htm",money:"5元",img:"img/rank2.png"},
+	{nums:"4",title:"地牢围攻匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie04.htm",money:"5元",img:"img/rank3.png"},
+	{nums:"5",title:"第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"movie/movie05.htm",money:"5元",img:"img/rank4.png"}
 ];
 
 var hotArray=[//娱乐热播
-	{nums:"1",title:"匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries01.htm",money:"5元",img:"url(img/hot0.png)"},
-	{nums:"2",title:"超能陆战队（中文配音）匆匆那年匆匆那年",url:"TVseries/TVseries02.htm",money:"5元",img:"url(img/hot1.png)"},
-	{nums:"3",title:"大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries03.htm",money:"5元",img:"url(img/hot2.png)"},
-	{nums:"4",title:"地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries04.htm",money:"5元",img:"url(img/hot3.png)"},
-	{nums:"5",title:"第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries05.htm",money:"5元",img:"url(img/hot4.png)"}
+	{nums:"1",title:"匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries01.htm",money:"5元",img:"img/hot0.png"},
+	{nums:"2",title:"超能陆战队（中文配音）匆匆那年匆匆那年",url:"TVseries/TVseries02.htm",money:"5元",img:"img/hot1.png"},
+	{nums:"3",title:"大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries03.htm",money:"5元",img:"img/hot2.png"},
+	{nums:"4",title:"地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries04.htm",money:"5元",img:"img/hot3.png"},
+	{nums:"5",title:"第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"TVseries/TVseries05.htm",money:"5元",img:"img/hot4.png"}
 ];
 
 //背景图定时更换，时间间隔：单位毫秒 
@@ -81,7 +82,8 @@ function changeImg() {
 	}else { 
 		curIndex+=1; 
 	} 
-	obj.style.backgroundImage=loopArray[curIndex].img;
+	obj.src = loopArray[curIndex].img;
+//	obj.style.backgroundImage=loopArray[curIndex].img;
 } 
 
 function changeNumBg(){//换数字背景图的颜色
@@ -237,16 +239,18 @@ function focusRank_Hot(num){//排行、热播文字游动
 			if(rankArray[focusListPosIndex].title.length>10){
 			$("rank"+focusListPosIndex).innerHTML = '<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+rankArray[focusListPosIndex].title +'</marquee>';
 		    }else $("rank"+focusListPosIndex).innerHTML = rankArray[focusListPosIndex].title;
-			
-		$("rank").style.backgroundImage = rankArray[focusListPosIndex].img;//"url(img/rank"+focusListPosIndex+".png)";
+			$("rank").src=rankArray[focusListPosIndex].img;
+//		$("rank").style.backgroundImage = rankArray[focusListPosIndex].img;
+//"url(img/rank"+focusListPosIndex+".png)";
 		}
 		else {
 			$("hot"+focusListPosIndex).style.color = "black";
 			if(hotArray[focusListPosIndex].title.length>10){
 			$("hot"+focusListPosIndex).innerHTML = '<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+hotArray[focusListPosIndex].title +'</marquee>';
 			}else $("hot"+focusListPosIndex).innerHTML = hotArray[focusListPosIndex].title;
-			
-			$("hot").style.backgroundImage = hotArray[focusListPosIndex].img//"url(img/hot"+focusListPosIndex+".png)";
+			$("hot").src=hotArray[focusListPosIndex].img;
+//			$("hot").style.backgroundImage = hotArray[focusListPosIndex].img
+//          "url(img/hot"+focusListPosIndex+".png)";
 			}
 		}
 }
@@ -310,10 +314,10 @@ function doSelect(){//确认键
 		location.href = loopArray[curIndex];
 	}
 	else if(areaIndex=="zoneTxt"){
-		location.href = "zone.htm";	
+		location.href = "movie/movie01.htm";	
 	}
 	else if(areaIndex=="newTxt"){
-		location.href = "new.htm";
+		location.href = "TVseries/TVseries01.htm";
 	}
 	else if(areaIndex=="rank"){
 		setCookie("focusListPosIndex", focusListPosIndex);
@@ -490,7 +494,7 @@ function init(){
     <div id="nav10" class="nav" style="left: 1935px;background: url() no-repeat; display:none"></div>
     <div id="nav11" class="nav" style="left: 2120px;background: url() no-repeat; display:none"></div>
     
-	<div id="loop" style="position:absolute; left: 52px; top: 167px; width: 547px; height: 307px; background:url(img/loop0.png) no-repeat;"></div>
+	<div style="position:absolute; left: 52px; top: 167px; width: 547px; height: 307px;"><img id="loop" src="img/loop0.png" /></div>
     
     <div class="num" style="position: absolute; left: 484px; top: 432px; width: 96px; height: 32;">
     <table width="96" border="0" cellspacing="0" cellpadding="0" class="num">
@@ -502,14 +506,16 @@ function init(){
     </table>
     </div>
     
-    <div id="zone" style="position:absolute; left: 52px; top: 517px; width:265px; height:153px;background:url(img/zone.png) no-repeat"></div>    
+    <div style="position:absolute; left: 52px; top: 517px; width:265px; height:153px;"><img id="zone" src="img/zone.png"/></div>    
+    
 <div id="zoneTxt" class="zone_newTxt" style="left: 52px;">特色专题</div>
 
-    <div id="new" style="position:absolute; left: 332px; top: 517px; width:265px; height:153px;background:url(img/new.png) no-repeat"></div>
+    <div style="position:absolute; left: 332px; top: 517px; width:265px; height:153px;"><img id="new" src="img/new.png"/></div>
 
     <div id="newTxt" class="zone_newTxt" style="left: 332px;">新片抢鲜看</div>
         
-    <div id="rank" style="position: absolute; left: 612px; top: 200px; width: 301px; height: 317px; background: url(img/rank0.png) no-repeat"></div>    
+    <div style="position: absolute; left: 612px; top: 200px; width: 301px; height: 317px;"><img id="rank" src="img/rank0.png"/></div>  
+      
     <div id="rank00" class="rank_hot" style="z-index:0; left: 612px; top: 479.75px; background: url(img/rank_hot.png) no-repeat;"></div>
     <div id="rank0" class="rank_hot" style="left: 612px; top: 479.75px; background: url() no-repeat;"></div>
     <div id="rank1" class="rank_hot" style="left: 612px; top: 517px; background: url() no-repeat;"></div>
@@ -517,7 +523,8 @@ function init(){
     <div id="rank3" class="rank_hot" style="left: 612px; top: 593.5px; background: url() no-repeat;"></div>
     <div id="rank4" class="rank_hot" style="left: 612px; top: 631.75px; background: url() no-repeat;"></div>
 
-<div id="hot" style="position: absolute; left: 928px; top: 200px; width: 301px; height: 317px; background: url(img/hot0.png) no-repeat"></div> 
+<div style="position: absolute; left: 928px; top: 200px; width: 301px; height: 317px;"><img id="hot" src="img/hot0.png"/></div> 
+
 <div id="hot00" class="rank_hot" style="z-index:0; left: 928px; top: 479.75px; background: url(img/rank_hot.png) no-repeat;"></div> 
 <div id="hot0" class="rank_hot" style="left: 928px; top: 479.75px; background: url() no-repeat;"></div>
 <div id="hot1" class="rank_hot" style="left: 928px; top: 517px; background: url() no-repeat;"></div>

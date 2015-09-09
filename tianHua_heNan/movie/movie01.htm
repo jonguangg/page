@@ -7,7 +7,7 @@
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
 span{color:#00cbff; font-size:24px;font-weight: bold;}
 .content{position: absolute;line-height: 40px;text-align: left;vertical-align: middle;font-size: 22px;color: white;}
-
+img{width:100%;height:100%; }
 .listImg0{ position:absolute; top: 450px; width: 170px; height: 200px; -webkit-transition-duration: 200ms;}
 .listTxt0{ position:absolute; top: 615px; width: 170px; height: 35px; line-height:35px; text-align:center; vertical-align:middle;font-size:24px; color:white;z-index:2; -webkit-transition-duration: 200ms;}
 .listBtn0{ position:absolute; top: 650px; width: 170px; height: 35px;  -webkit-transition-duration: 200ms;}
@@ -33,23 +33,23 @@ var wordSize = 5;
 function $(id){return document.getElementById(id);}
 
 var listArray=[//专题列表
-	{nums:"1",title:"1匆匆那年",url:"../movie/movie01.htm",img:"url(listImg0.png)"},
-	{nums:"2",title:"2超能陆战队（中文配音）匆匆那年匆匆那年",url:"../movie/movie02.htm",img:"url(listImg1.png)"},
-	{nums:"3",title:"3大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"../movie/movie03.htm",img:"url(listImg2.png)"},
-	{nums:"4",title:"4地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"../movie/movie04.htm",img:"url(listImg3.png)"},
-	{nums:"5",title:"5匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"../movie/movie05.htm",img:"url(listImg4.png)"},
-	{nums:"6",title:"6超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang6.htm",img:"url(listImg5.png)"},
-	{nums:"7",title:"7大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang7.htm",img:"url(listImg6.png)"},
-	{nums:"8",title:"8地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang8.htm",img:"url(listImg7.png)"},
-	{nums:"9",title:"9匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang9.htm",img:"url(listImg8.png)"},
-	{nums:"10",title:"10超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang10.htm",img:"url(listImg9.png)"},
-	{nums:"11",title:"11大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang11.htm",img:"url(listImg10.png)"},
-	{nums:"12",title:"12地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang12.htm",img:"url(listImg11.png)"},
-	{nums:"13",title:"13匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang13.htm",img:"url(listImg12.png)"},
-	{nums:"14",title:"14超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang14.htm",img:"url(listImg13.png)"},
-	{nums:"15",title:"15大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang15.htm",img:"url(listImg14.png)"},
-	{nums:"16",title:"16地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang16.htm",img:"url(listImg15.png)"},			
-	{nums:"17",title:"17第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang17.htm",img:"url(listImg16.png)"}
+	{nums:"1",title:"1匆匆那年",url:"../movie/movie01.htm",img:"listImg0.png"},
+	{nums:"2",title:"2超能陆战队（中文配音）匆匆那年匆匆那年",url:"../movie/movie02.htm",img:"listImg1.png"},
+	{nums:"3",title:"3大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"../movie/movie03.htm",img:"listImg2.png"},
+	{nums:"4",title:"4地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"../movie/movie04.htm",img:"listImg3.png"},
+	{nums:"5",title:"5匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"../movie/movie05.htm",img:"listImg4.png"},
+	{nums:"6",title:"6超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang6.htm",img:"listImg5.png"},
+	{nums:"7",title:"7大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang7.htm",img:"listImg6.png"},
+	{nums:"8",title:"8地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang8.htm",img:"listImg7.png"},
+	{nums:"9",title:"9匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang9.htm",img:"listImg8.png"},
+	{nums:"10",title:"10超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang10.htm",img:"listImg9.png"},
+	{nums:"11",title:"11大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang11.htm",img:"listImg10.png"},
+	{nums:"12",title:"12地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang12.htm",img:"listImg11.png"},
+	{nums:"13",title:"13匆匆那年匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang13.htm",img:"listImg12.png"},
+	{nums:"14",title:"14超能陆战队（中文配音）匆匆那年匆匆那年",url:"paihang/paihang14.htm",img:"listImg13.png"},
+	{nums:"15",title:"15大喜临门匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang15.htm",img:"listImg14.png"},
+	{nums:"16",title:"16地牢围攻3匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang16.htm",img:"listImg15.png"},			
+	{nums:"17",title:"17第七谎言匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang17.htm",img:"listImg16.png"}
 ];
 
 var position = (parseInt((focusListPosMovies+listSize)/listSize)-1)*listSize; //当前页的第一个	
@@ -64,11 +64,14 @@ function showList(){//显示列表
 			$("listTxt"+i).innerHTML = listArray[position+i].title.slice(0,wordSize)+"...";
 		     }
 	        else $("listTxt"+i).innerHTML = listArray[position+i].title;
-			$("listImg"+i).style.backgroundImage = listArray[position+i].img;//"url(listImg"+(position+i)+".png)";
+			$("listImg"+i).src=listArray[position+i].img;
+			//style.backgroundImage = listArray[position+i].img;
+			//"url(listImg"+(position+i)+".png)";
 			$("listBtn"+i).style.backgroundImage = "url(../img/listBtn.png)";	
 		}
 		else{
-			$("listImg"+i).style.backgroundImage = "url()";
+			$("listImg"+i).src= "../img/null.png";
+//			$("listImg"+i).style.backgroundImage = "url()";
 			$("listBtn"+i).style.backgroundImage = "url()";	
 			$("listTxt"+i).style.backgroundImage = "url()";
 			$("listTxt"+i).innerHTML = "";
@@ -324,7 +327,7 @@ function init(){
     
 <div id="movieBg" style="position: absolute; left: 95px; top: 100px; width: 1090px; height: 355px; background: url(../img/movieBg.png) no-repeat"></div>
 
-<div id="movieImg"style="position: absolute; left: 95px; top: 100px; width: 220px; height: 300px; background: url(../img/movie01.png) no-repeat"></div>
+<div style="position: absolute; left: 95px; top: 100px; width: 220px; height: 300px;"><img id="movieImg" src="movie01.png" /></div>
  
 <div id="movieTitle" class="content"  style="left:345px; top: 110px; width:260px; height:40px;"><span>影片名称</span></div>
 
@@ -341,11 +344,11 @@ function init(){
 <div id="movieDirector" class="content" style="left: 620px; top: 110px; width: 550px; height:40px;"><span><b>导演：</b></span>导演姓名</div>
 
 <div id="movieBrief" class="content" style="left: 620px; top: 150px; width: 550px; height:260px;"><span><b>主演：</b></span>主演一、主演二、主演三、主演四、主演五、主演六、主演七<br/><span><b>简介：</b></span>一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五</div>
-    <div id="listImg0" class="listImg0" style="left: 95px;   background:url(../img/loop0.png) no-repeat;"></div>
-    <div id="listImg1" class="listImg0" style="left: 325px;  background:url(../img/loop1.png) no-repeat;"></div>
-    <div id="listImg2" class="listImg0" style="left: 555px;  background:url(../img/loop2.png) no-repeat;"></div>
-    <div id="listImg3" class="listImg0" style="left: 785px;  background:url(../img/loop1.png) no-repeat;"></div>
-    <div id="listImg4" class="listImg0" style="left: 1015px; background:url(../img/loop0.png) no-repeat;"></div>
+    <div class="listImg0" style="left: 95px;"><img id="listImg0" src=""/></div>
+    <div class="listImg0" style="left: 325px;"><img id="listImg1" src=""/></div>
+    <div class="listImg0" style="left: 555px;"><img id="listImg2" src=""/></div>
+    <div class="listImg0" style="left: 785px;"><img id="listImg3" src=""/></div>
+    <div class="listImg0" style="left: 1015px;"><img id="listImg4" src=""/></div>
     
 	<div id="listTxt0" class="listTxt0" style="left: 95px;   background:url(../img/listTxt.png);">节目名称节目名称</div>
     <div id="listTxt1" class="listTxt0" style="left: 325px;  background:url(../img/listTxt.png);">节目名称节目名称</div>

@@ -4,7 +4,7 @@
 var SiHua_Event = {
 	mapping: function(__event){
 		var keycode = __event.which||__event.keyCode;
-//alert(focusListPos+"position:"+position);
+	  //alert(keycode);
 		var code = "";
 		var name = "";
 		var args = {};
