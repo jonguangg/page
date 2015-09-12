@@ -3,7 +3,7 @@
 
 var SiHua_Event = {
 	mapping: function(__event){
-		var keycode = __event.which||__event.keyCode;
+		var	keycode = __event.which|| __event.keyCode;
 //	  alert(areaSearch+"\nfocusWordPos"+focusWordPos+"\nfocusListPos"+focusListPos+"\nhidden"+hidden);
 		var code = "";
 		var name = "";
@@ -84,14 +84,8 @@ var SiHua_Event = {
 					
 				case 8:
 				case 340://Ô£Â¡Ð¡Ò£¿Ø
+				case 65367://ºÓÄÏ
 					code = "KEY_BACK";
-					break;
-					
-				case 372:
-					code = "KEY_PAGE_UP";
-					break;
-				case 373:
-					code = "KEY_PAGE_DOWN";
 					break;
 					
 				case 512:
@@ -226,6 +220,8 @@ var SiHua_Event = {
 		return {code: code, args: args, name: name};
 	}
 };
+
+
 document.onkeydown=function (__event) {
 	__event=__event||window.event;	
 	try
@@ -238,15 +234,48 @@ document.onkeydown=function (__event) {
 	}
 	return typeof eventHandler == 'function' ? eventHandler(SiHua_Event.mapping(__event), 1) : true;
 };
+
 document.onirkeypress = function (__event) {
 	__event=__event||window.event;
 	return  eventHandler ? eventHandler(Event.mapping(__event), 1) : true;
 };
+
 document.onsystemevent = function (__event) {
 	__event=__event||window.event;
 	return eventHandler ? eventHandler(Event.mapping(event), 2) : true;
 };
 
+function iPanelKey(){
+	var key_codes = event.which;
+	var codes = "";
+	switch(key_codes){
+		case 65362:
+			codes ="KEY_UP";
+			break;
+		case 65364:
+			codes ="KEY_DOWN";
+			break;
+		case 65361:
+			codes ="KEY_LEFT";
+			break;
+		case 65363:
+			codes ="KEY_RIGHT";
+			break;	
+		case 65293:
+			codes ="KEY_SELECT";
+			break;
+		case 65367:
+			codes ="KEY_BACK";
+			break;
+		case 26:
+			codes ="PAGE_DOWN";
+			break;
+		case 25:
+			codes ="PAGE_UP";
+			break;	
+	}
+	return codes;
+}
 function $(_id){
 	return document.getElementById(_id);
 }

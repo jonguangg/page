@@ -1,3 +1,36 @@
+key = {
+        Up: 65362,
+        Down: 65364,
+        Left: 65361,
+        Right: 65363,
+        Ok: 65293,
+        F1: 32,
+        F2: 33,
+        F3: 34,
+        F4: 35,
+        numb1: 49,
+        numb2: 50,
+        numb3: 51,
+        numb4: 52,
+        numb5: 53,
+        numb6: 54,
+        numb7: 55,
+        numb8: 56,
+        numb9: 57,
+        numb0: 48,
+        Mute: 63563,
+        Back: 65367,
+        Track: 65307,
+        VolumeUp: 63561,
+        VolumeDown: 63562,
+        Fav: 36,
+        PlayBack: 72,
+		PageDown:26,
+		PageUp:25,
+		Menu:65360
+    };
+
+
 collect:left1065,top51,width71*height33
 exit   :left1158,top51,width71*height33
 
@@ -71,5 +104,12 @@ left:95px;top:170px;width:395px;height:523px;
 20150909
 1、所有图片大小自适应
 2、专区、新片加入链接
+
 20150911
 1、搜索页做了一半
+
+20150912
+1、搜索页结果列表做出来了
+2、调整遥控键值，返回键可以随意写哪个页面
+2.1 替换global.js文件
+2.2 修改遥控按键代码
