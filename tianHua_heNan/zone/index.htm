@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=UTF-8" />
+<title>专区页</title>
+<style>
+*{margin:0px;padding:0px;border:0px;font-family:SimHei;}
+
+img{width:100%;height:100%; }
+
+.word{position: absolute; width:62px;height: 62px; line-height:62px; text-align:center; vertical-align:middle;font-size:36px; color:black;background:url(btn0.png) no-repeat;}
+.list{position: absolute;left: 0px; width: 1280px; height: 45px;line-height:45px; text-align:center; vertical-align:middle;font-size:26px; color:white;background:url(list0.png);}
+</style>
+
+<script type=text/javascript src="../global.js"></script>
+<script>
+var areaSearch = "word";
+var focusWordPos = 17;
+var focusListPos=0;  
+var hidden = 0;
+var listSize = 6; //条目数
+var url = window.location.href;
+var wordize = 19;
+	var listEnds=2;
+	var ListEnd =listEnds+1;	
+	var ListBegin=0;
+	var currPos=0;
+	var currlist =0;
+		
+function $(id){return document.getElementById(id);}
+
+var listArray = [//导航栏目
+  {num:"1.",name:"节目名称节目名称天天影院一节目名称节目名称天天影院",url:"../movie/1.htm"},
+  {num:"2.",name:"节目名称节目名称天天影院二",url:"../TVseries/2.htm"},
+  {num:"3.",name:"节目名称节目名称天天影院三",url:"../movie/3.htm"},
+  {num:"4.",name:"节目名称节目名称天天影院四",url:"../TVseries/4.htm"},
+  {num:"5.",name:"节目名称节目名称天天影院五",url:"../TVseries/5.htm"},
+  {num:"6.",name:"节目名称节目名称天天影院六",url:"../movie/6.htm"},
+  {num:"7.",name:"节目名称节目名称天天影院一",url:"../movie/7.htm"},
+  {num:"8.",name:"节目名称节目名称天天影院二",url:"../TVseries/8.htm"},
+  {num:"9.",name:"节目名称节目名称天天影院三",url:"../movie/9.htm"},
+  {num:"10.",name:"节目名称节目名称天天影院四",url:"../TVseries/10.htm"},
+  {num:"11.",name:"节目名称节目名称天天影院五",url:"../TVseries/11.htm"},
+  {num:"12.",name:"节目名称节目名称天天影院六",url:"../movie/12.htm"},
+  {num:"13.",name:"节目名称节目名称天天影院六",url:"../movie/13.htm"}
+];
+
+
+
+var position = (parseInt((focusListPos+listSize)/listSize)-1)*listSize; //当前页的第一个		
+function showList(){//显示列表
+	position = (parseInt((focusListPos+listSize)/listSize)-1)*listSize; //当前页的第一个	
+	for(i=0; i<listSize; i++){
+		if(position+i<listArray.length){
+			if(listArray[position+i].name.length>wordize){
+			$("list"+i).innerHTML = listArray[position+i].num+listArray[position+i].name.slice(0,wordize)+"...";
+		     }
+	        else $("list"+i).innerHTML = listArray[position+i].num+listArray[position+i].name;
+		}
+		else{
+			$("list"+i).innerHTML = "";
+		    }
+		}
+//	showPage();
+}
+
+function focusWord(num){
+		if(focusWordPos==26){
+		$("word"+focusWordPos).src = "search0.png";
+		}else if(focusWordPos==32){
+			$("word"+focusWordPos).src = "back0.png";
+		}else $("word"+focusWordPos).style.backgroundImage = "url(btn0.png)";
+		
+		focusWordPos += num ;
+		if(focusWordPos<0){
+			focusWordPos = 37;
+		}
+		if(focusWordPos>37){
+			focusWordPos = 0;
+		}
+		
+		if(areaSearch=="word"){
+			if(focusWordPos==26){
+			$("word"+focusWordPos).src = "search1.png";
+			}else if(focusWordPos==32){
+				$("word"+focusWordPos).src = "back1.png";
+			}else $("word"+focusWordPos).style.backgroundImage = "url(btn1.png)";
+		}
+		
+}
+
+function focusImg(num){
+	if(num>0){
+		if(areaSearch=="back"){
+			$("back").style.backgroundImage = "url(../img/focus_back.png)";
+		}else
+		$(areaSearch).style.backgroundImage = "url("+areaSearch+"1.png)";
+	}
+	else if(num<0){
+		if(areaSearch=="back"){
+			$("back").style.backgroundImage = "url(../img/indexBack.png)";
+		}else
+		$(areaSearch).style.backgroundImage = "url("+areaSearch+"0.png)";
+	}
+	
+}
+function focusList(num){//alert("运行了");
+	$("list"+(focusListPos-hidden)).style.backgroundImage = "url(list0.png)";
+	if(focusListPos%6==5 && num>0 && focusListPos<listArray.length-1){
+		pageDown();
+		focusListPos += listSize;
+//		hidden += listSize;
+		focusListPos = position;		
+		showList();
+		focusList(0);
+	}
+	else if(focusListPos%6==5 && num>0 && focusListPos==listArray.length-1){
+		focusListPos = 0;
+		hidden = 0;
+		showList();
+	}
+	else if(focusListPos%6<5 && num>0 && focusListPos < listArray.length-1){
+		focusListPos++;
+	}
+	else if(focusListPos%6<6 && num<0 && focusListPos%6!=0){
+		focusListPos--;
+	}
+	if(areaSearch=="list"){//alert("运行了");
+		$("list"+(focusListPos-hidden)).style.backgroundImage = "url(list1.png)";
+	}
+}
+function pageDown(){
+	position = (parseInt((focusListPos+listSize)/listSize)-1)*listSize; //当前页的第一个
+	if(position+listSize<listArray.length){
+		focusListPos+=listSize;
+		hidden += listSize;
+		showList();
+		focusListPos=position;
+	}
+}
+function pageUp(){
+	position = (parseInt((focusListPos+listSize)/listSize)-1)*listSize; //当前页的第一个
+	if(position-listSize>-1){
+		focusListPos -= listSize;
+		hidden -= listSize;
+		showList();
+		focusListPos=position;
+	}
+}
+
+//Cookie
+function setCookie(name, value){
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){//确认键
+	if(areaSearch=="word" && focusWordPos!=26 && focusWordPos!=32){
+		$("searchTxt").innerHTML += $("word"+focusWordPos).innerHTML;
+	}
+	else if(areaSearch=="word" && focusWordPos==26){
+		alert( $("searchTxt").innerHTML);
+		areaSearch = "pageDown";
+		focusImg(1);
+		focusWord(0);
+	}
+	else if(areaSearch=="word" && focusWordPos==32){
+		alert( $("searchTxt").innerHTML);
+		areaSearch = "pageDown";
+		focusImg(1);
+		focusWord(0);
+	}
+	else if(areaSearch=="pageUp"){
+		pageUp();
+	}
+	else if(areaSearch=="pageDown"){
+		pageDown();
+	}
+	else if(areaSearch=="list"){
+		location.href = listArray[focusListPos].url
+	}
+	else if(areaSearch=="back"){
+		location.href = "../index.htm";
+	}
+} 
+
+//电脑可操作的键值
+function eventHandler(e,type){
+	var key_code = e.code;
+	switch(key_code){		
+		case "KEY_UP": 
+		    if(areaSearch=="word"){
+				if(focusWordPos < 27){				
+					focusWord(-7);
+				}else if(focusWordPos > 26){
+					focusWord(-6);
+				}				
+			}else if(areaSearch=="pageUp" || areaSearch=="pageDown"){
+				focusImg(-1);
+				areaSearch = "back";
+				focusImg(1);
+			}else if(areaSearch=="list" && focusListPos%6==0){
+				areaSearch = "pageDown";
+				focusList(0);
+				focusImg(1);
+			}else if(areaSearch=="list" && focusListPos%6>0){
+				focusList(-1);
+			}
+			
+
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+		    if(areaSearch=="word"){
+				if(focusWordPos < 20){				
+					focusWord(+7);
+				}else if(focusWordPos > 19 && focusWordPos!=32){
+					focusWord(+6);
+				}else if(focusWordPos==32){
+					focusWord(+5);
+				}
+			}else if (areaSearch=="back"){
+				focusImg(-1);
+				areaSearch = "pageUp";
+				focusImg(1);
+			}else if(areaSearch=="pageUp" || areaSearch=="pageDown"){
+				focusImg(-1);
+				areaSearch = "list";
+				focusList(0);
+			}else if(areaSearch=="list"){
+				focusList(1);
+			}
+			return 0;
+			break;
+			
+		case "KEY_LEFT": 
+		    if(areaSearch == "word"){
+				focusWord(-1);
+			}else if(areaSearch=="pageDown"){
+				focusImg(-1);
+				areaSearch = "pageUp";
+				focusImg(1);
+			}else if(areaSearch == "pageUp"){
+				focusImg(-1);
+				areaSearch = "word";
+				focusWord(0);
+			}
+			return 0;
+			break;
+			
+		case "KEY_RIGHT": 
+			if(areaSearch=="word"){
+				if(focusWordPos==6 || focusWordPos==13 || focusWordPos==20 || focusWordPos==26 || focusWordPos==32 || focusWordPos==37 ){
+				areaSearch = "pageUp";
+				focusImg(1);
+				focusWord(0);
+				}else focusWord(1);
+		    }else if(areaSearch = "pageUp"){
+				focusImg(-1);
+				areaSearch = "pageDown";
+				focusImg(1);
+			}
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN":
+			focusImg(0);
+			pageDown();
+			focusImg(1);
+		    return 0;
+			break;	
+			
+		case "PAGE_UP":
+			focusImg(0);
+			pageUp();
+			focusImg(1);
+		    return 0;
+			break;		
+				
+		case "KEY_SELECT":
+			doSelect();
+			return 0;
+			break;
+			
+		case "KEY_BACK": 
+//			history.go(-1);
+			return 0;
+			break;	
+			
+		case "KEY_EXIT":
+			closeWebPage();
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC49":
+			location.href = loopArray[0];
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC50":
+			location.href = loopArray[1];
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC51":
+			location.href = loopArray[2];
+			return 0;
+			break;
+	}
+}
+
+function init(){
+	showList();
+	focusWord(0);
+
+	
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+
+	<div style="position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('zoneBg.jpg')")></div>
+    
+	<div id="logo" style="position: absolute; left: 50px; top: 50px; width: 150px; height: 40px; background: url('zoneLogo.png') no-repeat"></div>    
+
+<div id="back" style="position: absolute; left: 1158px; top: 50px; width: 71px; height: 33px; background: url(../img/indexBack.png) no-repeat"></div>
+
+    <div style="position: absolute; left: 620px; top: 50px; width: 500px; height: 40px;background: url(prompt.png) no-repeat"></div>
+
+        <div id="name" style="position: absolute; left: 0px; top: 90px; width: 1280px; height: 40px; line-height: 40px; text-align: center; vertical-align: middle; font-size: 36px; color: white;">影片名称</div>
+  
+<div style="z-index:1;position:absolute; left: 90px; margin-top: 178px; width: 256px; height: 180px;"><img id="img0" src="0.jpg"/></div>
+
+<div style="z-index:2; position:absolute; left: 230px; margin-top: 160px; width: 320px; height: 225px;"><img id="img1" src="1.jpg"/></div>
+
+<div style="z-index:3;position:absolute; left: 427px; margin-top: 130px; width: 426px; height: 300px;"><img id="img2" src="2.jpg"/></div>
+
+<div style="z-index:2; position:absolute; right: 230px; margin-top: 160px; width: 320px; height: 225px; float:right;"><img id="img3" src="3.jpg"/></div>
+
+<div style="z-index:1;position:absolute; right: 90px; margin-top: 178px; width: 256px; height: 180px; float:right;"><img id="img4" src="4.jpg"/></div>
+        
+<div id="searchTxt" style="position: absolute;left: 50px; top: 120px; width: 555px; height: 45px;line-height:45px; text-align:center; vertical-align:middle;font-size:36px; color:black;"></div>
+    
+
+
+<div id="list0" class="list" style="top: 430px; "></div>
+<div id="list1" class="list" style="top: 475px; "></div>
+<div id="list2" class="list" style="top: 520px; "></div>
+<div id="list3" class="list" style="top: 565px; "></div>
+<div id="list4" class="list" style="top: 610px; "></div>
+
+
+
+</body>
+</html>
