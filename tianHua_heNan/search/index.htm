@@ -15,7 +15,7 @@ img{width:100%;height:100%; }
 <script type=text/javascript src="../global.js"></script>
 <script>
 var areaSearch = "word";
-var focusWordPos = 17;
+var focusWordPos = 26;
 var focusListPos=0;  
 var hidden = 0;
 var listSize = 6; //条目数
@@ -204,8 +204,15 @@ function doSelect(){//确认键
 } 
 
 //电脑可操作的键值
+document.onsystemevent = eventHandler;
+//document.onkeypress    = eventHandler;
+document.onirkeypress  = eventHandler; 
 function eventHandler(e,type){
-	var key_code = e.code;
+//	var key_code = e.code;   
+    var key_code = "";
+	if(navigator.userAgent.indexOf('iPanel')!=-1){
+		key_code=iPanelKey();
+	}else key_code = e.code ; 
 	switch(key_code){		
 		case "KEY_UP": 
 		    if(areaSearch=="word"){
@@ -303,6 +310,8 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_BACK": 
+		    document.onkeypress    = eventHandler;
+		    location.href = "../movie/index.htm";
 //			history.go(-1);
 			return 0;
 			break;	

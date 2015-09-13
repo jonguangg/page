@@ -1,5 +1,3 @@
-//??
-//Event 匿名对象覆盖了浏览器内置 Event 对象, 导致按键等事件无法触发.
 
 var SiHua_Event = {
 	mapping: function(__event){
@@ -202,19 +200,7 @@ var SiHua_Event = {
 					
 				case 269:
 					code = "269";
-					break;
-				/*	
-				case 49:
-				    code ="KEY_1";
-					break;
-					
-				case 50:
-				    code ="KEY_2";
-					break;	
-									
-				case 51:
-				    code ="KEY_3";
-					break;	*/				
+					break;			
 			}			
 		}
 		return {code: code, args: args, name: name};
@@ -273,9 +259,17 @@ function iPanelKey(){
 		case 25:
 			codes ="PAGE_UP";
 			break;	
+		case 49:
+			codes ="KEY_NUMERIC49";
+			break;
+		case 50:
+			codes ="KEY_NUMERIC50";
+			break;
+		case 51:
+			codes ="KEY_NUMERIC51";
+			break;	
 	}
 	return codes;
 }
-function $(_id){
-	return document.getElementById(_id);
-}
+
+function $(_id){return document.getElementById(_id);}

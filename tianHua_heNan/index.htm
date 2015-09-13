@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
 <title>首页</title>
 <style>
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
@@ -17,7 +17,7 @@
 img{width:100%;height:100%; }
 </style>
 
-<script type=text/javascript src="global.js"></script>
+<script type=text/javascript src="global.js" charset=UTF-8></script>
 <script>
 var areaIndex = getCookie("areaIndex")?getCookie("areaIndex"):"nav";
 var focusListPosIndex = parseInt(getCookie("focusListPosIndex"))?parseInt(getCookie("focusListPosIndex")):0;
@@ -32,8 +32,20 @@ var wordSize = 10;
 	var ListBegin=0;
 	var currPos=0;
 	var currlist =0;
-		
+
 function $(id){return document.getElementById(id);}
+
+var msg ="这里是提示内容";	
+var msgState = -1;	
+function showMsg(){
+	msgState = msgState*(-1);
+	if(msgState>0){
+		$("prompts").style.visibility = "visible";
+	    $("prompts").innerHTML = msg;
+	}else if(msgState<0){
+		$("prompts").style.visibility = "hidden";
+	}	
+}
 
 var navArray = [//导航栏目
   {name:"天天影院",url:"movie/index.htm"},
@@ -45,9 +57,9 @@ var navArray = [//导航栏目
 ];
 
 var loopArray = [//轮显图片
-  { url:"changeImg/0.htm",img:"img/loop0.png"},
-  { url:"changeImg/1.htm",img:"img/loop1.png"},
-  { url:"changeImg/2.htm",img:"img/loop2.png"}
+  { url:"movie/movie01.htm",img:"img/loop0.png"},
+  { url:"movie/movie02.htm",img:"img/loop1.png"},
+  { url:"movie/movie03.htm",img:"img/loop2.png"}
 ];
 
 var rankArray=[//影视排行
@@ -275,6 +287,10 @@ function closeWebPage() { //退出浏览器
 	   }               
 }
 
+//function hiddenMsg(){
+//    $("prompts").style.display = "none";
+//}
+
 //Cookie
 function setCookie(name, value){
     var exp = new Date(); 
@@ -309,10 +325,11 @@ function doSelect(){//确认键
 		location.href = "search/index.htm";
 	}
 	else if(areaIndex=="exit"){
-		delCookie("areaIndex");
-		delCookie("focusPos");
-		delCookie("hiddenIndex");
-		location.href = "../index.htm";
+//		delCookie("areaIndex");
+//		delCookie("focusPos");
+//		delCookie("hiddenIndex");
+		showMsg();
+//		location.href = "movie/index.htm";
 	}
 	else if(areaIndex=="nav"){
 		setCookie("focusNavPosIndex", focusNavPosIndex);
@@ -320,7 +337,7 @@ function doSelect(){//确认键
 		location.href = navArray[focusNavPosIndex].url;
 	}
 	else if(areaIndex=="loop"){
-		location.href = loopArray[curIndex];
+		location.href = loopArray[curIndex].url;
 	}
 	else if(areaIndex=="zoneTxt"){
 		location.href = "movie/movie01.htm";	
@@ -339,7 +356,7 @@ function doSelect(){//确认键
 
 //按键
 document.onsystemevent = eventHandler;
-document.onkeypress    = eventHandler;
+//document.onkeypress    = eventHandler;
 document.onirkeypress  = eventHandler; 
 function eventHandler(e,type){
 	var key_code = "";
@@ -357,7 +374,7 @@ function eventHandler(e,type){
 				areaIndex="nav";	
 				showNav();
 			}else if(areaIndex=="nav"){
-				areaIndex="exit";
+				areaIndex="search";
 			}else if(areaIndex=="rank" || areaIndex=="hot"){
 				focusRank_Hot(-1);
 				focusListPosIndex--;
@@ -450,6 +467,7 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_BACK":
+		    document.onkeypress    = eventHandler;
 			delCookie("areaIndex");
 			delCookie("focusNavPosIndex");
 			delCookie("focusListPosIndex");
@@ -463,17 +481,17 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_NUMERIC49":
-			location.href = loopArray[0];
+			location.href = loopArray[0].url;
 			return 0;
 			break;
 			
 		case "KEY_NUMERIC50":
-			location.href = loopArray[1];
+			location.href = loopArray[1].url;
 			return 0;
 			break;
 			
 		case "KEY_NUMERIC51":
-			location.href = loopArray[2];
+			location.href = loopArray[2].url;
 			return 0;
 			break;
 	}
@@ -493,13 +511,13 @@ function init(){
 
 <body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
 
-	<div style="position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index.png')")></div>
+<div style="position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index.png')")></div>
     
 	<div id="logo" style="position: absolute; left: 50px; top: 40px; width: 590px; height: 100px; background: url('img/logo.png') no-repeat"></div>  
     
-    <div id="search" style="position: absolute; left: 972px; top: 51px; width: 71px; height: 33px; background: url(img/IndexSearch.png) no-repeat"></div> 
+<div id="search" style="position: absolute; left: 972px; top: 51px; width: 71px; height: 33px; background: url(img/IndexSearch.png) no-repeat"></div> 
     
-	<div id="collect" style="position: absolute; left: 1065px; top: 51px; width: 71px; height: 33px; background: url(img/IndexCollect.png) no-repeat"></div>
+<div id="collect" style="position: absolute; left: 1065px; top: 51px; width: 71px; height: 33px; background: url(img/IndexCollect.png) no-repeat"></div>
     
 	<div id="exit" style="position: absolute; left: 1158px; top: 51px; width: 71px; height: 33px; background: url(img/IndexExit.png) no-repeat"></div>
     
@@ -554,7 +572,9 @@ function init(){
 <div id="hot3" class="rank_hot" style="left: 928px; top: 593.5px; background: url() no-repeat;"></div>
 <div id="hot4" class="rank_hot" style="left: 928px; top: 631.75px; background: url() no-repeat;"></div>
 
-  <div id="focusBg" style="z-index:0; background: url('img/focushot.png') no-repeat;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px; -webkit-transition-duration: 200ms;"></div>  
+  <div id="focusBg" style="z-index:0; background: url('img/focushot.png') no-repeat;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px; -webkit-transition-duration: 200ms;"></div> 
+  
+   <div id="prompts" style="z-index: 3; background: url('img/prompt.png') no-repeat; position: absolute; left: 440px; top: 240px; width: 400px; height: 240px; padding-top:50px; padding-left:20px; font-size:22px; visibility:hidden;"></div>
 
 </body>
 </html>
