@@ -16,7 +16,7 @@ img{width:100%;height:100%; }
 <script>
 var areaSearch = "word";
 var focusWordPos = 26;
-var focusListPos=0;  
+var focusListPos = parseInt(getCookie("focusListPos"))?parseInt(getCookie("focusListPos")):0;
 var hidden = 0;
 var listSize = 6; //条目数
 var url = window.location.href;
@@ -196,6 +196,7 @@ function doSelect(){//确认键
 		pageDown();
 	}
 	else if(areaSearch=="list"){
+		setCookie("focusListPos", focusListPos);	
 		location.href = listArray[focusListPos].url
 	}
 	else if(areaSearch=="back"){
