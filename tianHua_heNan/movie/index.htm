@@ -74,13 +74,22 @@ function showNav(){//显示导航
 }
 
 function showPage(){
-	var currPage = parseInt((focusListPosMovie+listSize)/listSize);//当前第几页
-    var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页
-	$("pageNum").innerHTML = "第"+currPage+"页/共"+allPage+"页";
+	if(listArray.length>0){
+		var currPage = parseInt((focusListPosMovie+listSize)/listSize);//当前第几页
+        var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页
+	    $("pageNum").innerHTML = "第"+currPage+"页/共"+allPage+"页";
+	}else $("pageNum").innerHTML = "暂无收藏节目，请点击收藏按钮收藏节目。";
 }
 
 var position = (parseInt((focusListPosMovie+listSize)/listSize)-1)*listSize; //当前页的第一个		
 function showList(){//显示列表
+	if(listArray.length==0){//列表为空时怎么办
+			$("listImg0").src ="../img/null.png";
+			$("listTxt0").style.backgroundImage ="url()";
+			$("listBtn0").style.backgroundImage ="url(../img/null.png)";
+			areaMovie = "nav";
+			focusImg(0);
+		}
 	position = (parseInt((focusListPosMovie+listSize)/listSize)-1)*listSize; //当前页的第一个	
 	for(i=0; i<listSize; i++){
 		if(position+i<listArray.length){
@@ -88,12 +97,11 @@ function showList(){//显示列表
 			$("listTxt"+i).innerHTML = listArray[position+i].title.slice(0,wordSize)+"...";
 		     }
 	        else $("listTxt"+i).innerHTML = listArray[position+i].title;
-			$("listImg"+i).src = listArray[position+i].img;//"url(listImg"+(position+i)+".png)";
+			$("listImg"+i).src = listArray[position+i].img;
 			$("listBtn"+i).style.backgroundImage = "url(../img/listBtn.png)";	
 		}
 		else{
 			$("listImg"+i).src ="../img/null.png";
-//			$("listImg"+i).style.backgroundImage = "url()";
 			$("listBtn"+i).style.backgroundImage = "url()";	
 			$("listTxt"+i).style.backgroundImage = "url()";
 			$("listTxt"+i).innerHTML = "";
@@ -271,7 +279,7 @@ function eventHandler(e,type){
 		case "KEY_DOWN":
 			if(areaMovie=="back"){
 				areaMovie="nav";
-		    }else if(areaMovie=="nav"){
+		    }else if(areaMovie=="nav" && listArray.length>0){
 				areaMovie="listTxt";
 			}else if(areaMovie=="listTxt"){
 				focusImg(0);
@@ -443,7 +451,7 @@ function init(){
        
 	<div id="arrowLeft" style="position: absolute; left: 50px; top: 385px; width: 30px; height: 60px; background: url(../img/arrowLeft.png) no-repeat"></div>
     <div id="arrowRight" style="position: absolute; left: 1200px; top: 385px; width: 30px; height: 60px; background: url(../img/arrowRight.png) no-repeat"></div>
-    <div id="pageNum" class="listTxt0" style="left: 555px; top: 670px; width: 170px; height: 35px;">1/3页</div>
+    <div id="pageNum" class="listTxt0" style="left: 389px; top: 670px; width: 497px; height: 35px;">1/3页</div>
 
   <div id="focusBg" style="z-index:1; background: url('../img/focushot.png') no-repeat;position: absolute; left: 0px; top: 0px; width: 405px; height: 45px; -webkit-transition-duration: 200ms;"></div>  
 
