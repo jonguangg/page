@@ -134,12 +134,6 @@ function focusImg(){//焦点定位
 		$("focusBg").style.width = '71px';
 		$("focusBg").style.height = '33px';
 	}
-	if(areaIndex=="search"){
-		$("focusBg").style.left = $("search").style.left;
-		$("focusBg").style.top = $("search").style.top;
-		$("focusBg").style.width = $("search").style.width;
-		$("focusBg").style.height = $("search").style.height;
-	}
 	if(areaIndex=="nav"){
 		$("focusBg").style.left = (focusNavPosIndex-hiddenIndex)*185+85+'px';
 		$("focusBg").style.top = '114px';
@@ -305,9 +299,6 @@ function doSelect(){//确认键
 	if(areaIndex=="collect"){
 		location.href = "shouCang.htm";
 	}
-	else if(areaIndex=="search"){
-		location.href = "search/index.htm";
-	}
 	else if(areaIndex=="exit"){
 		delCookie("areaIndex");
 		delCookie("focusPos");
@@ -337,15 +328,140 @@ function doSelect(){//确认键
 	}
 } 
 
-//按键
-document.onsystemevent = eventHandler;
-document.onkeypress    = eventHandler;
-document.onirkeypress  = eventHandler; 
-function eventHandler(e,type){
-	var key_code = "";
+//茁壮按键
+document.onsystemevent = grabEvent;
+document.onkeypress    = grabEvent;
+document.onirkeypress  = grabEvent; 
+function grabEvent(){
 	if(navigator.userAgent.indexOf('iPanel')!=-1){
-		key_code=iPanelKey();
-	}else key_code = e.code ;
+	  var key_code = event.which;
+	  switch(key_code){
+		  case 65362: //Up
+			  if(areaIndex=="zoneTxt" || areaIndex=="newTxt"){
+				  areaIndex="loop";
+				  $("zoneTxt").style.color = "white";
+				  $("newTxt").style.color = "white";
+			  }else if(areaIndex=="loop"  || ( (areaIndex=="rank" || areaIndex=="hot") && focusListPosIndex==0) ){
+				  focusRank_Hot(-1);
+				  areaIndex="nav";	
+				  showNav();
+			  }else if(areaIndex=="nav"){
+				  areaIndex="exit";
+			  }else if(areaIndex=="rank" || areaIndex=="hot"){
+				  focusRank_Hot(-1);
+				  focusListPosIndex--;
+				  focusRank_Hot(1);
+				  if(focusListPosIndex<0){
+					  focusListPosIndex=0;
+				  }
+			  }
+			  focusImg();
+			  return 0;
+			  break;
+			  
+		  case 65364://Down
+			  if(areaIndex=="collect" || areaIndex=="exit"){
+				  areaIndex="nav";
+			  }else if(areaIndex=="nav"){
+				  areaIndex="loop";
+			  }else if(areaIndex=="loop"){
+				  areaIndex="zoneTxt";
+			  }else if(areaIndex=="rank" || areaIndex=="hot"){
+				  focusRank_Hot(-1);
+				  focusListPosIndex++;
+				  if(focusListPosIndex>3){
+					  focusListPosIndex=4;
+				  }
+				  focusRank_Hot(1);
+			  }
+			  focusImg();
+			  return 0;
+			  break;
+			  
+		  case 65361://left
+			  if(areaIndex=="exit"){
+				  areaIndex="collect";
+			  }else if(areaIndex=="nav"){
+				  focusNav(-1);
+			  }else if(areaIndex=="hot"){
+				  focusRank_Hot(-1);
+				  areaIndex="rank";
+				  focusRank_Hot(1);
+			  }else if(areaIndex=="rank"){				
+				  focusRank_Hot(-1);
+				  focusPos=0;
+				  areaIndex="newTxt";
+			  }else if(areaIndex=="newTxt"){
+				  areaIndex="zoneTxt";
+			  }
+			  focusImg();
+			  return 0;
+			  break;
+			  
+		  case 65363: //right
+			  if(areaIndex=="collect"){
+				  areaIndex="exit";
+			  }
+			  else if(areaIndex=="nav"){
+				  focusNav(1);
+			  }else if(areaIndex=="zoneTxt"){
+				  areaIndex="newTxt";
+			  }else if(areaIndex=="newTxt" || areaIndex=="loop"){
+				  areaIndex="rank";
+				  focusRank_Hot(1);
+			  }else if(areaIndex=="rank"){
+				  focusRank_Hot(-1);
+				  areaIndex="hot";
+				  focusRank_Hot(1);
+			  }
+			  focusImg();
+			  return 0;
+			  break;	
+			  
+		  case 26://"PAGE_DOWN"
+			  return 0;
+			  break;	
+			  
+		  case 25://"PAGE_UP"
+			  return 0;
+			  break;		
+				  
+		  case 65293://"KEY_SELECT"
+			  doSelect();
+			  return 0;
+			  break;
+			  
+		  case 65367://"KEY_BACK"
+			  delCookie("areaIndex");
+			  delCookie("focusNavPosIndex");
+			  delCookie("focusListPosIndex");
+			  delCookie("hiddenIndex");
+			  location.href = "../geHua_guangxi/index.htm";
+			  return 0;
+			  break;	
+			  
+		  case "KEY_EXIT":
+			  return 0;
+			  break;			
+		  case 49://数字1
+			  location.href = loopArray[0];
+			  return 0;
+			  break;			
+		  case 50://数字2
+			  location.href = loopArray[1];
+			  return 0;
+			  break;			
+		  case 51://数字3
+			  location.href = loopArray[2];
+			  return 0;
+			  break;
+	  }
+	}
+}
+
+//天柏按键
+function eventHandler(e,type){
+	var key_code = e.code ;
 	switch(key_code){		
 		case "KEY_UP": 
 		  	if(areaIndex=="zoneTxt" || areaIndex=="newTxt"){
@@ -371,7 +487,7 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_DOWN":
-			if(areaIndex=="collect" || areaIndex=="exit" || areaIndex=="search"){
+			if(areaIndex=="collect" || areaIndex=="exit"){
 				areaIndex="nav";
 		    }else if(areaIndex=="nav"){
 				areaIndex="loop";
@@ -392,10 +508,7 @@ function eventHandler(e,type){
 		case "KEY_LEFT":
 			if(areaIndex=="exit"){
 				areaIndex="collect";
-			}else if(areaIndex=="collect"){
-				areaIndex="search";
-			}
-			else if(areaIndex=="nav"){
+			}else if(areaIndex=="nav"){
 				focusNav(-1);
 			}else if(areaIndex=="hot"){
 				focusRank_Hot(-1);
@@ -413,10 +526,7 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_RIGHT": 
-			if(areaIndex=="search"){
-				areaIndex="collect";
-			}
-			else if(areaIndex=="collect"){
+			if(areaIndex=="collect"){
 				areaIndex="exit";
 			}
 			else if(areaIndex=="nav"){
@@ -454,7 +564,7 @@ function eventHandler(e,type){
 			delCookie("focusNavPosIndex");
 			delCookie("focusListPosIndex");
 			delCookie("hiddenIndex");
-			location.href = "movie/movie01.htm";
+			location.href = "../geHua_guangxi/index.htm";
 			return 0;
 			break;	
 			
@@ -495,9 +605,8 @@ function init(){
 
 	<div style="position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index.png')")></div>
     
-	<div id="logo" style="position: absolute; left: 50px; top: 40px; width: 590px; height: 100px; background: url('img/logo.png') no-repeat"></div>  
-    
-    <div id="search" style="position: absolute; left: 972px; top: 51px; width: 71px; height: 33px; background: url(img/IndexSearch.png) no-repeat"></div> 
+	<div id="logo" style="position: absolute; left: 50px; top: 50px; width: 185px; height: 45px; background: url('img/logo.png') no-repeat"></div>
+	<div id="logoTianHua" style="position: absolute; left: 250px; top: 50px; width: 430px; height: 45px; background: url('img/logoTianHua.png') no-repeat"></div>    
     
 	<div id="collect" style="position: absolute; left: 1065px; top: 51px; width: 71px; height: 33px; background: url(img/IndexCollect.png) no-repeat"></div>
     
