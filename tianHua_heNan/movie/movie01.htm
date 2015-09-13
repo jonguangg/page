@@ -30,6 +30,9 @@ var wordSize = 5;
 	var currPos=0;
 	var currlist =0;
 
+var collects = -1;
+var msg = collects==1?msg="收藏成功<br>请按“确定”键退出":msg="您已成功取消收藏<br>请按“确定”键退出";	
+var msgState = -1;
 function $(id){return document.getElementById(id);}
 
 var listArray=[//专题列表
@@ -81,7 +84,27 @@ function showList(){//显示列表
 				$("movieBrief").innerHTML =$("movieBrief").innerHTML.slice(0,171)+"...";
 			}else $("movieBrief").innerHTML = $("movieBrief").innerHTML;
 }
-
+function showCollectBtn(){
+	if(collects==1){
+		$("movieCollect").style.backgroundImage = "url(../img/playCollect1.png)";
+	}else $("movieCollect").style.backgroundImage = "url(../img/playCollect.png)";
+}
+function showMsg(){
+	if(areaMovies == "collect"){
+	   areaMovies = "msg";
+	}else areaMovies = "collect";
+	msgState = msgState*(-1);
+	msg = collects==1?msg="收藏成功<br>请按“确定”键退出":msg="您已成功取消收藏<br>请按“确定”键退出";		
+	if(msgState>0){
+		$("prompts").style.display = "block";
+	    $("prompts").innerHTML = msg;
+	}else if(msgState<0){
+		$("prompts").style.display = "none";
+	}
+	showCollectBtn();
+	focusImg(1);
+//	alert(areaMovies);
+}
 function focusImg(num){//焦点图片,num小于1焦点离开图片还原，否则定位焦点焦点更换图片
 	if(num<1){//小于1，背景从黄色焦点框切回原来半透明框
 		if(areaMovies=="listTxt"){
@@ -101,12 +124,18 @@ function focusImg(num){//焦点图片,num小于1焦点离开图片还原，否�
 		$("focusBg").style.height = $("moviePlay").style.height;
 		$("focusBg").style.backgroundImage = "url(../img/focus_play.png)";
 	}
-	else if(areaMovies=="collect"){
+	else if(areaMovies=="collect" || areaMovies=="msg"){
 		$("focusBg").style.left   = $("movieCollect").style.left;
 		$("focusBg").style.top    = $("movieCollect").style.top;
 		$("focusBg").style.width  = $("movieCollect").style.width;
 		$("focusBg").style.height = $("movieCollect").style.height;
-		$("focusBg").style.backgroundImage = "url(../img/focus_playCollect.png)";
+		if(collects==1){
+			 $("focusBg").style.backgroundImage = "url(../img/focus_playCollect1.png)";
+		}
+		else {
+			$("focusBg").style.backgroundImage = "url(../img/focus_playCollect.png)";
+			$("movieCollect").style.backgroundImage = "url(../img/playCollect.png)";
+		}
 	}
 	else if(areaMovies=="back"){
 		$("focusBg").style.left   = $("back").style.left;
@@ -128,7 +157,6 @@ function focusImg(num){//焦点图片,num小于1焦点离开图片还原，否�
 		$("focusBg").style.backgroundImage = "url()";
 	}
     }
-	
 }
 
 function pageDown(){
@@ -147,6 +175,7 @@ function pageUp(){
 		focusListPosMovies=position;
 	}
 }
+	
 
 function closeWebPage() { //退出浏览器
 	 if(navigator.userAgent.indexOf('Mozilla/5.0')!=-1){
@@ -191,7 +220,11 @@ function doSelect(){//确认键
 	}else if(areaMovies=="play"){
 		location.href = "play.htm";
 	}else if(areaMovies=="collect"){
-		location.href = "shouCang.htm";
+		collects = collects*(-1);
+		showMsg();
+	}
+	else if(areaMovies=="msg"){
+		showMsg();
 	}
 	else if(areaMovies=="listTxt" || areaMovies=="listBtn"){
 		location.href = listArray[focusListPosMovies].url;
@@ -306,7 +339,7 @@ function eventHandler(e,type){
 function init(){
 	showList();
 	focusImg(1);
-	
+	showCollectBtn();
 }
 
 </script>
@@ -365,7 +398,9 @@ function init(){
 <div id="arrowLeft" style="position: absolute; left: 50px; top: 540px; width: 30px; height: 60px; background: url(../img/arrowLeft.png) no-repeat"></div>
 <div id="arrowRight" style="position: absolute; left: 1200px; top: 540px; width: 30px; height: 60px; background: url(../img/arrowRight.png) no-repeat"></div> 
 
-<div id="focusBg" style="z-index:1; background: url('../img/focushot.png') no-repeat;position: absolute; left: 0px; top: 0px; width: 405px; height: 45px; -webkit-transition-duration: 200ms;"></div>  
+<div id="focusBg" style="z-index:1; background: url('../img/focushot.png') no-repeat;position: absolute; left: 0px; top: 0px; width: 405px; height: 45px; -webkit-transition-duration: 200ms;"></div> 
+
+   <div id="prompts" style="z-index: 3; background: url('../img/prompt.png') no-repeat; position: absolute;padding-top:75px;left: 447px; top: 240px; width: 386px; height: 224px;line-height:40px;text-align:center; vertical-align:middle;font-size:24px; display:none;"></div>
 
 </body>
 </html>

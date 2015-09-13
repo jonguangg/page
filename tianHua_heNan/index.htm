@@ -35,15 +35,15 @@ var wordSize = 10;
 
 function $(id){return document.getElementById(id);}
 
-var msg ="这里是提示内容";	
+var msg ="收藏成功<br>按“确定”键退出";	
 var msgState = -1;	
 function showMsg(){
 	msgState = msgState*(-1);
 	if(msgState>0){
-		$("prompts").style.visibility = "visible";
+		$("prompts").style.display = "block";
 	    $("prompts").innerHTML = msg;
 	}else if(msgState<0){
-		$("prompts").style.visibility = "hidden";
+		$("prompts").style.display = "none";
 	}	
 }
 
@@ -286,10 +286,6 @@ function closeWebPage() { //退出浏览器
 		   }   
 	   }               
 }
-
-//function hiddenMsg(){
-//    $("prompts").style.display = "none";
-//}
 
 //Cookie
 function setCookie(name, value){
@@ -574,7 +570,7 @@ function init(){
 
   <div id="focusBg" style="z-index:0; background: url('img/focushot.png') no-repeat;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px; -webkit-transition-duration: 200ms;"></div> 
   
-   <div id="prompts" style="z-index: 3; background: url('img/prompt.png') no-repeat; position: absolute; left: 440px; top: 240px; width: 400px; height: 240px; padding-top:50px; padding-left:20px; font-size:22px; visibility:hidden;"></div>
+   <div id="prompts" style="z-index: 3; background: url('img/prompt.png') no-repeat; position: absolute;padding-top:75px;left: 447px; top: 240px; width: 386px; height: 224px;line-height:40px;text-align:center; vertical-align:middle;font-size:24px; display:none;"></div>
 
 </body>
 </html>
