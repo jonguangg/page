@@ -1,0 +1,646 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta name="page-view-size" content="1280*720">
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<title>我的片库</title> 
+<style type="text/css">
+*{margin:0px; padding:0px;}
+td{ font-size: 20px; text-align:center; vertical-align:middle; color:#ffffff;font-family:SimHei; }
+</style>
+<!--<script>
+//设置默认按钮
+iPanel.focus.borders= 0;
+iPanel.focus.defaultFocusColor ="#FFCC00";
+iPanel.defaultFocusColor="#FFCC00";  //颜色
+</script>-->
+<script type=text/javascript src="../global.js"></script>
+<script type="text/javascript">
+var area = 0;
+var menuPos = 0;
+var menusPos= 0;
+var myMovies_ListPos = parseInt(getCookie("myMovies_ListPos"))?parseInt(getCookie("myMovies_ListPos")):0;//条目当前位置
+var changePos=0;
+var topPos=0;
+var listSize = 10; //条目数
+var url = window.location.href;
+var wordSize = 9;
+var curIndex=0;
+var length=10; 
+var zoneFocusLeft = 97;
+var zoneFocusTop = 117;
+
+function $(id){return document.getElementById(id);}
+
+var listArray=[//百事通专区
+	{nums:"1",title:"匆匆那年",url:"../paihang/paihang1.htm",deadLine:"2015年09月1日16:35:30"},
+	{nums:"2",title:"超能陆战队（中文配音戢戢戢戢戢戢戢戢戢戢戢戢戢戢戢戢）",url:"../paihang/paihang2.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"3",title:"大喜临门",url:"../paihang/paihang3.htm",deadLine:"2015年07月18日14:35:30"},
+	{nums:"4",title:"地牢围攻3",url:"../paihang/paihang4.htm",deadLine:"2015年07月19日14:35:30"},
+	{nums:"5",title:"第七谎言",url:"../paihang/paihang5.htm",deadLine:"2015年07月20日14:35:30"},
+	{nums:"6",title:"定制伴郎 定制伴郎 定制伴郎",url:"../paihang/paihang6.htm",deadLine:"2015年07月21日14:35:30"},
+	{nums:"7",title:"飓风营救3",url:"../paihang/paihang7.htm",deadLine:"2015年07月22日14:35:30"},
+	{nums:"8",title:"魔法黑森林",url:"../paihang/paihang8.htm",deadLine:"2015年07月23日14:35:30"},	
+	{nums:"9",title:"魔法之家",url:"../paihang/paihang9.htm",deadLine:"2015年07月24日14:35:30"},
+	{nums:"10",title:"陌路惊笑",url:"../paihang/paihang10.htm",deadLine:"2015年07月25日14:35:30"},
+	{nums:"11",title:"奇鞋妙旅",url:"../paihang/paihang11.htm",deadLine:"2015年07月26日14:35:30"},
+	{nums:"12",title:"善意杀戮",url:"../paihang/paihang12.htm",deadLine:"2015年07月27日14:35:30"},
+	{nums:"13",title:"失孤",url:"../paihang/paihang13.htm",deadLine:"2015年07月28日14:35:30"},
+	{nums:"14",title:"十万伙急",url:"../paihang/paihang14.htm",deadLine:"2015年07月29日14:35:30"},
+	{nums:"15",title:"万物生长",url:"../paihang/paihang15.htm",deadLine:"2015年07月30日14:35:30"},	
+	{nums:"16",title:"我是女王",url:"../paihang/paihang16.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"17",title:"喜羊羊与灰太狼之羊年喜羊羊",url:"../paihang/paihang17.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"18",title:"熊出没之雪岭熊风",url:"../paihang/paihang18.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"19",title:"业内前五",url:"../paihang/paihang19.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"20",title:"咱们结婚吧",url:"../paihang/paihang20.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"21",title:"咱们结婚吧",url:"../paihang/paihang21.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"22",title:"左耳",url:"../paihang/paihang22.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"23",title:"23           23",url:"../paihang/paihang23.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"24",title:"24           24",url:"../paihang/paihang24.htm",deadLine:"2015年07月17日14:35:30"},	
+	{nums:"25",title:"25           25",url:"../paihang/paihang25.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"26",title:"26           26",url:"../paihang/paihang26.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"27",title:"27           27",url:"../paihang/paihang27.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"28",title:"28           28",url:"../paihang/paihang28.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"29",title:"29           29",url:"../paihang/paihang29.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"30",title:"30           30",url:"../paihang/paihang30.htm",deadLine:"2015年07月17日14:35:30"},	
+	{nums:"31",title:"31           31",url:"../paihang/paihang31.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"32",title:"32           32",url:"../paihang/paihang32.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"33",title:"33           33",url:"../paihang/paihang33.htm",deadLine:"2015年07月17日14:35:30"},	
+	{nums:"32",title:"34           34",url:"../paihang/paihang34.htm",deadLine:"2015年07月17日14:35:30"},
+	{nums:"33",title:"35           35",url:"../paihang/paihang35.htm",deadLine:"2015年07月17日14:35:30"},			
+	{nums:"34",title:"36           36",url:"../paihang/paihang36.htm",deadLine:"2015年07月17日14:35:30"}
+];
+function menuFocus(__num){
+	$("menu"+menusPos).src = "../img/tm.gif";
+	menusPos+=__num;
+	if(menusPos<0)menusPos=2-1;
+	else if(menusPos>2-1)menusPos=0;
+	$("menu"+menusPos).src = "../img/homeFocus"+menusPos+".png";
+}
+
+function showList(){
+	var now = new Date();
+	var currPage = parseInt((myMovies_ListPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页
+	var position = (parseInt((myMovies_ListPos+listSize)/listSize)-1)*listSize; //当前页的第一个	
+	for(i=0; i<listSize; i++){
+		if(position+i<listArray.length){
+			$("zoneImg"+i).style.backgroundImage =  "url('../baiShiTong/"+(position+i)+".png')";
+			$("zoneBg"+i).style.backgroundImage =  "url('../img/zoneBg.png')";			
+			$("zoneTxt"+i).innerHTML = listArray[position+i].title.slice(0,wordSize);
+			$("zoneTxt"+i).style.color = "white";
+			$("deadLine"+i).style.color = "red";
+			
+			var endDate = new Date(listArray[position+i].deadLine.substr(0,4),listArray[position+i].deadLine.substr(5,2)-1,listArray[position+i].deadLine.substr(8,2),listArray[position+i].deadLine.substr(11,2),listArray[position+i].deadLine.substr(14,2),listArray[position+i].deadLine.substr(17,2));
+			var hours = Math.floor((endDate.getTime()-now.getTime())/60/60/1000);
+			var minutes = Math.floor((endDate.getTime()-now.getTime())/60/1000);
+			
+			if(hours<1 && minutes>0){
+			$("deadLine"+i).innerHTML = "还有"+minutes+"分钟过期";		
+			}else if(hours<1 && minutes<0){
+			$("deadLine"+i).innerHTML = "该节目已过期";					
+		    }else $("deadLine"+i).innerHTML ="还有"+ hours+"小时过期";	
+							  
+		}
+		else {
+			$("zoneImg"+i).style.backgroundImage = "url()";
+			$("zoneBg"+i).style.backgroundImage =  "url()";				
+			$("zoneTxt"+i).innerHTML = "";
+			$("deadLine"+i).innerHTML = "";			
+		}
+	}
+	
+	if(currPage==1 && currPage==allPage){
+		$("pageUp").style.backgroundImage = "url()";
+		$("pageDown").style.backgroundImage = "url()";
+	}else if(currPage==1 && currPage<allPage){
+		$("pageUp").style.backgroundImage = "url()";
+		$("pageDown").style.backgroundImage = "url(../img/pageDown.png)";		
+	}else if(currPage>1 && currPage<allPage){
+		$("pageUp").style.backgroundImage = "url(../img/pageUp.png)";
+		$("pageDown").style.backgroundImage = "url(../img/pageDown.png)";		
+	}else if(currPage>1 && currPage==allPage){
+		$("pageUp").style.backgroundImage = "url(../img/pageUp.png)";	
+		$("pageDown").style.backgroundImage = "url()";	
+	}
+	
+	pageNum();
+	listFocus(0);
+	
+}
+
+function listFocus(__num){
+	var currPage = parseInt((myMovies_ListPos+listSize)/listSize);//当前第几页	
+	$("zoneTxt"+myMovies_ListPos%listSize).innerHTML = listArray[myMovies_ListPos].title.slice(0,wordSize);
+	$("zoneTxt"+myMovies_ListPos%listSize).style.color = "white";
+//	$("deadLine"+myMovies_ListPos%listSize).style.color = "red";	
+	
+	var tempPos = myMovies_ListPos;
+	myMovies_ListPos+=__num;
+
+	if(myMovies_ListPos<0){ //焦点定位到当前页第一个
+	   myMovies_ListPos=10*(currPage-1)
+	}
+			
+	else if(myMovies_ListPos>listArray.length-1)
+		{
+		myMovies_ListPos = tempPos;
+		listFocus(0);
+		return;
+		}
+	//如果翻了页，条目重新输出
+	if(parseInt((myMovies_ListPos+listSize)/listSize)!=parseInt((tempPos+listSize)/listSize)){
+		showList();
+/*		if(__num<0){
+			showList();
+		}
+		else{
+			myMovies_ListPos = tempPos;
+			listFocus(0);
+			return;
+		     }*/
+	}
+	
+	zoneFocusLeft = (myMovies_ListPos%5)*220+97;
+	if((myMovies_ListPos%listSize)<5){
+		zoneFocusTop=117;
+		}
+	else zoneFocusTop=389;
+
+	$("zoneFocus").style.left = zoneFocusLeft+'px';
+	$("zoneFocus").style.top = zoneFocusTop+'px';
+	$("zoneTxt"+myMovies_ListPos%listSize).style.color = "#ffcc00";
+//	$("deadLine"+myMovies_ListPos%listSize).style.color = "red";	
+		
+	if(listArray[myMovies_ListPos].title.length>wordSize)
+	{
+		$("zoneTxt"+myMovies_ListPos%listSize).innerHTML = '<marquee direction="left" width="88%" scrollamonut="15" scrolldelay="100">'+listArray[myMovies_ListPos].title +'</marquee>';
+	}
+}
+
+function pageUp(){
+	myMovies_ListPos-=listSize;
+	if(myMovies_ListPos<0){
+		myMovies_ListPos+=listSize;	
+	}
+	showList();
+	listFocus(-100);
+	setCookie("myMovies_ListPos", myMovies_ListPos);
+}
+
+function pageDown(){
+	myMovies_ListPos+=listSize;
+		if(myMovies_ListPos>listArray.length-1){
+		if(parseInt(myMovies_ListPos/listSize)!=parseInt((listArray.length-1+listSize)/listSize))myMovies_ListPos = listArray.length-1;
+		else myMovies_ListPos-=listSize;
+	}
+	showList();
+	listFocus(-100);
+	setCookie("myMovies_ListPos", myMovies_ListPos);
+}
+
+//页码
+function pageNum(){
+	var currPage = parseInt((myMovies_ListPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页
+	$("page").innerHTML = currPage+"/"+allPage+"页"; 
+}
+
+function focusImg(areas){
+	if(areas=="null"){
+		$("focusBg").style.backgroundImage = "url()";
+	}else {
+		$("focusBg").style.backgroundImage = "url(../img/focusPage.png)";
+		$("focusBg").style.left = $(areas).style.left;
+		$("focusBg").style.top = $(areas).style.top;
+	}
+}
+
+//Cookie
+function setCookie(name, value){
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() + (1*2*60*1000));//小时*分钟*秒*毫秒
+  window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);//小时*分钟*秒*毫秒
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){
+	var currPage = parseInt((myMovies_ListPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
+	if(area==0)	{
+		setCookie("myMovies_ListPos", myMovies_ListPos);
+		location.href = listArray[myMovies_ListPos].url;
+	}/*else if(area==1){
+		pageDown();
+		if(currPage==allPage-1){
+		  area=2;	
+		  focusImg("pageUp");	
+		}
+	}else if(area==2){
+    	pageUp();	
+		if(currPage==2){
+			area=1;	
+			focusImg("pageDown");
+		}
+	}*/
+}
+
+document.onsystemevent = grabEvent;
+document.onkeypress = grabEvent;
+document.onirkeypress=grabEvent;
+function grabEvent(){
+	var currPage = parseInt((myMovies_ListPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
+	var key_code = event.which;
+	switch(key_code){
+		case 1://up
+		if(area==0 && myMovies_ListPos-10*(currPage-1)>4){
+			listFocus(-5);				
+		 }/*
+	    else{
+			area=0;
+			listFocus(0);
+			focusImg("null");
+			$("zoneFocus").style.backgroundImage = "url(../img/zoneFocus.png)";			 						
+		}*/
+		return 0;
+		break;	
+
+		case 2://down
+		  if(area==0 && (myMovies_ListPos-10*(currPage-1))<5 && (myMovies_ListPos+5) < listArray.length){//焦点在上可下移
+			 listFocus(5);
+		  }/*
+		 else if(area==0 && (myMovies_ListPos-10*(currPage-1))<5 && (myMovies_ListPos+6) > listArray.length && currPage == allPage && allPage>1){//焦点在上,不可下移,最后一页
+			  area=2;	
+			  showList();
+			  focusImg("pageUp");		  
+			  $("zoneFocus").style.backgroundImage = "url()";			  
+		   }
+		  else if(area==0 && (myMovies_ListPos-10*(currPage-1))<5 && (myMovies_ListPos+6) > listArray.length && currPage < allPage && allPage>1){//非最后一页
+			  area=1;
+			  showList();
+			  focusImg("pageDown");	
+			  $("zoneFocus").style.backgroundImage = "url()";		  
+		  }
+		  else if(area==0 && (myMovies_ListPos-10*(currPage-1)) > 4 && currPage==allPage && allPage>1){//焦点在下,最后一页
+			  area=2;
+			  showList();
+			  focusImg("pageUp");
+			  $("zoneFocus").style.backgroundImage = "url()";	  	  
+		   }
+		  else if(area==0 && (myMovies_ListPos-10*(currPage-1)) > 4 && currPage < allPage && allPage>1){//焦点在下,非最后一页{
+			  area=1;
+			  showList();
+			  focusImg("pageDown");	
+			  $("zoneFocus").style.backgroundImage = "url()"; 
+		   }
+		   else if(area==0 && allPage==1){
+			   area=3;
+			   showList();
+			   focusImg("pageBack");
+			   $("zoneFocus").style.backgroundImage = "url()"; 
+		   }*/
+			return 0;
+			break;	
+        
+		case 3://left
+			if(area==0){
+				listFocus(-1);
+			}/*
+			else if(area==1 && currPage>1){
+			  area=2;
+			  focusImg("pageUp");				  
+			}*/
+			return 0;
+			break; 
+					  				
+		case 4: //right
+			if(area==0 && myMovies_ListPos<listArray.length-1){
+				listFocus(1);
+			}/*else if(area==2 && currPage<allPage)
+			{
+			    area=1;
+				focusImg("pageDown");			
+			}else if(area==3 && currPage ==1 && allPage>1){
+				area=1;
+				focusImg("pageDown");
+			}else if(area==3 && currPage >1 && allPage>1){
+				area=2;
+				focusImg("pageUp");
+			}else if(area==4){
+				area=3;
+				focusImg("pageBack");
+			}else if(area==5){
+				area=4;
+				focusImg("pageZhu");
+				}*/
+			return 0;
+			break;	
+			
+		case 373://P+下一页
+		    if(area==0 && currPage<allPage){
+			pageDown();			
+			}
+		    return 0;
+			break;
+
+		case 372://P-上一页
+			if(area==0 && currPage>1){
+			pageUp();
+			}
+			return 0;
+			break;				
+						
+		case 13: //enter
+			doSelect();
+		    return 0;
+			break;
+
+		case 340: //back
+			history.go(-1);
+			break;	
+			
+		case 339://exit
+			window.close();
+			return 0;
+			break;
+	}
+}
+
+//电脑键值,上线后可删除此段代码
+function eventHandler(e,type){	
+	var currPage = parseInt((myMovies_ListPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
+	var key_code = e.code;
+	switch(key_code){
+		case "KEY_UP"://up
+		if(area==0 && myMovies_ListPos-10*(currPage-1)>4){
+			listFocus(-5);				
+		 }/*
+	    else{
+			area=0;
+			listFocus(0);
+			focusImg("null");
+			$("zoneFocus").style.backgroundImage = "url(../img/zoneFocus.png)";			 						
+		}*/
+		return 0;
+		break;	
+
+		case "KEY_DOWN"://down
+		  if(area==0 && (myMovies_ListPos-10*(currPage-1))<5 && (myMovies_ListPos+5) < listArray.length){//焦点在上可下移
+			 listFocus(5);
+		  }/*
+		 else if(area==0 && (myMovies_ListPos-10*(currPage-1))<5 && (myMovies_ListPos+6) > listArray.length && currPage == allPage && allPage>1){//焦点在上,不可下移,最后一页
+			  area=2;	
+			  showList();
+			  focusImg("pageUp");		  
+			  $("zoneFocus").style.backgroundImage = "url()";			  
+		   }
+		  else if(area==0 && (myMovies_ListPos-10*(currPage-1))<5 && (myMovies_ListPos+6) > listArray.length && currPage < allPage && allPage>1){//非最后一页
+			  area=1;
+			  showList();
+			  focusImg("pageDown");	
+			  $("zoneFocus").style.backgroundImage = "url()";		  
+		  }
+		  else if(area==0 && (myMovies_ListPos-10*(currPage-1)) > 4 && currPage==allPage && allPage>1){//焦点在下,最后一页
+			  area=2;
+			  showList();
+			  focusImg("pageUp");
+			  $("zoneFocus").style.backgroundImage = "url()";	  	  
+		   }
+		  else if(area==0 && (myMovies_ListPos-10*(currPage-1)) > 4 && currPage < allPage && allPage>1){//焦点在下,非最后一页{
+			  area=1;
+			  showList();
+			  focusImg("pageDown");	
+			  $("zoneFocus").style.backgroundImage = "url()"; 
+		   }
+		   else if(area==0 && allPage==1){
+			   area=3;
+			   showList();
+			   focusImg("pageBack");
+			   $("zoneFocus").style.backgroundImage = "url()"; 
+		   }*/
+			return 0;
+			break;	
+        
+		case "KEY_LEFT"://left
+			if(area==0){
+				listFocus(-1);
+			}/*
+			else if(area==1 && currPage>1){
+			  area=2;
+			  focusImg("pageUp");				  
+			}*/
+			return 0;
+			break; 
+					  				
+		case "KEY_RIGHT": //right
+			if(area==0 && myMovies_ListPos<listArray.length-1){
+				listFocus(1);
+			}/*else if(area==2 && currPage<allPage)
+			{
+			    area=1;
+				focusImg("pageDown");			
+			}else if(area==3 && currPage ==1 && allPage>1){
+				area=1;
+				focusImg("pageDown");
+			}else if(area==3 && currPage >1 && allPage>1){
+				area=2;
+				focusImg("pageUp");
+			}else if(area==4){
+				area=3;
+				focusImg("pageBack");
+			}else if(area==5){
+				area=4;
+				focusImg("pageZhu");
+				}*/
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN"://P+下一页
+		    if(area==0 && currPage<allPage){
+			pageDown();			
+			}
+		    return 0;
+			break;
+
+		case "PAGE_UP"://P-上一页
+			if(area==0 && currPage>1){
+			pageUp();
+			}
+			return 0;
+			break;				
+						
+		case "KEY_SELECT": //enter
+			doSelect();
+		    return 0;
+			break;
+
+		case "KEY_BACK": //back
+			history.go(-1);
+			delCookie("myMovies_ListPos");
+			break;	
+			
+		case "KEY_EXIT"://exit
+			window.close();
+			return 0;
+			break;
+	}
+}
+
+function init(){
+	showList();
+}
+</script>
+
+</head>
+<body topmargin="0" leftmargin="0" style="background:url(../img/index_myMovies.png)" onload="init();">
+ <div style="z-index:1; position:absolute; left: 100px; top: 120px; width:1080px; height:524px"> 
+    <table  width="1080" border="0" cellpadding="0" cellspacing="0" >
+			<tr >
+				<td id="zoneImg0" width="200" height="208"></td>
+				<td width="20" height="208"></td>
+				<td id="zoneImg1" width="200" height="208"></td>
+			    <td width="20" height="208"></td>
+				<td id="zoneImg2" width="200" height="208"></td>
+			    <td width="20" height="208"></td>
+				<td id="zoneImg3" width="200" height="208"></td>
+				<td width="20" height="208"></td>
+				<td id="zoneImg4" width="200" height="208"></td>
+			</tr>
+			<tr>
+				<td id="zoneTxt0" width="200" height="22" ></td>
+				<td width="20" height="22"></td>
+				<td id="zoneTxt1" width="200" height="22"></td>
+			    <td  width="20" height="22"></td>
+				<td id="zoneTxt2" width="200" height="22"></td>
+			    <td width="20" height="22"></td>
+				<td id="zoneTxt3" width="200" height="22"></td>
+				<td width="20" height="22"></td>
+				<td id="zoneTxt4" width="200" height="22"></td>
+			</tr>
+            <tr>
+				<td id="deadLine0" width="200" height="22" ></td>
+				<td width="20" height="22"></td>
+				<td id="deadLine1" width="200" height="22"></td>
+			    <td  width="20" height="22"></td>
+				<td id="deadLine2" width="200" height="22"></td>
+			    <td width="20" height="22"></td>
+				<td id="deadLine3" width="200" height="22"></td>
+				<td width="20" height="22"></td>
+				<td id="deadLine4" width="200" height="22"></td>
+			</tr>
+			<tr>
+				<td width="200" height="18"></td>
+				<td height="18"></td>
+				<td width="200" height="18"></td>
+			    <td height="18"></td>
+				<td width="200" height="18"></td>
+			    <td height="18"></td>
+				<td width="200" height="18"></td>
+				<td height="18"></td>
+				<td width="200" height="18"></td>
+			</tr>
+			<tr>
+				<td id="zoneImg5" width="200" height="208"></td>
+				<td width="20" height="208"></td>
+				<td id="zoneImg6" width="200" height="208"></td>
+			    <td width="20" height="208"></td>
+				<td id="zoneImg7" width="200" height="208"></td>
+			    <td width="20" height="208"></td>
+				<td id="zoneImg8" width="200" height="208"></td>
+				<td width="20" height="208"></td>
+				<td id="zoneImg9" width="200" height="208"></td>
+			</tr>
+			<tr>
+				<td id="zoneTxt5" width="200" height="22"></td>
+				<td width="16" height="22"></td>
+				<td id="zoneTxt6" width="200" height="22"></td>
+			    <td width="16" height="22"></td>
+				<td id="zoneTxt7" width="200" height="22"></td>
+			    <td width="15" height="22"></td>
+				<td id="zoneTxt8" width="200" height="22"></td>
+				<td width="16" height="22"></td>
+				<td id="zoneTxt9" width="200" height="22"></td>
+			</tr>
+            <tr>
+				<td id="deadLine5" width="200" height="22" ></td>
+				<td width="20" height="22"></td>
+				<td id="deadLine6" width="200" height="22"></td>
+			    <td  width="20" height="22"></td>
+				<td id="deadLine7" width="200" height="22"></td>
+			    <td width="20" height="22"></td>
+				<td id="deadLine8" width="200" height="22"></td>
+				<td width="20" height="22"></td>
+				<td id="deadLine9" width="200" height="22"></td>
+			</tr>            
+  </table>
+</div>
+
+<div id="zoneFocus" style="background-image:url(../img/zoneFocus.png); position:absolute; left:97px; top:117px; width:206px; height:258px;-webkit-transition-duration: 100ms;"> </div>
+
+<div z-index: -1; style="position:absolute; left: 100px; top: 120px; width:1080px; height:524px"> 
+   <table  width="1080" border="0" cellpadding="0" cellspacing="0" >
+			<tr>
+				<td id="zoneBg0" width="200" height="252"style="background:url('../img/zoneBg.png') no-repeat"></td>
+				<td width="20" height="252"></td>
+				<td id="zoneBg1" width="200" height="252"style="background:url() no-repeat"></td>
+			    <td width="20" height="252"></td>
+				<td id="zoneBg2" width="200" height="252"style="background:url() no-repeat"></td>
+			    <td width="20" height="252"></td>
+				<td id="zoneBg3" width="200" height="252"style="background:url() no-repeat"></td>
+				<td width="20" height="252"></td>
+				<td id="zoneBg4" width="200" height="252"style="background:url() no-repeat"></td>
+			</tr>
+			<tr>
+				<td width="200" height="20"></td>
+				<td height="20"></td>
+				<td width="200" height="20"></td>
+			    <td height="20"></td>
+				<td width="200" height="20"></td>
+			    <td height="20"></td>
+				<td width="200" height="20"></td>
+				<td height="20"></td>
+				<td width="200" height="20"></td>
+			</tr>
+			<tr>
+				<td id="zoneBg5" width="200" height="258"style="background:url() no-repeat"></td>
+				<td width="20" height="252"></td>
+				<td id="zoneBg6" width="200" height="258"style="background:url() no-repeat"></td>
+			    <td width="20" height="252"></td>
+				<td id="zoneBg7" width="200" height="258"style="background:url() no-repeat"></td>
+			    <td width="20" height="252"></td>
+				<td id="zoneBg8" width="200" height="258"style="background:url() no-repeat"></td>
+				<td width="20" height="252"></td>
+				<td id="zoneBg9" width="200" height="258"style="background:url() no-repeat"></td>
+			</tr>
+  </table>
+</div>
+
+<div id="page" style="position: absolute; left: 795px; top: 658px; width: 109px; height: 40px; text-align: center; line-height: 40px; color: #000000; font-size: 22px;">1/3</div>
+
+<div id="pageUp" style="z-index: 100; position: absolute; left: 904px; top: 658px; width: 130px; height: 40px; line-height: 36px; background: url() no-repeat"></div>
+
+<div id="pageDown" style="z-index: 100; position: absolute; left: 1048px; top: 658px; width: 130px; height: 40px; line-height: 36px; background: url('../img/pageDown.png') no-repeat""></div>
+
+<div id="focusBg" style="z-index: 100; position: absolute; left: 1060px; top: 658px; width: 110px; height: 40px; line-height: 36px; background: url() no-repeat"></div>
+
+</body>
+</html>
