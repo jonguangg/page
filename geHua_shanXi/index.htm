@@ -6,7 +6,7 @@
 <style>
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
 .todayRanking{font-size:20px;color:#ffffff}
-.num td{background:url('img/numBg0.png') no-repeat;font-size:18px;color:#fff;}
+.num td{font-size:18px;color:#fff;}
 </style>
 
 <script type=text/javascript src="global.js"></script>
@@ -32,18 +32,19 @@
 function $(id){return document.getElementById(id);}
 
 var changeArray = [//最热HOT
-   "changeImg/0.htm",
-   "changeImg/1.htm",
-   "changeImg/2.htm",
-   "changeImg/3.htm",
-   "changeImg/4.htm",
-   "changeImg/5.htm",
-   "changeImg/6.htm",
-   "changeImg/7.htm",
-   "changeImg/8.htm",
-   "changeImg/9.htm",
-   "changeImg/10.htm", 
-   "changeImg/11.htm"
+    {num:"1",url:"changeImg/0.htm",img:"changeImg/0.png"},
+	{num:"2",url:"changeImg/1.htm",img:"changeImg/1.png"},
+	{num:"3",url:"changeImg/2.htm",img:"changeImg/2.png"},
+//	{num:"4",url:"changeImg/3.htm",img:"changeImg/3.png"},
+//	{num:"5",url:"changeImg/4.htm",img:"changeImg/4.png"},
+//	{num:"6",url:"changeImg/5.htm",img:"changeImg/5.png"},
+//	{num:"7",url:"changeImg/6.htm",img:"changeImg/6.png"},
+//	{num:"8",url:"changeImg/7.htm",img:"changeImg/7.png"},
+//	{num:"9",url:"changeImg/8.htm",img:"changeImg/8.png"},
+//	{num:"10",url:"changeImg/9.htm",img:"changeImg/9.png"},
+//	{num:"11",url:"changeImg/10.htm",img:"changeImg/10.png"},
+//	{num:"12",url:"changeImg/9.htm",img:"changeImg/9.png"},
+	{num:"13",url:"changeImg/10.htm",img:"changeImg/10.png"}
 ];
 
 var listArray=[//今日排行
@@ -72,7 +73,7 @@ var listArray=[//今日排行
 	{nums:"23",title:"X战警",url:"paihang/paihang23.htm",money:"5元"},
 	{nums:"24",title:"X战警",url:"paihang/paihang24.htm",money:"5元"},
 	{nums:"25",title:"X战警匆匆那年匆匆那年匆匆那年",url:"paihang/paihang25.htm",money:"5元"},
-	{nums:"26",title:"X战警政治之爱政治之爱政治之爱",url:"paihang/paihang26.htm",money:"5元"},
+//	{nums:"26",title:"X战警政治之爱政治之爱政治之爱",url:"paihang/paihang26.htm",money:"5元"},
 	{nums:"27",title:"X战警",url:"paihang/paihang27.htm",money:"5元"},
 	{nums:"28",title:"X战警",url:"paihang/paihang28.htm",money:"5元"},
 	{nums:"29",title:"X战警",url:"paihang/paihang29.htm",money:"5元"},
@@ -92,8 +93,7 @@ var bgNumIndex=0;
 var numBgIndex=0;
 var length=changeArray.length; 
 	setInterval(changeImg,timeInterval); //换推荐影片背景图
-//	setInterval(changeNumBg,timeInterval);//换数字背景图的颜色
-	setInterval(changeBgNum,timeInterval2);//换背景数字123-456-789
+//	setInterval(changeBgNum,timeInterval2);//换背景数字123-456-789
 
 function changeImg() { //换Hot图片
 	var obj=document.getElementById("showpic"); 
@@ -102,47 +102,26 @@ function changeImg() { //换Hot图片
 	}else { 
 		curIndex+=1; 
 	} 
-	obj.src="changeImg/"+curIndex+".png";
+	obj.src=changeArray[curIndex].img;
 	
-	document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg0.png)";
-	if (numBgIndex<2) { 
-		numBgIndex+=1; 	
-		document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg1.png)";
-	}else { 
-		numBgIndex=0; 
-		document.getElementById("bgNum0").style.backgroundImage = "url(img/numBg1.png)";		
-	} 
+	for(i=0;i<3;i++){//换数字背景
+	    if(curIndex%3==i){
+		   document.getElementById("bgNum"+i).style.backgroundImage = "url(img/numBg1.png)";
+		}else $("bgNum"+i).style.backgroundImage = "url(img/numBg0.png)";
+	}
+	changeBgNum();
 } 
 
-function changeNumBg(){//换数字背景图的颜色
-	document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg0.png)";
-	if (numBgIndex<2) { 
-		numBgIndex+=1; 	
-		document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg1.png)";
-	}else { 
-		numBgIndex=0; 
-		document.getElementById("bgNum0").style.backgroundImage = "url(img/numBg1.png)";		
-	} 
-}
-
-function changeBgNum(){//换背景数字123-456-789-
-	if (bgNumIndex<3) { 
-		bgNumIndex+=1; 
-		var bgNumTemp0=$("bgNum0").innerHTML;
-		var bgNumTemp1=$("bgNum1").innerHTML;
-		var bgNumTemp2=$("bgNum2").innerHTML;
-		$("bgNum0").innerHTML=parseInt(bgNumTemp0)+3;
-		$("bgNum1").innerHTML=parseInt(bgNumTemp1)+3;
-		$("bgNum2").innerHTML=parseInt(bgNumTemp2)+3;
-		
-		}else{
-			bgNumIndex=0; 
-			$("bgNum0").innerText="1";
-			$("bgNum1").innerText="2";
-			$("bgNum2").innerText="3";	
-		} 
+function changeBgNum(){//换背景数字
+	for(j=0;j<3;j++){
+		if(Math.floor(curIndex/3)*3+j<length){
+		  $("bgNum"+j).innerHTML=Math.floor(curIndex/3)*3+j+1;
+	    }else {
+			$("bgNum"+j).innerHTML="";
+		    $("bgNum"+j).style.backgroundImage = "";
+		}
 	}
-
+}
 function showZoneList(){
 		if(ListEnd > zoneListArr.length){
 			ListEnd = zoneListArr.length;
@@ -630,12 +609,15 @@ function eventHandler(e,type){
 			break;
 	}
 }
-
+function init(){
+	showList();
+//	changeImg();
+}
 </script>
 
 </head>
 
-<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="showList();">
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
 
 	<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index_bg.png')")></div>
     
@@ -643,8 +625,8 @@ function eventHandler(e,type){
 		<table width="96" border="0" cellspacing="0" cellpadding="0" class="num">
 			<tr>
 				<td id="bgNum0" width="32" height="32" align="center" style="background:url('img/numBg1.png') no-repeat; color:#000000">1</td>
-				<td id="bgNum1" width="32" height="32" align="center" style=" color:#000000">2</td>
-				<td id="bgNum2" width="32" height="32" align="center" style=" color:#000000">3</td>
+				<td id="bgNum1" width="32" height="32" align="center" style="background:url('img/numBg0.png') no-repeat; color:#000000">2</td>
+				<td id="bgNum2" width="32" height="32" align="center" style="background:url('img/numBg0.png') no-repeat; color:#000000">3</td>
 			</tr>
 	  </table>
 	</div>
