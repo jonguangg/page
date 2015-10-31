@@ -52,7 +52,6 @@ var navArray = [//导航栏目
   {name:"天天剧场",url:"TVseries/index.htm"},
   {name:"动漫幼教",url:"movie/index.htm"},
   {name:"生活百科",url:"TVseries/index.htm"},
-
   {name:"综艺体育",url:"movie/index.htm"}
 ];
 
@@ -336,10 +335,10 @@ function doSelect(){//确认键
 		location.href = loopArray[curIndex].url;
 	}
 	else if(areaIndex=="zoneTxt"){
-		location.href = "movie/movie01.htm";	
+		location.href = "zone/index.htm";	
 	}
 	else if(areaIndex=="newTxt"){
-		location.href = "TVseries/TVseries01.htm";
+		location.href = "new/index.htm";
 	}
 	else if(areaIndex=="rank"){
 		setCookie("focusListPosIndex", focusListPosIndex);
