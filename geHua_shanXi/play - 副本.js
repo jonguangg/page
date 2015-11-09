@@ -1,38 +1,12 @@
 
-function setCookie(name, value, iDay)
-{
-	var oDate=new Date();
-	oDate.setDate(oDate.getDate()+iDay);
-	
-	document.cookie=name+'='+value+';expires='+oDate;path='/'
-}
-function removeCookie(name)
-{
-	setCookie(name, 1, -1);
-}
-function getCookie(name)
-{
-	var arr=document.cookie.split('; ');
-	
-	for(var i=0;i<arr.length;i++)
-	{
-		var arr2=arr[i].split('=');
-		
-		if(arr2[0]==name)
-		{
-			return arr2[1];
-		}
-	}	
-	return '没有Cookie!';
-}
 var btnPos = 0;
 var menuPos = 0;
 var tipPos=0;
-//var listPos = 0;
+var listPos = 0;
 var area=0;
 var movieNames = " ";
 var PromptPos = 0;
-var account  = 5.99999999;
+var account  = 4.99999999;
 var focusImgs = false;
 //播放页图标
 var btnArray = [
@@ -223,7 +197,7 @@ function eventHandler(e,type){
 			
 		case "KEY_RIGHT": //right
 			if(area==0){btnFocus(1);}
-			else if(area==1) promptBtn(2);
+			else if(area==1) promptBtn(0);
 			return 0;
 			break;
 			
@@ -242,7 +216,6 @@ function eventHandler(e,type){
 			break;
 	}
 }
-
 //页面加载后自动执行
 function init(){
 	focusPos();
