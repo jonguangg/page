@@ -84,34 +84,11 @@ function btnFocus(__num){//焦点图标
 		btnArray[0][0]=btnArray[2][0];	
 		btnArray[0][1]=btnArray[2][1];	
 	}
-	if(btnPos<2){
-		$("btn"+btnPos).src = btnArray[btnPos][0];
-	}
-		
+	$("btn"+btnPos).src = btnArray[btnPos][0];//先变灰之前的焦点图标
 	btnPos+=__num;
-
-	if(btnPos<0){
-		btnPos=0;
-	}
-	if(btnPos<2){
-		focusImg("null");
-		focusImgs=false;
-	}
-	if(btnPos<2 && focusImgs == false){
-		$("btn"+btnPos).src = btnArray[btnPos][1];
-	}else if(btnPos>1){
-		focusImgs = true;
-		$("btn1").src = btnArray[1][0];
-	}
-	if(btnPos==2){
-		focusImg("pageShou");
-	}else if(btnPos==3){
-		focusImg("pageZhu");
-	}else if(btnPos==4){
-		focusImg("pageBack");
-	}else if(btnPos>4){
-		btnPos=4;
-	}
+	if(btnPos<0){ btnPos=0; }
+	else if(btnPos>1){ btnPos = 1; }
+	$("btn"+btnPos).src = btnArray[btnPos][1];//再点亮之后的焦点图标
 }
 
 function focusImg(areas){
@@ -126,73 +103,74 @@ function focusImg(areas){
 
 function promptAlert(){//提示框内容
 	area=1;
-	if(account<price){
-	$("buy").style.backgroundImage = "url(../img/buyBg1.png)";
-	$("promptNo").style.backgroundImage = "url(../img/back1.png)";			
-		}else {
-	PromptPos = 1;
-	$("buy").style.backgroundImage = "url(../img/buyBg0.png)";	
-	$("promptYes").style.backgroundImage = "url(../img/enter1.png)";
-	movieNames=$("movieName").innerHTML;			
-	$("prompt").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;您订购的是“"+movieNames+"”,价格："+price+"元，可以在48小时内使用当前机顶盒反复观看。<br />&nbsp;&nbsp;&nbsp;&nbsp;请问您确认购买吗？";
+	if(account<price){//余额不足
+		$("buy").style.backgroundImage = "url(../img/buyBg1.png)";
+		$("promptNo").style.backgroundImage = "url(../img/back1.png)";			
+	}else {
+		PromptPos = 1;
+		$("buy").style.backgroundImage = "url(../img/buyBg0.png)";	
+		$("promptYes").style.backgroundImage = "url(../img/enter1.png)";
+		movieNames=$("movieName").innerHTML;			
+		$("prompt").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您订购的是“"+movieNames+"”,价格："+price+"元，可以在72小时内使用当前机顶盒反复观看。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请问您确认购买吗？";
 	}
 }
 
 function promptBtn(_num){//购买提示显示
 	if(_num==0){
-			area=0;
-			btnPos=1;
-			PromptPos=0;
-			$("buy").style.backgroundImage = "url()";
-			$("prompt").innerHTML = "";
-			$("promptYes").style.backgroundImage = "url()";
-			$("promptNo").style.backgroundImage = "url()";
+			area=0;//购买提示隐藏
+			btnPos=1;//焦点转至右（退出）
+			PromptPos=0;//购买提示隐藏
+			$("buy").style.backgroundImage = "url()";//购买提示隐藏
+			$("prompt").innerHTML = "";//购买提示隐藏
+			$("promptYes").style.backgroundImage = "url()";//购买提示隐藏
+			$("promptNo").style.backgroundImage = "url()";//购买提示隐藏
 			$("btn0").src = btnArray[0][0];			
-			$("btn1").src = btnArray[1][1];
-		}else if(_num==1){
-			if(account<price){
+			$("btn1").src = btnArray[1][1];//焦点转至右（退出），点亮退出按钮
+	}else if(_num==1){
+		if(account<price){
 			area=1;
 			PromptPos=1;
 			$("promptNo").style.backgroundImage = "url()";	
 			$("promptYes").style.backgroundImage = "url(../img/retry1.png)";				
-				}else {
+		}else {
 			area=1;
 			PromptPos=1;
 			$("promptNo").style.backgroundImage = "url()";	
 			$("promptYes").style.backgroundImage = "url(../img/enter1.png)";
 			}
-		}else if(_num==2){
+	}else if(_num==2){
 			area=1;
 			PromptPos=0;
 			$("promptNo").style.backgroundImage = "url(../img/back1.png)";	
 			$("promptYes").style.backgroundImage = "url()";	
-			}
+	}
 }
 
 //确认键响应函数
 function doSelect(){
-	if(area==0){
-		if(btnPos==0){
+	if(area==0){//如果购买提未显示
+		if(btnPos==0){//如果焦点在左
 			if(PREV_URL=="")return;
 //		else location.href = PREV_URL+"?"+menuPos+"&"+listPos;
-			else if(buy==0){
-				promptAlert();
+			else if(buy==0){//如果没购买
+				promptAlert();//调用购买提示框
 			}else location.href = "../boFangYeMian.htm";
-		}else if(btnPos==1){
+		}else if(btnPos==1){//如果焦点在右
 			if(NEXT_URL=="")return;
 //		else location.href = NEXT_URL+"?"+menuPos+"&"+listPos;
 			else location.href = "../index.htm";
-		}else if(btnPos==2){
+		}/*else if(btnPos==2){
 			location.href = "shouye.htm";
 		}else if(btnPos==3){
 			location.href = "zhuye.htm";
 		}else if(btnPos==4){
 			history.go(-1);
-		}
-	}else if(area==1){promptSelect();}
-	 else if(area==2){
-		 location.href = "../index.htm";
-		 }
+		}*/
+	}else if(area==1){
+		promptSelect();
+	}else if(area==2){
+		location.href = "../index.htm";
+	}
 }
 //购买确认
 function promptSelect(){
@@ -204,26 +182,26 @@ function promptSelect(){
 function eventHandler(e,type){
 	var key_code = e.code;
 	switch(key_code){
-		case "KEY_UP":
-			return 0;
-			break;
+//		case "KEY_UP":
+//			return 0;
+//			break;
 			
-		case "KEY_DOWN":
-		if(area==1) promptBtn(0);
-			return 0;
-			break;
+//		case "KEY_DOWN":
+//		if(area==1) promptBtn(0);
+//			return 0;
+//			break;
 			
 		case "KEY_LEFT":
-		if(area==0)
-		{
-			btnFocus(-1);
-		}else if(area==1) promptBtn(1);
+		    if(area==0){
+			    btnFocus(-1);
+			}else if(area==1) promptBtn(1);
 			return 0;
 			break;
 			
 		case "KEY_RIGHT": //right
-			if(area==0){btnFocus(1);}
-			else if(area==1) promptBtn(2);
+			if(area==0){
+				btnFocus(1);
+			}else if(area==1) promptBtn(2);
 			return 0;
 			break;
 			
@@ -245,6 +223,7 @@ function eventHandler(e,type){
 
 //页面加载后自动执行
 function init(){
+	$("brief").innerHTML =$("brief").innerHTML.slice(0,190)+"……";
 	focusPos();
 	btnFocus(0);
 	$("price").innerHTML=price;

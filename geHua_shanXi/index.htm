@@ -11,7 +11,7 @@
 
 <script type=text/javascript src="global.js"></script>
 <script>
-	var area = getCookie("area")?getCookie("area"):0;
+	var area = getCookie("area")?getCookie("area"):"hot";
 	var menuPos = 0;  //列表焦点位置
 	var menusPos= 0;  //首页主页图标焦点位置
 	var listPos = parseInt(getCookie("listPos"))?parseInt(getCookie("listPos")):0;
@@ -59,29 +59,29 @@ var listArray=[//今日排行
 	{nums:"9",title:"魔法之家",url:"paihang/paihang9.htm",money:"5元"},
 	{nums:"10",title:"陌路惊笑匆匆那年匆匆那年匆匆那年",url:"paihang/paihang10.htm",money:"5元"},
 	{nums:"11",title:"奇鞋妙旅奇鞋妙旅奇鞋妙旅奇鞋妙旅",url:"paihang/paihang11.htm",money:"5元"},
-//	{nums:"12",title:"善意杀戮",url:"paihang/paihang12.htm",money:"5元"},
-//	{nums:"13",title:"失孤",url:"paihang/paihang13.htm",money:"5元"},
-//	{nums:"14",title:"十万伙急",url:"paihang/paihang14.htm",money:"5元"},
-//	{nums:"15",title:"万物生长",url:"paihang/paihang15.htm",money:"5元"},
-//	{nums:"16",title:"我是女王匆匆那年匆匆那年匆匆那年",url:"paihang/paihang16.htm",money:"5元"},
-//	{nums:"17",title:"喜羊羊与灰太狼之羊年喜羊羊",url:"paihang/paihang17.htm",money:"5元"},
-//	{nums:"18",title:"熊出没之雪岭熊风",url:"paihang/paihang18.htm",money:"5元"},
-//	{nums:"19",title:"业内前五",url:"paihang/paihang19.htm",money:"5元"},
-//	{nums:"20",title:"咱们结婚吧",url:"paihang/paihang20.htm",money:"5元"},
-//	{nums:"21",title:"政治之爱政治之爱政治之爱政治之爱",url:"paihang/paihang21.htm",money:"5元"},
-//	{nums:"22",title:"左耳",url:"paihang/paihang22.htm",money:"5元"},
-//	{nums:"23",title:"X战警",url:"paihang/paihang23.htm",money:"5元"},
-//	{nums:"24",title:"X战警",url:"paihang/paihang24.htm",money:"5元"},
-//	{nums:"25",title:"X战警匆匆那年匆匆那年匆匆那年",url:"paihang/paihang25.htm",money:"5元"},
-//	{nums:"26",title:"X战警政治之爱政治之爱政治之爱",url:"paihang/paihang26.htm",money:"5元"},
-//	{nums:"27",title:"X战警",url:"paihang/paihang27.htm",money:"5元"},
-//	{nums:"28",title:"X战警",url:"paihang/paihang28.htm",money:"5元"},
-//	{nums:"29",title:"X战警",url:"paihang/paihang29.htm",money:"5元"},
-	{nums:"30",title:"X战警匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang30.htm",money:"5元"}
+	{nums:"12",title:"善意杀戮",url:"paihang/paihang12.htm",money:"5元"},
+/*	{nums:"13",title:"失孤",url:"paihang/paihang13.htm",money:"5元"},
+	{nums:"14",title:"十万伙急",url:"paihang/paihang14.htm",money:"5元"},
+	{nums:"15",title:"万物生长",url:"paihang/paihang15.htm",money:"5元"},
+	{nums:"16",title:"我是女王匆匆那年匆匆那年匆匆那年",url:"paihang/paihang16.htm",money:"5元"},
+	{nums:"17",title:"喜羊羊与灰太狼之羊年喜羊羊",url:"paihang/paihang17.htm",money:"5元"},
+	{nums:"18",title:"熊出没之雪岭熊风",url:"paihang/paihang18.htm",money:"5元"},
+	{nums:"19",title:"业内前五",url:"paihang/paihang19.htm",money:"5元"},
+	{nums:"20",title:"咱们结婚吧",url:"paihang/paihang20.htm",money:"5元"},
+	{nums:"21",title:"政治之爱政治之爱政治之爱政治之爱",url:"paihang/paihang21.htm",money:"5元"},
+	{nums:"22",title:"左耳",url:"paihang/paihang22.htm",money:"5元"},
+	{nums:"23",title:"X战警",url:"paihang/paihang23.htm",money:"5元"},
+	{nums:"24",title:"X战警",url:"paihang/paihang24.htm",money:"5元"},
+	{nums:"25",title:"X战警匆匆那年匆匆那年匆匆那年",url:"paihang/paihang25.htm",money:"5元"},
+	{nums:"26",title:"X战警政治之爱政治之爱政治之爱",url:"paihang/paihang26.htm",money:"5元"},
+	{nums:"27",title:"X战警",url:"paihang/paihang27.htm",money:"5元"},
+	{nums:"28",title:"X战警",url:"paihang/paihang28.htm",money:"5元"},
+	{nums:"29",title:"X战警",url:"paihang/paihang29.htm",money:"5元"},
+	{nums:"30",title:"X战警匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang30.htm",money:"5元"} */
 ];
 
 var zoneListArr=[//专区列表
-	{zoneName:"百事通",zoneUrl:"baiShiTong/index.htm",zoneImg:"baiShiTong/baiShiTongLogo.png"},
+	{zoneName:"百视通",zoneUrl:"baiShiTong/index.htm",zoneImg:"baiShiTong/baiShiTongLogo.png"},
 	{zoneName:"文广互动",zoneUrl:"SiTV/index.htm",zoneImg:"img/SiTV.png"}
 ];
 
@@ -122,7 +122,20 @@ function changeBgNum(){//换背景数字
 		}
 	}
 }
-function showZoneList(){
+
+function focusChoose(areas){
+		if(areas=="rank"){
+		   focusRank();
+		   listFocus(0);
+		}
+		else if(areas=="zoneList"){
+		   $("focusBg").style.backgroundImage = "url()";					
+		   $("zone").style.backgroundImage = "url(img/zoneListBg.png)";
+		   showzoneList();
+		}  else focusImg(areas);
+	}
+	
+function showzoneList(){
 		if(ListEnd > zoneListArr.length){
 			ListEnd = zoneListArr.length;
 		}else{
@@ -138,7 +151,7 @@ function showZoneList(){
 		$("zoneListFocus"+currPos).src= "img/focusZoneList.png";
 }
 
-function clearZoneList(){
+function clearzoneList(){
 		if(ListEnd > zoneListArr.length){
 			ListEnd = zoneListArr.length;
 		}else{
@@ -155,7 +168,7 @@ function clearZoneList(){
 		currPos = 0;//list当前焦点位置 
 	}
 	
-function changeZoneList(_num){
+function changezoneList(_num){
 		var oldPos = zoneListPos - hiddenList;//list上一个焦点位置
 		zoneListPos += _num;
 		currPos = zoneListPos - hiddenList;//list当前焦点位置 
@@ -168,38 +181,38 @@ function changeZoneList(_num){
 		var objOldList =  $('zoneListFocus' + oldPos);
 		var objList = $('zoneListFocus' + currPos);
 		if(hiddenList == 0 && zoneListPos < 0 && _num < 0){	//（当前焦点位在第一页且已处于第一项时）按向上键：
-		    area=3;
+		    area="zone";
 			$("focusBg").style.backgroundImage = "url(img/focuszone.png)";
 			$("zone").style.backgroundImage = "url('zone/zone.png')";
 			zoneListPos = 0;
 			hiddenList = 0;
 			objOldList.src = 'img/null.png';
-			clearZoneList();
+			clearzoneList();
 		}
 		
 		else if(hiddenList > 0 && currPos < 0 && _num < 0){//（ 当前焦点位在第一项且还有未显示项时）按向上键：数据下移，背景位置处于首位			
 			hiddenList--;
-			showZoneList();
+			showzoneList();
 		}
 		
 		else if(zoneListPos > ListEnd-1 && oldPos==ListEnd-1 && zoneListPos < zoneListArr.length && _num > 0){	//（当前焦点在最后一项且不处于数组末尾）按向下键：焦点处于末尾，数据上移
 			hiddenList++;			
-			showZoneList();
+			showzoneList();
 		}
 		
 		else if(zoneListPos > zoneListArr.length-1 && _num > 0){	//焦点在最后一页最后一项按向下键：
-		    area = 4;
+		    area = "rank";
 			zoneListPos = 0;
 			hiddenList = 0;
 			objOldList.src = 'img/null.png';
 			$("zone").style.backgroundImage = "url('zone/zone.png')";
 			listFocus(0);
-			clearZoneList();
+			clearzoneList();
 			}
 		
 		else{//焦点在中间移动
 			objOldList.src = 'img/null.png';
-			objList.src = "img/focusZoneList.png";
+			objList.src = "img/focuszoneList.png";
 		}
 }
 	
@@ -222,17 +235,15 @@ function showList(){
 	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
 	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
 	for(i=0; i<listSize; i++){
+		if(currPage==1 && i<3 && listArray[position+i].money){
+				$("nums"+i).style.backgroundImage = "url(img/rank"+i+".png)";
+			}else {
+				$("nums"+i).style.backgroundImage = "";
+		}
 		if(position+i<listArray.length){
 			$("list"+i).innerHTML = listArray[position+i].title.slice(0,wordSize);
 			$("nums"+i).innerHTML = listArray[position+i].nums;
-			$("money"+i).innerHTML = listArray[position+i].money;
-//			$("nums"+i).style.backgroundImage = "url(img/rank"+i+".png)";
-			if(position==0 && i<3){
-				$("nums"+i).style.backgroundImage = "url(img/rank"+i+".png)";
-//				$("nums"+i).innerHTML = "";
-			}else {
-				$("nums"+i).style.backgroundImage = "";
-				}
+			$("money"+i).innerHTML = listArray[position+i].money;			
 		}
 		else {
 			$("list"+i).innerHTML = "";
@@ -242,8 +253,10 @@ function showList(){
 	}
 	if(currPage==1 && allPage>1){//在第一页，有下页
 		$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
+		$("pageUp").style.backgroundImage = "url()";
 	}else if(currPage==allPage && allPage>1){//在最后页，有上页
 		$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
+		$("pageDown").style.backgroundImage = "url()";
 	}else if(currPage>1 && currPage<allPage){//在中间，有上下页
 		$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
 		$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
@@ -307,7 +320,7 @@ function listFocus(__num){
 	}
 	
 	if(listArray[listPos].title.length>wordSize){
-	$("list"+listPos%listSize).innerHTML = '<marquee behavior="alternate" direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+listArray[listPos].title +'</marquee>';
+	$("list"+listPos%listSize).innerHTML = '<marquee direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+listArray[listPos].title +'</marquee>';
 	}
 	if(listPos<3){
 		$("nums"+listPos%listSize).innerHTML = "";	
@@ -316,20 +329,20 @@ function listFocus(__num){
 	focusRank();
 }
 
-function focusImg(area){
-	$("focusBg").style.top = $(area).style.top;
-	$("focusBg").style.width = $(area).style.width;
-	$("focusBg").style.height = $(area).style.height;
+function focusImg(areas){
+	$("focusBg").style.top = $(areas).style.top;
+	$("focusBg").style.width = $(areas).style.width;
+	$("focusBg").style.height = $(areas).style.height;
 	
 	if(area=="zone"){
-		$("focusBg").style.left = parseInt($(area).style.left)+2+"px";
+		$("focusBg").style.left = parseInt($(areas).style.left)+2+"px";
 		}
-	else $("focusBg").style.left = $(area).style.left;
+	else $("focusBg").style.left = $(areas).style.left;
 	
-	if(area.substring(0,4)=="page"){
+	if(areas.substring(0,4)=="page"){
 		$("focusBg").style.backgroundImage = "url(img/focusPage.png)";
 		}
-	else $("focusBg").style.backgroundImage = "url(img/focus"+area+".png)";	
+	else $("focusBg").style.backgroundImage = "url(img/focus"+areas+".png)";	
 }
 
 function focusRank(){
@@ -358,7 +371,6 @@ function closeWebPage() { //退出浏览器
 }
 
 //Cookie
-
 function setCookie(name, value){
     var exp = new Date(); 
     exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
@@ -383,42 +395,43 @@ function getCookie(sName){
 }
 
 function doSelect(){//确认键
-	setCookie("area", area);
+    setCookie("area", area);
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
 	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
-	if(area==0){
+	if(area=="hot"){
 		location.href = changeArray[curIndex].url;
-	}else if(area==1){
+	}else if(area=="now"){
 		location.href = "#";
-	}else if(area==2){
+	}else if(area=="myMovies"){
 		location.href = "myMovies/index.htm";
-	}else if(area==3){
+	}else if(area=="zone"){
 		location.href = "zone/index.htm";
-	}else if(area==32){
+	}else if(area=="zoneList"){
 		location.href = zoneListArr[zoneListPos].zoneUrl;	
-	}	else if(area==4){
+	}	else if(area=="rank"){
 		location.href = listArray[listPos].url;
 	}
 
-	else if(area==5){
-		pageDown();	
-	    if(currPage==1){
-        $("pageUp").style.backgroundImage = "url(img/pageUp.png)";
-		focusImg("pageDown");
-		}else{
-		area=6;		
-        $("pageDown").style.backgroundImage = "url()";
+	else if(area=="pageDown"){
+		pageDown();
+	    if(currPage+1==allPage){
+//		focusImg("pageDown");
+//		}else{
+		area="pageUp";
+		setCookie("area", area);	
+//        $("pageDown").style.backgroundImage = "url()";
         focusImg("pageUp");
 		}
-	}else if(area==6){
+	}else if(area=="pageUp"){
     	pageUp();
 		if(currPage==2){
-	    $("pageUp").style.backgroundImage = "url()";
+//	    $("pageUp").style.backgroundImage = "url()";
+		area="pageDown";
+		setCookie("area", area);
 		focusImg("pageDown");
-		area=5;	
-		}else{
-		$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
+		}/*else{
 		focusImg("pageUp");
-		}
+		}*/
 	}
 /*		
 	else if(area==7){
@@ -431,57 +444,58 @@ function doSelect(){//确认键
 //另一套键值，可用电脑键盘操作
 function eventHandler(e,type){
 	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
 	var key_code = e.code;
 	switch(key_code){
 		case "KEY_UP":
-		  	if(area==4){
+		  	if(area=="rank"){
 				if(listPos%5==0){
 					listPos = (parseInt((listPos+listSize)/listSize)-1)*listSize;
 					showList();
-					area=3;
+					area="zone";
 					focusImg("zone");
 				}else{
 					listFocus(-1);
 				}
-			}else if(area==3){
-				area=2;
+			}else if(area=="zone"){
+				area="myMovies";
 				focusImg("myMovies");
-			}else if(area==32){
-				changeZoneList(-1);					
+			}else if(area=="zoneList"){
+				changezoneList(-1);					
 			}
-			else if(area==5 || area==6 || area==7 || area==8){
-			    area=4;
+			else if(area=="pageDown" || area=="pageUp"){
+			    area="rank";
 				listFocus(0);								
 			}
 			return 0;
 			break;
 			
 		case "KEY_DOWN":
-			if(area==2){
-				area=3;
+			if(area=="myMovies"){
+				area="zone";
 				focusImg("zone");
-			}else if(area==1){
-				area=4;
+			}else if(area=="now"){
+				area="rank";
 				focusRank();
 				listFocus(0);
-			}else if(area==3){
-			    area=32;
+			}else if(area=="zone"){
+			    area="zoneList";
 				$("focusBg").style.backgroundImage = "url()";					
 				$("zone").style.backgroundImage = "url(img/zoneListBg.png)";
-				showZoneList();	
-//				changeZoneList(0);	
+				showzoneList();	
+//				changezoneList(0);	
 			}
-			else if(area==32){
-				changeZoneList(1);
+			else if(area=="zoneList"){
+				changezoneList(1);
 			}
-			else if(area==4){
+			else if(area=="rank"){
 			  if(listPos==9 || listPos==19){
-				  area=5;
+				  area="pageDown";
 //				  showList();
 				  focusImg("pageDown");
 				  listPos = (parseInt((listPos+listSize)/listSize)-1)*listSize;
 			  }else if(listPos==29 || listPos==listArray.length-1){
-				  area=6;
+				  area="pageUp";
 //				  showList();
 				  focusImg("pageUp");
 			  }
@@ -492,32 +506,29 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_LEFT":
-			if(area==1){
-				area=0;
+			if(area=="now"){
+				area="hot";
 				focusImg("hot");
-			}else if(area==2){
-				area=1;
-				focusImg("now");;
-			}else if(area==3){
-				area=1;
-				focusImg("now");;
-			}else if(area==32){
-				area=1;
+			}else if(area=="myMovies" || area=="zone"){
+				area="now";
 				focusImg("now");
-				clearZoneList();	
+			}else if(area=="zoneList"){
+				area="now";
+				focusImg("now");
+				clearzoneList();	
 				$("zone").style.backgroundImage = "url(zone/zone.png)";		
 			}
-			else if(area==4){	
+			else if(area=="rank"){	
 			    if(listPos<5){
-				area=0;
+				area="hot";
 				showList();
 				listPos = 0;
 				focusImg("hot");	
 				}else listFocus(-5);
 			}
 			
-			else if(area==5 && currPage>1){
-			    area=6;
+			else if(area=="pageDown" && currPage>1){
+			    area="pageUp";
 				focusImg("pageUp");	
 			}/*else if(area==5 && currPage==1){
 				area=7;
@@ -535,19 +546,19 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_RIGHT": //right
-			if(area==0){
-				area=4;
+			if(area=="hot"){
+				area="rank";
 				focusRank();
 				listFocus(0);
-			}else if(area==1){
-				area=2;
+			}else if(area=="now"){
+				area="myMovies";
 				focusImg("myMovies");
-			}else if(area==4){
+			}else if(area=="rank"){
 				listFocus(5);
 			}
 			
-			else if(area==6 && currPage<3){
-			    area=5;
+			else if(area=="pageUp" && currPage<allPage){
+			    area="pageDown";
 				focusImg("pageDown");
 			}/*else if(area==7 && currPage>1){
 			    area=6;
@@ -566,31 +577,31 @@ function eventHandler(e,type){
 			break;	
 			
 		case "PAGE_DOWN":
-			if(area==4 && currPage==1){
+			if(area=="rank"){
 			    pageDown();
-				$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
-				$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
+//				$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
+//				$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
 				listFocus(0);
-			}else if(area==4 && currPage==2){
-			    pageDown();
-				$("pageDown").style.backgroundImage = "url()";
-				$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
-				listFocus(0);		
+//			}else if(area==4 && currPage==2){
+//			    pageDown();
+//				$("pageDown").style.backgroundImage = "url()";
+//				$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
+//				listFocus(0);		
 			}
 		    return 0;
 			break;	
 			
 		case "PAGE_UP":
-			if(area==4 && currPage==2){
+			if(area=="rank"){
 			    pageUp();
-				$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
-				$("pageUp").style.backgroundImage = "url()";
+//				$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
+//				$("pageUp").style.backgroundImage = "url()";
 				listFocus(0);
-			}else if(area==4 && currPage==3){
-			    pageUp();
-				$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
-				$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
-				listFocus(0);		
+//			}else if(area==4 && currPage==3){
+//			    pageUp();
+//				$("pageDown").style.backgroundImage = "url(img/pageDown.png)";
+//				$("pageUp").style.backgroundImage = "url(img/pageUp.png)";
+//				listFocus(0);		
 			}
 		    return 0;
 			break;			
@@ -612,7 +623,7 @@ function eventHandler(e,type){
 }
 function init(){
 	showList();
-//	changeImg();
+	focusChoose(area);
 }
 </script>
 
@@ -741,9 +752,9 @@ function init(){
 	<div id="page" style="position: absolute; left: 1053px; top: 419px; width: 129px; height: 36px; line-height: 36px; color: #fff; text-align: right; font-size: 22px;">
 		1/3	</div>            
 	
-<div id="pageUp" style="z-index: 100; position: absolute; left: 965px; top: 660px; width: 110px; height: 40px; line-height: 36px; background: url() no-repeat">	</div>
+<div id="pageUp" style="z-index: 100; position: absolute; left: 965px; top: 660px; width: 110px; height: 40px; background: url() no-repeat">	</div>
 
-<div id="pageDown" style="z-index: 100; position: absolute; left: 1075px; top: 660px; width: 110px; height: 40px; line-height: 36px; background: url() no-repeat">	</div>
+<div id="pageDown" style="z-index: 100; position: absolute; left: 1075px; top: 660px; width: 110px; height: 40px; background: url() no-repeat">	</div>
 
 	<div id="focusBg" style="z-index: 1; background: url('img/focushot.png') no-repeat;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px; 
 -webkit-transition-property: all; 
