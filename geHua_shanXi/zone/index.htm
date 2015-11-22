@@ -53,10 +53,20 @@ var listArray=[//百事通专区
 	{nums:"7",title:"速度与激情7",url:"../paihang/paihang7.htm",img:"url(6.png)"}
 	]
 
+function showList0(){
+	focusImg("list");
+	for(i=0; i<listArray.length; i++){
+			$("zoneImg"+i).style.left =  157+(i-hiddenList)*197+"px";
+	}	
+}
+
 function showList(){
 	focusImg("list");
 	for(i=0; i<listArray.length; i++){
 			$("zoneImg"+i).style.left =  157+(i-hiddenList)*197+"px";
+			if(parseInt($("zoneImg"+i).style.left) < 157 || parseInt($("zoneImg"+i).style.left) > 945){
+				$("zoneImg"+i).style.backgroundImage = "url(../img/null.png)";
+			}else $("zoneImg"+i).style.backgroundImage = "url("+i+".png)";
 	}	
 }
 
@@ -175,41 +185,41 @@ function doSelect(){
 function eventHandler(e,type){
 	var key_code = e.code;
 	switch(key_code){
-		case "KEY_UP":
-			area=0;
-			focusImg("list");
-			return 0;
-			break;
+//		case "KEY_UP":
+//			area=0;
+//			focusImg("list");
+//			return 0;
+//			break;
 
-		case "KEY_DOWN":
-			area=1;
-			focusImg("pageBack");
-			return 0;
-			break;
+//		case "KEY_DOWN":
+//			area=1;
+//			focusImg("pageBack");
+//			return 0;
+//			break;
 						
 		case "KEY_LEFT":
 			if(area==0){
 				listFocus(-1);
-			}else if(area==1){
+			}/*else if(area==1){
 				area=2;
 				focusImg("pageZhu");
 			}else if(area==2){
 				area=3;
 				focusImg("pageShou");
-			}
+			}*/
 			return 0;
 			break;
 			
 		case "KEY_RIGHT": 
 			if(area==0){
 				listFocus(1);
-			}else if(area==3){
+			}/*else if(area==3){
 				area=2;
 				focusImg("pageZhu");
 			}else if(area==2){
 				area=1;
 				focusImg("pageBack");
-			}
+			}*/
 			return 0;
 			break;	
 			
@@ -238,11 +248,11 @@ function init(){
 
 </head>
 <body topmargin="0" leftmargin="0" style="background:url(../img/index_zone.png); overflow:hidden;" onload="init();">
-
+<!--
 <div id="index_zone_left" style="z-index: 100; position: absolute; left: 0px; top: 409px; width: 157px; height: 224px; background: url('../img/index_zone_left.png') no-repeat"></div>
 
 <div id="index_zone_right" style="z-index: 100; position: absolute; left: 1122px; top: 409px; width: 158px; height: 224px; background: url('../img/index_zone_right.png') no-repeat"></div>
-
+-->
  <div id="zoneImg0" class="zoneImg" style="left: 157px;background: url('0.png')"> </div>
  <div id="zoneImg1" class="zoneImg" style="left: 354px;background: url('1.png')"> </div>
  <div id="zoneImg2" class="zoneImg" style="left: 551px;background: url('2.png')"> </div>
@@ -251,13 +261,13 @@ function init(){
  <div id="zoneImg5" class="zoneImg" style="left: 1142px;background: url('5.png')"> </div>
  <div id="zoneImg6" class="zoneImg" style="left: 1339px;background: url('6.png')"> </div>
  <div id="zoneImg7" class="zoneImg" style="left: 1536px;background: url('7.png')"> </div>
-
+<!--
 <div id="pageShou" style="z-index: 100; position: absolute; left: 820px; top: 640px; width: 100px; height: 40px; line-height: 36px; background: url('../img/pageShou.png') no-repeat"></div>
 
 <div id="pageZhu" style="z-index: 100; position: absolute; left: 920px; top: 640px; width: 100px; height: 40px; line-height: 36px; background: url('../img/pageZhu.png') no-repeat"></div>
 
 <div id="pageBack" style="z-index: 100; position: absolute; left: 1020px; top: 640px; width: 100px; height: 40px; line-height: 36px; background: url('../img/pageBack.png') no-repeat"></div>
-
+-->
 <div id="zoneFocus" style="background:url() no-repeat; position:absolute; left:157px; top:409px; width:177px; height:224px;
 -webkit-transition-property:top,left; 
 transition-duration: 200ms;
