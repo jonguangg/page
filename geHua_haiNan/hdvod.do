@@ -631,9 +631,11 @@ function init(){
 
 <body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
 
-	<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index_bg.png')")></div>
+<div style="z-index:-1; position:absolute; left:0px;width:1280px; height:720px; background:url('img/index_bg.png')")></div>
+
+<div id="servicePhone" style="z-index: 1; position: absolute; left: 980px; width: 215px; height: 30px; line-height: 30px; font-size: 26px; top: 63px;"><table><tr><td style="color:#900;">客服电话:</td><td style="color:#F60;">963999</td></tr></table></div>
     
-	<div style="z-index: 102; position: absolute; left: 360px; top: 565px; width: 96; height: 32;">
+<div style="z-index: 102; position: absolute; left: 360px; top: 565px; width: 96; height: 32;">
 		<table width="96" border="0" cellspacing="0" cellpadding="0" class="num">
 			<tr>
 				<td id="bgNum0" width="32" height="32" align="center" style="background:url('img/numBg1.png') no-repeat; color:#000000">1</td>
@@ -641,23 +643,22 @@ function init(){
 				<td id="bgNum2" width="32" height="32" align="center" style="background:url('img/numBg0.png') no-repeat; color:#000000">3</td>
 			</tr>
 	  </table>
-	</div>
+</div>
     
-<div style="z-index: 100; position: absolute; left: 79px; top: 540px; width: 250px; height: 76px; background: url('img/recommendMovie.png') no-repeat">
-	</div>
+<div style="z-index: 100; position: absolute; left: 79px; top: 540px; width: 250px; height: 76px; background: url('img/recommendMovie.png') no-repeat"></div>
     
-	<div id="hot" style="z-index: -2;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px;"><img id="showpic" src="changeImg/0.png" width="405" height="514" /></div>	
+<div id="hot" style="z-index: -2;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px;"><img id="showpic" src="changeImg/0.png" width="405" height="514" /></div>	
 	
-	<div style="z-index: 100; position: absolute; left: 852px; top: 352px; width: 119px; height: 41px; background: url('img/now.png') no-repeat"> </div>
+<div style="z-index: 100; position: absolute; left: 852px; top: 352px; width: 119px; height: 41px; background: url('img/now.png') no-repeat"> </div>
     
-	<div id="now" style="z-index: -2; position:absolute; left: 508px; top: 139px; width: 460px; height: 256px;">
+<div id="now" style="z-index: -2; position:absolute; left: 508px; top: 139px; width: 460px; height: 256px;">
 		<img src="img/newPlayImg.png" width="460" height="256" /> </div>
     
-    <div id="myMovies" style="z-index:-2;position:absolute; left: 984px; top: 138px; width:205px; height:53px;background:url(g') no-repeat"></div>
+<div id="myMovies" style="z-index:-2;position:absolute; left: 984px; top: 138px; width:205px; height:53px;background:url(g') no-repeat"></div>
 	  
-	<div id="zone" style="z-index:-2;position:absolute; left: 986px; top: 237px; width:210px; height:140px;background:url('zone/zone.png') no-repeat"></div>
+<div id="zone" style="z-index:-2;position:absolute; left: 986px; top: 237px; width:210px; height:140px;background:url('zone/zone.png') no-repeat"></div>
     
-    <div id="zoneList" style="z-index: 0; position: absolute; left: 1065px; top: 250px; width: 120px; height: 126px; background: url() no-repeat">
+<div id="zoneList" style="z-index: 0; position: absolute; left: 1065px; top: 250px; width: 120px; height: 126px; background: url() no-repeat">
 <table width="100%" height="126" border="0" style="font-size:24px; color:#fff; font-family:SimHei;">
   <tr>
     <td id="zoneList0" height="42" align="center" style=" background:url() no-repeat; text-align:center;"></td>
@@ -669,9 +670,9 @@ function init(){
     <td id="zoneList2" height="42" align="center" style=" background:url() no-repeat; text-align:center;"></td>
   </tr>
 </table>
-    </div>
+</div>
     
-        <div id="zoneListImg" style="z-index: 1; position: absolute; left: 982px; top: 250px; width: 89px; height: 126px; background: url() no-repeat">
+<div id="zoneListImg" style="z-index: 1; position: absolute; left: 982px; top: 250px; width: 89px; height: 126px; background: url() no-repeat">
 <table width="100%" height="126" border="0">
   <tr>
     <td height="42" align="center" ><img id="zoneListImg0" src="img/null.png"/></td>
@@ -683,9 +684,9 @@ function init(){
     <td height="42" align="center" ><img id="zoneListImg2" src="img/null.png"/></td>
   </tr>
 </table>
-    </div>
+</div>
     
-    <div id="zoneLisFocus" style="z-index: 1; position: absolute; left: 982px; top: 250px; width: 209px; height: 126px; background: url() no-repeat">
+<div id="zoneLisFocus" style="z-index: 1; position: absolute; left: 982px; top: 250px; width: 209px; height: 126px; background: url() no-repeat">
 <table width="100%" height="126" border="0">
   <tr>
     <td height="42" align="center"><img id="zoneListFocus0" src="img/null.png"/></td>
@@ -697,9 +698,9 @@ function init(){
     <td height="42" align="center"><img id="zoneListFocus2" src="img/null.png"/></td>
   </tr>
 </table>
-    </div>
+</div>
 
-	<div  id="area4" style="z-index: 0;position: absolute; left: 508px; top: 465px; width: 680px; height: 180px; color: #FF0000">
+<div  id="area4" style="z-index: 0;position: absolute; left: 508px; top: 465px; width: 680px; height: 180px; color: #FF0000">
 		<table id="paihang" width="680" border="0" cellspacing="0" cellpadding="0" style="font-size:22px;color:#fff">
 			<tr>
 				<td id="nums0" width="34" height="36" align="center" style=" background:url() no-repeat center center;"></td>
@@ -747,22 +748,21 @@ function init(){
 				<td id="money9" height="36">&nbsp;</td>
 			</tr>
 	  </table>
-	</div>
+</div>
 	
-	<div id="page" style="position: absolute; left: 1053px; top: 419px; width: 129px; height: 36px; line-height: 36px; color: #fff; text-align: right; font-size: 22px;">
+<div id="page" style="position: absolute; left: 1053px; top: 419px; width: 129px; height: 36px; line-height: 36px; color: #fff; text-align: right; font-size: 22px;">
 		1/3	</div>            
 	
 <div id="pageUp" style="z-index: 100; position: absolute; left: 965px; top: 660px; width: 110px; height: 40px; background: url() no-repeat">	</div>
 
 <div id="pageDown" style="z-index: 100; position: absolute; left: 1075px; top: 660px; width: 110px; height: 40px; background: url() no-repeat">	</div>
 
-	<div id="focusBg" style="z-index: 1; background: url('img/focushot.png') no-repeat;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px; 
--webkit-transition-property: all; 
--webkit-transition-duration: 100ms; /* Safari 和 Chrome */
--moz-transition-duration: 100ms; /* Firefox 4 */
--o-transition-duration: 100ms; /* Opera */
-transition-duration: 100ms;">
-	</div>
+<div id="focusBg" style="z-index: 1; background: url('img/focushot.png') no-repeat;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px;
+-webkit-transition-property:all; 
+transition-duration: 200ms;
+-moz-transition-duration: 200ms; /* Firefox 4 */
+-webkit-transition-duration: 200ms; /* Safari 和 Chrome */
+-o-transition-duration: 200ms; /* Opera */"></div>
 
 </body>
 </html>

@@ -32,7 +32,7 @@ var tipPos=0;
 var area=0;
 var movieNames = " ";
 var PromptPos = 0;
-var account  = 5.99999999;
+var account  = 6.99999999;
 var focusImgs = false;
 //播放页图标
 var btnArray = [
@@ -105,11 +105,13 @@ function promptAlert(){//提示框内容
 	area=1;
 	if(account<price){//余额不足
 		$("buy").style.backgroundImage = "url(../img/buyBg1.png)";
-		$("promptNo").style.backgroundImage = "url(../img/back1.png)";			
+		$("promptNo").style.backgroundImage = "url(../img/back1.png)";
+		$("promptServicePhone").style.display = "block";
 	}else {
 		PromptPos = 1;
 		$("buy").style.backgroundImage = "url(../img/buyBg0.png)";	
 		$("promptYes").style.backgroundImage = "url(../img/enter1.png)";
+		$("promptServicePhone").style.display = "block";
 		movieNames=$("movieName").innerHTML;			
 		$("prompt").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您订购的是“"+movieNames+"”,价格："+price+"元，可以在72小时内使用当前机顶盒反复观看。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请问您确认购买吗？";
 	}
@@ -124,6 +126,7 @@ function promptBtn(_num){//购买提示显示
 			$("prompt").innerHTML = "";//购买提示隐藏
 			$("promptYes").style.backgroundImage = "url()";//购买提示隐藏
 			$("promptNo").style.backgroundImage = "url()";//购买提示隐藏
+			$("promptServicePhone").style.display = "none";
 			$("btn0").src = btnArray[0][0];			
 			$("btn1").src = btnArray[1][1];//焦点转至右（退出），点亮退出按钮
 	}else if(_num==1){
