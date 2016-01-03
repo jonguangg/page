@@ -32,7 +32,7 @@ var tipPos=0;
 var area=0;
 var movieNames = " ";
 var PromptPos = 0;
-var account  = 4.99999999;
+var account  = 4;
 var focusImgs = false;
 //播放页图标
 var btnArray = [
@@ -134,8 +134,8 @@ function promptAlert(){//提示框内容
 	$("buy").style.backgroundImage = "url(../img/buyBg0.png)";	
 	$("promptYes").style.backgroundImage = "url(../img/enter1.png)";
 	movieNames=$("movieName").innerHTML;			
-	$("prompt").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;您订购的是“"+movieNames+"”,价格："+price+"元，可以在48小时内使用当前机顶盒反复观看。<br />&nbsp;&nbsp;&nbsp;&nbsp;请问您确认购买吗？";
-	}
+	$("prompt").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;您订购的是“"+movieNames+"”,价格："+price+"元，可以在72小时内使用当前机顶盒反复观看。<br />&nbsp;&nbsp;&nbsp;&nbsp;请问您确认购买吗？";
+}
 }
 
 function promptBtn(_num){//购买提示显示

@@ -6,6 +6,7 @@
 <style>
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
 .todayRanking{font-size:20px;color:#ffffff}
+img{width:100%;height:100%; border-radius: 6px;}
 .num td{background:url('img/numBg0.png') no-repeat;font-size:18px;color:#fff;}
 </style>
 
@@ -47,16 +48,16 @@ var changeArray = [//最热HOT
 ];
 
 var listArray=[//今日排行
-	{nums:" ",title:"匆匆那年匆匆那年匆匆那年匆匆那年",url:"paihang/paihang1.htm",money:"5元"},
-	{nums:" ",title:"超能陆战队（中文配音）",url:"paihang/paihang2.htm",money:"5元"},
-	{nums:" ",title:"大喜临门",url:"paihang/paihang3.htm",money:"5元"},
-	{nums:"4",title:"地牢围攻3",url:"paihang/paihang4.htm",money:"5元"},
-	{nums:"5",title:"第七谎言",url:"paihang/paihang5.htm",money:"5元"},
-	{nums:"6",title:"定制伴郎匆匆那年匆匆那年匆匆那年",url:"paihang/paihang6.htm",money:"5元"},
-	{nums:"7",title:"飓风营救3",url:"paihang/paihang7.htm",money:"5元"},
-	{nums:"8",title:"魔法黑森林",url:"paihang/paihang8.htm",money:"5元"},
-	{nums:"9",title:"魔法之家",url:"paihang/paihang9.htm",money:"5元"},
-	{nums:"10",title:"陌路惊笑匆匆那年匆匆那年匆匆那年",url:"paihang/paihang10.htm",money:"5元"},
+	{nums:" ",title:"侏罗纪世界",url:"paihang/paihang1.htm",money:"5元"},
+	{nums:" ",title:"三城记",url:"paihang/paihang2.htm",money:"5元"},
+	{nums:" ",title:"捉妖记",url:"paihang/paihang3.htm",money:"5元"},
+	{nums:"4",title:"黑瞳",url:"paihang/paihang4.htm",money:"5元"},
+	{nums:"5",title:"太平轮:彼岸",url:"paihang/paihang5.htm",money:"5元"},
+	{nums:"6",title:"刺客聂隐娘",url:"paihang/paihang6.htm",money:"5元"},
+	{nums:"7",title:"煎饼侠",url:"paihang/paihang7.htm",money:"5元"},
+	{nums:"8",title:"复仇者联盟2：奥创纪元（中文配音）",url:"paihang/paihang8.htm",money:"5元"},
+	{nums:"9",title:"王朝的女人：杨贵妃",url:"paihang/paihang9.htm",money:"5元"},
+	{nums:"10",title:"桂宝之爆笑闯宇宙",url:"paihang/paihang10.htm",money:"5元"},
 	{nums:"11",title:"奇鞋妙旅奇鞋妙旅奇鞋妙旅奇鞋妙旅",url:"paihang/paihang11.htm",money:"5元"},
 	{nums:"12",title:"善意杀戮",url:"paihang/paihang12.htm",money:"5元"},
 	{nums:"13",title:"失孤",url:"paihang/paihang13.htm",money:"5元"},
@@ -80,19 +81,19 @@ var listArray=[//今日排行
 ];
 
 var zoneListArr=[//专区列表
-	{zoneName:"百事通",zoneUrl:"baiShiTong/index.htm",zoneImg:"url(baiShiTong/baiShiTongLogo.png)"},
+	{zoneName:"百视通",zoneUrl:"baiShiTong/index.htm",zoneImg:"url(baiShiTong/baiShiTongLogo.png)"},
 	{zoneName:"文广互动",zoneUrl:"SiTV/index.htm",zoneImg:"url(img/SiTV.png)"}
 ];
 
 //背景图定时更换，时间间隔：单位毫秒 
-var timeInterval=5000; 
-var timeInterval2=15000;
+var timeInterval=4000; 
+var timeInterval2=12000;
 var curIndex=0;
 var bgNumIndex=0;
 var numBgIndex=0;
 var length=12; 
 	setInterval(changeImg,timeInterval); //换推荐影片背景图
-	setInterval(changeNumBg,timeInterval);//换数字背景图的颜色
+//	setInterval(changeNumBg,timeInterval);//换数字背景图的颜色
 	setInterval(changeBgNum,timeInterval2);//换背景数字123-456-789
 
 function changeImg() { //换Hot图片
@@ -103,6 +104,15 @@ function changeImg() { //换Hot图片
 		curIndex+=1; 
 	} 
 	obj.src="changeImg/"+curIndex+".png";
+	
+	document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg0.png)";
+	if (numBgIndex<2) { 
+		numBgIndex+=1; 	
+		document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg1.png)";
+	}else { 
+		numBgIndex=0; 
+		document.getElementById("bgNum0").style.backgroundImage = "url(img/numBg1.png)";		
+	} 
 } 
 
 function changeNumBg(){//换数字背景图的颜色
@@ -319,7 +329,7 @@ function listFocus(__num){
 	}
 	
 	if(listArray[listPos].title.length>wordSize){
-	$("list"+listPos%listSize).innerHTML = '<marquee direction="left" width="88%" scrollamonut="15" scrolldelay="100">'+listArray[listPos].title +'</marquee>';
+	$("list"+listPos%listSize).innerHTML = '<marquee behavior="alternate" direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+listArray[listPos].title +'</marquee>';
 	}
 	if(listPos<3){
 		$("nums"+listPos%listSize).innerHTML = "";	
@@ -645,11 +655,11 @@ function eventHandler(e,type){
 	</div>
     
 	<div id="hot" style="z-index: -2;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px;"><img id="showpic" src="changeImg/0.png" width="405" height="514" /></div>	
-	
-	<div style="z-index: 100; position: absolute; left: 852px; top: 352px; width: 119px; height: 41px; background: url('img/now.png') no-repeat"> </div>
+	<!--
+	<div style="z-index: 100; position: absolute; left: 852px; top: 352px; width: 119px; height: 41px; background: url('img/now.png') no-repeat"> </div>-->
     
 	<div id="now" style="z-index: -2; position:absolute; left: 508px; top: 139px; width: 460px; height: 256px;">
-		<img src="img/newPlayImg.png" width="460" height="256" /> </div>
+		<img src="img/newPlayImg.jpg" width="460" height="256" /> </div>
     
     <div id="myMovies" style="z-index:-2;position:absolute; left: 984px; top: 138px; width:205px; height:53px;background:url(g') no-repeat"></div>
 	  

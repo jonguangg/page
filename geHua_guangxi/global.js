@@ -20,6 +20,7 @@ var SiHua_Event = {
 				case 38:				
 				case 87://山西九联
 				case 269://湖南
+				case 65362://河南
 					code = "KEY_UP";
 					break;
 					
@@ -28,6 +29,7 @@ var SiHua_Event = {
 				case 40:				 
 				case 83://山西九联
 				case 270://湖南
+				case 65364://河南
 					code = "KEY_DOWN";
 					break;
 					
@@ -36,6 +38,7 @@ var SiHua_Event = {
 				case 37:				
 				case 65://山西九联
 				case 271://湖南
+				case 65361://河南
 					code = "KEY_LEFT";
 					break;
 					
@@ -44,11 +47,13 @@ var SiHua_Event = {
 				case 30: 
 				case 68://山西九联
 				case 272://湖南
+				case 65363://河南
 					code = "KEY_RIGHT";
 					break;
 					
 				case 13:
 				case 19:
+				case 65293://河南
 					code = "KEY_SELECT";
 					break;
 					
