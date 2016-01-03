@@ -2,8 +2,7 @@
 //Event 匿名对象覆盖了浏览器内置 Event 对象, 导致按键等事件无法触发.
 
 var SiHua_Event = {
-	mapping: function(__event){
-		
+	mapping: function(__event){		
 		var keycode = __event.which||__event.keyCode;	
 //		alert(keycode);
 		var code = "";

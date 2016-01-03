@@ -182,8 +182,14 @@ function promptSelect(){
 	}
 
 //Ò£¿Ø¼üÖµ2
+document.onsystemevent = eventHandler;
+//document.onkeypress    = eventHandler;
+document.onirkeypress  = eventHandler;
 function eventHandler(e,type){
-	var key_code = e.code;
+	var key_code = "";
+	if(navigator.userAgent.indexOf('iPanel')!=-1){
+		   key_code = iPanelKey();
+	}else  key_code = e.code || event.which;
 	switch(key_code){
 //		case "KEY_UP":
 //			return 0;
@@ -214,8 +220,11 @@ function eventHandler(e,type){
 			break;
 
 		case "KEY_BACK": //back
+		alert("haha");
 //			location.href = "../index.htm";
-			history.go(-1);
+            document.onkeypress    = eventHandler;
+//			history.go(-1);
+            location.href = "../paiHang/paihang7.htm";
 			break;	
 		case 283:
 			location.href = "index.htm";

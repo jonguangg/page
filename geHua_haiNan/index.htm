@@ -442,10 +442,13 @@ function doSelect(){//确认键
 } 
 
 //另一套键值，可用电脑键盘操作
+    document.onkeypress    = eventHandler;
+//    document.onsystemevent = eventHandler;
+//    document.onirkeypress  = eventHandler;
 function eventHandler(e,type){
 	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
 	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页	
-	var key_code = e.code;
+	var key_code = e.code || event.which;
 	switch(key_code){
 		case "KEY_UP":
 		  	if(area=="rank"){
@@ -612,7 +615,9 @@ function eventHandler(e,type){
 			break;
 
 		case "KEY_BACK": //back
-			history.go(-1);
+		case 8:
+			location.href = "baiShiTong/index.htm";
+			return 0;
 			break;	
 			
 		case "KEY_EXIT":
