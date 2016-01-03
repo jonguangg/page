@@ -1,0 +1,619 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=gb2312" />
+<title>首页</title>
+<style>
+*{margin:0px;padding:0px;}
+.todayRanking{font-size:20px;color:#ffffff}
+.num td{background:url('img/numBg0.png') no-repeat;font-size:18px;color:#fff;}
+</style>
+
+<script type=text/javascript src="global.js"></script>
+<script>
+var area = 0;
+var menuPos = 0;  //列表焦点位置
+var menusPos= 0;  //首页主页图标焦点位置
+var listPos = 0;  //条目当前位置
+var changePos=0;  //轮换图片焦点位置
+var listSize = 10; //条目数
+var url = window.location.href;
+var wordSize = 11;
+var scrollPos=0;
+function $(id){return document.getElementById(id);}
+
+var posArray = [0,0,0,0,0,0,0,0,0,0,0]; //记录pos位置
+
+var changeArray = [//最热HOT
+   "changeImg/0.htm",
+   "changeImg/1.htm",
+   "changeImg/2.htm",
+   "changeImg/3.htm",
+   "changeImg/4.htm",
+   "changeImg/5.htm",
+   "changeImg/6.htm",
+   "changeImg/7.htm",
+   "changeImg/8.htm",
+   "changeImg/9.htm",
+   "changeImg/10.htm",   
+   "changeImg/11.htm"
+];
+
+var listArray=[//今日排行
+	{nums:"1",title:"匆匆那年",url:"paihang/paihang1.htm",money:"5元"},
+	{nums:"2",title:"超能陆战队（中文配音）",url:"paihang/paihang2.htm",money:"5元"},
+	{nums:"3",title:"大喜临门",url:"paihang/paihang3.htm",money:"5元"},
+	{nums:"4",title:"地牢围攻3",url:"paihang/paihang4.htm",money:"5元"},
+	{nums:"5",title:"第七谎言",url:"paihang/paihang5.htm",money:"5元"},
+	{nums:"6",title:"定制伴郎",url:"paihang/paihang6.htm",money:"5元"},
+	{nums:"7",title:"飓风营救3",url:"paihang/paihang6.htm",money:"5元"},
+	{nums:"8",title:"魔法黑森林",url:"paihang/paihang7.htm",money:"5元"},
+	{nums:"9",title:"魔法之家",url:"paihang/paihang7.htm",money:"5元"},
+	{nums:"10",title:"陌路惊笑",url:"paihang/paihang10.htm",money:"5元"},
+	{nums:"11",title:"奇鞋妙旅",url:"paihang/paihang11.htm",money:"5元"},
+	{nums:"12",title:"善意杀戮",url:"paihang/paihang12.htm",money:"5元"},
+	{nums:"13",title:"失孤",url:"paihang/paihang13.htm",money:"5元"},
+	{nums:"14",title:"十万伙急",url:"paihang/paihang14.htm",money:"5元"},
+	{nums:"15",title:"万物生长",url:"paihang/paihang15.htm",money:"5元"},
+	{nums:"16",title:"我是女王",url:"paihang/paihang16.htm",money:"5元"},
+	{nums:"17",title:"喜羊羊与灰太狼之羊年喜羊羊",url:"paihang/paihang17.htm",money:"5元"},
+	{nums:"18",title:"熊出没之雪岭熊风",url:"paihang/paihang18.htm",money:"5元"},
+	{nums:"19",title:"业内前五",url:"paihang/paihang19.htm",money:"5元"},
+	{nums:"20",title:"咱们结婚吧",url:"paihang/paihang20.htm",money:"5元"},
+	{nums:"21",title:"政治之爱",url:"paihang/paihang21.htm",money:"5元"},
+	{nums:"22",title:"左耳",url:"paihang/paihang22.htm",money:"5元"},
+	{nums:"23",title:"X战警",url:"paihang/paihang23.htm",money:"5元"},
+	{nums:"24",title:"X战警",url:"paihang/paihang24.htm",money:"5元"},
+	{nums:"25",title:"X战警",url:"paihang/paihang25.htm",money:"5元"},
+	{nums:"26",title:"X战警",url:"paihang/paihang26.htm",money:"5元"},
+	{nums:"27",title:"X战警",url:"paihang/paihang27.htm",money:"5元"},
+	{nums:"28",title:"X战警",url:"paihang/paihang28.htm",money:"5元"},
+	{nums:"29",title:"X战警",url:"paihang/paihang29.htm",money:"5元"},
+	{nums:"30",title:"X战警",url:"paihang/paihang30.htm",money:"5元"}
+];
+
+function menuFocus(__num){//首页、主页图标
+	$("menu"+menusPos).src = "img/tm.gif";
+	menusPos+=__num;
+	if(menusPos<0)menusPos=2-1;
+	else if(menusPos>2-1)menusPos=0;
+	$("menu"+menusPos).src = "img/homeFocus"+menusPos+".png";
+}
+
+function showList(){
+	listPos = posArray[menuPos];
+	var position = (parseInt((listPos+listSize)/listSize)-1)*listSize; //当前页的第一个	
+	for(i=0; i<listSize; i++){
+		if(position+i<listArray.length){
+			$("list"+i).innerHTML = listArray[position+i].title.slice(0,wordSize);
+			$("list"+i).style.backgroundImage = "url()";
+			$("nums"+i).innerHTML = listArray[position+i].nums;
+			$("nums"+i).style.backgroundImage = "url()";
+			$("money"+i).innerHTML = listArray[position+i].money;
+			$("money"+i).style.backgroundImage = "url()";
+		}
+		else {
+			$("list"+i).innerHTML = "";
+			$("list"+i).style.backgroundImage = "url()"
+			$("nums"+i).innerHTML = "";
+			$("nums"+i).style.backgroundImage = "url()";
+			$("money"+i).innerHTML = "";
+			$("money"+i).style.backgroundImage = "url()";
+		}
+	}
+	pageNum();
+}
+
+function listFocus(__num){
+	$("list"+listPos%listSize).innerHTML = listArray[listPos].title.slice(0,wordSize);
+	$("list"+listPos%listSize).style.backgroundImage = "url()";
+	$("list"+listPos%listSize).style.color = "#fff";
+	
+	$("nums"+listPos%listSize).innerHTML = listArray[listPos].nums;
+	$("nums"+listPos%listSize).style.backgroundImage = "url()";
+	$("nums"+listPos%listSize).style.color = "#fff";
+	
+	$("money"+listPos%listSize).innerHTML = listArray[listPos].money;
+	$("money"+listPos%listSize).style.backgroundImage = "url()";
+	$("money"+listPos%listSize).style.color = "#fff";
+	
+	var tempPos = listPos;
+	listPos+=__num;
+
+	if(listPos<0)listPos=0;
+	else if(listPos>listArray.length-1){
+		listPos = tempPos;
+		area = 4;
+		listFocus(0);
+		return;
+	}
+	//如果翻了页，条目重新输出
+	if(parseInt((listPos+listSize)/listSize)!=parseInt((tempPos+listSize)/listSize)){
+		if(__num<0){
+			showList();	
+		}
+		else{
+			listPos = tempPos;
+			area=4;
+			listFocus(0);
+			return;
+		}
+	}
+	$("list"+listPos%listSize).style.backgroundImage = "url(img/list_focus1.png)";
+	$("list"+listPos%listSize).style.color = "#3A2006";
+	
+	if(listArray[listPos].title.length>wordSize){
+	$("list"+listPos%listSize).innerHTML = '<marquee direction="left" width="88%" scrollamonut="15" scrolldelay="100">'+listArray[listPos].title +'</marquee>';
+	}
+	
+	$("nums"+listPos%listSize).innerHTML = listArray[listPos].nums;
+	$("nums"+listPos%listSize).style.backgroundImage = "url(img/list_focus1.png)";
+	$("nums"+listPos%listSize).style.color = "#3A2006";
+	
+	$("money"+listPos%listSize).innerHTML = listArray[listPos].money;
+	$("money"+listPos%listSize).style.backgroundImage = "url(img/list_focus1.png)";
+	$("money"+listPos%listSize).style.color = "#3A2006";
+	posArray[menuPos] = listPos;
+}
+
+function pageUp(){
+	listPos-=listSize;
+	if(listPos<0){
+		listPos+=listSize;	
+	}
+	posArray[menuPos] = listPos;
+	showList();
+}
+
+function pageDown(){
+if(listPos>19){
+	listPos=1;
+	posArray[menuPos] = listPos;
+	showList();
+}
+else
+	listPos+=listSize;
+		if(listPos>listArray.length-1){
+		if(parseInt(listPos/listSize)!=parseInt((listArray.length-1+listSize)/listSize))listPos = listArray.length-1;
+		else listPos-=listSize;
+	}
+	posArray[menuPos] = listPos;
+	showList();
+}
+
+function pagelast(){
+	listPos = (parseInt((listPos+listSize)/listSize)-1)*listSize+listSize-1;//当前页的第一个	
+	if(listPos>listArray.length-1)listPos=listArray.length-1;
+}
+
+function pageNum(){//页码
+	listPos = posArray[menuPos];
+	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
+	var allPage = parseInt((listArray.length-1+listSize)/listSize);//总共多少页
+	$("page").innerHTML = "第"+currPage+"页"+"/"+"共"+allPage+"页"; 
+}
+function listNull(){
+					$("list"+listPos%listSize).style.backgroundImage = "url(list_focus0.png)";
+					$("list"+listPos%listSize).style.color = "#fff";
+					
+					$("nums"+listPos%listSize).style.backgroundImage = "url(list_focus0.png)";
+					$("nums"+listPos%listSize).style.color = "#fff";
+					
+					$("money"+listPos%listSize).style.backgroundImage = "url(list_focus0.png)";
+					$("money"+listPos%listSize).style.color = "#fff";
+	}
+//另一套键值，可用电脑键盘操作
+function eventHandler(e,type){
+	listPos = posArray[menuPos];
+	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
+	var key_code = e.code;
+	switch(key_code){
+		case "KEY_UP":
+		  	if(area==4){
+				if(listPos%5==0){
+					area=3;
+					$("zone").style.backgroundImage = "url(qingChun/qingChun.png)";
+					$("area3").style.backgroundImage = "url(img/focus3.png)";
+					listNull();
+				}else{
+					listFocus(-1);
+				}
+			}else if(area==3){
+				$("area3").style.backgroundImage = "url()";
+				area=2;
+				$("area2").style.backgroundImage = "url(img/focus2.png)";
+			}else if(area==32){
+			    area=3;
+				$("area3").style.backgroundImage = "url('img/focus3.png')";	
+				$("zone").style.backgroundImage = "url('qingChun/qingChun.png')";				
+			}
+			else if(area==7){
+			    area=4;
+				$("pdown").style.backgroundImage = "url(img/pdown0.png)";	
+				listFocus(0);								
+			}else if(area==8){
+			    area=4;
+				$("pup").style.backgroundImage = "url(img/pup0.png)";	
+				listFocus(0);					
+			}
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+			if(area==2){
+				area=3;
+				$("area2").style.backgroundImage = "url()";
+				$("area3").style.backgroundImage = "url('img/focus3.png')";
+			}else if(area==1){
+				area=4;
+				  $("area1").style.backgroundImage = "url()";
+//				  $("scroll").style.backgroundImage = "url(img/scroll.png)";
+		    //    $("area3").style.backgroundImage = "url()";
+				listFocus(0);
+			}else if(area==3){
+			    area=32;
+//				$("area3").style.backgroundImage = "url()";
+			    $("zone").style.backgroundImage = "url(baiShiTong/BaiShiTong.png)";				
+			}
+			else if(area==32){
+				area=4;
+				$("area3").style.backgroundImage = "url()";
+				$("zone").style.backgroundImage = "url('qingChun/qingChun.png')";
+				listFocus(0);
+			}else if(area==4){
+			if(listPos==9 || listPos==19){
+			    area=7;
+			    $("pdown").style.backgroundImage = "url(img/pdown1.png)";
+				listNull();
+			}else if(listPos==29){
+				area=8;
+			    $("pup").style.backgroundImage = "url(img/pup1.png)";
+				listNull();
+			}
+			else {listFocus(1);
+			}		
+		  }
+			return 0;
+			break;
+			
+		case "KEY_LEFT":
+			if(area==1){
+				area=0;
+				$("area0").style.backgroundImage = "url(img/focus0.png)";
+				$("area1").style.backgroundImage = "url()";
+			}else if(area==2){
+				area=1;
+				$("area1").style.backgroundImage = "url(img/focus1.png)";
+				$("area2").style.backgroundImage = "url()";
+			}else if(area==3){
+				area=1;
+				$("area3").style.backgroundImage = "url()";
+				$("area1").style.backgroundImage = "url(img/focus1.png)";
+			}else if(area==32){
+				area=1;
+				$("area3").style.backgroundImage = "url()";				
+				$("zone").style.backgroundImage = "url(qingChun/qingChun.png)";
+				$("area1").style.backgroundImage = "url(img/focus1.png)";			
+			}
+			else if(area==4){	
+			    if(listPos<5){
+				area=0;
+				$("area0").style.backgroundImage = "url(img/focus0.png)";
+				listNull();
+//				$("list"+listPos%listSize).innerHTML = listArray[listPos].title.slice(0,wordSize);
+//				$("list"+listPos%listSize).style.backgroundImage = "url()";
+//				$("list"+listPos%listSize).style.color = "#fff";
+				
+//				$("nums"+listPos%listSize).innerHTML = listArray[listPos].nums;
+//				$("nums"+listPos%listSize).style.backgroundImage = "url()";
+//				$("nums"+listPos%listSize).style.color = "#fff";
+				
+//				$("money"+listPos%listSize).innerHTML = listArray[listPos].money;
+//				$("money"+listPos%listSize).style.backgroundImage = "url()";
+//				$("money"+listPos%listSize).style.color = "#fff";								
+				}else listFocus(-5);
+			}else if(area==7 && currPage>1){
+			    area=8;
+				$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+				$("pup").style.backgroundImage = "url(img/pup1.png)";			
+			}
+			return 0;
+			break;
+			
+		case "KEY_RIGHT": //right
+			if(area==0){
+				area=4;
+				$("area0").style.backgroundImage = "url()";
+				listFocus(0);
+			}else if(area==1){
+				area=2;
+				$("area1").style.backgroundImage = "url()";
+				$("area2").style.backgroundImage = "url('img/focus2.png')";
+			}else if(area==4){
+/*			if(listPos>4 && listPos<10){
+			    pageDown();
+				$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+				$("pup").style.backgroundImage = "url(img/pup0.png)";
+				listFocus(0);
+			}else if(listPos>14 && listPos<20){
+			    pageDown();
+				$("pdown").style.backgroundImage = "url()";
+				$("pup").style.backgroundImage = "url(img/pup0.png)";
+				listFocus(0);		
+			}
+			//else if(listPos>24 && listPos<30){
+			//	pageDown();
+			//	$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+			//	$("pup").style.backgroundImage = "url()";
+			//	listFocus(0);			
+			//}
+			else */
+				listFocus(5);
+			}else if(area==8 && currPage<3){
+			    area=7;
+				$("pdown").style.backgroundImage = "url(img/pdown1.png)";
+				$("pup").style.backgroundImage = "url(img/pup0.png)";
+			}
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN":
+			if(area==4 && currPage==1){
+			    pageDown();
+				$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+				$("pup").style.backgroundImage = "url(img/pup0.png)";
+				listFocus(0);
+			}else if(area==4 && currPage==2){
+			    pageDown();
+				$("pdown").style.backgroundImage = "url()";
+				$("pup").style.backgroundImage = "url(img/pup0.png)";
+				listFocus(0);		
+			}
+			//else if(area==4 && currPage==3){
+			//	pageDown();
+			//	$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+			//	$("pup").style.backgroundImage = "url()";
+			//	listFocus(0);			
+			//}
+		    return 0;
+			break;	
+			
+		case "PAGE_UP":
+			if(area==4 && currPage==2){
+			    pageUp();
+				$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+				$("pup").style.backgroundImage = "url()";
+				listFocus(0);
+			}else if(area==4 && currPage==3){
+			    pageUp();
+				$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+				$("pup").style.backgroundImage = "url(img/pup0.png)";
+				listFocus(0);		
+			}
+		    return 0;
+			break;			
+						
+		case "KEY_SELECT": //enter
+			doSelect();
+		    return 0;
+			break;
+
+		case "KEY_BACK": //back
+			location.href = "../index.htm";
+			history.go(-1);
+			break;	
+			
+		case 283:
+			location.href = "index.htm";
+			return 0;
+			break;
+	}
+}
+//*/
+
+//背景图定时更换，时间间隔：单位毫秒 
+var timeInterval=5000; 
+var timeInterval2=15000;
+var curIndex=0;
+var bgNumIndex=0;
+var numBgIndex=0;
+var length=12; 
+	setInterval(changeImg,timeInterval); //换推荐影片背景图
+	setInterval(changeNumBg,timeInterval);//换数字背景图的颜色
+	setInterval(changeBgNum,timeInterval2);//换背景数字123-456-789
+
+function changeImg() { 
+	var obj=document.getElementById("showpic"); 
+	if (curIndex==length-1) { 
+		curIndex=0; 
+	}else { 
+		curIndex+=1; 
+	} 
+	obj.src="changeImg/"+curIndex+".png";
+} 
+
+function changeNumBg(){//换数字背景图的颜色
+	document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg0.png)";
+	if (numBgIndex<2) { 
+		numBgIndex+=1; 	
+		document.getElementById("bgNum"+numBgIndex).style.backgroundImage = "url(img/numBg1.png)";
+	}else { 
+		numBgIndex=0; 
+		document.getElementById("bgNum0").style.backgroundImage = "url(img/numBg1.png)";		
+	} 
+}
+
+function changeBgNum(){//换背景数字123-456-789-
+	if (bgNumIndex<3) { 
+		bgNumIndex+=1; 
+		var bgNumTemp0=$("bgNum0").innerHTML;
+		var bgNumTemp1=$("bgNum1").innerHTML;
+		var bgNumTemp2=$("bgNum2").innerHTML;
+		$("bgNum0").innerHTML=parseInt(bgNumTemp0)+3;
+		$("bgNum1").innerHTML=parseInt(bgNumTemp1)+3;
+		$("bgNum2").innerHTML=parseInt(bgNumTemp2)+3;
+		
+		}else{
+			bgNumIndex=0; 
+			$("bgNum0").innerText="1";
+			$("bgNum1").innerText="2";
+			$("bgNum2").innerText="3";	
+		} 
+	}
+
+function doSelect(){//确认键
+	listPos = posArray[menuPos];
+	var currPage = parseInt((listPos+listSize)/listSize);//当前第几页
+	if(area==5)	{
+		if(menusPos==0)location.href = "paihang/paihang1.htm";
+		else if(menusPos==1)location.href = "paihang/paihang2.htm";
+	}else if(area==0){
+		location.href = changeArray[curIndex];
+	}else if(area==1){
+		location.href = "#";
+	}else if(area==2){
+		location.href = "myMovies/index.htm";
+	}else if(area==3){
+		location.href = "qingChun/index.htm";
+	}else if(area==32){
+		location.href = "baiShiTong/index.htm";	
+	}	else if(area==4){
+		location.href = listArray[listPos].url;
+	}else if(area==7){
+		pageDown();
+		listFocus(-9);
+	    if(currPage==1){
+        $("pup").style.backgroundImage = "url(img/pup0.png)";		
+		}else{
+		area=8;		
+        $("pdown").style.backgroundImage = "url()";
+        $("pup").style.backgroundImage = "url(img/pup1.png)";	
+		}		
+	}else if(area==8){
+    	pageUp();
+		listFocus(-9);
+		if(currPage==2){
+	    $("pup").style.backgroundImage = "url()";
+		$("pdown").style.backgroundImage = "url(img/pdown1.png)";
+		area=7;	
+		}else{
+		$("pdown").style.backgroundImage = "url(img/pdown0.png)";
+		$("pup").style.backgroundImage = "url(img/pup1.png)";
+		}
+	}
+}
+
+function init(){
+showList();
+showNum();
+
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+<!--首页	<div style="position:absolute; left: 388px; top: 59px; width:96px; height:41px;">
+		<img src="img/tm.gif" width="96px" height="41px" id="menu0" />
+	</div>
+主页	<div style="position:absolute; left: 518px; top: 59px; width:96px; height:41px;">
+		<img src="img/tm.gif" width="96px" height="41px" id="menu1" />
+	</div>-->
+    
+	<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index_bg.png')")></div>
+    
+	<div style="z-index: 102; position: absolute; left: 360px; top: 602px; width: 66px; height: 22px;">
+		<table width="75" border="0" cellspacing="0" cellpadding="0" class="num">
+			<tr>
+				<td id="bgNum0" width="25" height="22" align="center" style="background:url('img/numBg1.png') no-repeat">1</td>
+				<td id="bgNum1" width="25" height="22" align="center">2</td>
+				<td id="bgNum2" width="25" height="22" align="center">3</td>
+			</tr>
+	  </table>
+	</div>
+    
+	<div style="z-index: 100; position: absolute; left: 79px; top: 580px; width: 415px; height: 58px; background: url('img/recommendMovie.png') no-repeat">
+	</div>
+    
+	<div id="area0" style="z-index: 60; position: absolute; left: 90px; top: 139px; width: 405px; height: 514px; background: url('img/focus0.png') no-repeat">
+	</div>
+    
+	<div style="z-index: -2;position: absolute; left: 90px; top: 139px; width: 405px; height: 514px;"><img id="showpic" src="changeImg/0.png" width="405" height="514" /></div>
+	
+	
+	<div style="z-index: 100; position: absolute; left: 852px; top: 352px; width: 119px; height: 41px; background: url('img/hot.png') no-repeat">	</div>
+    
+	<div id="area1" style="z-index:60;position:absolute; left: 508px; top: 139px; width: 460px; height: 256px;background:url('img/tm.gif') no-repeat">
+	</div>
+    
+	<div style="z-index: -2; position:absolute; left: 508px; top: 139px; width: 460px; height: 256px;">
+		<img src="img/newPlayImg.png" width="460" height="256" />
+	</div>
+	
+	<div id="area2" style="z-index: 60; position: absolute; left: 984px; top: 139px; width: 205px; height: 53px; background: url('img/tm.gif') no-repeat">
+	</div>
+
+	<div id="area3" style="z-index:100;position:absolute; left: 984px; top: 237px; width:205px; height:140px;background:url() no-repeat">	</div>
+    
+	<div id="zone" style="z-index:-2;position:absolute; left: 986px; top: 237px; width:205px; height:140px;background:url('qingChun/qingChun.png') no-repeat">	</div>	
+
+	<div  id="area4" style="position: absolute; left: 508px; top: 465px; width: 680px; height: 180px; color: #FF0000">
+		<table id="paihang" width="680" border="0" cellspacing="0" cellpadding="0" style="font-size:22px;color:#fff">
+			<tr>
+				<td id="nums0" width="34" height="36" align="center"></td>
+				<td id="list0" width="250" height="36"></td>
+				<td id="money0" width="54" height="36"></td>
+
+				<td id="nums5" width="34" height="36" align="center"></td>
+				<td id="list5" width="250" height="36">&nbsp;</td>
+				<td id="money5" width="58" height="36">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="nums1" height="36" align="center"></td>
+				<td id="list1" height="36">&nbsp;</td>
+				<td id="money1" height="36">&nbsp;</td>
+
+				<td id="nums6" height="36" align="center"></td>
+				<td id="list6" height="36">&nbsp;</td>
+				<td id="money6" height="36">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="nums2" height="36" align="center"></td>
+				<td id="list2" height="36">&nbsp;</td>
+				<td id="money2" height="36">&nbsp;</td>
+
+				<td id="nums7" height="36" align="center"></td>
+				<td id="list7" height="36">&nbsp;</td>
+				<td id="money7" height="36">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="nums3" height="36" align="center"></td>
+				<td id="list3" height="36">&nbsp;</td>
+				<td id="money3" height="36">&nbsp;</td>
+
+				<td id="nums8" height="36" align="center"></td>
+				<td id="list8" height="36">&nbsp;</td>
+				<td id="money8" height="36">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="nums4" height="36" align="center"></td>
+				<td id="list4" height="36">&nbsp;</td>
+				<td id="money4" height="36">&nbsp;</td>
+
+				<td id="nums9" height="36" align="center"></td>
+				<td id="list9" height="36">&nbsp;</td>
+				<td id="money9" height="36">&nbsp;</td>
+			</tr>
+	  </table>
+	</div>
+	
+	<div id="page" style="position: absolute; left: 1053px; top: 419px; width: 129px; height: 36px; line-height: 36px; color: #fff; text-align: right; font-size: 22px;">
+		1/3	</div>
+	
+<div id="pup" style="z-index: 100; position: absolute; left: 900px; top: 655px; width: 130px; height: 40px; line-height: 36px; background: url() no-repeat">	</div>
+
+<div id="pdown" style="z-index: 100; position: absolute; left: 1050px; top: 655px; width: 130px; height: 40px; line-height: 36px; background: url(img/pdown0.png) no-repeat">	</div>
+
+</body>
+</html>
