@@ -251,6 +251,7 @@ function iPanelKey(){
 			codes ="KEY_SELECT";
 			break;
 		case 65367:
+		case 8:
 			codes ="KEY_BACK";
 			break;
 		case 26:
@@ -259,6 +260,9 @@ function iPanelKey(){
 		case 25:
 			codes ="PAGE_UP";
 			break;	
+		case 27:
+			codes ="KEY_EXIT";
+			break;				
 		case 49:
 			codes ="KEY_NUMERIC49";
 			break;

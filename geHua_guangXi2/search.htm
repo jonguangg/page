@@ -1,0 +1,732 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>首页</title>
+<style>
+*{margin:0px;padding:0px;border:0px;font-family:SimHei;}
+
+.zone_newTxt{ position:absolute; top:486px; width:265px; height:31px; line-height:31px; font-size:26px; color:white; text-align:center; vertical-align:middle; z-index:1}
+
+img{width:100%;height:100%; border-radius:5px;}
+
+.movieNames{z-index:3; width:135px;height:30px;line-height:30px;text-align:center;vertical-align:middle;color:white;font-size:22px;}
+
+.movieScores{z-index:3; width:40px;height:30px;line-height:30px;text-align:center;vertical-align:middle;color:yellow;font-size:25px;}
+
+.boxOffice{z-index:3; width:70px;height:30px; border-radius:2px;line-height:30px;text-align:center;vertical-align:middle;background-color:#F60;color:white;font-size:20px; }
+
+.submit0{margin:auto; line-height:35px; border:solid 1px white; background-color:""; font-size:25px; color:white;}
+.submit1{margin:auto; line-height:35px; border:solid 2px #F90; background-color:#F90; font-size:30px; color:white;}
+
+.key{color:white;line-height:35px;border:white solid 1px; border-radius:3px;font-size:25px;}
+
+
+.searchPlay0{width:40px; height:38px;background:url(img/playSearch0.png) no-repeat center center;}
+.searchPlay1{width:40px; height:38px;background:url(img/playSearch1.png) no-repeat center center;}
+
+.searchList0{left:460px; width:350px; height:40px;color:white; font-size:22px; border:none none 0px; border-radius:2px;}
+.searchList1{left:460px; width:350px; height:40px;color:#F60; font-size:22px; border:solid #F60 2px; border-radius:3px;}
+
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script>
+var areaIndex = getCookie("areaIndex")?getCookie("areaIndex"):"small";
+var smallFocusPos = parseInt(getCookie("smallFocusPos"))?parseInt(getCookie("smallFocusPos")):5;
+var bigFocusPos = parseInt(getCookie("bigFocusPos"))?parseInt(getCookie("bigFocusPos")):0;
+var recommendFocusPos =0;
+var ListFocusPos = 0;
+var listSize = 12;
+var url = window.location.href;
+var listEnds=2;
+var ListEnd =listEnds+1;	
+var ListBegin=0;
+var currPos=0;
+var currPage=0;
+var allPage=0;
+var currlist =0;
+
+function $(id){return document.getElementById(id);}
+
+var listArray = [
+	/*	  { movieName:"强档名称超长超长1",url:"collect1.htm"},
+		  { movieName:"一二三四五六七八九十一二三四",url:"collect2.htm"},
+		  { movieName:"强档名称3",url:"3.htm"},
+		  { movieName:"强档名称4",url:"4.htm"},
+		  { movieName:"强档名称超长超长5 强档名称超长超长 强档名称超长超长",url:"5.htm"},
+		  { movieName:"强档名称6",url:"6.htm"},
+		  { movieName:"强档名称7",url:"7.htm"},
+		  { movieName:"强档名称8",url:"8.htm"},
+		  { movieName:"强档名称9",url:"9.htm"},
+		  { movieName:"强档名称10",url:"10.htm"},
+		  { movieName:"强档名称11",url:"11.htm"},
+		  { movieName:"强档名称12",url:"12.htm"},
+		  { movieName:"强档名称13",url:"13.htm"},
+		  { movieName:"强档名称14",url:"14.htm"},
+		  { movieName:"强档名称15",url:"15.htm"},
+		  { movieName:"强档名称16",url:"16.htm"},
+		  { movieName:"强档名称17",url:"17.htm"},
+		  { movieName:"强档名称18",url:"18.htm"},
+		  { movieName:"强档名称19",url:"19.htm"},
+		  { movieName:"强档名称20",url:"20.htm"},
+		  { movieName:"强档名称21",url:"21.htm"},
+		  { movieName:"强档名称22",url:"22.htm"},
+		  { movieName:"强档名称23",url:"23.htm"},
+		  { movieName:"强档名称24",movieScore:"6.9",url:"24.htm"},
+		  { movieName:"强档名称25",url:"25.htm"},
+		  { movieName:"强档名称26",url:"26.htm"},
+		  { movieName:"强档名称27",url:"27.htm"},
+		  { movieName:"强档名称28",url:"28.htm"},
+		  { movieName:"强档名称29",url:"29.htm"}	*/
+];
+
+var recommendArray = [
+		  { movieName:"1",url:"recommend1.htm",img:"img/postersSmall2.png"},
+		  { movieName:"2",url:"recommend2.htm",img:"img/postersSmall.png"},
+		  { movieName:"3",url:"recommend3.htm",img:"img/postersSmall3.png"},
+		  { movieName:"4",url:"recommend4.htm",img:"img/postersSmall1.png"}
+];
+function showRecommend(){
+	for(i=0;i<4;i++){
+		$("recommendImg_"+i).src = recommendArray[i].img;
+	}
+}
+function showSearchList(){//显示导航下的内容
+	showPage();
+	for(i=0; i<10; i++){
+		$("searchPlay_"+i).style.backgroundImage = "url(img/null.png)";
+		$("searchName_"+i).innerHTML = "";
+	}
+	for(i=0; i<10; i++){
+		if(i+ListFocusPos<listArray.length && listArray.length>0){
+			$("searchPlay_"+i).style.backgroundImage = "url(img/playSearch0.png)";
+			$("searchName_"+i).innerHTML = listArray[ListFocusPos+i].movieName.slice(0,12);
+		}
+	}
+	if(areaIndex=="searchList"){
+		changeListFocus(0);
+	}
+}
+
+function showPage(){//显示页码和翻页箭头
+	allPage = parseInt((listArray.length-1+10)/10);
+	if(allPage>0){
+		$("page").innerHTML = currPage+1+"/"+allPage;
+	}
+
+	if($("searchTxt").innerHTML.length==0 && listArray.length==0){
+		$("prompt").style.display = "block";
+	    $("prompt").innerHTML = "&nbsp;&nbsp;请选择节目/演职员的首字母，<br />然后单击“搜索”键。";
+	}	 
+	else if($("searchTxt").innerHTML.length>0 && listArray.length ==0){
+		$("prompt").style.display = "block";
+		$("prompt").innerHTML = "&nbsp;&nbsp;抱歉！没有找到 "+$("searchTxt").innerHTML+" 的相关视频，建议您更换关键词，重新搜索。";
+	}else{
+		$("prompt").style.display = "none";
+	}
+}
+
+function changeListFocus(_num){
+	if( (ListFocusPos<listArray.length-1 && _num>0) ||( ListFocusPos>0 && ListFocusPos<listArray.length && _num<0) ){
+		$("searchList_"+ListFocusPos%10).className = "searchList0";
+		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch0.png')";
+		$("searchName_"+ListFocusPos%10).innerHTML = listArray[ListFocusPos].movieName.slice(0,12);
+		ListFocusPos += _num;
+		
+		if(ListFocusPos==10 || ListFocusPos==20){
+			pageDown();
+		}
+		if( (ListFocusPos==9|| ListFocusPos==19 ) && _num<0){
+			pageUp();
+		}
+	}
+	
+	if(areaIndex=="searchList"){
+		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch1.png')";
+		$("searchList_"+ListFocusPos%10).className = "searchList1";
+		$("searchName_"+ListFocusPos%10).innerHTML = (listArray[ListFocusPos].movieName.length>13)?'<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+listArray[ListFocusPos].movieName+'</marquee>':listArray[ListFocusPos].movieName.slice(0,12); 
+	}else {
+		 $("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch0.png')";
+		 $("searchList_"+ListFocusPos%10).className = "searchList0";
+		 $("searchName_"+ListFocusPos%10).innerHTML = listArray[ListFocusPos].movieName.slice(0,12); 
+	}
+}
+function pageDown(){//P+下一页
+	if(allPage-1>currPage){
+		$("searchList_"+ListFocusPos%10).className = "searchList0";
+		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch0.png')";
+	currPage += 1;	
+	ListFocusPos = currPage*10;//position;//当前页的第一个
+		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch1.png')";
+		$("searchList_"+ListFocusPos%10).className = "searchList1";
+	showSearchList();
+
+	}
+}
+function pageUp(){//P-上一页
+	if(currPage>0){
+		$("searchList_"+ListFocusPos%10).className = "searchList0";
+		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch0.png')";
+	currPage -= 1;	
+	ListFocusPos = currPage*10;//position;//当前页的第一个
+		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch1.png')";
+		$("searchList_"+ListFocusPos%10).className = "searchList1";
+	showSearchList();
+	}
+}
+
+function showMovieName(num){//切换焦点时超长名称游动
+		if(listArray[0].list[ListFocusPos].movieName.length>5 && num>0){
+		$("12_movieName_"+ListFocusPos%listSize).innerHTML = '<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+listArray[0].list[ListFocusPos].movieName+'</marquee>';
+	    }
+	   else
+		$("12_movieName_"+ListFocusPos%listSize).innerHTML = listArray[0].list[ListFocusPos].movieName.slice(0,12);
+}
+
+function focusImg(){//焦点定位
+	if(areaIndex=="search"){
+		 $("search").style.display = "block";}
+	else{$("search").style.display = "none";}
+	
+	if(areaIndex=="buy"){
+		 $("buy").style.display = "block";}
+	else{$("buy").style.display = "none";}
+	
+	if(areaIndex=="collect"){
+		 $("collect").style.display = "block";}
+	else{$("collect").style.display = "none";}
+	
+	if(areaIndex=="submits"){
+		$("submits").className = "submit1";
+	}
+	else $("submits").className = "submit0";
+}
+	
+function changeFocusSmall(_num){	
+	var end = 0;
+	//先还原前一个
+	if( ( (_num!=0 && areaIndex=="small") || (_num==0 && areaIndex!="small" ) ) && (smallFocusPos>1 && smallFocusPos<10) ){
+		$("key_"+smallFocusPos).style.border = "solid 1px white";
+		$("key_"+smallFocusPos).style.width = parseInt($("key_"+smallFocusPos).style.width)-26+"px";
+		$("key_"+smallFocusPos).style.left = parseInt($("key_"+smallFocusPos).style.left)+13+"px";
+		$("key_"+smallFocusPos).style.height = parseInt($("key_"+smallFocusPos).style.height)-10+"px";
+		$("key_"+smallFocusPos).style.top= parseInt($("key_"+smallFocusPos).style.top)+5+"px";	
+		$("key_"+smallFocusPos).style.backgroundColor = "";
+		
+		$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "";
+		$("keyTable_"+smallFocusPos).style.fontSize = "25px";
+
+		if(smallFocusPos==7 || smallFocusPos==9){
+		   end = 5;
+		}
+		else{
+		   end = 4;
+		}
+		
+		for(i=0; i<end; i++){
+			$("keyTable_"+smallFocusPos+"_"+i).style.lineHeight = "35px";
+			$("keyTable_"+smallFocusPos+"_"+i).style.color = "white";		
+		}			
+	}else $("key_"+smallFocusPos).className = "submit0";	
+	
+	smallFocusPos += _num;//跳到下一个
+	if(smallFocusPos<1) { smallFocusPos =9 ;}
+	if(smallFocusPos>12){ smallFocusPos =1 ;}
+	
+	if(areaIndex=="small"){
+		if(smallFocusPos>1 && smallFocusPos<10){
+			$("key_"+smallFocusPos).style.border = "solid 2px #F90";
+			$("key_"+smallFocusPos).style.width = parseInt($("key_"+smallFocusPos).style.width)+26+"px";
+			$("key_"+smallFocusPos).style.left = parseInt($("key_"+smallFocusPos).style.left)-13+"px";
+			$("key_"+smallFocusPos).style.height = parseInt($("key_"+smallFocusPos).style.height)+10+"px";
+			$("key_"+smallFocusPos).style.top= parseInt($("key_"+smallFocusPos).style.top)-5+"px";	
+			$("key_"+smallFocusPos).style.backgroundColor = "white";
+		bigFocusPos =0 ;	
+			$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = (areaIndex=="small")?"":"#F60";
+			$("keyTable_"+smallFocusPos).style.fontSize = "35px";
+			
+			if(smallFocusPos==7 || smallFocusPos==9){
+			   end = 5;
+			}
+			else{
+			   end = 4;
+			}
+		
+			for(i=0; i<end; i++){//放大字体、改变文字颜色
+				$("keyTable_"+smallFocusPos+"_"+i).style.lineHeight = "45px";
+				$("keyTable_"+smallFocusPos+"_"+i).style.color = "black";		
+			}			
+		}
+		else $("key_"+smallFocusPos).className = "submit1";		
+	}	
+}
+function changeFocusBig(_num){
+	var end = 4;
+	if(smallFocusPos==7 || smallFocusPos==9){
+		end = 5;
+		}
+	else{
+		end = 4;
+		}
+	$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "";
+	bigFocusPos += _num;
+	if( bigFocusPos>end-1 ){
+		bigFocusPos = 0 ;
+		areaIndex = "small";
+		changeFocusSmall(1);			
+	}else if(bigFocusPos<0){
+		bigFocusPos = 0 ;
+		areaIndex = "small";
+		changeFocusSmall(-1);
+	}else $("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
+}
+
+function changeRecommend(_num){
+	if( ( areaIndex=="recommend" &&_num!=0 ) || (areaIndex!="recommend" && _num==0 ) ){
+		$("recommend_"+recommendFocusPos).style.border = "0px";
+		$("recommend_"+recommendFocusPos).style.zIndex = "1";
+		$("recommend_"+recommendFocusPos).style.width = parseInt($("recommend_"+recommendFocusPos).style.width)-26+"px";
+		$("recommend_"+recommendFocusPos).style.left = parseInt($("recommend_"+recommendFocusPos).style.left)+13+"px";
+		$("recommend_"+recommendFocusPos).style.height = parseInt($("recommend_"+recommendFocusPos).style.height)-10+"px";
+		$("recommend_"+recommendFocusPos).style.top = parseInt($("recommend_"+recommendFocusPos).style.top)+5+"px";		
+	}
+
+	recommendFocusPos += _num;
+	if(recommendFocusPos>3){
+	   recommendFocusPos -= _num ;
+	}
+	if(recommendFocusPos<0){
+	   recommendFocusPos -= _num ;
+	}
+	if(areaIndex == "recommend"){
+		$("recommend_"+recommendFocusPos).style.border = "solid #f96 2px";
+		$("recommend_"+recommendFocusPos).style.borderRadius = "5px";
+		$("recommend_"+recommendFocusPos).style.zIndex = "2";
+		$("recommend_"+recommendFocusPos).style.width = parseInt($("recommend_"+recommendFocusPos).style.width)+26+"px";
+		$("recommend_"+recommendFocusPos).style.left = parseInt($("recommend_"+recommendFocusPos).style.left)-13+"px";
+		$("recommend_"+recommendFocusPos).style.height = parseInt($("recommend_"+recommendFocusPos).style.height)+10+"px";
+		$("recommend_"+recommendFocusPos).style.top = parseInt($("recommend_"+recommendFocusPos).style.top)-5+"px";		
+	}
+
+}
+//Cookie
+function setCookie(name, value){
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){//确认键
+	if(areaIndex=="search"){
+		location.href = "search.htm";
+	}
+	else if(areaIndex=="buy"){		
+		location.href = "buy.htm";
+	}
+	else if(areaIndex=="collect"){
+		location.href = "collect.htm";
+	}
+	else if(areaIndex=="submits"){
+		location.href = "function.htm";
+	}
+	else if(areaIndex=="small" && smallFocusPos>1 && smallFocusPos<10){//显示选字焦点
+        $("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
+		areaIndex = "big";
+	}
+	else if(areaIndex=="small" && ( smallFocusPos==1 || smallFocusPos== 11 ) ){//追加1或0
+		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+	}
+	else if(areaIndex=="big" && smallFocusPos>1 && smallFocusPos<10 ){//追加2-9和字母
+		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+	}
+	else if(areaIndex=="big" && smallFocusPos == 10 ){//清空
+		$("searchTxt").innerHTML = "";
+	}
+	else if(areaIndex=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格
+		$("searchTxt").innerHTML = $("searchTxt").innerHTML.slice(0,$("searchTxt").innerHTML.length-1);
+	}
+	else if(areaIndex=="searchList"){
+		setCookie("areaIndex", areaIndex);
+		setCookie("ListFocusPos", ListFocusPos);
+		location.href = listArray[ListFocusPos].url;
+	}
+	else if(areaIndex=="recommend"){
+		setCookie("areaIndex", areaIndex);
+		setCookie("recommendFocusPos", recommendFocusPos);
+		location.href = recommendArray[recommendFocusPos].url;
+	}
+} 
+
+//按键
+document.onsystemevent = eventHandler;
+//document.onkeypress  = eventHandler;
+document.onirkeypress  = eventHandler; 
+function eventHandler(e,type){
+	var key_code = "";
+	if(navigator.userAgent.indexOf('iPanel')!=-1){
+		key_code=iPanelKey();
+	}else key_code = e.code ;
+	switch(key_code){		
+		case "KEY_UP": 
+		  	if(areaIndex=="small"){
+			   if(smallFocusPos<4){
+				   areaIndex="submits";
+				   changeFocusSmall(0);
+			   }else{
+				   changeFocusSmall(-3);
+			   }
+			}else if(areaIndex=="big" && smallFocusPos>3){
+				   areaIndex="small";
+				   changeFocusSmall(-3);
+			}else if(areaIndex=="big" && smallFocusPos<4){
+				   areaIndex="submits";
+				   changeFocusSmall(0);				
+			}else if(areaIndex=="searchList"){
+				   changeListFocus(-1);
+			}else if(areaIndex=="recommend"){
+				changeRecommend(-2);
+			}
+			/*else if(areaIndex=="submits"){
+				   areaIndex="buy";
+			}*/
+			focusImg();
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+			if(areaIndex=="search" || areaIndex=="buy" || areaIndex=="collect"){
+				areaIndex="small"; 
+				smallFocusPos = 5 ;
+				changeFocusSmall(0);
+		    }else if(areaIndex=="submits"){
+			   areaIndex = "small"; 
+			   changeFocusSmall(0);
+			}else if(areaIndex=="small"){
+				changeFocusSmall(3);
+			}else if(areaIndex=="big"){
+				areaIndex = "small";
+				changeFocusSmall(3);
+			}else if(areaIndex=="searchList"){
+				changeListFocus(1);
+			}else if(areaIndex=="recommend"){
+				changeRecommend(2);
+			}
+		    focusImg();
+			return 0;
+			break;
+			
+		case "KEY_LEFT":
+			if(areaIndex=="collect"){
+				areaIndex="buy";
+			}/*else if(areaIndex=="buy"){
+				areaIndex="search";
+			}*/else if(areaIndex=="small"){
+				  changeFocusSmall(-1);
+			}else if(areaIndex=="big"){
+				  changeFocusBig(-1);;
+			}else if(areaIndex == "searchList"){
+				areaIndex = "small";
+				changeFocusSmall(0);
+				changeListFocus(0);
+			}else if(areaIndex == "recommend" && ( recommendFocusPos==1 || recommendFocusPos==3)){
+			    changeRecommend(-1);
+			}else if(areaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length>0 ){
+				areaIndex = "searchList";
+				changeListFocus(0);
+				changeRecommend(0);
+			}else if(areaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length==0 ){
+				areaIndex = "small";
+				changeFocusSmall(0);
+				changeRecommend(0);
+			}
+			focusImg();
+			return 0;
+			break;
+			
+		case "KEY_RIGHT":
+			if(areaIndex=="search"){
+				areaIndex="buy";
+			}else if(areaIndex=="buy"){
+				areaIndex="collect";
+			}else if(areaIndex=="small" && smallFocusPos%3!=0){
+				changeFocusSmall(1);
+			}else if(areaIndex=="small" && smallFocusPos%3==0 && listArray.length==0){
+				areaIndex = "recommend";
+				changeFocusSmall(0);
+				changeRecommend(0);
+			}else if(areaIndex=="small" && smallFocusPos%3==0 && listArray.length>0){
+				areaIndex = "searchList";
+				changeFocusSmall(0);
+				changeListFocus(0);
+			}else if(areaIndex=="big"){
+				changeFocusBig(1);
+			}else if(areaIndex=="submits" && listArray.length>0){
+				areaIndex = "searchList";
+				changeFocusSmall(0);
+				changeListFocus(0);
+			}else if( areaIndex=="submits" && listArray.length==0){
+				areaIndex = "recommend";
+				changeRecommend(0);
+			}else if( areaIndex == "searchList" ){
+				areaIndex = "recommend";
+				changeListFocus(0);
+				changeRecommend(0);
+			}else if(areaIndex == "recommend"){
+				changeRecommend(1);
+			}
+			focusImg();
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN":
+		    pageDown();
+		    return 0;
+			break;	
+			
+		case "PAGE_UP":
+		case 25:
+		    pageUp();
+		    return 0;
+			break;		
+				
+		case "KEY_SELECT":
+			doSelect();
+			return 0;
+			break;
+			
+		case "KEY_BACK":
+		    document.onkeypress    = eventHandler;
+			
+			delCookie("areaIndex");
+			delCookie("focusListPos");
+			location.href = "index.htm";
+			return 0;
+			break;	
+			
+		case "KEY_EXIT":
+			location.href = "index.htm";
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC49":
+//			location.href = "index.htm";
+changeRecommend(2);
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC50":
+//			location.href = "index.htm";
+changeRecommend(-2);
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC51":
+		changeRecommend(0);
+			return 0;
+			break;
+	}
+}
+
+function init(){
+	changeFocusSmall(0);	
+	showSearchList();
+	showRecommend();
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+
+<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/indexSearch.png')"></div>
+    
+<div id="search" style="position: absolute; left:863px; top:64px; width: 113px; height: 46px; background: url(img/focus_search.png) no-repeat; display:none;"></div> 
+    
+<div id="buy" style="position: absolute; left:977px; top:64px; width: 113px; height: 46px; background: url(img/focus_buy.png) no-repeat;display:none;"></div>
+    
+<div id="collect" style="position: absolute; left:1091px; top:64px; width: 113px; height: 46px; background: url(img/focus_collect.png) no-repeat; display:none;"></div>
+
+<!--搜索框-->
+<div id="searchTxt" style="position:absolute;left:75px;top:150px; width:182px; height:40px; background-color:gray; border-radius:3px;text-align:center;vertical-align:middle;line-height:40px; font-size:30px; color:white;"></div>
+
+<div id="submits" class="submit0" style="position:absolute;left:275px;top:148px;width:80px;height:42px;text-align:center;vertical-align:middle;line-height:42px;border-radius:3px;color:white; ">搜索</div>
+
+<div id="key_1" class="key" style="position:absolute;left:75px;top:210px; width:80px; height:40px;">
+<table id="keyTable_1" style="margin:auto;">
+<tr>
+<td id="keyTable_1_0">1</td>
+</tr></table></div>
+
+<div id="key_2" class="key" style="position:absolute;left:175px;top:210px; width:80px; height:40px;">
+<table id="keyTable_2" style="margin:auto;">
+<tr>
+<td id="keyTable_2_0">A</td>
+<td id="keyTable_2_1">B</td>
+<td id="keyTable_2_2">C</td>
+<td id="keyTable_2_3">2</td>
+</tr></table></div>
+
+<div id="key_3" class="key" style="position:absolute;left:275px;top:210px; width:80px; height:40px;">
+<table id="keyTable_3" style="margin:auto;">
+<tr>
+<td id="keyTable_3_0">D</td>
+<td id="keyTable_3_1">E</td>
+<td id="keyTable_3_2">F</td>
+<td id="keyTable_3_3">3</td>
+</tr></table></div>
+
+<div id="key_4" class="key" style="position:absolute;left:75px;top:280px; width:80px; height:40px;">
+<table id="keyTable_4" style="margin:auto;">
+<tr>
+<td id="keyTable_4_0">G</td>
+<td id="keyTable_4_1">H</td>
+<td id="keyTable_4_2">I</td>
+<td id="keyTable_4_3">4</td>
+</tr></table></div>
+
+<div id="key_5" class="key" style="position:absolute;left:175px;top:280px; width:80px; height:40px;">
+<table id="keyTable_5" style="margin:auto;">
+<tr>
+<td id="keyTable_5_0">J</td>
+<td id="keyTable_5_1">K</td>
+<td id="keyTable_5_2">L</td>
+<td id="keyTable_5_3">5</td>
+</tr></table></div>
+
+<div id="key_6" class="key" style="position:absolute;left:275px;top:280px; width:80px; height:40px;">
+<table id="keyTable_6" style="margin:auto;">
+<tr>
+<td id="keyTable_6_0">M</td>
+<td id="keyTable_6_1">N</td>
+<td id="keyTable_6_2">O</td>
+<td id="keyTable_6_3">6</td>
+</tr></table></div>
+
+
+<div id="key_7" class="key" style="position:absolute;left:75px;top:350px; width:80px; height:40px;">
+<table id="keyTable_7" style="margin:auto;">
+<tr>
+<td id="keyTable_7_0">P</td>
+<td id="keyTable_7_1">Q</td>
+<td id="keyTable_7_2">R</td>
+<td id="keyTable_7_3">S</td>
+<td id="keyTable_7_4">7</td>
+</tr></table></div>
+
+<div id="key_8" class="key" style="position:absolute;left:175px;top:350px; width:80px; height:40px;">
+<table id="keyTable_8" style="margin:auto;">
+<tr>
+<td id="keyTable_8_0">T</td>
+<td id="keyTable_8_1">U</td>
+<td id="keyTable_8_2">V</td>
+<td id="keyTable_8_3">8</td>
+</tr></table></div>
+
+<div id="key_9" class="key" style="position:absolute;left:275px;top:350px; width:80px; height:40px;">
+<table id="keyTable_9" style="margin:auto;">
+<tr>
+<td id="keyTable_9_0">W</td>
+<td id="keyTable_9_1">X</td>
+<td id="keyTable_9_2">Y</td>
+<td id="keyTable_9_3">Z</td>
+<td id="keyTable_9_4">9</td>
+</tr></table></div>
+
+<div id="key_10" class="key" style="position:absolute;left:75px;top:420px; width:80px; height:40px;">
+<table id="keyTable_10" style="margin:auto;">
+<tr>
+<td id="keyTable_10_0">清空</td>
+</tr></table>
+</div>
+
+<div id="key_11" class="key" style="position:absolute;left:175px;top:420px; width:80px; height:40px;">
+<table id="keyTable_11" style="margin:auto;">
+<tr>
+<td id="keyTable_11_0">0</td>
+</tr></table>
+</div>
+
+<div id="key_12" class="key" style="position:absolute;left:275px;top:420px; width:80px; height:40px;">
+<table id="keyTable_12" style="margin:auto;">
+<tr>
+<td id="keyTable_12_0">退格</td>
+</tr></table>
+</div>
+
+<div id="searchList_0" class="searchList0" style="position:absolute; top:190px;">
+<table><tr><td id="searchPlay_0" class="searchPlay0"></td><td id="searchName_0" ></td></tr></table></div>
+
+<div id="searchList_1" class="searchList0" style="position:absolute; top:230px;">
+<table><tr><td id="searchPlay_1" class="searchPlay0"></td><td id="searchName_1" ></td></tr></table></div>
+
+<div id="searchList_2" class="searchList0" style="position:absolute; top:270px;">
+<table><tr><td id="searchPlay_2" class="searchPlay0"></td><td id="searchName_2" ></td></tr></table></div>
+
+<div id="searchList_3" class="searchList0" style="position:absolute; top:310px;">
+<table><tr><td id="searchPlay_3" class="searchPlay0"></td><td id="searchName_3" ></td></tr></table></div>
+
+<div id="searchList_4" class="searchList0" style="position:absolute; top:350px;">
+<table><tr><td id="searchPlay_4" class="searchPlay0"></td><td id="searchName_4" ></td></tr></table></div>
+
+<div id="searchList_5" class="searchList0" style="position:absolute; top:390px;">
+<table><tr><td id="searchPlay_5" class="searchPlay0"></td><td id="searchName_5" ></td></tr></table></div>
+
+<div id="searchList_6" class="searchList0" style="position:absolute; top:430px;">
+<table><tr><td id="searchPlay_6" class="searchPlay0"></td><td id="searchName_6" ></td></tr></table></div>
+
+<div id="searchList_7" class="searchList0" style="position:absolute; top:470px;">
+<table><tr><td id="searchPlay_7" class="searchPlay0"></td><td id="searchName_7" ></td></tr></table></div>
+
+<div id="searchList_8" class="searchList0" style="position:absolute; top:510px;">
+<table><tr><td id="searchPlay_8" class="searchPlay0"></td><td id="searchName_8" ></td></tr></table></div>
+
+<div id="searchList_9" class="searchList0" style="position:absolute; top:550px;">
+<table><tr><td id="searchPlay_9" class="searchPlay0"></td><td id="searchName_9" ></td></tr></table></div>
+
+<!-- 推荐影片 -->
+<div id="recommend_0" style="z-index:1;position:absolute; left:850px; top:190px; width:165px; height:210px;"><img id="recommendImg_0" src="img/postersBig.png"/></div>
+
+<div id="recommend_1" style="z-index:1;position:absolute; left:1025px; top:190px; width:165px; height:210px;"><img id="recommendImg_1" src="img/postersBig.png"/></div>
+
+<div id="recommend_2" style="z-index:1;position:absolute; left:850px; top:410px; width:165px; height:210px;"><img id="recommendImg_2" src="img/postersBig.png"/></div>
+
+<div id="recommend_3" style="z-index:1;position:absolute; left:1025px; top:410px; width:165px; height:210px;"><img id="recommendImg_3" src="img/postersBig.png"/></div>
+
+<!-- 搜索提示 -->
+<div style="background: url('img/prompt.png'); position: absolute; left: 70px; top: 555px; width: 300px; height: 60px;"></div>
+
+
+<!-- 页码 -->
+<div id="page" style="position:absolute; left:600px; top:630px; width:135px; height:40px; color:white; font-size:22px; display:block;"></div>
+
+<!-- 提示 -->
+<div id="prompt" style="position:absolute; left:480px; top:190px; width:330px; height:400px; line-height:40px; font-size:22px; color:white; display:block;"></div>
+
+<!-- 上一页 -->
+<div id="pageUp" style="z-index: 1; background: url('img/pageUp0.png'); position:absolute; left:940px; top:655px; width:110px; height:40px;"></div>
+
+<!-- 下一页 -->
+<div id="pageDown" style="z-index: 1; background: url('img/pageDown0.png'); position: absolute; left:1080px; top:655px; width: 110px; height: 40px;"></div> 
+
+</body>
+</html>
