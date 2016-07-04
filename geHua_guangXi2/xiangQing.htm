@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>首页</title>
+<style>
+*{margin:0px;padding:0px;border:0px;font-family:SimHei;color:white; border-radius:0.2em;}
+
+img{width:100%;height:100%;}
+
+.movieNameBg{position:relative;left:0px; width:100%; height:15%; background-color:rgba(0,0,0,0.5); border-radius:0px 0px 0.2em 0.2em;}
+
+.movieName{width:100%;height:100%;font-size:110%;}
+
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script>
+var areaIndex = getCookie("areaIndex")?getCookie("areaIndex"):"brief_buy_play";
+var ListFocusPos = parseInt(getCookie("ListFocusPos"))?parseInt(getCookie("ListFocusPos")):0;
+var url = window.location.href;
+var buy = 0;
+function $(id){return document.getElementById(id);}
+
+var listArray = [
+    {name:"recommend_",//推荐影片
+	payName:"吓死了，特烦恼！",
+	payPrice:"单片订购 5 元，有效期 72小时",
+    list:[
+		  { movieName:"大海报电视名称超长超长还有哦",url:"1.htm",img:"img/postersSmall.png"},
+		  { movieName:"中上左 中上左 中上左 中上左",url:"2.htm",img:"img/postersSmall.png"},
+		  { movieName:"中上右 中上右 中上右 中上右",url:"3.htm",img:"img/postersBig.png"},
+		  { movieName:"中下左 中下左 中下左 中下左",url:"4.htm",img:"img/postersSmall.png"},
+	],
+	},		
+];
+
+function showList(){
+	for(i=0;i<4;i++){
+		$("recommend_Img_"+i).src = listArray[0].list[i].img;	
+		$("recommend_movieName_"+i).innerHTML = listArray[0].list[i].movieName.slice(0,6);
+	}
+}
+
+function showMovieName(num){//切换焦点时超长名称游动
+		if(listArray[0].list[ListFocusPos].movieName.length>5 && num>0){
+		$("recommend_movieName_"+ListFocusPos).innerHTML = '<marquee direction="left" width="95%" scrollamonut="15" scrolldelay="100">'+listArray[0].list[ListFocusPos].movieName+'</marquee>';
+	    }
+	   else
+		$("recommend_movieName_"+ListFocusPos).innerHTML = listArray[0].list[ListFocusPos].movieName.slice(0,6);
+}
+
+function changeListFocus(_num){
+	showMovieName(-1);
+	var oDiv = $("recommend_"+ListFocusPos);
+    var temp = ListFocusPos;
+	ListFocusPos += _num;
+	if(ListFocusPos>3 || ListFocusPos<0){
+	   ListFocusPos = temp;
+	}
+	showMovieName(1);
+}
+
+function focusList(){//焦点定位
+	if(areaIndex=="lists"){
+		var oDiv = $("recommend_"+ListFocusPos);
+		$("focusBg").style.width = parseInt(oDiv.style.width)+2+"px";
+		$("focusBg").style.height = parseInt(oDiv.style.height)+2+"px";		
+		$("focusBg").style.left = parseInt(oDiv.style.left)-1+"px";
+		$("focusBg").style.top = parseInt(oDiv.style.top)-1+"px";
+		$("focusBgImg").src = "img/focusBg.png";
+		showMovieName(1);
+	}else{$("focusBgImg").src = "img/null.png";}
+}
+
+function focusBtn(_num){
+	if(_num==0){
+		  $(areaIndex).src= "img/"+areaIndex+".png";
+	}else $(areaIndex).src= "img/focus_"+areaIndex+".png";	
+}
+function focusPayBtn(_num,_type){
+	payFocus+=_num;
+	if(_type==1){
+		$("focusBg").style.width = "161px";
+		$("focusBg").style.height = "67px";		
+		$("focusBg").style.left = 177*payFocus+200+"px";
+		$("focusBg").style.top = "488px";
+		$("focusBgImg").src = "img/focus_"+areaIndex+".png";
+	}else{$("focusBgImg").src = "img/null.png";}
+	
+	if(areaIndex=="pay_weiXin"){
+		$("payMsg").innerHTML = "“微信支付”为“先支付，后收看”，选择“微信支付”后将弹出支付二维码，<br/>使用手机微信的“扫一扫”扫描二维码完成支付后可直接接观看影片，费用将直接<br />从您的支付宝账户中扣除。<br />详情咨询：96196"
+	}
+	else if(areaIndex=="pay_alipay"){
+		$("payMsg").innerHTML = "“支付宝支付”为“先支付，后收看”，选择支付宝支付将弹出支付二维码，<br />使用手机支付宝的“扫一扫”扫描二维码完成支付后可直接观看影片，费用将直接<br />从您的支付宝账户中扣除。<br />详情咨询：96196";
+	}else{
+		$("payMsg").innerHTML = "";
+	}
+}
+var payFocus = 2;
+function showPrompt(){
+	$("payName").innerHTML = listArray[0].payName;
+	$("payPrice").innerHTML = listArray[0].payPrice;
+	$("payPrompt").style.display = "block";
+//	$("payMsg").innerHTML = "“微信支付”为“先支付，后收看”，选择“微信支付”后将弹出支付二维码，<br/>使用手机微信的“扫一扫”扫描二维码完成支付后可直接接观看影片，费用将直接<br />从您的支付宝账户中扣除。<br />详情咨询：96196"
+}
+
+//Cookie
+function setCookie(name, value){
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){//确认键
+	setCookie("ListFocusPos", ListFocusPos);	
+	setCookie("areaIndex", areaIndex);	
+	if(areaIndex=="brief_buy_play"){
+		if(buy==0){
+			areaIndex = "pay_weiXin";
+			focusPayBtn(0,1);
+			showPrompt();
+		}else location.href = "buy_play.htm";
+	}
+	else if(areaIndex=="brief_collect"){
+		location.href = "collect.htm";
+	}
+	else if(areaIndex=="brief_exit"){
+		location.href = "exit.htm";
+	}
+	else if(areaIndex=="pay_exit"){
+		areaIndex = "brief_buy_play";
+		$("payPrompt").style.display = "none";
+		focusPayBtn(-2,0);
+	}	
+	
+	else if(areaIndex=="lists"){
+		location.href = listArray[0].list[ListFocusPos].url;
+	}
+} 
+
+//按键
+document.onsystemevent = eventHandler;
+//document.onkeypress    = eventHandler;
+document.onirkeypress  = eventHandler; 
+function eventHandler(e,type){
+	var key_code = "";
+	if(navigator.userAgent.indexOf('iPanel')!=-1){
+		key_code=iPanelKey();
+	}else key_code = e.code ;
+	switch(key_code){		
+		case "KEY_UP":
+		  	if(areaIndex=="lists"){
+				showMovieName(-1);
+			   areaIndex = "brief_buy_play";
+			   focusList();
+               focusBtn(1);
+		    }
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+			if(areaIndex=="brief_buy_play" || areaIndex=="brief_collect" || areaIndex=="brief_exit"){
+				focusBtn(0);
+				areaIndex="lists";
+				focusList();
+		    }
+			return 0;
+			break;
+			
+		case "KEY_LEFT":
+			if(areaIndex=="brief_exit"){
+				focusBtn(0);
+				areaIndex="brief_collect";
+				focusBtn(1);
+			}else if(areaIndex=="brief_collect"){
+				focusBtn(0);
+				areaIndex="brief_buy_play";
+				focusBtn(1);
+			}else if(areaIndex=="lists"){
+				changeListFocus(-1);
+				focusList();
+			}else if(areaIndex=="pay_exit"){
+				areaIndex="pay_alipay";
+				focusPayBtn(-1,1);
+			}else if(areaIndex=="pay_alipay"){
+				areaIndex="pay_weiXin";
+				focusPayBtn(-1,1);
+			}else if(areaIndex=="pay_weiXin"){
+				areaIndex="pay_yuanXianKa";
+				focusPayBtn(-1,1);
+			}else if(areaIndex=="pay_yuanXianKa"){
+				areaIndex="pay_houFuFei";
+				focusPayBtn(-1,1);
+			}
+			return 0;
+			break;
+			
+		case "KEY_RIGHT":
+			if(areaIndex=="brief_buy_play"){
+				focusBtn(0);
+				areaIndex="brief_collect";
+				focusBtn(1);
+			}else if(areaIndex=="brief_collect"){
+				focusBtn(0);
+				areaIndex="brief_exit";
+				focusBtn(1);
+			}else if(areaIndex=="lists"){
+				changeListFocus(1);
+				focusList();
+			}else if(areaIndex=="pay_houFuFei"){
+				areaIndex="pay_yuanXianKa";
+				focusPayBtn(1,1);
+			}else if(areaIndex=="pay_yuanXianKa"){
+				areaIndex="pay_weiXin";
+				focusPayBtn(1,1);
+			}else if(areaIndex=="pay_weiXin"){
+				areaIndex="pay_alipay";
+				focusPayBtn(1,1);
+			}else if(areaIndex=="pay_alipay"){
+				areaIndex="pay_exit";
+				focusPayBtn(1,1);
+			}
+			return 0;
+			break;	
+
+		case "KEY_SELECT":
+			doSelect();
+			return 0;
+			break;
+	}
+}
+
+function init(){
+	showList();
+//	alert(listArray[0].payName);
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0"  onload="init();">
+
+<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index.jpg');border-radius:0em;"></div>
+    
+<div style="z-index:1; position:absolute; left:455px; top:410px; width:150px; height:50px;"><img id="brief_buy_play" style="width:80%; height:80%;" src="img/focus_brief_buy_play.png"/></div>
+    
+<div style="z-index:1; position:absolute; left:590px; top:410px; width:150px; height:50px;"><img id="brief_collect" style="width:80%; height:80%;" src="img/brief_collect.png"/></div>
+    
+<div style="z-index:1; position:absolute; left:725px; top:410px; width:150px; height:50px;"><img id="brief_exit" style="width:80%; height:80%;" src="img/brief_exit.png"/></div>
+
+<!--客服电话 
+<div style="z-index:2; position:absolute; left:745px; top:63px; width:130px; height:50px; font-family:Times;font-size:38px; color:#699999;"><b>96335</b></div>  -->
+<div id="movieTitle" class="content"  style="position: absolute; left:465px; top: 190px; width: 258px; height: 25px;"><span style="font-size:20px;"><b>影片名称</b></span></div>
+
+<div id="movieScore" class="content"  style="position: absolute; left: 905px; top: 190px; width: 101px; height: 25px;"><b>评分：</b><span style="color:#F60">18.8分</span></div>
+
+<div id="count" class="content"  style="position: absolute; left: 1045px; top: 190px; width: 169px; height: 25px;"><b>点击次数：</b><span style="color:#f60">123456次</span></div>
+
+<div id="director" class="content" style="position:absolute; left:465px; top:215px; width:256px; height:25px;"><span><b>导&nbsp;&nbsp;&nbsp;&nbsp;演：</b></span>导演姓名</div>
+
+<div style="background: url('img/bestTV.png'); position:absolute; left:1055px; top:215px; width:154px; height:52px;"></div>
+
+<div id="actor" class="content" style="position: absolute; left:465px; top: 240px; width: 258px; height: 30px;"><span><b>主&nbsp;&nbsp;&nbsp;&nbsp;演：</b></span>主演主演主演主演</div>
+
+<div id="movieTime" class="content" style="position: absolute; left:465px; top: 265px; width: 259px; height: 30px;"><span><b>在线时间：</b></span>至2016年9月9日</div>
+
+<div id="movieBrief" class="content" style="position:absolute; left:465px; top:290px; width:750px; height:100px; line-height:20px;"><span><b>内容简介：</b></span>一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五一二三四五六七八九十一二三四五六七八九十一二三二三四五一二三四五</div>
+
+<!--左侧大海报-->
+<div title="0" style="position: absolute; left: 80px; top: 190px; width: 352px; height: 445px;"><img src="img/postersBig.png" id="recommend_Img0"/>
+
+<div id="corner0" title="0" style="position:relative;left:0px;top:-445px; width:25%; height:20%;"><img id="recommend_cornerImg0" style="border-radius:0.2em 0 0 0;" src="img/newest.png"/></div></div>
+
+<!--推荐-->
+<!--1-->
+<div id="recommend_0" style="position:absolute; left:465px;top:466px;width:130px;height:170px;"><img id="recommend_Img_0" src="img/null.png"/>
+<div id="recommend_movieNameBgDiv_0" class="movieNameBg" style="top:-25.5px;">
+<table class="movieName" style="width:100%;height:100%;color:white;"><tr valign="middle">
+<td id="recommend_movieName_0" width="100%" align="center"></td>
+</tr></table></div></div>
+
+<!--2-->
+<div id="recommend_1" style="position:absolute;left:670px;top:466px;width:130px;height:170px;"><img id="recommend_Img_1" src="img/null.png"/>
+<div id="recommend_movieNameBgDiv_1" class="movieNameBg" style="top:-25.5px; ">
+<table class="movieName" style="width:100%;height:100%;color:white;"><tr valign="middle">
+<td id="recommend_movieName_1" width="100%" align="center"></td>
+</tr></table></div></div>
+
+<!--3-->
+<div id="recommend_2" style="position:absolute;left:875px;top:466px;width:130px;height:170px;"><img id="recommend_Img_2" src="img/null.png"/>
+<div id="recommend_movieNameBgDiv_2" class="movieNameBg" style="top:-25.5px; ">
+<table class="movieName" style="width:100%;height:100%;color:white;"><tr valign="middle">
+<td id="recommend_movieName_2" width="100%" align="center"></td>
+</tr></table></div></div>
+
+<!--4-->
+<div id="recommend_3" style="position:absolute;left:1080px;top:466px;width:130px;height:170px;"><img id="recommend_Img_3" src="img/null.png"/>
+<div id="recommend_movieNameBgDiv_3" class="movieNameBg" style="top:-25.5px; ">
+<table class="movieName" style="width:100%;height:100%;color:white;"><tr valign="middle">
+<td id="recommend_movieName_3" width="100%" align="center"></td>
+</tr></table></div></div>
+
+<div style="z-index:1; background:url('img/recommend.png'); position:absolute; left:485px; top:436px; width:730px; height:30px;"></div>
+ 
+<div id="focusBg" style="z-index:5;position:absolute; left:455px; top:410px; width:150px; height:50px;"><img id="focusBgImg" src="img/null.png"/></div>
+  
+<div id="payPrompt" style="z-index:3; position: absolute; left:80px; top:80px; width: 1120px; height:560px;vertical-align: middle; font-size:24px; display:none; background-image:url(img/payBg.png)">
+<div id="payName" style="position:relative; left:110px; top:80px; font-size:30px;"></div>
+<div id="payPrice" style="position:relative; left:110px; top:100px; font-size:24px;"></div>
+<div id="payMsg" style="position:relative; left:110px; top:110px; font-size:24px; line-height:35px;"></div>
+</div>
+
+</body>
+</html>

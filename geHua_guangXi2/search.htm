@@ -17,10 +17,10 @@ img{width:100%;height:100%; border-radius:5px;}
 .boxOffice{z-index:3; width:70px;height:30px; border-radius:2px;line-height:30px;text-align:center;vertical-align:middle;background-color:#F60;color:white;font-size:20px; }
 
 .submit0{margin:auto; line-height:35px; border:solid 1px white; background-color:""; font-size:25px; color:white;}
-.submit1{margin:auto; line-height:35px; border:solid 2px #F90; background-color:#F90; font-size:30px; color:white;}
+.submit1{margin:auto; line-height:35px; border:solid 1px #F90; background-color:#F90; font-size:30px; color:white; border-radius:3px;}
 
-.key{color:white;line-height:35px;border:white solid 1px; border-radius:3px;font-size:25px;}
-
+.key{color:white;line-height:35px;font-size:25px;border:white solid 1px; border-radius:3px;}
+.key26{position:absolute; border:solid 1px #546ea4; border-radius:0.2em;color:white;line-height:40px;font-size:25px;text-align:center;vertical-align:middle;}
 
 .searchPlay0{width:40px; height:38px;background:url(img/playSearch0.png) no-repeat center center;}
 .searchPlay1{width:40px; height:38px;background:url(img/playSearch1.png) no-repeat center center;}
@@ -35,6 +35,8 @@ img{width:100%;height:100%; border-radius:5px;}
 var areaIndex = getCookie("areaIndex")?getCookie("areaIndex"):"small";
 var smallFocusPos = parseInt(getCookie("smallFocusPos"))?parseInt(getCookie("smallFocusPos")):5;
 var bigFocusPos = parseInt(getCookie("bigFocusPos"))?parseInt(getCookie("bigFocusPos")):0;
+var keyType = getCookie("keyType")?getCookie("keyType"):9;
+var key26FocusPos = 16;
 var recommendFocusPos =0;
 var ListFocusPos = 0;
 var listSize = 12;
@@ -78,7 +80,7 @@ var listArray = [
 		  { movieName:"强档名称26",url:"26.htm"},
 		  { movieName:"强档名称27",url:"27.htm"},
 		  { movieName:"强档名称28",url:"28.htm"},
-		  { movieName:"强档名称29",url:"29.htm"}	*/
+		  { movieName:"强档名称29",url:"29.htm"}*/
 ];
 
 var recommendArray = [
@@ -90,6 +92,19 @@ var recommendArray = [
 function showRecommend(){
 	for(i=0;i<4;i++){
 		$("recommendImg_"+i).src = recommendArray[i].img;
+	}
+}
+
+function showLeft(){
+	if(areaIndex=="small"){
+		changeFocusSmall(0);
+		$("keyT9").style.display = "block";
+		$("key26").style.display = "none";
+		$("focusBg").style.display = "none";
+	}else{
+		$("keyT9").style.display = "none";
+		$("key26").style.display = "block";
+		$("focusBg").style.display = "block";
 	}
 }
 function showSearchList(){//显示导航下的内容
@@ -183,7 +198,11 @@ function showMovieName(num){//切换焦点时超长名称游动
 	   else
 		$("12_movieName_"+ListFocusPos%listSize).innerHTML = listArray[0].list[ListFocusPos].movieName.slice(0,12);
 }
-
+function focusImg(_num){//焦点定位
+	if(_num==0){
+		  $(areaIndex).style.backgroundImage= "url(img/"+areaIndex+".png)";
+	}else $(areaIndex).style.backgroundImage= "url(img/focus_"+areaIndex+".png)";
+}/*
 function focusImg(){//焦点定位
 	if(areaIndex=="search"){
 		 $("search").style.display = "block";}
@@ -201,8 +220,53 @@ function focusImg(){//焦点定位
 		$("submits").className = "submit1";
 	}
 	else $("submits").className = "submit0";
+}*/
+function focusKey26(_num){
+	var temp = key26FocusPos;
+	key26FocusPos += _num;
+	if(key26FocusPos<0){
+		key26FocusPos = 35;
+	}
+	if(key26FocusPos>37){
+		if(_num>1){
+			key26FocusPos = 37;
+			}
+		else key26FocusPos = 0;
+	}
+	$("focusBg").style.display = "block";
+	$("focusBg").style.left = parseInt($("key26_"+key26FocusPos).style.left)+"px";
+	$("focusBg").style.top = parseInt($("key26_"+key26FocusPos).style.top)+"px";
+	$("focusBg").style.width = parseInt($("key26_"+key26FocusPos).style.width)+2+"px";
+	$("focusBg").style.height = parseInt($("key26_"+key26FocusPos).style.htight)+4+"px";
+	$("focusBgImg").src = "img/focuskey26.png";		
 }
-	
+function focusKeyType(){
+	$("focusBg").style.left = (keyType==26)?"69px":"224px";
+	$("focusBg").style.top = "559px";
+	$("focusBg").style.width = "136px";
+	$("focusBg").style.height = "42px";
+	$("focusBgImg").src = "img/focuskey26.png";
+	areaIndex = "keyType";	
+}
+
+function changeKeyType(){
+	if(keyType==9){
+		$("keyT9").style.display = "none";
+		$("key26").style.display = "block";
+		$("K26").style.backgroundColor = "#365390";
+		$("T9").style.backgroundColor = "";
+		keyType = 26;
+		focusKeyType();
+	}else{
+		$("key26").style.display = "none";
+		$("keyT9").style.display = "block";
+		$("K26").style.backgroundColor = "";
+		$("T9").style.backgroundColor = "#365390";
+		keyType = 9;
+		focusKeyType();
+	}
+}
+
 function changeFocusSmall(_num){	
 	var end = 0;
 	//先还原前一个
@@ -352,16 +416,16 @@ function doSelect(){//确认键
         $("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
 		areaIndex = "big";
 	}
-	else if(areaIndex=="small" && ( smallFocusPos==1 || smallFocusPos== 11 ) ){//追加1或0
+	else if( areaIndex=="small" && ( smallFocusPos==1 || smallFocusPos== 11 )){//追加1或0
 		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
 	}
 	else if(areaIndex=="big" && smallFocusPos>1 && smallFocusPos<10 ){//追加2-9和字母
 		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
 	}
-	else if(areaIndex=="big" && smallFocusPos == 10 ){//清空
+	else if(areaIndex=="small" && smallFocusPos == 10 ){//清空keyT9
 		$("searchTxt").innerHTML = "";
 	}
-	else if(areaIndex=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格
+	else if(areaIndex=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格keyT9
 		$("searchTxt").innerHTML = $("searchTxt").innerHTML.slice(0,$("searchTxt").innerHTML.length-1);
 	}
 	else if(areaIndex=="searchList"){
@@ -373,6 +437,18 @@ function doSelect(){//确认键
 		setCookie("areaIndex", areaIndex);
 		setCookie("recommendFocusPos", recommendFocusPos);
 		location.href = recommendArray[recommendFocusPos].url;
+	}
+	else if(areaIndex=="keyType"){//选择键盘类型
+		changeKeyType();
+	}
+	else if(areaIndex=="key26" ){
+		if(key26FocusPos <36){//选择key26
+			$("searchTxt").innerHTML += $("key26_"+key26FocusPos).innerHTML;
+		}else if(key26FocusPos==36){//清空key26
+			$("searchTxt").innerHTML = "";
+		}else if(key26FocusPos==37){//退格key26
+			$("searchTxt").innerHTML = $("searchTxt").innerHTML.slice(0,$("searchTxt").innerHTML.length-1);
+		}
 	}
 } 
 
@@ -386,7 +462,7 @@ function eventHandler(e,type){
 		key_code=iPanelKey();
 	}else key_code = e.code ;
 	switch(key_code){		
-		case "KEY_UP": 
+		case "KEY_UP":
 		  	if(areaIndex=="small"){
 			   if(smallFocusPos<4){
 				   areaIndex="submits";
@@ -404,11 +480,28 @@ function eventHandler(e,type){
 				   changeListFocus(-1);
 			}else if(areaIndex=="recommend"){
 				changeRecommend(-2);
+			}else if(areaIndex == "key26"){
+				if(key26FocusPos==37){
+					focusKey26(-2);
+				}else if(key26FocusPos<6){
+					areaIndex="submits";
+					$("focusBg").style.display = "none";
+				}else focusKey26(-6);
+			}else if(areaIndex=="keyType"){
+				if(keyType == 26){
+					areaIndex = "key26";
+					focusKey26(-2);
+				}else if(keyType == 9){
+					areaIndex = "small";
+					changeFocusSmall(0);
+					$("focusBg").style.display = "none";
+				}
+			}else if(areaIndex=="zhuYe" || areaIndex=="shouYe" || areaIndex=="back" ){
+				focusImg(0);
+				areaIndex = "keyType"
+				$("focusBg").style.display = "block";
 			}
-			/*else if(areaIndex=="submits"){
-				   areaIndex="buy";
-			}*/
-			focusImg();
+		//	focusImg();
 			return 0;
 			break;
 			
@@ -418,10 +511,19 @@ function eventHandler(e,type){
 				smallFocusPos = 5 ;
 				changeFocusSmall(0);
 		    }else if(areaIndex=="submits"){
-			   areaIndex = "small"; 
-			   changeFocusSmall(0);
+				if(keyType=="9"){
+				    areaIndex = "small"; 
+				    changeFocusSmall(0);
+				}else{
+					areaIndex = "key26";
+					focusKey26(0);
+				}
 			}else if(areaIndex=="small"){
-				changeFocusSmall(3);
+				if(smallFocusPos>9){
+					focusKeyType();
+					$("focusBg").style.display = "block";
+					changeFocusSmall(0);
+				}else changeFocusSmall(3);
 			}else if(areaIndex=="big"){
 				areaIndex = "small";
 				changeFocusSmall(3);
@@ -429,6 +531,16 @@ function eventHandler(e,type){
 				changeListFocus(1);
 			}else if(areaIndex=="recommend"){
 				changeRecommend(2);
+			}else if(areaIndex == "key26"){
+				if(key26FocusPos==30){
+					focusKey26(7);
+				}else if(key26FocusPos>35){
+				    focusKeyType();
+			    }else focusKey26(6);
+			}else if(areaIndex=="keyType"){
+				areaIndex = "zhuYe";
+				focusImg(1);
+				$("focusBg").style.display = "none";
 			}
 		    focusImg();
 			return 0;
@@ -444,9 +556,15 @@ function eventHandler(e,type){
 			}else if(areaIndex=="big"){
 				  changeFocusBig(-1);;
 			}else if(areaIndex == "searchList"){
-				areaIndex = "small";
-				changeFocusSmall(0);
-				changeListFocus(0);
+				if(keyType=="9"){
+					areaIndex = "small";
+					changeFocusSmall(0);
+					changeListFocus(0);
+				}else{
+					areaIndex = "key26";
+					focusKey26(0);
+					changeListFocus(0);
+				}
 			}else if(areaIndex == "recommend" && ( recommendFocusPos==1 || recommendFocusPos==3)){
 			    changeRecommend(-1);
 			}else if(areaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length>0 ){
@@ -454,11 +572,27 @@ function eventHandler(e,type){
 				changeListFocus(0);
 				changeRecommend(0);
 			}else if(areaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length==0 ){
-				areaIndex = "small";
-				changeFocusSmall(0);
-				changeRecommend(0);
+				if(keyType==9){
+					areaIndex = "small";
+					changeFocusSmall(0);
+				    changeRecommend(0);
+				}else{
+					areaIndex = "key26";
+					focusKey26(0);
+					changeRecommend(0);
+				}
+			}else if(areaIndex == "key26"){
+				focusKey26(-1);
+			}else if(areaIndex=="back"){
+				focusImg(0);
+				areaIndex = "shouYe";
+				focusImg(1);
+			}else if(areaIndex=="shouYe"){
+				focusImg(0);
+				areaIndex = "zhuYe";
+				focusImg(1);
 			}
-			focusImg();
+		//	focusImg();
 			return 0;
 			break;
 			
@@ -492,8 +626,35 @@ function eventHandler(e,type){
 				changeRecommend(0);
 			}else if(areaIndex == "recommend"){
 				changeRecommend(1);
+			}else if(areaIndex == "key26"){
+				if( (key26FocusPos%6==5||key26FocusPos==37) && listArray.length>0){
+					areaIndex = "searchList";
+					changeListFocus(0);
+					$("focusBg").style.display = "none";
+				}else if( (key26FocusPos%6==5||key26FocusPos==37) && listArray.length==0){
+					areaIndex = "recommend";
+					changeRecommend(0);
+					$("focusBg").style.display = "none";
+				}else focusKey26(1);
+			}else if(areaIndex=="zhuYe"){
+				focusImg(0);
+				areaIndex = "shouYe";
+				focusImg(1);
+			}else if(areaIndex=="shouYe"){
+				focusImg(0);
+				areaIndex = "back";
+				focusImg(1);
+			}else if(areaIndex=="back" || areaIndex=="keyType"){
+				if(listArray.length>0){
+					(areaIndex=="keyType")?$("focusBg").style.display ="none":focusImg(0);
+					areaIndex = "searchList";
+					changeListFocus(0);
+				}else{
+					(areaIndex=="keyType")?$("focusBg").style.display ="none":focusImg(0);
+					areaIndex = "recommend";
+					changeRecommend(0);
+				}
 			}
-			focusImg();
 			return 0;
 			break;	
 			
@@ -547,7 +708,8 @@ changeRecommend(-2);
 }
 
 function init(){
-	changeFocusSmall(0);	
+//	changeFocusSmall(0);
+	showLeft();
 	showSearchList();
 	showRecommend();
 }
@@ -558,18 +720,23 @@ function init(){
 
 <body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
 
-<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/indexSearch.png')"></div>
+<div style="z-index:-1; position:absolute; left:0px; top:0px; width:1280px; height:720px; background:url('img/index.jpg')"></div>
+<div style="z-index:-1; position:absolute; left:445px; top:96px; width:400px; height:600px; background:url('img/searchList.png')"></div>
+<div style="position:absolute; left:470px; top:145px; width:130px; height:40px; font-size:23px; color:white;">搜索结果</div>
+<div style="position:absolute; left:860px; top:145px; width:130px; height:40px; font-size:23px; color:white;">推荐</div>
+ 
+<div id="search" style="position:absolute; left:863px; top:64px; width:113px; height:46px; background:url(img/focus_search.png) no-repeat; display:none;"></div> 
     
-<div id="search" style="position: absolute; left:863px; top:64px; width: 113px; height: 46px; background: url(img/focus_search.png) no-repeat; display:none;"></div> 
+<div id="buy" style="position:absolute; left:977px; top:64px; width:113px; height:46px; background:url(img/focus_buy.png) no-repeat;display:none;"></div>
     
-<div id="buy" style="position: absolute; left:977px; top:64px; width: 113px; height: 46px; background: url(img/focus_buy.png) no-repeat;display:none;"></div>
-    
-<div id="collect" style="position: absolute; left:1091px; top:64px; width: 113px; height: 46px; background: url(img/focus_collect.png) no-repeat; display:none;"></div>
+<div id="collect" style="position:absolute; left:1091px; top:64px; width:113px; height:46px; background:url(img/focus_collect.png) no-repeat; display:none;"></div>
 
 <!--搜索框-->
 <div id="searchTxt" style="position:absolute;left:75px;top:150px; width:182px; height:40px; background-color:gray; border-radius:3px;text-align:center;vertical-align:middle;line-height:40px; font-size:30px; color:white;"></div>
 
 <div id="submits" class="submit0" style="position:absolute;left:275px;top:148px;width:80px;height:42px;text-align:center;vertical-align:middle;line-height:42px;border-radius:3px;color:white; ">搜索</div>
+
+<div id="keyT9" style="display:block;">
 
 <div id="key_1" class="key" style="position:absolute;left:75px;top:210px; width:80px; height:40px;">
 <table id="keyTable_1" style="margin:auto;">
@@ -666,11 +833,59 @@ function init(){
 </tr></table>
 </div>
 
-<div id="key_12" class="key" style="position:absolute;left:275px;top:420px; width:80px; height:40px;">
-<table id="keyTable_12" style="margin:auto;">
-<tr>
-<td id="keyTable_12_0">退格</td>
-</tr></table>
+<div id="key_12" class="key" style="position:absolute;left:275px;top:420px; width:80px; height:40px;"><img src="img/del.png"/></div>
+<!-- 搜索提示 -->
+<div style="background:url('img/prompt.png'); position:absolute; left:70px; top:480px; width:300px; height:60px;"></div>
+</div>
+
+
+<div id="key26" style="display:none;">
+
+<div id="key26_0" class="key26" style="width:40px; height:40px; left:70px; top:205px;">A</div>
+<div id="key26_1" class="key26" style="width:40px; height:40px; left:120px; top:205px;">B</div>
+<div id="key26_2" class="key26" style="width:40px; height:40px; left:170px; top:205px;">C</div>
+<div id="key26_3" class="key26" style="width:40px; height:40px; left:220px; top:205px;">D</div>
+<div id="key26_4" class="key26" style="width:40px; height:40px; left:270px; top:205px;">E</div>
+<div id="key26_5" class="key26" style="width:40px; height:40px; left:320px; top:205px;">F</div>
+
+<div id="key26_6" class="key26" style="width:40px; height:40px; left:70px; top:255px;">G</div>
+<div id="key26_7" class="key26" style="width:40px; height:40px; left:120px; top:255px;">H</div>
+<div id="key26_8" class="key26" style="width:40px; height:40px; left:170px; top:255px;">I</div>
+<div id="key26_9" class="key26" style="width:40px; height:40px; left:220px; top:255px;">L</div>
+<div id="key26_10" class="key26" style="width:40px; height:40px; left:270px; top:255px;">K</div>
+<div id="key26_11" class="key26" style="width:40px; height:40px; left:320px; top:255px;">L</div>
+
+<div id="key26_12" class="key26" style="width:40px; height:40px; left:70px; top:305px;">M</div>
+<div id="key26_13" class="key26" style="width:40px; height:40px; left:120px; top:305px;">N</div>
+<div id="key26_14" class="key26" style="width:40px; height:40px; left:170px; top:305px;">O</div>
+<div id="key26_15" class="key26" style="width:40px; height:40px; left:220px; top:305px;">P</div>
+<div id="key26_16" class="key26" style="width:40px; height:40px; left:270px; top:305px;">Q</div>
+<div id="key26_17" class="key26" style="width:40px; height:40px; left:320px; top:305px;">R</div>
+
+<div id="key26_18" class="key26" style="width:40px; height:40px; left:70px; top:355px;">S</div>
+<div id="key26_19" class="key26" style="width:40px; height:40px; left:120px; top:355px;">T</div>
+<div id="key26_20" class="key26" style="width:40px; height:40px; left:170px; top:355px;">U</div>
+<div id="key26_21" class="key26" style="width:40px; height:40px; left:220px; top:355px;">V</div>
+<div id="key26_22" class="key26" style="width:40px; height:40px; left:270px; top:355px;">W</div>
+<div id="key26_23" class="key26" style="width:40px; height:40px; left:320px; top:355px;">X</div>
+
+<div id="key26_24" class="key26" style="width:40px; height:40px; left:70px; top:405px;">Y</div>
+<div id="key26_25" class="key26" style="width:40px; height:40px; left:120px; top:405px;">Z</div>
+<div id="key26_26" class="key26" style="width:40px; height:40px; left:170px; top:405px;">1</div>
+<div id="key26_27" class="key26" style="width:40px; height:40px; left:220px; top:405px;">2</div>
+<div id="key26_28" class="key26" style="width:40px; height:40px; left:270px; top:405px;">3</div>
+<div id="key26_29" class="key26" style="width:40px; height:40px; left:320px; top:405px;">4</div>
+
+<div id="key26_30" class="key26" style="width:40px; height:40px; left:70px; top:455px;">5</div>
+<div id="key26_31" class="key26" style="width:40px; height:40px; left:120px; top:455px;">6</div>
+<div id="key26_32" class="key26" style="width:40px; height:40px; left:170px; top:455px;">7</div>
+<div id="key26_33" class="key26" style="width:40px; height:40px; left:220px; top:455px;">8</div>
+<div id="key26_34" class="key26" style="width:40px; height:40px; left:270px; top:455px;">9</div>
+<div id="key26_35" class="key26" style="width:40px; height:40px; left:320px; top:455px;">0</div>
+
+<div id="key26_36" class="key26" style="width:40px; height:40px; left:70px; top:505px; width:90px;">清空</div>
+<div id="key26_37" class="key26" style="width:40px; height:40px; left:270px; top:505px; width:90px; background-image:url(img/del.png)"></div>
+
 </div>
 
 <div id="searchList_0" class="searchList0" style="position:absolute; top:190px;">
@@ -712,9 +927,10 @@ function init(){
 
 <div id="recommend_3" style="z-index:1;position:absolute; left:1025px; top:410px; width:165px; height:210px;"><img id="recommendImg_3" src="img/postersBig.png"/></div>
 
-<!-- 搜索提示 -->
-<div style="background: url('img/prompt.png'); position: absolute; left: 70px; top: 555px; width: 300px; height: 60px;"></div>
+<!--T9&26-->
+<div id="T9" style="position:absolute;left:70px;top:560px; width:130px; height:35px; background-color:#365390; border:solid 2px #365390;border-radius:0.3em;text-align:center;vertical-align:middle;line-height:35px; font-size:20px; color:white;">T9键盘</div>
 
+<div id="K26" style="position:absolute;left:226px;top:560px; width:130px; height:35px; background-color:; border:solid 2px #365390;border-radius:0.3em;text-align:center;vertical-align:middle;line-height:35px; font-size:20px; color:white;">全键盘</div>
 
 <!-- 页码 -->
 <div id="page" style="position:absolute; left:600px; top:630px; width:135px; height:40px; color:white; font-size:22px; display:block;"></div>
@@ -723,10 +939,16 @@ function init(){
 <div id="prompt" style="position:absolute; left:480px; top:190px; width:330px; height:400px; line-height:40px; font-size:22px; color:white; display:block;"></div>
 
 <!-- 上一页 -->
-<div id="pageUp" style="z-index: 1; background: url('img/pageUp0.png'); position:absolute; left:940px; top:655px; width:110px; height:40px;"></div>
+<div id="pageUp" style="z-index:1; background:url('img/pageUp0.png'); position:absolute; left:940px; top:655px; width:110px; height:40px;"></div>
 
 <!-- 下一页 -->
-<div id="pageDown" style="z-index: 1; background: url('img/pageDown0.png'); position: absolute; left:1080px; top:655px; width: 110px; height: 40px;"></div> 
+<div id="pageDown" style="z-index:1; background:url('img/pageDown0.png'); position:absolute; left:1080px; top:655px; width:110px; height:40px;"></div> 
+
+<div id="zhuYe" style="z-index: 1; background: url('img/zhuYe.png'); position: absolute; left:80px; top:630px; width: 82px; height: 31px;"></div>
+<div id="shouYe" style="z-index: 1; background: url('img/shouYe.png'); position: absolute; left:180px; top:630px; width: 82px; height: 31px;"></div>
+<div id="back" style="z-index: 1; background: url('img/back.png'); position: absolute; left:280px; top:630px; width: 82px; height: 31px;"></div>
+
+<div id="focusBg" style="z-index:1;position:absolute; left:120px; top:304px; width:42px; height:44px;"><img id="focusBgImg" src="img/focuskey26.png"/></div>
 
 </body>
 </html>
