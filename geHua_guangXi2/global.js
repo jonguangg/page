@@ -276,4 +276,6 @@ function iPanelKey(){
 	return codes;
 }
 
+
+
 function $(_id){return document.getElementById(_id);}

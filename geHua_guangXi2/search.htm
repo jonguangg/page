@@ -6,20 +6,15 @@
 <style>
 *{margin:0px;padding:0px;border:0px;font-family:SimHei;}
 
-.zone_newTxt{ position:absolute; top:486px; width:265px; height:31px; line-height:31px; font-size:26px; color:white; text-align:center; vertical-align:middle; z-index:1}
-
 img{width:100%;height:100%; border-radius:5px;}
-
-.movieNames{z-index:3; width:135px;height:30px;line-height:30px;text-align:center;vertical-align:middle;color:white;font-size:22px;}
 
 .movieScores{z-index:3; width:40px;height:30px;line-height:30px;text-align:center;vertical-align:middle;color:yellow;font-size:25px;}
 
-.boxOffice{z-index:3; width:70px;height:30px; border-radius:2px;line-height:30px;text-align:center;vertical-align:middle;background-color:#F60;color:white;font-size:20px; }
+.submit0{margin:auto; line-height:35px; border:solid 1px #546ea4; background-color:""; font-size:20px; color:white;}
+.submit1{margin:auto; line-height:35px; border:solid 2px yellow; background-color:""; font-size:30px; color:white; border-radius:3px;}
 
-.submit0{margin:auto; line-height:35px; border:solid 1px white; background-color:""; font-size:25px; color:white;}
-.submit1{margin:auto; line-height:35px; border:solid 1px #F90; background-color:#F90; font-size:30px; color:white; border-radius:3px;}
+.key{color:white;line-height:40px;font-size:20px;border:solid 1px #546ea4; border-radius:3px;}
 
-.key{color:white;line-height:35px;font-size:25px;border:white solid 1px; border-radius:3px;}
 .key26{position:absolute; border:solid 1px #546ea4; border-radius:0.2em;color:white;line-height:40px;font-size:25px;text-align:center;vertical-align:middle;}
 
 .searchPlay0{width:40px; height:38px;background:url(img/playSearch0.png) no-repeat center center;}
@@ -32,10 +27,10 @@ img{width:100%;height:100%; border-radius:5px;}
 
 <script type=text/javascript src="global.js" charset=UTF-8></script>
 <script>
-var areaIndex = getCookie("areaIndex")?getCookie("areaIndex"):"small";
+var areaIndexSearch = "small";//getCookie("areaIndexSearch")?getCookie("areaIndexSearch"):"key26";
 var smallFocusPos = parseInt(getCookie("smallFocusPos"))?parseInt(getCookie("smallFocusPos")):5;
 var bigFocusPos = parseInt(getCookie("bigFocusPos"))?parseInt(getCookie("bigFocusPos")):0;
-var keyType = getCookie("keyType")?getCookie("keyType"):9;
+var keyType = (areaIndexSearch=="small")?9:26;//getCookie("keyType")?getCookie("keyType"):9;
 var key26FocusPos = 16;
 var recommendFocusPos =0;
 var ListFocusPos = 0;
@@ -52,7 +47,7 @@ var currlist =0;
 function $(id){return document.getElementById(id);}
 
 var listArray = [
-	/*	  { movieName:"强档名称超长超长1",url:"collect1.htm"},
+/*		  { movieName:"强档名称超长超长1",url:"collect1.htm"},
 		  { movieName:"一二三四五六七八九十一二三四",url:"collect2.htm"},
 		  { movieName:"强档名称3",url:"3.htm"},
 		  { movieName:"强档名称4",url:"4.htm"},
@@ -80,14 +75,15 @@ var listArray = [
 		  { movieName:"强档名称26",url:"26.htm"},
 		  { movieName:"强档名称27",url:"27.htm"},
 		  { movieName:"强档名称28",url:"28.htm"},
-		  { movieName:"强档名称29",url:"29.htm"}*/
+		  { movieName:"强档名称29",url:"29.htm"}
+*/		  
 ];
 
 var recommendArray = [
-		  { movieName:"1",url:"recommend1.htm",img:"img/postersSmall2.png"},
-		  { movieName:"2",url:"recommend2.htm",img:"img/postersSmall.png"},
-		  { movieName:"3",url:"recommend3.htm",img:"img/postersSmall3.png"},
-		  { movieName:"4",url:"recommend4.htm",img:"img/postersSmall1.png"}
+		  { movieName:"1",url:"xiangQing.htm",img:"img/postersSmall2.png"},
+		  { movieName:"2",url:"xiangQing.htm",img:"img/postersSmall.png"},
+		  { movieName:"3",url:"xiangQing.htm",img:"img/postersSmall3.png"},
+		  { movieName:"4",url:"xiangQing.htm",img:"img/postersSmall1.png"}
 ];
 function showRecommend(){
 	for(i=0;i<4;i++){
@@ -96,7 +92,7 @@ function showRecommend(){
 }
 
 function showLeft(){
-	if(areaIndex=="small"){
+	if(areaIndexSearch=="small"){
 		changeFocusSmall(0);
 		$("keyT9").style.display = "block";
 		$("key26").style.display = "none";
@@ -105,6 +101,8 @@ function showLeft(){
 		$("keyT9").style.display = "none";
 		$("key26").style.display = "block";
 		$("focusBg").style.display = "block";
+		$("focusBg").style.left = $("key26_"+key26FocusPos).style.left;
+		$("focusBg").style.top = parseInt($("key26_"+key26FocusPos).style.top)-1+"px";
 	}
 }
 function showSearchList(){//显示导航下的内容
@@ -119,7 +117,7 @@ function showSearchList(){//显示导航下的内容
 			$("searchName_"+i).innerHTML = listArray[ListFocusPos+i].movieName.slice(0,12);
 		}
 	}
-	if(areaIndex=="searchList"){
+	if(areaIndexSearch=="searchList"){
 		changeListFocus(0);
 	}
 }
@@ -157,7 +155,7 @@ function changeListFocus(_num){
 		}
 	}
 	
-	if(areaIndex=="searchList"){
+	if(areaIndexSearch=="searchList"){
 		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch1.png')";
 		$("searchList_"+ListFocusPos%10).className = "searchList1";
 		$("searchName_"+ListFocusPos%10).innerHTML = (listArray[ListFocusPos].movieName.length>13)?'<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+listArray[ListFocusPos].movieName+'</marquee>':listArray[ListFocusPos].movieName.slice(0,12); 
@@ -198,29 +196,60 @@ function showMovieName(num){//切换焦点时超长名称游动
 	   else
 		$("12_movieName_"+ListFocusPos%listSize).innerHTML = listArray[0].list[ListFocusPos].movieName.slice(0,12);
 }
+
+function hiddenBorder(){
+	$("focusBg").style.display = "block";
+	if(areaIndexSearch=="small"){
+		$("key_"+smallFocusPos).style.border = "0px";
+	}else if(areaIndexSearch=="keyType"){
+		if(keyType == 9){
+			$("K26").style.border = "0px";
+		}else if(keyType == 26){
+			$("T9").style.border = "0px";
+		}
+	}else $(areaIndexSearch).style.border = "0px";
+}
+function showBorder(){
+	if(areaIndexSearch=="small"){
+		$("key_"+smallFocusPos).style.border = "solid 1px #546ea4";
+	}else if(areaIndexSearch=="keyType"){
+		if(keyType == 9){
+			$("K26").style.border = "solid 1px #546ea4";
+		}else if(keyType == 26){
+			$("T9").style.border = "solid 1px #546ea4";
+		}
+	}else $(areaIndexSearch).style.border = "solid 1px #546ea4";
+}
+
 function focusImg(_num){//焦点定位
 	if(_num==0){
-		  $(areaIndex).style.backgroundImage= "url(img/"+areaIndex+".png)";
-	}else $(areaIndex).style.backgroundImage= "url(img/focus_"+areaIndex+".png)";
-}/*
-function focusImg(){//焦点定位
-	if(areaIndex=="search"){
-		 $("search").style.display = "block";}
-	else{$("search").style.display = "none";}
+		  $(areaIndexSearch).style.backgroundImage= "url(img/"+areaIndexSearch+".png)";
+	}else if(_num==1){
+		$(areaIndexSearch).style.backgroundImage= "url(img/focus_"+areaIndexSearch+".png)";
+	}else if(_num==2){
+		$("focusBg").style.left = (areaIndexSearch=="submits")?$("submits").style.left:parseInt($("key_"+smallFocusPos).style.left)-2+"px";
+		$("focusBg").style.top = (areaIndexSearch=="submits")?$("submits").style.top:parseInt($("key_"+smallFocusPos).style.top)-2+"px";
+		$("focusBg").style.width = (areaIndexSearch=="submits")?$("submits").style.width:parseInt($("key_"+smallFocusPos).style.width)+4+"px";
+		$("focusBg").style.height = (areaIndexSearch=="submits")?$("submits").style.height:parseInt($("key_"+smallFocusPos).style.height)+4+"px";
+		
+		$("focusBgImg").src = "img/focuskey26.png";
+
+		if(areaIndexSearch=="submits"){ $("submits").style.borderRadius = "3px";}
+		if(areaIndexSearch=="small"){$("key_"+smallFocusPos).style.borderRadius = "3px";}
+		
+		if(areaIndexSearch=="small" && smallFocusPos>1 && smallFocusPos<10 ){
+		      $("focusBg").style.display = "none";
+	    }else $("focusBg").style.display = "block";
+    }
 	
-	if(areaIndex=="buy"){
-		 $("buy").style.display = "block";}
-	else{$("buy").style.display = "none";}
-	
-	if(areaIndex=="collect"){
-		 $("collect").style.display = "block";}
-	else{$("collect").style.display = "none";}
-	
-	if(areaIndex=="submits"){
-		$("submits").className = "submit1";
+/*	
+	if(areaIndexSearch=="submits"){
+	$("submits").className = "submit1";
 	}
 	else $("submits").className = "submit0";
-}*/
+*/
+}
+
 function focusKey26(_num){
 	var temp = key26FocusPos;
 	key26FocusPos += _num;
@@ -242,11 +271,12 @@ function focusKey26(_num){
 }
 function focusKeyType(){
 	$("focusBg").style.left = (keyType==26)?"69px":"224px";
-	$("focusBg").style.top = "559px";
+	$("focusBg").style.top = "557px";
 	$("focusBg").style.width = "136px";
 	$("focusBg").style.height = "42px";
 	$("focusBgImg").src = "img/focuskey26.png";
-	areaIndex = "keyType";	
+	areaIndexSearch = "keyType";
+	hiddenBorder();
 }
 
 function changeKeyType(){
@@ -265,13 +295,14 @@ function changeKeyType(){
 		keyType = 9;
 		focusKeyType();
 	}
+	hiddenBorder();
 }
 
-function changeFocusSmall(_num){	
+function changeFocusSmall(_num){
 	var end = 0;
 	//先还原前一个
-	if( ( (_num!=0 && areaIndex=="small") || (_num==0 && areaIndex!="small" ) ) && (smallFocusPos>1 && smallFocusPos<10) ){
-		$("key_"+smallFocusPos).style.border = "solid 1px white";
+	if( ( (_num!=0 && areaIndexSearch=="small") || (_num==0 && areaIndexSearch!="small" ) ) && (smallFocusPos>1 && smallFocusPos<10) ){
+		$("key_"+smallFocusPos).style.border = "solid 1px #546ea4";
 		$("key_"+smallFocusPos).style.width = parseInt($("key_"+smallFocusPos).style.width)-26+"px";
 		$("key_"+smallFocusPos).style.left = parseInt($("key_"+smallFocusPos).style.left)+13+"px";
 		$("key_"+smallFocusPos).style.height = parseInt($("key_"+smallFocusPos).style.height)-10+"px";
@@ -279,7 +310,7 @@ function changeFocusSmall(_num){
 		$("key_"+smallFocusPos).style.backgroundColor = "";
 		
 		$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "";
-		$("keyTable_"+smallFocusPos).style.fontSize = "25px";
+		$("keyTable_"+smallFocusPos).style.fontSize = "20px";
 
 		if(smallFocusPos==7 || smallFocusPos==9){
 		   end = 5;
@@ -292,23 +323,32 @@ function changeFocusSmall(_num){
 			$("keyTable_"+smallFocusPos+"_"+i).style.lineHeight = "35px";
 			$("keyTable_"+smallFocusPos+"_"+i).style.color = "white";		
 		}			
-	}else $("key_"+smallFocusPos).className = "submit0";	
+	}else{
+		$("key_"+smallFocusPos).className = "submit0";
+		if(areaIndexSearch== "small" && (smallFocusPos==1 || smallFocusPos>9) ){showBorder();}
+//		$("key_"+smallFocusPos).style.border = "solid 1px #546ea4";
+//		$("focusBg").style.display = "none";
+	}
 	
 	smallFocusPos += _num;//跳到下一个
 	if(smallFocusPos<1) { smallFocusPos =9 ;}
 	if(smallFocusPos>12){ smallFocusPos =1 ;}
-	
-	if(areaIndex=="small"){
+
+	if(areaIndexSearch=="small" && (smallFocusPos>1 && smallFocusPos<10)){
+		$("focusBg").style.display = "none";
+	}
+		
+	if(areaIndexSearch=="small"){
 		if(smallFocusPos>1 && smallFocusPos<10){
-			$("key_"+smallFocusPos).style.border = "solid 2px #F90";
+			$("key_"+smallFocusPos).style.border = "solid 2px #546ea4";
 			$("key_"+smallFocusPos).style.width = parseInt($("key_"+smallFocusPos).style.width)+26+"px";
 			$("key_"+smallFocusPos).style.left = parseInt($("key_"+smallFocusPos).style.left)-13+"px";
 			$("key_"+smallFocusPos).style.height = parseInt($("key_"+smallFocusPos).style.height)+10+"px";
 			$("key_"+smallFocusPos).style.top= parseInt($("key_"+smallFocusPos).style.top)-5+"px";	
 			$("key_"+smallFocusPos).style.backgroundColor = "white";
 		bigFocusPos =0 ;	
-			$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = (areaIndex=="small")?"":"#F60";
-			$("keyTable_"+smallFocusPos).style.fontSize = "35px";
+//			$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = (areaIndexSearch=="small")?"":"#546ea4";
+			$("keyTable_"+smallFocusPos).style.fontSize = "29px";
 			
 			if(smallFocusPos==7 || smallFocusPos==9){
 			   end = 5;
@@ -322,8 +362,14 @@ function changeFocusSmall(_num){
 				$("keyTable_"+smallFocusPos+"_"+i).style.color = "black";		
 			}			
 		}
-		else $("key_"+smallFocusPos).className = "submit1";		
-	}	
+		else {
+			focusImg(2);
+			$("key_"+smallFocusPos).className = "submit1";
+			hiddenBorder();
+		}
+//		focusImg(2);
+//		hiddenBorder();
+	}
 }
 function changeFocusBig(_num){
 	var end = 4;
@@ -337,17 +383,20 @@ function changeFocusBig(_num){
 	bigFocusPos += _num;
 	if( bigFocusPos>end-1 ){
 		bigFocusPos = 0 ;
-		areaIndex = "small";
+		areaIndexSearch = "small";
 		changeFocusSmall(1);			
 	}else if(bigFocusPos<0){
 		bigFocusPos = 0 ;
-		areaIndex = "small";
+		areaIndexSearch = "small";
 		changeFocusSmall(-1);
-	}else $("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
+	}else{
+		$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
+	}
+	
 }
 
 function changeRecommend(_num){
-	if( ( areaIndex=="recommend" &&_num!=0 ) || (areaIndex!="recommend" && _num==0 ) ){
+	if( ( areaIndexSearch=="recommend" &&_num!=0 ) || (areaIndexSearch!="recommend" && _num==0 ) ){
 		$("recommend_"+recommendFocusPos).style.border = "0px";
 		$("recommend_"+recommendFocusPos).style.zIndex = "1";
 		$("recommend_"+recommendFocusPos).style.width = parseInt($("recommend_"+recommendFocusPos).style.width)-26+"px";
@@ -363,7 +412,7 @@ function changeRecommend(_num){
 	if(recommendFocusPos<0){
 	   recommendFocusPos -= _num ;
 	}
-	if(areaIndex == "recommend"){
+	if(areaIndexSearch == "recommend"){
 		$("recommend_"+recommendFocusPos).style.border = "solid #f96 2px";
 		$("recommend_"+recommendFocusPos).style.borderRadius = "5px";
 		$("recommend_"+recommendFocusPos).style.zIndex = "2";
@@ -400,54 +449,87 @@ function getCookie(sName){
 }
 
 function doSelect(){//确认键
-	if(areaIndex=="search"){
+var temp = "";
+	if(areaIndexSearch=="search"){
 		location.href = "search.htm";
 	}
-	else if(areaIndex=="buy"){		
+	else if(areaIndexSearch=="buy"){		
 		location.href = "buy.htm";
 	}
-	else if(areaIndex=="collect"){
+	else if(areaIndexSearch=="collect"){
 		location.href = "collect.htm";
 	}
-	else if(areaIndex=="submits"){
+	else if(areaIndexSearch=="submits"){
 		location.href = "function.htm";
 	}
-	else if(areaIndex=="small" && smallFocusPos>1 && smallFocusPos<10){//显示选字焦点
+	else if(areaIndexSearch=="shouYe"){
+		setCookie("ListFocusPos", 0);
+		setCookie("areaIndexSearch", "nav");
+		location.href = "index.htm";
+	}
+	else if(areaIndexSearch=="zhuYe"){
+		setCookie("ListFocusPos", 0);
+		setCookie("areaIndexSearch", "nav");
+		location.href = "index.htm";
+	}
+	else if(areaIndexSearch=="back"){
+		setCookie("ListFocusPos", 0);
+		setCookie("areaIndexSearch", "nav");
+		location.href = "index.htm";
+	}
+	else if(areaIndexSearch=="small" && smallFocusPos>1 && smallFocusPos<10){//显示选字焦点
         $("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
-		areaIndex = "big";
+		$("keyTable_"+smallFocusPos).style.paddingTop = "2px";
+		areaIndexSearch = "big";
 	}
-	else if( areaIndex=="small" && ( smallFocusPos==1 || smallFocusPos== 11 )){//追加1或0
-		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+	else if( areaIndexSearch=="small" && ( smallFocusPos==1 || smallFocusPos== 11 )){//追加1或0
+//		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+		$("searchTxt").innerHTML = $("searchTxt").innerText+$("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+		if($("searchTxt").innerHTML.length>7){
+			$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
+		}
 	}
-	else if(areaIndex=="big" && smallFocusPos>1 && smallFocusPos<10 ){//追加2-9和字母
-		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+	else if(areaIndexSearch=="big" && smallFocusPos>1 && smallFocusPos<10 ){//追加2-9和字母
+		$("searchTxt").innerHTML = $("searchTxt").innerText+$("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
+		if($("searchTxt").innerHTML.length>7){
+			$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
+		}
 	}
-	else if(areaIndex=="small" && smallFocusPos == 10 ){//清空keyT9
+	else if(areaIndexSearch=="small" && smallFocusPos == 10 ){//清空keyT9
 		$("searchTxt").innerHTML = "";
 	}
-	else if(areaIndex=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格keyT9
-		$("searchTxt").innerHTML = $("searchTxt").innerHTML.slice(0,$("searchTxt").innerHTML.length-1);
+	else if(areaIndexSearch=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格keyT9
+		$("searchTxt").innerHTML = $("searchTxt").innerText.slice(0,$("searchTxt").innerText.length-1);
+		if($("searchTxt").innerHTML.length>7){
+				$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
+			}else $("searchTxt").innerHTML = $("searchTxt").innerText.slice(0,$("searchTxt").innerText.length);
 	}
-	else if(areaIndex=="searchList"){
-		setCookie("areaIndex", areaIndex);
+	else if(areaIndexSearch=="searchList"){
+		setCookie("areaIndexSearch", areaIndexSearch);
 		setCookie("ListFocusPos", ListFocusPos);
 		location.href = listArray[ListFocusPos].url;
 	}
-	else if(areaIndex=="recommend"){
-		setCookie("areaIndex", areaIndex);
+	else if(areaIndexSearch=="recommend"){
+		setCookie("areaIndexSearch", areaIndexSearch);
 		setCookie("recommendFocusPos", recommendFocusPos);
 		location.href = recommendArray[recommendFocusPos].url;
 	}
-	else if(areaIndex=="keyType"){//选择键盘类型
+	else if(areaIndexSearch=="keyType"){//选择键盘类型
 		changeKeyType();
 	}
-	else if(areaIndex=="key26" ){
+	else if(areaIndexSearch=="key26" ){
 		if(key26FocusPos <36){//选择key26
-			$("searchTxt").innerHTML += $("key26_"+key26FocusPos).innerHTML;
+			$("searchTxt").innerHTML = $("searchTxt").innerText+$("key26_"+key26FocusPos).innerHTML;
+		    if($("searchTxt").innerHTML.length>7){
+			$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
+			}
 		}else if(key26FocusPos==36){//清空key26
 			$("searchTxt").innerHTML = "";
 		}else if(key26FocusPos==37){//退格key26
-			$("searchTxt").innerHTML = $("searchTxt").innerHTML.slice(0,$("searchTxt").innerHTML.length-1);
+		    $("searchTxt").innerHTML = $("searchTxt").innerText.slice(0,$("searchTxt").innerText.length-1);
+			if($("searchTxt").innerHTML.length>7){
+				$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
+			}else $("searchTxt").innerHTML = $("searchTxt").innerText.slice(0,$("searchTxt").innerText.length);
 		}
 	}
 } 
@@ -463,133 +545,151 @@ function eventHandler(e,type){
 	}else key_code = e.code ;
 	switch(key_code){		
 		case "KEY_UP":
-		  	if(areaIndex=="small"){
+		  	if(areaIndexSearch=="small"){
 			   if(smallFocusPos<4){
-				   areaIndex="submits";
+				   showBorder();
+				   areaIndexSearch="submits";
+				   hiddenBorder();
+				   focusImg(2);
 				   changeFocusSmall(0);
 			   }else{
 				   changeFocusSmall(-3);
 			   }
-			}else if(areaIndex=="big" && smallFocusPos>3){
-				   areaIndex="small";
+			}else if(areaIndexSearch=="big" && smallFocusPos>3){
+				   areaIndexSearch="small";
 				   changeFocusSmall(-3);
-			}else if(areaIndex=="big" && smallFocusPos<4){
-				   areaIndex="submits";
+			}else if(areaIndexSearch=="big" && smallFocusPos<4){
+				   areaIndexSearch="submits";
+				   hiddenBorder();
+				   focusImg(2);
 				   changeFocusSmall(0);				
-			}else if(areaIndex=="searchList"){
+			}else if(areaIndexSearch=="searchList"){
 				   changeListFocus(-1);
-			}else if(areaIndex=="recommend"){
+			}else if(areaIndexSearch=="recommend"){
 				changeRecommend(-2);
-			}else if(areaIndex == "key26"){
+			}else if(areaIndexSearch == "key26"){
 				if(key26FocusPos==37){
 					focusKey26(-2);
 				}else if(key26FocusPos<6){
-					areaIndex="submits";
-					$("focusBg").style.display = "none";
+					showBorder();
+					areaIndexSearch="submits";
+					hiddenBorder();
+					focusImg(2);
+				//	$("focusBg").style.display = "none";
 				}else focusKey26(-6);
-			}else if(areaIndex=="keyType"){
+			}else if(areaIndexSearch=="keyType"){
+				showBorder();
 				if(keyType == 26){
-					areaIndex = "key26";
+					areaIndexSearch = "key26";
 					focusKey26(-2);
 				}else if(keyType == 9){
-					areaIndex = "small";
+					areaIndexSearch = "small";
 					changeFocusSmall(0);
-					$("focusBg").style.display = "none";
+					focusImg(2);
 				}
-			}else if(areaIndex=="zhuYe" || areaIndex=="shouYe" || areaIndex=="back" ){
+			}else if(areaIndexSearch=="zhuYe" || areaIndexSearch=="shouYe" || areaIndexSearch=="back" ){
 				focusImg(0);
-				areaIndex = "keyType"
+				areaIndexSearch = "keyType"
+				hiddenBorder();
 				$("focusBg").style.display = "block";
 			}
-		//	focusImg();
+//			focusImg();
 			return 0;
 			break;
 			
 		case "KEY_DOWN":
-			if(areaIndex=="search" || areaIndex=="buy" || areaIndex=="collect"){
-				areaIndex="small"; 
+			if(areaIndexSearch=="search" || areaIndexSearch=="buy" || areaIndexSearch=="collect"){
+				areaIndexSearch="small"; 
 				smallFocusPos = 5 ;
 				changeFocusSmall(0);
-		    }else if(areaIndex=="submits"){
+		    }else if(areaIndexSearch=="submits"){
+				showBorder();
 				if(keyType=="9"){
-				    areaIndex = "small"; 
+				    areaIndexSearch = "small"; 
 				    changeFocusSmall(0);
+					focusImg(2);
 				}else{
-					areaIndex = "key26";
+					areaIndexSearch = "key26";
 					focusKey26(0);
 				}
-			}else if(areaIndex=="small"){
+				
+			}else if(areaIndexSearch=="small"){
 				if(smallFocusPos>9){
+					showBorder();
 					focusKeyType();
-					$("focusBg").style.display = "block";
+					hiddenBorder();
 					changeFocusSmall(0);
 				}else changeFocusSmall(3);
-			}else if(areaIndex=="big"){
-				areaIndex = "small";
+			}else if(areaIndexSearch=="big"){
+				areaIndexSearch = "small";
 				changeFocusSmall(3);
-			}else if(areaIndex=="searchList"){
+			}else if(areaIndexSearch=="searchList"){
 				changeListFocus(1);
-			}else if(areaIndex=="recommend"){
+			}else if(areaIndexSearch=="recommend"){
 				changeRecommend(2);
-			}else if(areaIndex == "key26"){
+			}else if(areaIndexSearch == "key26"){
 				if(key26FocusPos==30){
 					focusKey26(7);
 				}else if(key26FocusPos>35){
+					
+				//	$("T9").style.border = "0px";
 				    focusKeyType();
+					hiddenBorder();
 			    }else focusKey26(6);
-			}else if(areaIndex=="keyType"){
-				areaIndex = "zhuYe";
+			}else if(areaIndexSearch=="keyType"){
+				showBorder();
+				areaIndexSearch = "zhuYe";
 				focusImg(1);
 				$("focusBg").style.display = "none";
 			}
-		    focusImg();
+//		    focusImg();
 			return 0;
 			break;
 			
 		case "KEY_LEFT":
-			if(areaIndex=="collect"){
-				areaIndex="buy";
-			}/*else if(areaIndex=="buy"){
-				areaIndex="search";
-			}*/else if(areaIndex=="small"){
+			if(areaIndexSearch=="collect"){
+				areaIndexSearch="buy";
+			}/*else if(areaIndexSearch=="buy"){
+				areaIndexSearch="search";
+			}*/else if(areaIndexSearch=="small"){
 				  changeFocusSmall(-1);
-			}else if(areaIndex=="big"){
+			}else if(areaIndexSearch=="big"){
 				  changeFocusBig(-1);;
-			}else if(areaIndex == "searchList"){
+			}else if(areaIndexSearch == "searchList"){
 				if(keyType=="9"){
-					areaIndex = "small";
+					areaIndexSearch = "small";
 					changeFocusSmall(0);
 					changeListFocus(0);
 				}else{
-					areaIndex = "key26";
+					areaIndexSearch = "key26";
 					focusKey26(0);
 					changeListFocus(0);
 				}
-			}else if(areaIndex == "recommend" && ( recommendFocusPos==1 || recommendFocusPos==3)){
+			}else if(areaIndexSearch == "recommend" && ( recommendFocusPos==1 || recommendFocusPos==3)){
 			    changeRecommend(-1);
-			}else if(areaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length>0 ){
-				areaIndex = "searchList";
+			}else if(areaIndexSearch == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length>0 ){
+				areaIndexSearch = "searchList";
 				changeListFocus(0);
 				changeRecommend(0);
-			}else if(areaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length==0 ){
+			}else if(areaIndexSearch == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length==0 ){
 				if(keyType==9){
-					areaIndex = "small";
+					areaIndexSearch = "small";
 					changeFocusSmall(0);
 				    changeRecommend(0);
 				}else{
-					areaIndex = "key26";
+					areaIndexSearch = "key26";
 					focusKey26(0);
 					changeRecommend(0);
 				}
-			}else if(areaIndex == "key26"){
+			}else if(areaIndexSearch == "key26"){
 				focusKey26(-1);
-			}else if(areaIndex=="back"){
+			}else if(areaIndexSearch=="back"){
 				focusImg(0);
-				areaIndex = "shouYe";
+				areaIndexSearch = "shouYe";
 				focusImg(1);
-			}else if(areaIndex=="shouYe"){
+			}else if(areaIndexSearch=="shouYe"){
 				focusImg(0);
-				areaIndex = "zhuYe";
+				areaIndexSearch = "zhuYe";
 				focusImg(1);
 			}
 		//	focusImg();
@@ -597,61 +697,71 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_RIGHT":
-			if(areaIndex=="search"){
-				areaIndex="buy";
-			}else if(areaIndex=="buy"){
-				areaIndex="collect";
-			}else if(areaIndex=="small" && smallFocusPos%3!=0){
+			if(areaIndexSearch=="search"){
+				areaIndexSearch="buy";
+			}else if(areaIndexSearch=="buy"){
+				areaIndexSearch="collect";
+			}else if(areaIndexSearch=="small" && smallFocusPos%3!=0){
 				changeFocusSmall(1);
-			}else if(areaIndex=="small" && smallFocusPos%3==0 && listArray.length==0){
-				areaIndex = "recommend";
-				changeFocusSmall(0);
-				changeRecommend(0);
-			}else if(areaIndex=="small" && smallFocusPos%3==0 && listArray.length>0){
-				areaIndex = "searchList";
-				changeFocusSmall(0);
-				changeListFocus(0);
-			}else if(areaIndex=="big"){
+			}else if(areaIndexSearch=="small" && smallFocusPos%3==0){
+				$("focusBg").style.display = "none";
+				showBorder();
+				if(listArray.length==0){
+					areaIndexSearch = "recommend";
+					changeFocusSmall(0);
+					changeRecommend(0);
+				}else if(listArray.length>0){
+					areaIndexSearch = "searchList";
+					changeFocusSmall(0);
+					changeListFocus(0);
+				}	
+			}else if(areaIndexSearch=="big"){
 				changeFocusBig(1);
-			}else if(areaIndex=="submits" && listArray.length>0){
-				areaIndex = "searchList";
-				changeFocusSmall(0);
+			}else if(areaIndexSearch=="submits"){
+				$("focusBg").style.display = "none";
+				showBorder();
+				if(listArray.length>0){
+					areaIndexSearch = "searchList";
+			  //	changeFocusSmall(0);
+					changeListFocus(0);
+				}else if(listArray.length==0){
+					areaIndexSearch = "recommend";
+					changeRecommend(0);
+				}	
+			}else if( areaIndexSearch == "searchList" ){
+				areaIndexSearch = "recommend";
 				changeListFocus(0);
-			}else if( areaIndex=="submits" && listArray.length==0){
-				areaIndex = "recommend";
 				changeRecommend(0);
-			}else if( areaIndex == "searchList" ){
-				areaIndex = "recommend";
-				changeListFocus(0);
-				changeRecommend(0);
-			}else if(areaIndex == "recommend"){
+			}else if(areaIndexSearch == "recommend"){
 				changeRecommend(1);
-			}else if(areaIndex == "key26"){
+			}else if(areaIndexSearch == "key26"){
 				if( (key26FocusPos%6==5||key26FocusPos==37) && listArray.length>0){
-					areaIndex = "searchList";
+					areaIndexSearch = "searchList";
 					changeListFocus(0);
 					$("focusBg").style.display = "none";
 				}else if( (key26FocusPos%6==5||key26FocusPos==37) && listArray.length==0){
-					areaIndex = "recommend";
+					areaIndexSearch = "recommend";
 					changeRecommend(0);
 					$("focusBg").style.display = "none";
 				}else focusKey26(1);
-			}else if(areaIndex=="zhuYe"){
+			}else if(areaIndexSearch=="zhuYe"){
 				focusImg(0);
-				areaIndex = "shouYe";
+				areaIndexSearch = "shouYe";
 				focusImg(1);
-			}else if(areaIndex=="shouYe"){
+			}else if(areaIndexSearch=="shouYe"){
 				focusImg(0);
-				areaIndex = "back";
+				areaIndexSearch = "back";
 				focusImg(1);
-			}else if(areaIndex=="back" || areaIndex=="keyType"){
+			}else if(areaIndexSearch=="back" || areaIndexSearch=="keyType"){
+				$("focusBg").style.display = "none";
+				if( areaIndexSearch=="keyType" ){ showBorder(); }
 				if(listArray.length>0){
-					(areaIndex=="keyType")?$("focusBg").style.display ="none":focusImg(0);
-					areaIndex = "searchList";
+					(areaIndexSearch=="keyType")?$("focusBg").style.display ="none":focusImg(0);
+					areaIndexSearch = "searchList";
 					changeListFocus(0);
 				}else{
-					(areaIndex=="keyType")?$("focusBg").style.display ="none":focusImg(0);
-					areaIndex = "recommend";
+					(areaIndexSearch=="keyType")?$("focusBg").style.display ="none":focusImg(0);
+					areaIndexSearch = "recommend";
 					changeRecommend(0);
 				}
 			}
@@ -677,7 +787,7 @@ function eventHandler(e,type){
 		case "KEY_BACK":
 		    document.onkeypress    = eventHandler;
 			
-			delCookie("areaIndex");
+			delCookie("areaIndexSearch");
 			delCookie("focusListPos");
 			location.href = "index.htm";
 			return 0;
@@ -732,20 +842,20 @@ function init(){
 <div id="collect" style="position:absolute; left:1091px; top:64px; width:113px; height:46px; background:url(img/focus_collect.png) no-repeat; display:none;"></div>
 
 <!--搜索框-->
-<div id="searchTxt" style="position:absolute;left:75px;top:150px; width:182px; height:40px; background-color:gray; border-radius:3px;text-align:center;vertical-align:middle;line-height:40px; font-size:30px; color:white;"></div>
+<div id="searchTxt" style="position:absolute;left:75px;top:150px; width:182px; height:40px; background-color:#a8abbd; border-radius:3px;text-align:center;vertical-align:middle;line-height:40px; font-size:30px; color:black;"></div>
 
-<div id="submits" class="submit0" style="position:absolute;left:275px;top:148px;width:80px;height:42px;text-align:center;vertical-align:middle;line-height:42px;border-radius:3px;color:white; ">搜索</div>
+<div id="submits" class="submit0" style="position:absolute;left:275px;top:148px;width:80px;height:42px;text-align:center;vertical-align:middle;line-height:42px;border-radius:2px;">搜索</div>
 
 <div id="keyT9" style="display:block;">
 
 <div id="key_1" class="key" style="position:absolute;left:75px;top:210px; width:80px; height:40px;">
-<table id="keyTable_1" style="margin:auto;">
+<table id="keyTable_1" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_1_0">1</td>
 </tr></table></div>
 
 <div id="key_2" class="key" style="position:absolute;left:175px;top:210px; width:80px; height:40px;">
-<table id="keyTable_2" style="margin:auto;">
+<table id="keyTable_2" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_2_0">A</td>
 <td id="keyTable_2_1">B</td>
@@ -754,7 +864,7 @@ function init(){
 </tr></table></div>
 
 <div id="key_3" class="key" style="position:absolute;left:275px;top:210px; width:80px; height:40px;">
-<table id="keyTable_3" style="margin:auto;">
+<table id="keyTable_3" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_3_0">D</td>
 <td id="keyTable_3_1">E</td>
@@ -763,7 +873,7 @@ function init(){
 </tr></table></div>
 
 <div id="key_4" class="key" style="position:absolute;left:75px;top:280px; width:80px; height:40px;">
-<table id="keyTable_4" style="margin:auto;">
+<table id="keyTable_4" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_4_0">G</td>
 <td id="keyTable_4_1">H</td>
@@ -772,7 +882,7 @@ function init(){
 </tr></table></div>
 
 <div id="key_5" class="key" style="position:absolute;left:175px;top:280px; width:80px; height:40px;">
-<table id="keyTable_5" style="margin:auto;">
+<table id="keyTable_5" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_5_0">J</td>
 <td id="keyTable_5_1">K</td>
@@ -781,7 +891,7 @@ function init(){
 </tr></table></div>
 
 <div id="key_6" class="key" style="position:absolute;left:275px;top:280px; width:80px; height:40px;">
-<table id="keyTable_6" style="margin:auto;">
+<table id="keyTable_6" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_6_0">M</td>
 <td id="keyTable_6_1">N</td>
@@ -791,7 +901,7 @@ function init(){
 
 
 <div id="key_7" class="key" style="position:absolute;left:75px;top:350px; width:80px; height:40px;">
-<table id="keyTable_7" style="margin:auto;">
+<table id="keyTable_7" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_7_0">P</td>
 <td id="keyTable_7_1">Q</td>
@@ -801,7 +911,7 @@ function init(){
 </tr></table></div>
 
 <div id="key_8" class="key" style="position:absolute;left:175px;top:350px; width:80px; height:40px;">
-<table id="keyTable_8" style="margin:auto;">
+<table id="keyTable_8" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_8_0">T</td>
 <td id="keyTable_8_1">U</td>
@@ -810,7 +920,7 @@ function init(){
 </tr></table></div>
 
 <div id="key_9" class="key" style="position:absolute;left:275px;top:350px; width:80px; height:40px;">
-<table id="keyTable_9" style="margin:auto;">
+<table id="keyTable_9" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_9_0">W</td>
 <td id="keyTable_9_1">X</td>
@@ -820,14 +930,14 @@ function init(){
 </tr></table></div>
 
 <div id="key_10" class="key" style="position:absolute;left:75px;top:420px; width:80px; height:40px;">
-<table id="keyTable_10" style="margin:auto;">
+<table id="keyTable_10" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_10_0">清空</td>
 </tr></table>
 </div>
 
 <div id="key_11" class="key" style="position:absolute;left:175px;top:420px; width:80px; height:40px;">
-<table id="keyTable_11" style="margin:auto;">
+<table id="keyTable_11" style="margin:auto; padding-top:2px;">
 <tr>
 <td id="keyTable_11_0">0</td>
 </tr></table>
