@@ -20,17 +20,17 @@ img{width:100%;height:100%; border-radius:5px;}
 .searchPlay0{width:40px; height:38px;background:url(img/playSearch0.png) no-repeat center center;}
 .searchPlay1{width:40px; height:38px;background:url(img/playSearch1.png) no-repeat center center;}
 
-.searchList0{left:460px; width:350px; height:40px;color:white; font-size:22px; border:none none 0px; border-radius:2px;}
-.searchList1{left:460px; width:350px; height:40px;color:#F60; font-size:22px; border:solid #F60 2px; border-radius:3px;}
+.searchList0{left:460px; width:350px; height:40px;color:#629de0; font-size:22px; border:none none 0px; border-radius:2px;}
+.searchList1{left:460px; width:350px; height:40px;color:#ffd200; font-size:22px; border:groove #ffd200 2px; border-radius:3px;}
 
 </style>
 
 <script type=text/javascript src="global.js" charset=UTF-8></script>
 <script>
-var areaIndexSearch = "small";//getCookie("areaIndexSearch")?getCookie("areaIndexSearch"):"key26";
+var searchAreaIndex = "small";//getCookie("searchAreaIndex")?getCookie("searchAreaIndex"):"key26";
 var smallFocusPos = parseInt(getCookie("smallFocusPos"))?parseInt(getCookie("smallFocusPos")):5;
 var bigFocusPos = parseInt(getCookie("bigFocusPos"))?parseInt(getCookie("bigFocusPos")):0;
-var keyType = (areaIndexSearch=="small")?9:26;//getCookie("keyType")?getCookie("keyType"):9;
+var keyType = (searchAreaIndex=="small")?9:26;//getCookie("keyType")?getCookie("keyType"):9;
 var key26FocusPos = 16;
 var recommendFocusPos =0;
 var ListFocusPos = 0;
@@ -47,7 +47,7 @@ var currlist =0;
 function $(id){return document.getElementById(id);}
 
 var listArray = [
-/*		  { movieName:"强档名称超长超长1",url:"collect1.htm"},
+		  { movieName:"强档名称超长超长1",url:"collect1.htm"},
 		  { movieName:"一二三四五六七八九十一二三四",url:"collect2.htm"},
 		  { movieName:"强档名称3",url:"3.htm"},
 		  { movieName:"强档名称4",url:"4.htm"},
@@ -76,7 +76,7 @@ var listArray = [
 		  { movieName:"强档名称27",url:"27.htm"},
 		  { movieName:"强档名称28",url:"28.htm"},
 		  { movieName:"强档名称29",url:"29.htm"}
-*/		  
+		  
 ];
 
 var recommendArray = [
@@ -92,7 +92,7 @@ function showRecommend(){
 }
 
 function showLeft(){
-	if(areaIndexSearch=="small"){
+	if(searchAreaIndex=="small"){
 		changeFocusSmall(0);
 		$("keyT9").style.display = "block";
 		$("key26").style.display = "none";
@@ -117,7 +117,7 @@ function showSearchList(){//显示导航下的内容
 			$("searchName_"+i).innerHTML = listArray[ListFocusPos+i].movieName.slice(0,12);
 		}
 	}
-	if(areaIndexSearch=="searchList"){
+	if(searchAreaIndex=="searchList"){
 		changeListFocus(0);
 	}
 }
@@ -155,7 +155,7 @@ function changeListFocus(_num){
 		}
 	}
 	
-	if(areaIndexSearch=="searchList"){
+	if(searchAreaIndex=="searchList"){
 		$("searchPlay_"+ListFocusPos%10).style.backgroundImage = "url('img/playSearch1.png')";
 		$("searchList_"+ListFocusPos%10).className = "searchList1";
 		$("searchName_"+ListFocusPos%10).innerHTML = (listArray[ListFocusPos].movieName.length>13)?'<marquee direction="left" width="100%" scrollamonut="15" scrolldelay="100">'+listArray[ListFocusPos].movieName+'</marquee>':listArray[ListFocusPos].movieName.slice(0,12); 
@@ -199,51 +199,51 @@ function showMovieName(num){//切换焦点时超长名称游动
 
 function hiddenBorder(){
 	$("focusBg").style.display = "block";
-	if(areaIndexSearch=="small"){
+	if(searchAreaIndex=="small"){
 		$("key_"+smallFocusPos).style.border = "0px";
-	}else if(areaIndexSearch=="keyType"){
+	}else if(searchAreaIndex=="keyType"){
 		if(keyType == 9){
 			$("K26").style.border = "0px";
 		}else if(keyType == 26){
 			$("T9").style.border = "0px";
 		}
-	}else $(areaIndexSearch).style.border = "0px";
+	}else $(searchAreaIndex).style.border = "0px";
 }
 function showBorder(){
-	if(areaIndexSearch=="small"){
+	if(searchAreaIndex=="small"){
 		$("key_"+smallFocusPos).style.border = "solid 1px #546ea4";
-	}else if(areaIndexSearch=="keyType"){
+	}else if(searchAreaIndex=="keyType"){
 		if(keyType == 9){
 			$("K26").style.border = "solid 1px #546ea4";
 		}else if(keyType == 26){
 			$("T9").style.border = "solid 1px #546ea4";
 		}
-	}else $(areaIndexSearch).style.border = "solid 1px #546ea4";
+	}else $(searchAreaIndex).style.border = "solid 1px #546ea4";
 }
 
 function focusImg(_num){//焦点定位
 	if(_num==0){
-		  $(areaIndexSearch).style.backgroundImage= "url(img/"+areaIndexSearch+".png)";
+		  $(searchAreaIndex).style.backgroundImage= "url(img/"+searchAreaIndex+".png)";
 	}else if(_num==1){
-		$(areaIndexSearch).style.backgroundImage= "url(img/focus_"+areaIndexSearch+".png)";
+		$(searchAreaIndex).style.backgroundImage= "url(img/focus_"+searchAreaIndex+".png)";
 	}else if(_num==2){
-		$("focusBg").style.left = (areaIndexSearch=="submits")?$("submits").style.left:parseInt($("key_"+smallFocusPos).style.left)-2+"px";
-		$("focusBg").style.top = (areaIndexSearch=="submits")?$("submits").style.top:parseInt($("key_"+smallFocusPos).style.top)-2+"px";
-		$("focusBg").style.width = (areaIndexSearch=="submits")?$("submits").style.width:parseInt($("key_"+smallFocusPos).style.width)+4+"px";
-		$("focusBg").style.height = (areaIndexSearch=="submits")?$("submits").style.height:parseInt($("key_"+smallFocusPos).style.height)+4+"px";
+		$("focusBg").style.left = (searchAreaIndex=="submits")?$("submits").style.left:parseInt($("key_"+smallFocusPos).style.left)-2+"px";
+		$("focusBg").style.top = (searchAreaIndex=="submits")?$("submits").style.top:parseInt($("key_"+smallFocusPos).style.top)-2+"px";
+		$("focusBg").style.width = (searchAreaIndex=="submits")?$("submits").style.width:parseInt($("key_"+smallFocusPos).style.width)+4+"px";
+		$("focusBg").style.height = (searchAreaIndex=="submits")?$("submits").style.height:parseInt($("key_"+smallFocusPos).style.height)+4+"px";
 		
 		$("focusBgImg").src = "img/focuskey26.png";
 
-		if(areaIndexSearch=="submits"){ $("submits").style.borderRadius = "3px";}
-		if(areaIndexSearch=="small"){$("key_"+smallFocusPos).style.borderRadius = "3px";}
+		if(searchAreaIndex=="submits"){ $("submits").style.borderRadius = "3px";}
+		if(searchAreaIndex=="small"){$("key_"+smallFocusPos).style.borderRadius = "3px";}
 		
-		if(areaIndexSearch=="small" && smallFocusPos>1 && smallFocusPos<10 ){
+		if(searchAreaIndex=="small" && smallFocusPos>1 && smallFocusPos<10 ){
 		      $("focusBg").style.display = "none";
 	    }else $("focusBg").style.display = "block";
     }
 	
 /*	
-	if(areaIndexSearch=="submits"){
+	if(searchAreaIndex=="submits"){
 	$("submits").className = "submit1";
 	}
 	else $("submits").className = "submit0";
@@ -275,7 +275,7 @@ function focusKeyType(){
 	$("focusBg").style.width = "136px";
 	$("focusBg").style.height = "42px";
 	$("focusBgImg").src = "img/focuskey26.png";
-	areaIndexSearch = "keyType";
+	searchAreaIndex = "keyType";
 	hiddenBorder();
 }
 
@@ -301,7 +301,7 @@ function changeKeyType(){
 function changeFocusSmall(_num){
 	var end = 0;
 	//先还原前一个
-	if( ( (_num!=0 && areaIndexSearch=="small") || (_num==0 && areaIndexSearch!="small" ) ) && (smallFocusPos>1 && smallFocusPos<10) ){
+	if( ( (_num!=0 && searchAreaIndex=="small") || (_num==0 && searchAreaIndex!="small" ) ) && (smallFocusPos>0 && smallFocusPos<12) ){
 		$("key_"+smallFocusPos).style.border = "solid 1px #546ea4";
 		$("key_"+smallFocusPos).style.width = parseInt($("key_"+smallFocusPos).style.width)-26+"px";
 		$("key_"+smallFocusPos).style.left = parseInt($("key_"+smallFocusPos).style.left)+13+"px";
@@ -314,8 +314,9 @@ function changeFocusSmall(_num){
 
 		if(smallFocusPos==7 || smallFocusPos==9){
 		   end = 5;
-		}
-		else{
+		}else if(smallFocusPos==1 || smallFocusPos>9){
+		   end = 1;
+		}else{
 		   end = 4;
 		}
 		
@@ -325,7 +326,7 @@ function changeFocusSmall(_num){
 		}			
 	}else{
 		$("key_"+smallFocusPos).className = "submit0";
-		if(areaIndexSearch== "small" && (smallFocusPos==1 || smallFocusPos>9) ){showBorder();}
+		if(searchAreaIndex== "small" && (smallFocusPos==12 || smallFocusPos>1119) ){showBorder();}
 //		$("key_"+smallFocusPos).style.border = "solid 1px #546ea4";
 //		$("focusBg").style.display = "none";
 	}
@@ -334,12 +335,12 @@ function changeFocusSmall(_num){
 	if(smallFocusPos<1) { smallFocusPos =9 ;}
 	if(smallFocusPos>12){ smallFocusPos =1 ;}
 
-	if(areaIndexSearch=="small" && (smallFocusPos>1 && smallFocusPos<10)){
+	if(searchAreaIndex=="small" && (smallFocusPos>0 && smallFocusPos<12)){
 		$("focusBg").style.display = "none";
 	}
 		
-	if(areaIndexSearch=="small"){
-		if(smallFocusPos>1 && smallFocusPos<10){
+	if(searchAreaIndex=="small"){//还原前一个后再定位改变后一个
+		if(smallFocusPos>0 && smallFocusPos<12){
 			$("key_"+smallFocusPos).style.border = "solid 2px #546ea4";
 			$("key_"+smallFocusPos).style.width = parseInt($("key_"+smallFocusPos).style.width)+26+"px";
 			$("key_"+smallFocusPos).style.left = parseInt($("key_"+smallFocusPos).style.left)-13+"px";
@@ -347,7 +348,7 @@ function changeFocusSmall(_num){
 			$("key_"+smallFocusPos).style.top= parseInt($("key_"+smallFocusPos).style.top)-5+"px";	
 			$("key_"+smallFocusPos).style.backgroundColor = "white";
 		bigFocusPos =0 ;	
-//			$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = (areaIndexSearch=="small")?"":"#546ea4";
+//			$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = (searchAreaIndex=="small")?"":"#546ea4";
 			$("keyTable_"+smallFocusPos).style.fontSize = "29px";
 			
 			if(smallFocusPos==7 || smallFocusPos==9){
@@ -383,11 +384,11 @@ function changeFocusBig(_num){
 	bigFocusPos += _num;
 	if( bigFocusPos>end-1 ){
 		bigFocusPos = 0 ;
-		areaIndexSearch = "small";
+		searchAreaIndex = "small";
 		changeFocusSmall(1);			
 	}else if(bigFocusPos<0){
 		bigFocusPos = 0 ;
-		areaIndexSearch = "small";
+		searchAreaIndex = "small";
 		changeFocusSmall(-1);
 	}else{
 		$("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
@@ -396,7 +397,7 @@ function changeFocusBig(_num){
 }
 
 function changeRecommend(_num){
-	if( ( areaIndexSearch=="recommend" &&_num!=0 ) || (areaIndexSearch!="recommend" && _num==0 ) ){
+	if( ( searchAreaIndex=="recommend" &&_num!=0 ) || (searchAreaIndex!="recommend" && _num==0 ) ){
 		$("recommend_"+recommendFocusPos).style.border = "0px";
 		$("recommend_"+recommendFocusPos).style.zIndex = "1";
 		$("recommend_"+recommendFocusPos).style.width = parseInt($("recommend_"+recommendFocusPos).style.width)-26+"px";
@@ -412,7 +413,7 @@ function changeRecommend(_num){
 	if(recommendFocusPos<0){
 	   recommendFocusPos -= _num ;
 	}
-	if(areaIndexSearch == "recommend"){
+	if(searchAreaIndex == "recommend"){
 		$("recommend_"+recommendFocusPos).style.border = "solid #f96 2px";
 		$("recommend_"+recommendFocusPos).style.borderRadius = "5px";
 		$("recommend_"+recommendFocusPos).style.zIndex = "2";
@@ -450,74 +451,74 @@ function getCookie(sName){
 
 function doSelect(){//确认键
 var temp = "";
-	if(areaIndexSearch=="search"){
+	if(searchAreaIndex=="search"){
 		location.href = "search.htm";
 	}
-	else if(areaIndexSearch=="buy"){		
+	else if(searchAreaIndex=="buy"){		
 		location.href = "buy.htm";
 	}
-	else if(areaIndexSearch=="collect"){
+	else if(searchAreaIndex=="collect"){
 		location.href = "collect.htm";
 	}
-	else if(areaIndexSearch=="submits"){
+	else if(searchAreaIndex=="submits"){
 		location.href = "function.htm";
 	}
-	else if(areaIndexSearch=="shouYe"){
+	else if(searchAreaIndex=="shouYe"){
 		setCookie("ListFocusPos", 0);
-		setCookie("areaIndexSearch", "nav");
+		setCookie("searchAreaIndex", "nav");
 		location.href = "index.htm";
 	}
-	else if(areaIndexSearch=="zhuYe"){
+	else if(searchAreaIndex=="zhuYe"){
 		setCookie("ListFocusPos", 0);
-		setCookie("areaIndexSearch", "nav");
+		setCookie("searchAreaIndex", "nav");
 		location.href = "index.htm";
 	}
-	else if(areaIndexSearch=="back"){
+	else if(searchAreaIndex=="back"){
 		setCookie("ListFocusPos", 0);
-		setCookie("areaIndexSearch", "nav");
+		setCookie("searchAreaIndex", "nav");
 		location.href = "index.htm";
 	}
-	else if(areaIndexSearch=="small" && smallFocusPos>1 && smallFocusPos<10){//显示选字焦点
+	else if(searchAreaIndex=="small" && smallFocusPos>1 && smallFocusPos<10){//显示选字焦点
         $("keyTable_"+smallFocusPos+"_"+bigFocusPos).style.backgroundColor = "#F60";
 		$("keyTable_"+smallFocusPos).style.paddingTop = "2px";
-		areaIndexSearch = "big";
+		searchAreaIndex = "big";
 	}
-	else if( areaIndexSearch=="small" && ( smallFocusPos==1 || smallFocusPos== 11 )){//追加1或0
+	else if( searchAreaIndex=="small" && ( smallFocusPos==1 || smallFocusPos== 11 )){//追加1或0
 //		$("searchTxt").innerHTML += $("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
 		$("searchTxt").innerHTML = $("searchTxt").innerText+$("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
 		if($("searchTxt").innerHTML.length>7){
 			$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
 		}
 	}
-	else if(areaIndexSearch=="big" && smallFocusPos>1 && smallFocusPos<10 ){//追加2-9和字母
+	else if(searchAreaIndex=="big" && smallFocusPos>1 && smallFocusPos<10 ){//追加2-9和字母
 		$("searchTxt").innerHTML = $("searchTxt").innerText+$("keyTable_"+smallFocusPos+"_"+bigFocusPos).innerHTML;
 		if($("searchTxt").innerHTML.length>7){
 			$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
 		}
 	}
-	else if(areaIndexSearch=="small" && smallFocusPos == 10 ){//清空keyT9
+	else if(searchAreaIndex=="small" && smallFocusPos == 10 ){//清空keyT9
 		$("searchTxt").innerHTML = "";
 	}
-	else if(areaIndexSearch=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格keyT9
+	else if(searchAreaIndex=="small" && smallFocusPos == 12 && $("searchTxt").innerHTML.length>0){//退格keyT9
 		$("searchTxt").innerHTML = $("searchTxt").innerText.slice(0,$("searchTxt").innerText.length-1);
 		if($("searchTxt").innerHTML.length>7){
 				$("searchTxt").innerHTML ='<marquee direction="left" width="100%" scrollamonut="5" scrolldelay="100">'+$("searchTxt").innerHTML+'</marquee>';
 			}else $("searchTxt").innerHTML = $("searchTxt").innerText.slice(0,$("searchTxt").innerText.length);
 	}
-	else if(areaIndexSearch=="searchList"){
-		setCookie("areaIndexSearch", areaIndexSearch);
+	else if(searchAreaIndex=="searchList"){
+		setCookie("searchAreaIndex", searchAreaIndex);
 		setCookie("ListFocusPos", ListFocusPos);
 		location.href = listArray[ListFocusPos].url;
 	}
-	else if(areaIndexSearch=="recommend"){
-		setCookie("areaIndexSearch", areaIndexSearch);
+	else if(searchAreaIndex=="recommend"){
+		setCookie("searchAreaIndex", searchAreaIndex);
 		setCookie("recommendFocusPos", recommendFocusPos);
 		location.href = recommendArray[recommendFocusPos].url;
 	}
-	else if(areaIndexSearch=="keyType"){//选择键盘类型
+	else if(searchAreaIndex=="keyType"){//选择键盘类型
 		changeKeyType();
 	}
-	else if(areaIndexSearch=="key26" ){
+	else if(searchAreaIndex=="key26" ){
 		if(key26FocusPos <36){//选择key26
 			$("searchTxt").innerHTML = $("searchTxt").innerText+$("key26_"+key26FocusPos).innerHTML;
 		    if($("searchTxt").innerHTML.length>7){
@@ -545,51 +546,51 @@ function eventHandler(e,type){
 	}else key_code = e.code ;
 	switch(key_code){		
 		case "KEY_UP":
-		  	if(areaIndexSearch=="small"){
+		  	if(searchAreaIndex=="small"){
 			   if(smallFocusPos<4){
 				   showBorder();
-				   areaIndexSearch="submits";
+				   searchAreaIndex="submits";
 				   hiddenBorder();
 				   focusImg(2);
 				   changeFocusSmall(0);
 			   }else{
 				   changeFocusSmall(-3);
 			   }
-			}else if(areaIndexSearch=="big" && smallFocusPos>3){
-				   areaIndexSearch="small";
+			}else if(searchAreaIndex=="big" && smallFocusPos>3){
+				   searchAreaIndex="small";
 				   changeFocusSmall(-3);
-			}else if(areaIndexSearch=="big" && smallFocusPos<4){
-				   areaIndexSearch="submits";
+			}else if(searchAreaIndex=="big" && smallFocusPos<4){
+				   searchAreaIndex="submits";
 				   hiddenBorder();
 				   focusImg(2);
 				   changeFocusSmall(0);				
-			}else if(areaIndexSearch=="searchList"){
+			}else if(searchAreaIndex=="searchList"){
 				   changeListFocus(-1);
-			}else if(areaIndexSearch=="recommend"){
+			}else if(searchAreaIndex=="recommend"){
 				changeRecommend(-2);
-			}else if(areaIndexSearch == "key26"){
+			}else if(searchAreaIndex == "key26"){
 				if(key26FocusPos==37){
 					focusKey26(-2);
 				}else if(key26FocusPos<6){
 					showBorder();
-					areaIndexSearch="submits";
+					searchAreaIndex="submits";
 					hiddenBorder();
 					focusImg(2);
 				//	$("focusBg").style.display = "none";
 				}else focusKey26(-6);
-			}else if(areaIndexSearch=="keyType"){
+			}else if(searchAreaIndex=="keyType"){
 				showBorder();
 				if(keyType == 26){
-					areaIndexSearch = "key26";
+					searchAreaIndex = "key26";
 					focusKey26(-2);
 				}else if(keyType == 9){
-					areaIndexSearch = "small";
+					searchAreaIndex = "small";
 					changeFocusSmall(0);
 					focusImg(2);
 				}
-			}else if(areaIndexSearch=="zhuYe" || areaIndexSearch=="shouYe" || areaIndexSearch=="back" ){
+			}else if(searchAreaIndex=="zhuYe" || searchAreaIndex=="shouYe" || searchAreaIndex=="back" ){
 				focusImg(0);
-				areaIndexSearch = "keyType"
+				searchAreaIndex = "keyType"
 				hiddenBorder();
 				$("focusBg").style.display = "block";
 			}
@@ -598,36 +599,36 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_DOWN":
-			if(areaIndexSearch=="search" || areaIndexSearch=="buy" || areaIndexSearch=="collect"){
-				areaIndexSearch="small"; 
+			if(searchAreaIndex=="search" || searchAreaIndex=="buy" || searchAreaIndex=="collect"){
+				searchAreaIndex="small"; 
 				smallFocusPos = 5 ;
 				changeFocusSmall(0);
-		    }else if(areaIndexSearch=="submits"){
+		    }else if(searchAreaIndex=="submits"){
 				showBorder();
 				if(keyType=="9"){
-				    areaIndexSearch = "small"; 
+				    searchAreaIndex = "small"; 
 				    changeFocusSmall(0);
 					focusImg(2);
 				}else{
-					areaIndexSearch = "key26";
+					searchAreaIndex = "key26";
 					focusKey26(0);
 				}
 				
-			}else if(areaIndexSearch=="small"){
+			}else if(searchAreaIndex=="small"){
 				if(smallFocusPos>9){
 					showBorder();
 					focusKeyType();
 					hiddenBorder();
 					changeFocusSmall(0);
 				}else changeFocusSmall(3);
-			}else if(areaIndexSearch=="big"){
-				areaIndexSearch = "small";
+			}else if(searchAreaIndex=="big"){
+				searchAreaIndex = "small";
 				changeFocusSmall(3);
-			}else if(areaIndexSearch=="searchList"){
+			}else if(searchAreaIndex=="searchList"){
 				changeListFocus(1);
-			}else if(areaIndexSearch=="recommend"){
+			}else if(searchAreaIndex=="recommend"){
 				changeRecommend(2);
-			}else if(areaIndexSearch == "key26"){
+			}else if(searchAreaIndex == "key26"){
 				if(key26FocusPos==30){
 					focusKey26(7);
 				}else if(key26FocusPos>35){
@@ -636,9 +637,9 @@ function eventHandler(e,type){
 				    focusKeyType();
 					hiddenBorder();
 			    }else focusKey26(6);
-			}else if(areaIndexSearch=="keyType"){
+			}else if(searchAreaIndex=="keyType"){
 				showBorder();
-				areaIndexSearch = "zhuYe";
+				searchAreaIndex = "zhuYe";
 				focusImg(1);
 				$("focusBg").style.display = "none";
 			}
@@ -647,49 +648,49 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_LEFT":
-			if(areaIndexSearch=="collect"){
-				areaIndexSearch="buy";
-			}/*else if(areaIndexSearch=="buy"){
-				areaIndexSearch="search";
-			}*/else if(areaIndexSearch=="small"){
+			if(searchAreaIndex=="collect"){
+				searchAreaIndex="buy";
+			}/*else if(searchAreaIndex=="buy"){
+				searchAreaIndex="search";
+			}*/else if(searchAreaIndex=="small"){
 				  changeFocusSmall(-1);
-			}else if(areaIndexSearch=="big"){
+			}else if(searchAreaIndex=="big"){
 				  changeFocusBig(-1);;
-			}else if(areaIndexSearch == "searchList"){
+			}else if(searchAreaIndex == "searchList"){
 				if(keyType=="9"){
-					areaIndexSearch = "small";
+					searchAreaIndex = "small";
 					changeFocusSmall(0);
 					changeListFocus(0);
 				}else{
-					areaIndexSearch = "key26";
+					searchAreaIndex = "key26";
 					focusKey26(0);
 					changeListFocus(0);
 				}
-			}else if(areaIndexSearch == "recommend" && ( recommendFocusPos==1 || recommendFocusPos==3)){
+			}else if(searchAreaIndex == "recommend" && ( recommendFocusPos==1 || recommendFocusPos==3)){
 			    changeRecommend(-1);
-			}else if(areaIndexSearch == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length>0 ){
-				areaIndexSearch = "searchList";
+			}else if(searchAreaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length>0 ){
+				searchAreaIndex = "searchList";
 				changeListFocus(0);
 				changeRecommend(0);
-			}else if(areaIndexSearch == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length==0 ){
+			}else if(searchAreaIndex == "recommend" && ( recommendFocusPos==0 || recommendFocusPos==2) && listArray.length==0 ){
 				if(keyType==9){
-					areaIndexSearch = "small";
+					searchAreaIndex = "small";
 					changeFocusSmall(0);
 				    changeRecommend(0);
 				}else{
-					areaIndexSearch = "key26";
+					searchAreaIndex = "key26";
 					focusKey26(0);
 					changeRecommend(0);
 				}
-			}else if(areaIndexSearch == "key26"){
+			}else if(searchAreaIndex == "key26"){
 				focusKey26(-1);
-			}else if(areaIndexSearch=="back"){
+			}else if(searchAreaIndex=="back"){
 				focusImg(0);
-				areaIndexSearch = "shouYe";
+				searchAreaIndex = "shouYe";
 				focusImg(1);
-			}else if(areaIndexSearch=="shouYe"){
+			}else if(searchAreaIndex=="shouYe"){
 				focusImg(0);
-				areaIndexSearch = "zhuYe";
+				searchAreaIndex = "zhuYe";
 				focusImg(1);
 			}
 		//	focusImg();
@@ -697,71 +698,71 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_RIGHT":
-			if(areaIndexSearch=="search"){
-				areaIndexSearch="buy";
-			}else if(areaIndexSearch=="buy"){
-				areaIndexSearch="collect";
-			}else if(areaIndexSearch=="small" && smallFocusPos%3!=0){
+			if(searchAreaIndex=="search"){
+				searchAreaIndex="buy";
+			}else if(searchAreaIndex=="buy"){
+				searchAreaIndex="collect";
+			}else if(searchAreaIndex=="small" && smallFocusPos%3!=0){
 				changeFocusSmall(1);
-			}else if(areaIndexSearch=="small" && smallFocusPos%3==0){
+			}else if(searchAreaIndex=="small" && smallFocusPos%3==0){
 				$("focusBg").style.display = "none";
 				showBorder();
 				if(listArray.length==0){
-					areaIndexSearch = "recommend";
+					searchAreaIndex = "recommend";
 					changeFocusSmall(0);
 					changeRecommend(0);
 				}else if(listArray.length>0){
-					areaIndexSearch = "searchList";
+					searchAreaIndex = "searchList";
 					changeFocusSmall(0);
 					changeListFocus(0);
 				}	
-			}else if(areaIndexSearch=="big"){
+			}else if(searchAreaIndex=="big"){
 				changeFocusBig(1);
-			}else if(areaIndexSearch=="submits"){
+			}else if(searchAreaIndex=="submits"){
 				$("focusBg").style.display = "none";
 				showBorder();
 				if(listArray.length>0){
-					areaIndexSearch = "searchList";
+					searchAreaIndex = "searchList";
 			  //	changeFocusSmall(0);
 					changeListFocus(0);
 				}else if(listArray.length==0){
-					areaIndexSearch = "recommend";
+					searchAreaIndex = "recommend";
 					changeRecommend(0);
 				}	
-			}else if( areaIndexSearch == "searchList" ){
-				areaIndexSearch = "recommend";
+			}else if( searchAreaIndex == "searchList" ){
+				searchAreaIndex = "recommend";
 				changeListFocus(0);
 				changeRecommend(0);
-			}else if(areaIndexSearch == "recommend"){
+			}else if(searchAreaIndex == "recommend"){
 				changeRecommend(1);
-			}else if(areaIndexSearch == "key26"){
+			}else if(searchAreaIndex == "key26"){
 				if( (key26FocusPos%6==5||key26FocusPos==37) && listArray.length>0){
-					areaIndexSearch = "searchList";
+					searchAreaIndex = "searchList";
 					changeListFocus(0);
 					$("focusBg").style.display = "none";
 				}else if( (key26FocusPos%6==5||key26FocusPos==37) && listArray.length==0){
-					areaIndexSearch = "recommend";
+					searchAreaIndex = "recommend";
 					changeRecommend(0);
 					$("focusBg").style.display = "none";
 				}else focusKey26(1);
-			}else if(areaIndexSearch=="zhuYe"){
+			}else if(searchAreaIndex=="zhuYe"){
 				focusImg(0);
-				areaIndexSearch = "shouYe";
+				searchAreaIndex = "shouYe";
 				focusImg(1);
-			}else if(areaIndexSearch=="shouYe"){
+			}else if(searchAreaIndex=="shouYe"){
 				focusImg(0);
-				areaIndexSearch = "back";
+				searchAreaIndex = "back";
 				focusImg(1);
-			}else if(areaIndexSearch=="back" || areaIndexSearch=="keyType"){
+			}else if(searchAreaIndex=="back" || searchAreaIndex=="keyType"){
 				$("focusBg").style.display = "none";
-				if( areaIndexSearch=="keyType" ){ showBorder(); }
+				if( searchAreaIndex=="keyType" ){ showBorder(); }
 				if(listArray.length>0){
-					(areaIndexSearch=="keyType")?$("focusBg").style.display ="none":focusImg(0);
-					areaIndexSearch = "searchList";
+					(searchAreaIndex=="keyType")?$("focusBg").style.display ="none":focusImg(0);
+					searchAreaIndex = "searchList";
 					changeListFocus(0);
 				}else{
-					(areaIndexSearch=="keyType")?$("focusBg").style.display ="none":focusImg(0);
-					areaIndexSearch = "recommend";
+					(searchAreaIndex=="keyType")?$("focusBg").style.display ="none":focusImg(0);
+					searchAreaIndex = "recommend";
 					changeRecommend(0);
 				}
 			}
@@ -769,13 +770,17 @@ function eventHandler(e,type){
 			break;	
 			
 		case "PAGE_DOWN":
-		    pageDown();
+		    if(searchAreaIndex == "searchList"){
+				pageDown();
+			}
 		    return 0;
 			break;	
 			
 		case "PAGE_UP":
 		case 25:
-		    pageUp();
+		    if(searchAreaIndex == "searchList"){
+		        pageUp();
+			}
 		    return 0;
 			break;		
 				
@@ -787,7 +792,7 @@ function eventHandler(e,type){
 		case "KEY_BACK":
 		    document.onkeypress    = eventHandler;
 			
-			delCookie("areaIndexSearch");
+			delCookie("searchAreaIndex");
 			delCookie("focusListPos");
 			location.href = "index.htm";
 			return 0;
@@ -832,8 +837,8 @@ function init(){
 
 <div style="z-index:-1; position:absolute; left:0px; top:0px; width:1280px; height:720px; background:url('img/index.jpg')"></div>
 <div style="z-index:-1; position:absolute; left:445px; top:96px; width:400px; height:600px; background:url('img/searchList.png')"></div>
-<div style="position:absolute; left:470px; top:145px; width:130px; height:40px; font-size:23px; color:white;">搜索结果</div>
-<div style="position:absolute; left:860px; top:145px; width:130px; height:40px; font-size:23px; color:white;">推荐</div>
+<div style="position:absolute; left:470px; top:145px; width:130px; height:40px; font-size:23px; color:#629de0;">搜索结果</div>
+<div style="position:absolute; left:860px; top:145px; width:130px; height:40px; font-size:23px; color:#629de0;">推荐</div>
  
 <div id="search" style="position:absolute; left:863px; top:64px; width:113px; height:46px; background:url(img/focus_search.png) no-repeat; display:none;"></div> 
     
@@ -943,7 +948,13 @@ function init(){
 </tr></table>
 </div>
 
-<div id="key_12" class="key" style="position:absolute;left:275px;top:420px; width:80px; height:40px;"><img src="img/del.png"/></div>
+<div id="key_12" class="key" style="position:absolute;left:275px;top:420px; width:80px; height:40px;"><img src="img/del.png"/>
+<table id="keyTable_12" style="margin:auto; padding-top:2px;">
+<tr>
+<td id="keyTable_12_0"></td>
+</tr></table>
+</div>
+
 <!-- 搜索提示 -->
 <div style="background:url('img/prompt.png'); position:absolute; left:70px; top:480px; width:300px; height:60px;"></div>
 </div>

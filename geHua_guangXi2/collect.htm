@@ -14,7 +14,7 @@ img{width:100%;height:100%;}
 
 .movieName{width:100%;height:100%;font-size:130%;}
 
-.boxOffice{z-index:3;position:relative;width:40%;height:100%;border-radius:0 0.2em 0 0;line-height:30px;text-align:right;vertical-align:middle;background-color:#F60;font-size:120%; }
+.boxOffice{z-index:1;position:relative;width:40%;height:100%;border-radius:0 0.2em 0 0;line-height:30px;text-align:right;vertical-align:middle;background-color:#F60;font-size:120%; }
 </style>
 
 <script type=text/javascript src="global.js" charset=UTF-8></script>
@@ -101,8 +101,9 @@ function showPage(){//显示页码和翻页箭头
 	   $("arrowRight").style.display = "none";
 	   $("pageDown").style.display = "none";
 	   $("pageUp").style.display = "none";
-	}   
-	   $("page").innerHTML = currPage+1+"/"+allPage;	 
+	}
+	   $("cPage").innerHTML = currPage+1;
+	   $("aPage").innerHTML = "/"+allPage;
 }
 
 function pageDown(){//P+下一页
@@ -144,10 +145,10 @@ function showListFocus(){
 	showMovieName(1);
 	var oDiv1 = $(listArray[0].name+ListFocusPosCollect%listSize);
 	oDiv1.style.zIndex = "2";
-	oDiv1.style.left = parseInt(oDiv1.style.left)-5+"px";
-	oDiv1.style.top = parseInt(oDiv1.style.top)-5+"px";	
-	oDiv1.style.width = parseInt(oDiv1.style.width)+10+"px";
-	oDiv1.style.height = parseInt(oDiv1.style.height)+10+"px";
+	oDiv1.style.left = parseInt(oDiv1.style.left)-15+"px";
+	oDiv1.style.top = parseInt(oDiv1.style.top)-15+"px";	
+	oDiv1.style.width = parseInt(oDiv1.style.width)+30+"px";
+	oDiv1.style.height = parseInt(oDiv1.style.height)+30+"px";
 
 	$("focusBg").style.zIndex = "2";
 	$("focusBgImg").src = "img/focusBg.png";
@@ -157,10 +158,10 @@ function showListFocus(){
 	$("focusBg").style.height= parseInt(oDiv1.style.height)+6+"px";		
 	
 	var oDiv4 = $("12_movieNameBgDiv_"+ListFocusPosCollect%12);
-	oDiv4.style.top = parseInt(oDiv4.style.top)-2+"px";
+	oDiv4.style.top = parseInt(oDiv4.style.top)-5+"px";
 	
 	var oDiv5 = $("12_boxOffice_"+ListFocusPosCollect%listSize);
-	oDiv5.style.top = parseInt(oDiv5.style.top)-9+"px";	
+	oDiv5.style.top = parseInt(oDiv5.style.top)-30+"px";	
 	
 //	var oDiv6 = $("12_corner_"+ListFocusPosCollect%listSize);
 //	oDiv6.style.top = parseInt(oDiv6.style.top)-8+"px";
@@ -170,18 +171,18 @@ function changeListFocus(_num){
 	showMovieName(-1);
 	var oDiv1 = $(listArray[0].name+ListFocusPosCollect%listSize);
 	oDiv1.style.zIndex = "1";
-	oDiv1.style.width = parseInt(oDiv1.style.width)-10+"px";
-	oDiv1.style.height = parseInt(oDiv1.style.height)-10+"px";
-	oDiv1.style.left = parseInt(oDiv1.style.left)+5+"px";
-	oDiv1.style.top = parseInt(oDiv1.style.top)+5+"px";
+	oDiv1.style.width = parseInt(oDiv1.style.width)-30+"px";
+	oDiv1.style.height = parseInt(oDiv1.style.height)-30+"px";
+	oDiv1.style.left = parseInt(oDiv1.style.left)+15+"px";
+	oDiv1.style.top = parseInt(oDiv1.style.top)+15+"px";
  
 	var oDiv4 = $("12_movieNameBgDiv_"+ListFocusPosCollect%listSize);
 	var oDiv6 = $("12_corner_"+ListFocusPosCollect%listSize);
-	oDiv4.style.top = parseInt(oDiv4.style.top)+2+"px";
-	oDiv6.style.top = parseInt(oDiv6.style.top)+8+"px";
+	oDiv4.style.top = parseInt(oDiv4.style.top)+5+"px";
+	oDiv6.style.top = parseInt(oDiv6.style.top)+29+"px";
 
 	var oDiv5 = $("12_boxOffice_"+ListFocusPosCollect%listSize);
-	oDiv5.style.top = parseInt(oDiv5.style.top)+9+"px";
+	oDiv5.style.top = parseInt(oDiv5.style.top)+30+"px";
 
     var temp = ListFocusPosCollect;
 	ListFocusPosCollect += _num;
@@ -407,7 +408,7 @@ function eventHandler(e,type){
 		case "KEY_BACK":
 		    document.onkeypress    = eventHandler;
 			delCookie("areaIndexCollect");
-			delCookie("0");
+
 			delCookie("ListFocusPosCollectIndex");
 			location.href = "1.htm";
 			return 0;
@@ -418,7 +419,7 @@ function eventHandler(e,type){
 			break;
 			
 		case "KEY_NUMERIC49":
-		ch();
+
 //			location.href = loopArray[0].url;
 			return 0;
 			break;
@@ -452,11 +453,11 @@ function init(){
 
 <div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index.jpg');border-radius:0em;"></div>
     
-<div id="search" style="z-index: 1; position: absolute; left:850px; top:64px; width:113px; height:46px; background: url('img/search.png');"></div> 
+<div id="search" style="z-index: 1; position: absolute; left:850px; top:64px; width:115px; height:46px; background: url('img/search.png');"></div> 
     
-<div id="buy" style="z-index: 1; position: absolute; left:970px; top: 64px; width: 113px; height:46px; background: url('img/buy.png');"></div>
+<div id="buy" style="z-index: 1; position: absolute; left:970px; top: 64px; width: 115px; height:46px; background: url('img/buy.png');"></div>
     
-<div id="collect" style="z-index: 1; position: absolute; left:1090px; top:64px; width:113px; height:46px; background: url('img/collect.png');"></div>
+<div id="collect" style="z-index: 1; position: absolute; left:1090px; top:64px; width:115px; height:46px; background: url('img/collect.png');"></div>
 
 <!--客服电话 
 <div style="z-index: 2; position: absolute; left:745px; top:63px; width: 130px; height: 50px; font-family:Times;font-size: 38px; color: #699999;"><b>96335</b></div>  -->
@@ -476,7 +477,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_0" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_0" title="0" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img0" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_0" title="0" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img0" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -492,7 +493,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_1" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_1" title="1" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img1" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_1" title="1" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img1" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -508,7 +509,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_2" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_2" title="2" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img2" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_2" title="2" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img2" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -524,7 +525,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_3" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_3" title="3" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img3" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_3" title="3" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img3" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -540,7 +541,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_4" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_4" title="4" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img4" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_4" title="4" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img4" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -556,7 +557,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_5" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_5" title="5" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img5" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_5" title="5" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img5" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -572,7 +573,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_6" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_6" title="6" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img6" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_6" title="6" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img6" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -588,7 +589,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_7" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_7" title="7" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img7" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_7" title="7" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img7" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -604,7 +605,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_8" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_8" title="8" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img8" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_8" title="8" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img8" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -620,7 +621,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_9" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_9" title="9" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img9" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_9" title="9" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img9" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -636,7 +637,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_10" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_10" title="10" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img10" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_10" title="10" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img10" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -652,7 +653,7 @@ function init(){
 <!-- 票房 -->
 <div id="12_boxOffice_11" class="boxOffice" style="left:60%;top:-217px;"></div>
 
-<div id="12_corner_11" title="11" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:100;"><img id="12_corner_Img11" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+<div id="12_corner_11" title="11" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img11" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
 
 </div></div>
 
@@ -665,7 +666,7 @@ function init(){
 <div id="back" style="z-index: 1; background: url('img/back.png'); position: absolute; left:300px; top:655px; width: 82px; height: 31px;"></div>
 
 <!-- 页码 -->
-<div id="page" style="position:absolute; left:625px; top:655px; width:135px; height:30px; color: white; font-size: 25px;">1/3</div>
+<div id="page" style="position:absolute; left:610px; top:655px; width:50px; height:30px;font-size:25px; text-align:center;background-color:rgba(40,75,159,0.3)"><span id="cPage" style="color:#ddd712;"></span><span id="aPage" style="color:#3054a3;"></span></div>
 
 <!-- 上一页 -->
 <div id="pageUp" style="z-index: 1; background: url('img/pageUp.png'); position: absolute; left:970px; top:655px; width: 92px; height: 31px;"></div>
