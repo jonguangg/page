@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"  />
+<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1" />
+<title>戢永广的测试页面</title>
+
+<style>
+img{width:100%;height:100%;}
+</style>
+
+<script>
+function $(_id){return document.getElementById(_id);}	
+
+function init(){
+	$("bg").style.height = $("bg").offsetWidth*0.6266+"px";
+	for(i=0;i<4;i++){
+		$("icon_"+i).style.height = $("icon_0").offsetWidth+"px";
+	}
+	$("icon_0").style.top = $("bg").offsetHeight+40+"px";
+	$("icon_1").style.top = $("bg").offsetHeight+40+"px";
+	$("icon_2").style.top = $("icon_0").offsetTop+$("icon_0").offsetHeight+20+"px";
+	$("icon_3").style.top = $("icon_0").offsetTop+$("icon_0").offsetHeight+20+"px";
+}
+
+</script>
+</head>
+
+<body background="bg.png" bgcolor="transparent"  leftmargin="0" topmargin="0" onload="init();">
+
+<div id="bg" style="position:absolute; left:0px; top:0px; width:100%; height:38%;"><img src="img.png" /></div>
+
+<div id="icon_0" style="position:absolute; left:17%; top:45%; width:24%; height:19%;"><img src="icon_01.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">视频通话</div>
+-->
+</div>
+
+<div id="icon_1" style="position:absolute; right:17%; top:45%; width:24%; height:19%;"><img src="icon_02.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">视频留言</div>
+-->
+</div>
+
+<div id="icon_2" style="position:absolute; left:17%; top:70%; width:24%; height:19%;"><img src="icon_03.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">加好友</div>
+-->
+</div>
+
+<div id="icon_3" style="position:absolute; right:17%; top:70%; width:24%; height:19%;"><img src="icon_04.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">拍照片</div>
+-->
+</div>
+
+</body>
+</html>
