@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>天华首页</title>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script type=text/javascript src="keyIndex0.js"></script>
+<script>
+/*var indexArea = 'nav';//getCookie("indexArea")?getCookie("indexArea"):"nav";
+var indexNavPos = getCookie("indexNavPos")?parseInt(getCookie("indexNavPos")):0;
+var indexListPos = getCookie("indexListPos")?parseInt(getCookie("indexListPos")):0;
+var indexLoopPos = 0;
+*/
+var from = 'login';
+
+function loop(){
+	if( parseInt($('seconds').innerHTML)>1){
+		$('seconds').innerHTML = parseInt( $('seconds').innerHTML )-1;
+	}else{
+		location.href = 'index.htm';;
+	}
+}
+setInterval(loop, 1000);
+
+</script>
+</head>
+<body bgcolor="transparent" leftmargin="0" topmargin="0">
+<!-- 开机推荐 -->
+<div id="login" style="position:absolute;left:0px;top:0px;width:1280px;height:720px; background:url(image/index0.png); display:block; z-index:2;">
+	<div id="times" style="position:absolute;left:1141px;top:28px;width:111px;height:32px; line-height:32px; text-align:center;background:url(img/login0.png);color:white; font-size:17px;">倒计时<span id="seconds">15</span>秒</div>
+	<div style="position:absolute;left:1011px;top:654px;width:241px;height:38px; line-height:38px; text-align:center; background:url(img/login1.png);color:white; font-size:19px;">节目详情请点击【确定】</div>
+</div>
+</body>
+</html>
