@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>天华专区列表页面</title>
+<style>
+	*{margin:0px;padding:0px;border:0px;font-family:SimHei;border-radius:0.2em;}
+	img{width:100%;height:100%;}
+	.listDiv{width:260px;height:148px;margin-right:27px;margin-bottom:86px;float:left;}
+	.listName{height:50px;line-height:50px;text-align:center;font-size:16px;color:black;}
+	.listCorner{position:relative;left:206px;top:-198px;width:54px;height:55px;}
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script type=text/javascript src="keyZoneList.js"></script>
+<script>
+var listArea = 'list';
+var indexNavPos = 7;//默认不能是0
+var listPos = getCookie("listPos")?parseInt(getCookie("listPos")):0;
+var pagePos = getCookie("pagePos")?parseInt(getCookie("pagePos")):0;
+var pageAll = 1;
+var listCount = 8;
+var curPageCount = 8;
+var from = 'zone'
+
+loadJsCssFile('data/listArr-7-'+pagePos+'.js', 'js'); //动态外联
+function showList(){//提取异步拿到的json内的数据，放入相应位置
+	for(i=0;i<8;i++){
+		$('listImg'+i).src = 'img/null.png';//先清空
+		$('listName'+i).innerHTML = '';
+		$('listCorner'+i).src = 'img/null.png';
+		if( dataArr[i] ){//如果有这个影片，则显示海报
+			$('listImg'+i).src = dataArr[i].posterList;
+			$('listName'+i).innerHTML = dataArr[i].name.slice(0,15);
+		}
+	}
+	listCount = countArr[0];//获取当前栏目列表总数
+	pageAll = parseInt((listCount-1+8)/8);
+	curPageCount = dataArr.length;//获取当前页列表总数 
+	$('pagePos').innerHTML = pagePos+1;//显示当前页 
+	$('pageAll').innerHTML = '/&nbsp;'+pageAll;
+//	if( listPos>curPageCount-1){//如果当前焦点在最后一个之后
+		changeList(0);
+//	}
+}
+
+function changeList(_num){
+	if( dataArr[listPos] ){
+		$('listName'+listPos).innerHTML = dataArr[listPos].name.slice(0,15);
+	}
+	if(_num!=0 || (_num==0 && listArea!='list') ){
+		$('list'+listPos).style.left = parseInt($('list'+listPos).style.left)+10+'px';
+		$('list'+listPos).style.top = parseInt($('list'+listPos).style.top)+10+'px';
+		$('list'+listPos).style.width = parseInt($('list'+listPos).style.width)-20+'px';
+		$('list'+listPos).style.height = parseInt($('list'+listPos).style.height)-20+'px';
+		
+		$('listCorner'+listPos).style.left = parseInt( $('list'+listPos).style.width )-54+'px';
+		$('listCorner'+listPos).style.top = -(parseInt( $('list'+listPos).style.height )+50)+'px';
+	}
+	listPos += _num;
+	if( listPos<0){
+		listPos=0;
+	}
+	if( listPos>curPageCount-1){
+		listPos=curPageCount-1;
+	}
+	$('focusDiv').style.left = 47+(listPos%4)*287+'px';
+	$('focusDiv').style.top = (listPos<4)?'137px':'371px';
+	$('focusImg').src = (listArea=='list')?'img/focusZoneList.png':'img/null.png';
+	if( dataArr[listPos].name.length>5 && listArea=='list'){
+		$('listName'+listPos).innerHTML =  '<marquee behavior="scroll" direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+dataArr[listPos].name +'</marquee>';
+	}
+	if(listArea=='list'){
+		$('list'+listPos).style.left = parseInt($('list'+listPos).style.left)-10+'px';
+		$('list'+listPos).style.top = parseInt($('list'+listPos).style.top)-10+'px';
+		$('list'+listPos).style.width = parseInt($('list'+listPos).style.width)+20+'px';
+		$('list'+listPos).style.height = parseInt($('list'+listPos).style.height)+20+'px';
+		
+		$('listCorner'+listPos).style.left = parseInt( $('list'+listPos).style.width )-54+'px';
+		$('listCorner'+listPos).style.top = -(parseInt( $('list'+listPos).style.height )+50)+'px';
+	}
+}
+function changePage(_num){
+	listArea = 'changePage';
+	changeList(0);
+	listArea = 'list';
+	removeJsCssfile('data/listArr-7-'+pagePos+'.js', 'js'); 
+	pagePos += _num;
+	if( pagePos>pageAll-1){
+		pagePos=pageAll-1;
+	}
+	if( pagePos<0){
+		pagePos=0;
+	}
+	loadJsCssFile('data/listArr-7-'+pagePos+'.js', 'js'); 
+	setTimeout(showList,100);//如果不弄个延时，会加载上一页的数据，实际部署时需根据网络快慢，调整一个合适的延时时间
+}
+function changeRightCornerBg(){
+	$('home').src = (listArea=='home')?'img/home1.png':'img/home0.png';
+	$('main').src = (listArea=='main')?'img/main1.png':'img/main0.png';
+	$('back').src = (listArea=='back')?'img/back1.png':'img/back0.png';
+	$('search').src = (listArea=='search')?'img/search1.png':'img/search0.png';		
+}
+
+function closeWebPage() { //退出浏览器
+	 if(navigator.userAgent.indexOf('Mozilla/5.0')!=-1){
+		   Utility.ioctlWrite("JSCommand","gotoDTV");
+	   }else if(navigator.appVersion.indexOf("EIS iPanel 3.0") != -1){
+		   iPanel.System.close(1000);   
+	   }else{    
+		   if(a == -1){							
+			   location.href = "sip://localhost/switch?type=DTV?userId="+userId;
+		   }else{
+			   location.href = "sip://localhost/switch?type=DTV&userId="+userId;
+		   }   
+	   }               
+}
+function init(){
+	showList();
+//	changeList(0);
+}
+</script>
+</head>
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+<div style="position:absolute;left:0px;top:0px;width:1280px;height:720px; background:url(img/index.jpg); border-radius:0em;"></div>
+<!-- 左上角栏目名称 -->
+<div id="listNav" style="position:absolute;left:79px;top:80px;width:125px;height:30px; background:url(img/listLogo7.png);"></div>
+<!-- 首页 -->
+<div style="position:absolute;left:1026px;top:25px;width:64px;height:79px;"><img id="home" src="img/home0.png"/></div>
+<!-- 主页 -->
+<div style="position:absolute;left:1084px;top:25px;width:64px;height:79px;"><img id="main" src="img/main0.png"/></div>
+<!-- 返回 -->
+<div style="position:absolute;left:1141px;top:25px;width:64px;height:79px;"><img id="back" src="img/back0.png"/></div>
+<!-- 搜索 -->
+<div style="position:absolute;left:1199px;top:25px;width:64px;height:79px;"><img id="search" src="img/search0.png"/></div>
+
+<!--<div style="position:absolute;left:79px;top:170px;width:1200px;height:550px;">-->
+	<div id="list0" style="position:absolute;left:79px;top:170px;width:260px;height:148px;">
+    	<img id="listImg0" src="img/null.png"/>
+        <div id="listName0" class="listName"></div>
+        <img id="listCorner0" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list1" style="position:absolute;left:366px;top:170px;width:260px;height:148px;">
+    	<img id="listImg1" src="img/null.png"/>
+        <div id="listName1" class="listName"></div>
+        <img id="listCorner1" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list2" style="position:absolute;left:653px;top:170px;width:260px;height:148px;">
+    	<img id="listImg2" src="img/null.png"/>
+        <div id="listName2" class="listName"></div>
+        <img id="listCorner2" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list3" style="position:absolute;left:940px;top:170px;width:260px;height:148px;">
+    	<img id="listImg3" src="img/null.png"/>
+        <div id="listName3" class="listName"></div>
+        <img id="listCorner3" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list4" style="position:absolute;left:79px;top:404px;width:260px;height:148px;">
+    	<img id="listImg4" src="img/null.png"/>
+        <div id="listName4" class="listName"></div>
+        <img id="listCorner4" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list5" style="position:absolute;left:366px;top:404px;width:260px;height:148px;">
+    	<img id="listImg5" src="img/null.png"/>
+        <div id="listName5" class="listName"></div>
+        <img id="listCorner5" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list6" style="position:absolute;left:653px;top:404px;width:260px;height:148px;">
+    	<img id="listImg6" src="img/null.png"/>
+        <div id="listName6" class="listName"></div>
+        <img id="listCorner6" class="listCorner" src="img/recommend.png" />
+    </div>
+	<div id="list7" style="position:absolute;left:940px;top:404px;width:260px;height:148px;">
+    	<img id="listImg7" src="img/null.png"/>
+        <div id="listName7" class="listName"></div>
+        <img id="listCorner7" class="listCorner" src="img/recommend.png" />
+    </div>
+<!--</div>-->
+<!-- 页码 -->
+<div style="position:absolute;left:598px;top:660px;width:680px;line-height:23px;text-align:center;font-size:16px;">
+    <div style="width:25px;height:20px;background:url(img/pageLast.png) no-repeat;float:left;"></div>
+    <div style="width:20px;height:20px;background:url(img/pageNext.png);float:left;"></div>
+    <div id="pagePos" style="width:20px;height:20px;float:left;color:#2896d2;">1</div>
+    <div id="pageAll" style="width:20px;height:20px;float:left;color:black;">/&nbsp;5</div>
+</div>
+<!-- 焦点图片 -->
+<div id="focusDiv" style="position:absolute;left:56px;top:147px;width:326px;height:214px;"><img id="focusImg" src="img/focusList.png"/></div>
+	</body>
+</html>

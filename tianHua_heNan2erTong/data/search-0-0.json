@@ -1,0 +1,101 @@
+{
+	"page": {"count":23},
+	"list": [
+		{
+			"poster169":"image/listPoster.png",//16:9的横图
+			"posterList":"image/listPoster.png",//竖图
+			"poster11":"image/listPoster.png",//正方形的海报
+			"name":"搜索推荐页1第1一二三四五六七八九十",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"13",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第2",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"1",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第3",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"123",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第4",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"123",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第5",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"123",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第6",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"123",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第7",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"123",
+			"introduction":"简介",
+		},
+		
+		{
+			"poster169":"image/listPoster.png",
+			"posterList":"image/listPoster.png",
+			"poster11":"image/listPoster.png",
+			"name":"搜索推荐页1第8",
+			"director":"导演",
+			"actor":"主演",
+			"duration":"123分钟",
+			"chapter":"123",
+			"introduction":"简介",
+		},
+
+	]
+}

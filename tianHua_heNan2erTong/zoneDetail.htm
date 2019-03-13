@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>天华专区详情页面</title>
+<style>
+	*{margin:0px;padding:0px;border:0px;font-family:SimHei;border-radius:0.2em;}
+	img{width:100%;height:100%;}
+	.listDiv{position:absolute;width:138px;height:184px;zIndex:1;}
+	.listName{height:50px;line-height:50px;text-align:center;font-size:16px;color:#e1e1e1;}
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script type=text/javascript src="keyZoneDetail.js"></script>
+<script>
+var zoneArea = 'list';
+//var indexNavPos = 7;//默认不能是0
+var pagePos = getCookie("pagePos")?parseInt(getCookie("pagePos")):0;
+var listPos = getCookie("listPos")?parseInt(getCookie("listPos")):0;
+var zoneListPos = getCookie("zoneListPos")?parseInt(getCookie("zoneListPos")):0;
+var zoneListHidden = getCookie("zoneListHidden")?parseInt(getCookie("zoneListHidden")):0;
+var zoneListCount = 5;
+var from = 'zone';//getCookie("from")?getCookie("from"):"zone";
+var fromPos = 0;
+
+loadJsCssFile('data/zone-'+(listPos+pagePos*8)+'.js', 'js'); //动态外联
+function showList(){//提取异步拿到的json内的数据，放入相应位置
+	$('list').innerHTML = '';
+	for(i=0;i<dataArr.length;i++){
+		$('list').innerHTML += '<div id=list'+i +' class=listDiv style="left:'+(200*i)+'px;"><img id=listImg'+i+' src="img/null.png"/><div id=listName'+i+' class=listName></div></div>';		
+		/*$('listImg'+i).src = 'img/null.png';//先清空
+		$('listName'+i).innerHTML = '';*/
+		$('list'+i).style.zIndex = '1';
+		if( dataArr[i+zoneListHidden] ){//如果有这个影片，则显示海报
+			$('listImg'+i).src = dataArr[i+zoneListHidden].posterList;
+			$('listName'+i).innerHTML = dataArr[i+zoneListHidden].name.slice(0,6);
+		}
+		zoneListCount = dataArr.length;
+		if( parseInt($('list'+i).style.left)<0 ){
+			$('list'+i).style.left = '0px';
+		}
+		if( parseInt($('list'+i).style.left)>800 ){
+			$('list'+i).style.left = '800px';
+			$('list'+i).style.zIndex = -1;
+		}
+	}
+}
+
+function changeList(_num){
+	if(_num!=0 || (_num==0 && zoneArea!='list') ){
+		$('list'+zoneListPos).style.left = parseInt($('list'+zoneListPos).style.left)+10+'px';
+		$('list'+zoneListPos).style.top = '0px';
+		$('list'+zoneListPos).style.width = '138px';
+		$('list'+zoneListPos).style.height = '184px';
+	}
+	$('listName'+(zoneListPos+zoneListHidden)).innerHTML = dataArr[zoneListPos+zoneListHidden].name.slice(0,5);
+	zoneListPos += _num;
+	if( zoneListPos<0){
+		zoneListPos=0;
+		if( zoneListHidden>0){
+			zoneListHidden --;
+			showList();
+		}
+	}
+	if( zoneListPos>zoneListCount-1){//到最后一个了，就移到第1个
+		zoneListPos=0;//zoneListCount-1
+		zoneListHidden=0;
+		showList();
+	}
+	if( zoneListPos>4){
+		zoneListPos=4;
+		zoneListHidden ++;
+		showList();
+	}
+	if( zoneListPos+zoneListHidden>zoneListCount-1){//到最后一个了，就移到第1个，貌似与上面那个重复了，只需要这个？
+		zoneListPos=0;//zoneListCount-zoneListHidden;
+		zoneListHidden =0;//--;
+		showList();
+	}
+	$('focusDiv').style.left = 135+(zoneListPos%5)*200+'px';
+//	$('focusDiv').style.top = '355px';
+	$('focusImg').src = (zoneArea=='list')?'img/focusZoneDetail.png':'img/null.png';
+//	console.log('zoneListPos:'+zoneListPos+'_zoneListHidden:'+zoneListHidden+'_zoneListCount:'+zoneListCount);
+	if( dataArr[zoneListPos].name.length>5 && zoneArea=='list'){
+		$('listName'+zoneListPos).innerHTML =  '<marquee behavior="scroll" direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+dataArr[zoneListPos+zoneListHidden].name +'</marquee>';
+	}
+	if(zoneArea=='list'){
+		$('list'+zoneListPos).style.left = parseInt($('list'+zoneListPos).style.left)-10+'px';
+		$('list'+zoneListPos).style.top = '-10px';
+		$('list'+zoneListPos).style.width = '158px';
+		$('list'+zoneListPos).style.height = '204px';
+	}
+}
+
+function changeRightCornerBg(){
+	$('home').src = (zoneArea=='home')?'img/home1.png':'img/home0.png';
+	$('main').src = (zoneArea=='main')?'img/main1.png':'img/main0.png';
+	$('back').src = (zoneArea=='back')?'img/back1.png':'img/back0.png';	
+}
+
+function init(){
+	showList();
+	changeList(0);
+}
+</script>
+</head>
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+<div style="position:absolute;left:0px;top:0px;width:1280px;height:720px; background:url(image/zoneBg.png); border-radius:0em;"></div>
+
+<!-- 首页 -->
+<div style="position:absolute;left:1076px;top:25px;width:64px;height:79px;"><img src="img/zoneDetailRightCorner.png"/></div>
+<div style="position:absolute;left:1076px;top:25px;width:64px;height:79px;"><img id="home" src="img/home0.png"/></div>
+<!-- 主页 -->
+<div style="position:absolute;left:1134px;top:25px;width:64px;height:79px;"><img src="img/zoneDetailRightCorner.png"/></div>
+<div style="position:absolute;left:1134px;top:25px;width:64px;height:79px;"><img id="main" src="img/main0.png"/></div>
+<!-- 返回 -->
+<div style="position:absolute;left:1191px;top:25px;width:64px;height:79px;"><img src="img/zoneDetailRightCorner.png"/></div>
+<div style="position:absolute;left:1191px;top:25px;width:64px;height:79px;"><img id="back" src="img/back0.png"/></div>
+
+<div id="list" style="position:absolute;left:171px;top:390px;width:1000px;height:200px;">
+<!--	<div id="list0" class="listDiv">
+    	<img id="listImg0" src="img/null.png"/>
+        <div id="listName0" class="listName"></div>
+    </div>
+	<div id="list1" class="listDiv">
+    	<img id="listImg1" src="img/null.png"/>
+        <div id="listName1" class="listName"></div>
+    </div>
+	<div id="list2" class="listDiv">
+    	<img id="listImg2" src="img/null.png"/>
+        <div id="listName2" class="listName"></div>
+    </div>
+	<div id="list3" class="listDiv">
+    	<img id="listImg3" src="img/null.png"/>
+        <div id="listName3" class="listName"></div>
+    </div>
+	<div id="list4" class="listDiv">
+    	<img id="listImg4" src="img/null.png"/>
+        <div id="listName4" class="listName"></div>
+    </div>-->
+</div>
+
+<div style="position:absolute;left:80px;top:450px;width:42px;height:68px;background:url(img/zoneLeft.png)"></div>
+<div style="position:absolute;left:1166px;top:450px;width:42px;height:68px;background:url(img/zoneRight.png)"></div>
+<!-- 焦点图片 -->
+<div id="focusDiv" style="position:absolute;left:138px;top:355px;width:210px;height:254px;"><img id="focusImg" src="img/focusZoneDetail.png"/></div>
+	</body>
+</html>
