@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>天华搜索页面</title>
+<style>
+	*{margin:0px;padding:0px;border:0px;font-family:SimHei;border-radius:0.2em;}
+	img{width:100%;height:100%;}
+	.listDiv{position:absolute;width:150px;height:200px;}
+	.listName{height:50px;line-height:50px;text-align:center;font-size:16px;color:#e1e1e1;}
+	.T9{width:122px;height:122px;margin-right:-30px;margin-bottom:-30px;background:url(img/searchT9-0.png);float:left;color:#d7b9d4;text-align:center;}
+	.T9num{width:122px;height:100px;line-height:100px;font-size:46px;}
+	.T9word{position:relative;width:122px;top:-30px;font-size:20px;}
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script type=text/javascript src="keySearch.js"></script>
+<!--<script type=text/javascript src="searchRecommendArr.js"></script>-->
+<script>
+var searchArea = getCookie("searchArea")?getCookie("searchArea"):'T9';//'list';//T9/chooseKey/submit/list/home/main/back
+var searchListType = getCookie("searchListType")?parseInt(getCookie("searchListType")):0;
+var searchListPos = getCookie("searchListPos")?parseInt(getCookie("searchListPos")):0;
+var searchPagePos = getCookie("searchPagePos")?parseInt(getCookie("searchPagePos")):0;
+var searchPageAll = 1;
+var searchListCount = 10;
+var curPageCount = 0;
+var from = 'search';
+
+loadJsCssFile('data/searchArr-'+searchListType+'-'+searchPagePos+'.js', 'js'); //动态外联
+function showList(){//提取异步拿到的json内的数据，放入相应位置
+	for(i=0;i<8;i++){
+		$('listImg'+i).src = 'img/null.png';//先清空
+		$('listName'+i).innerHTML = '';
+		if( dataArr[i] ){//如果有这个影片，则显示海报
+			$('listImg'+i).src = dataArr[i].posterList;
+			$('listName'+i).innerHTML = dataArr[i].name.slice(0,6);
+		}
+	}
+	curPageCount = dataArr.length;//获取当前页列表总数
+	searchListCount = countArr[0];//获取当前栏目列表总数 
+	searchPageAll = parseInt((searchListCount-1+8)/8); 
+	$('page').style.display = 'block';  
+	$('pagePos').innerHTML = searchPagePos+1;//显示当前页
+	$('pageAll').innerHTML = '/&nbsp;'+searchPageAll;
+//	if( searchListPos>curPageCount-1){//如果当前焦点在最后一个之后,就将焦点移到最后一个
+		if( searchArea=='list' ){
+			changeList(0);
+		}
+//	}
+}
+
+function changeList(_num){
+	if( dataArr[searchListPos] ){
+		$('listName'+searchListPos).innerHTML = dataArr[searchListPos].name.slice(0,6);
+	}
+	if(_num!=0 || (_num==0 && searchArea!='list') ){
+		$('list'+searchListPos).style.left = searchListPos%4*190+'px';
+		$('list'+searchListPos).style.top = (searchListPos<4)?'0px':'250px';
+		$('list'+searchListPos).style.width = '150px';
+		$('list'+searchListPos).style.height = '200px';
+	}
+	searchListPos += _num;
+	if( searchListPos<0){
+		searchListPos=0;
+	}
+	if( searchListPos>curPageCount-1){
+		searchListPos=curPageCount-1;
+	}
+	$('focusDiv').style.left = 436+(searchListPos%4)*190+'px';
+	$('focusDiv').style.top = (searchListPos<4)?'135px':'385px';
+	$('focusImg').src = (searchArea=='list' && curPageCount>0)?'img/focusSearch.png':'img/null.png';
+	if( dataArr[searchListPos].name.length>5 && searchArea=='list'){
+		$('listName'+searchListPos).innerHTML =  '<marquee behavior="scroll" direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+dataArr[searchListPos].name +'</marquee>';
+	}
+	if(searchArea=='list'){
+		$('list'+searchListPos).style.left = (searchListPos%4*190-10)+'px';
+		$('list'+searchListPos).style.top = (searchListPos<4)?'-10px':'240px';
+		$('list'+searchListPos).style.width = '170px';
+		$('list'+searchListPos).style.height = '220px';
+	}
+}
+function changePage(_num){
+	if( searchArea == 'list' ){
+		searchArea = 'changePage';
+		changeList(0);
+		searchArea = 'list';
+	}
+	removeJsCssfile('data/searchArr-'+searchListType+'-'+searchPagePos+'.js', 'js');
+	searchPagePos += _num;
+	if( searchPagePos>searchPageAll-1){
+		searchPagePos=searchPageAll-1;
+	}
+	if( searchPagePos<0){
+		searchPagePos=0;
+	}
+	loadJsCssFile('data/searchArr-'+searchListType+'-'+searchPagePos+'.js', 'js');  
+	if(searchListType==0){
+		setTimeout(showList,100);//如果不弄个延时，会加载上一页的数据，实际部署时需根据网络快慢，调整一个合适的延时时间
+	}else{
+		setTimeout(showList,1000);//如果不是加载推荐，后台需去查找搜索结果，所需时间可能更久
+	}
+}
+function changeRightCornerBg(){
+	$('home').src = (searchArea=='home')?'img/home1.png':'img/home0.png';
+	$('main').src = (searchArea=='main')?'img/main1.png':'img/main0.png';
+	$('back').src = (searchArea=='back')?'img/back1.png':'img/back0.png';	
+}
+
+var T9Pos = 4;
+function showKeyWord(){
+	$('chooseKeyWord').style.display = (searchArea=='chooseKey')?'block':'none';
+	$('chooseKey0').innerHTML = $('T9num'+T9Pos).innerHTML.slice(0,1);
+	$('chooseKey1').innerHTML = $('T9word'+T9Pos).innerHTML.slice(0,1);
+	$('chooseKey2').innerHTML = $('T9word'+T9Pos).innerHTML.slice(1,2);
+	$('chooseKey3').innerHTML = $('T9word'+T9Pos).innerHTML.slice(2,3);
+	if( T9Pos==6 || T9Pos==8){
+		$('chooseKey4').style.display = 'block';
+		$('chooseKey4').innerHTML = $('T9word'+T9Pos).innerHTML.slice(3,4);
+	}else{
+		$('chooseKey4').style.display = 'none';
+	}
+}
+function changeT9(_num){
+	$('T9-'+T9Pos).style.backgroundImage = 'url(img/searchT9-0.png)';
+	$('T9-'+T9Pos).style.color = '#d7b9d4';
+	if(T9Pos==9){
+		$('T9Delete').src = 'img/searchDelete0.png';
+	}
+	if(T9Pos==11){
+		$('T9Clear').src = 'img/searchClear0.png';
+	}
+	T9Pos += _num;
+	if( T9Pos<0){
+		T9Pos=9;
+	}
+	if( T9Pos>11){
+		T9Pos -= 12;
+	}
+	$('T9-'+T9Pos).style.backgroundImage = (searchArea=='T9')?'url(img/searchT9-1.png)':'url(img/searchT9-0.png)';
+	$('T9-'+T9Pos).style.color = 'white';
+	if(T9Pos==9){
+		$('T9Delete').src = 'img/searchDelete1.png';
+	}
+	if(T9Pos==11){
+		$('T9Clear').src = 'img/searchClear1.png';
+	}
+}
+var chooseKeyPos = 2;
+function changeKey(_num){
+	if(searchArea=='chooseKey'){
+		$('chooseKey'+chooseKeyPos).style.backgroundImage = 'url(img/searchChoose0.png)';
+	chooseKeyPos += _num;
+		$('chooseKey'+chooseKeyPos).style.backgroundImage = 'url(img/searchChoose1.png)';
+	}else{
+		$('chooseKeyWord').style.display = 'none';
+		$('chooseKey'+chooseKeyPos).style.backgroundImage = 'url(img/searchChoose0.png)';
+		chooseKeyPos = 2;
+	}
+}
+
+function init(){
+	if( searchListType==0){	
+		$('listDescribe').innerHTML = '大家都在搜';	
+	}else{
+		$('listDescribe').innerHTML = '搜索结果';	
+	}
+	showList();
+	changeT9(0);
+//	changeList(0);
+}
+</script>
+</head>
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+<div style="position:absolute;left:0px;top:0px;width:1280px;height:720px; background:url(img/index.jpg); border-radius:0em;"></div>
+<!-- 左上角栏目名称 -->
+<div id="listNav" style="position:absolute;left:96px;top:57px;width:62px;height:31px; background:url(img/listLogo.png);"></div>
+<!-- 首页 -->
+<div style="position:absolute;left:1026px;top:25px;width:64px;height:79px;"><img id="home" src="img/home0.png"/></div>
+<!-- 主页 -->
+<div style="position:absolute;left:1084px;top:25px;width:64px;height:79px;"><img id="main" src="img/main0.png"/></div>
+<!-- 返回 -->
+<div style="position:absolute;left:1141px;top:25px;width:64px;height:79px;"><img id="back" src="img/back0.png"/></div>
+
+<!-- 输入框 -->
+<div id="searchKey" style="position:absolute;left:96px;top:116px;width:246px;height:54px; line-height:54px; padding-left:10px;font-size:35px;background-color:#1d0012;color:white; border:rgba(0,0,0,0) 4px groove;">请输入首字母</div>
+<!-- T9键盘 -->
+<div style="position:absolute;left:73px;top:182px;width:280px;height:365px;">
+	<div id="T9-0" class="T9" style="">
+    	<div id="T9num0" class="T9num" style="height:122px;line-height:122px;">1</div>
+    </div>
+	<div id="T9-1" class="T9" style="">
+    	<div id="T9num1" class="T9num">2</div>
+    	<div id="T9word1" class="T9word">ABC</div>
+    </div>
+	<div id="T9-2" class="T9" style="">
+    	<div id="T9num2" class="T9num">3</div>
+    	<div id="T9word2" class="T9word">DEF</div>
+    </div>
+	<div id="T9-3" class="T9" style="">
+    	<div id="T9num3" class="T9num">4</div>
+    	<div id="T9word3" class="T9word">GHI</div>
+    </div>
+	<div id="T9-4" class="T9" style="">
+    	<div id="T9num4" class="T9num">5</div>
+    	<div id="T9word4" class="T9word">JKL</div>
+    </div>
+	<div id="T9-5" class="T9" style="">
+    	<div id="T9num5" class="T9num">6</div>
+    	<div id="T9word5" class="T9word">MNO</div>
+    </div>
+	<div id="T9-6" class="T9" style="">
+    	<div id="T9num6" class="T9num">7</div>
+    	<div id="T9word6" class="T9word">PQRS</div>
+    </div>
+	<div id="T9-7" class="T9" style="">
+    	<div id="T9num7" class="T9num">8</div>
+    	<div id="T9word7" class="T9word">TUV</div>
+    </div>
+	<div id="T9-8" class="T9" style="">
+    	<div id="T9num8" class="T9num">9</div>
+    	<div id="T9word8" class="T9word">WXYZ</div>
+    </div>
+	<div id="T9-9" class="T9" style="">
+    	<div style="width:42px;height:59px;margin:32px auto; z-index:99;"><img id="T9Delete" src="img/searchDelete0.png" /></div>
+    </div>
+	<div id="T9-10" class="T9" style="">
+    	<div id="T9num10" class="T9num" style="height:122px;line-height:122px;">0</div>
+    </div>
+	<div id="T9-11" class="T9" style="">
+    	<div style="width:42px;height:59px;margin:32px auto; z-index:99;"><img id="T9Clear" src="img/searchClear0.png" /></div>
+    </div>
+</div>
+
+<!-- 选择关键字 -->
+<div id="chooseKeyWord" style="width:82px;height:82px;line-height:82px; text-align:center;font-size:50px;color:white;display:none;">
+<div style="position:absolute;left:95px;top:203px;width:261px;height:355px;background:rgba(0,0,0,0.8); border-radius:0.2em;"></div>
+	<div id="chooseKey0" style="position:absolute;left:185px;top:295px;width:82px;height:82px;background:url(img/searchChoose0.png);"></div>
+	<div id="chooseKey1" style="position:absolute;left:95px;top:385px;width:82px;height:82px;background:url(img/searchChoose0.png);"></div>
+	<div id="chooseKey2" style="position:absolute;left:185px;top:385px;width:82px;height:82px;background:url(img/searchChoose0.png);"></div>
+	<div id="chooseKey3" style="position:absolute;left:275px;top:385px;width:82px;height:82px;background:url(img/searchChoose0.png);"></div>
+	<div id="chooseKey4" style="position:absolute;left:185px;top:475px;width:82px;height:82px;background:url(img/searchChoose0.png);"></div>
+</div>
+
+<!-- 提示 -->
+<div style="position:absolute;left:95px;top:580px;width:400px;height:50px;color:#d7b9d4;">支持影片/节目/影人首页字母搜索<!--<br/><br/>将焦点移至搜索框按确定，提交搜索--></div>
+<!-- 竖线 -->
+<div style="position:absolute;left:410px;top:10px;width:3px;height:700px; background:url(img/searchLine.png);"></div>
+
+<!-- 大家都在搜 -->
+<div id="listDescribe" style="position:absolute;left:463px;top:116px;width:300px;height;50px;font-size:25px;color:#d7b9d4;">大家都在搜</div>
+
+<!-- 结果提示 -->
+<div id="searchWarn" style="position:absolute;left:450px;top:225px;width:750px;height:100px; text-align:center;font-size:40px;color:#99cccc; display:none;">
+	<div style="position:relative;left:45%;margin-bottom:20px;width:75px;height:75px;background:url(img/searchWarn.png);"></div>
+	<div id="warnText">您还没输入首字母<br />请输入首字母后再搜索！</div>
+</div>
+
+<!-- 结果列表 -->
+<div style="position:absolute;left:463px;top:162px;width:800px;height:550px;">
+	<div id="list0" class="listDiv" style="left:0px;top:0px;">
+    	<img id="listImg0" src="img/null.png"/>
+        <div id="listName0" class="listName"></div>
+    </div>
+	<div id="list1" class="listDiv" style="left:190px;top:0px;">
+    	<img id="listImg1" src="img/null.png"/>
+        <div id="listName1" class="listName"></div>
+    </div>
+	<div id="list2" class="listDiv" style="left:380px;top:0px;">
+    	<img id="listImg2" src="img/null.png"/>
+        <div id="listName2" class="listName"></div>
+    </div>
+	<div id="list3" class="listDiv" style="left:570px;top:0px;">
+    	<img id="listImg3" src="img/null.png"/>
+        <div id="listName3" class="listName"></div>
+    </div>
+	<div id="list4" class="listDiv" style="left:0px;top:250px;">
+    	<img id="listImg4" src="img/null.png"/>
+        <div id="listName4" class="listName"></div>
+    </div>
+	<div id="list5" class="listDiv" style="left:190px;top:250px;">
+    	<img id="listImg5" src="img/null.png"/>
+        <div id="listName5" class="listName"></div>
+    </div>
+	<div id="list6" class="listDiv" style="left:380px;top:250px;">
+    	<img id="listImg6" src="img/null.png"/>
+        <div id="listName6" class="listName"></div>
+    </div>
+	<div id="list7" class="listDiv" style="left:570px;top:250px;">
+    	<img id="listImg7" src="img/null.png"/>
+        <div id="listName7" class="listName"></div>
+    </div>
+</div>
+
+<!-- 页码 -->
+<div id="page" style="position:absolute;left:780px;top:660px;width:200px;line-height:23px;text-align:center;font-size:16px;">
+    <div style="width:25px;height:20px;background:url(img/pageLast.png) no-repeat;float:left;"></div>
+    <div style="width:20px;height:20px;background:url(img/pageNext.png);float:left;"></div>
+    <div id="pagePos" style="width:20px;height:20px;float:left;color:#e1e1e1;">1</div>
+    <div id="pageAll" style="width:20px;height:20px;float:left;color:#b2c8e1;">/&nbsp;5</div>
+</div>
+<!-- 焦点图片 -->
+<div id="focusDiv" style="position:absolute;left:440px;top:139px;width:204px;height:254px;"><img id="focusImg" src="img/null.png"/></div>
+	</body>
+</html>

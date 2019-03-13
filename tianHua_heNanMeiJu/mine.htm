@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>天华个人中心</title>
+<style>
+	*{margin:0px;padding:0px;border:0px;font-family:SimHei;border-radius:0.2em;}
+	img{width:100%;height:100%;}
+	.listDiv{width:150px;height:200px;margin-right:41px;margin-bottom:50px;float:left;}
+	.listName{height:50px;line-height:50px;text-align:center;font-size:16px;color:#e1e1e1;}
+	.listCorner{position:relative;left:96px;top:-250px;width:54px;height:55px;}
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script type=text/javascript src="keyMine.js"></script>
+<script>
+var mineArea = 'list';
+var mineTypePos = getCookie("mineTypePos")?parseInt(getCookie("mineTypePos")):0;
+var minePagePos = getCookie("minePagePos")?parseInt(getCookie("minePagePos")):0;
+var mineListPos = getCookie("mineListPos")?parseInt(getCookie("mineListPos")):0;
+var pageAll = 1;
+var listCount = 10;
+var curPageCount = 10;
+var from = 'mine';
+var fromPos = 0;
+
+loadJsCssFile('data/mine-'+mineTypePos+'-'+minePagePos+'.js', 'js'); //动态外联
+function showList(){//提取异步拿到的json内的数据，放入相应位置
+	for(i=0;i<10;i++){
+		$('listImg'+i).src = 'img/null.png';//先清空
+		$('listName'+i).innerHTML = '';
+		$('listCorner'+i).src = 'img/null.png';
+		if( dataArr[i] ){//如果有这个影片，则显示海报
+			$('listImg'+i).src = dataArr[i].posterList;
+			$('listName'+i).innerHTML = dataArr[i].name.slice(0,6);
+		//	$('listCorner'+i).src = dataArr[i].corner;
+		}
+	}
+	listCount = countArr[0];//获取当前栏目列表总数 
+	curPageCount = dataArr.length;//获取当前页列表总数 
+	$('minePagePos').innerHTML = minePagePos+1;//显示当前页 
+	pageAll = parseInt((listCount-1+10)/10);
+	$('pageAll').innerHTML = '/&nbsp;'+pageAll;
+//	if( mineListPos>curPageCount-1 && curPageCount!=0){//如果当前焦点在最后一个之后
+//		changeList(0);
+//	}
+	if(curPageCount==0){
+		mineArea = (mineTypePos==0)?'mineHistory':'mineCollect';
+		$('mineHistory').style.backgroundImage = ( mineArea=='mineHistory')?'url(img/mineHistory1.png)':'url(img/mineHistory0.png)';
+		$('mineCollect').style.backgroundImage = ( mineArea=='mineCollect')?'url(img/mineCollect1.png)':'url(img/mineCollect0.png)';
+	}else if(mineArea=='list'){
+		changeList(0);
+	}
+}
+function changeType(_num){
+	mineTypePos += _num;
+	if( mineTypePos < 0){
+		mineTypePos = 0;
+	}
+	if( mineTypePos > 1){
+		mineTypePos = 1;
+	}
+	$('minePrompt').style.display = (mineTypePos==1)?'block':'none';
+	$('mineHistory').style.backgroundImage = ( mineArea=='mineHistory')?'url(img/mineHistory1.png)':'url(img/mineHistory0.png)';
+	$('mineCollect').style.backgroundImage = ( mineArea=='mineCollect')?'url(img/mineCollect1.png)':'url(img/mineCollect0.png)';
+	if(_num!=0){
+		minePagePos = 0;
+		mineListPos = 0;
+	}
+	changePage(0);
+}
+function changeList(_num){
+	if( dataArr[mineListPos] ){
+		$('listName'+mineListPos).innerHTML = dataArr[mineListPos].name.slice(0,5);
+	}
+	if(_num!=0 || (_num==0 && mineArea!='list') ){
+		$('list'+mineListPos).style.left = parseInt($('list'+mineListPos).style.left)+10+'px';
+		$('list'+mineListPos).style.top = parseInt($('list'+mineListPos).style.top)+10+'px';
+		$('list'+mineListPos).style.width = parseInt($('list'+mineListPos).style.width)-20+'px';
+		$('list'+mineListPos).style.height = parseInt($('list'+mineListPos).style.height)-20+'px';
+		
+		$('listCorner'+mineListPos).style.left = parseInt( $('list'+mineListPos).style.width )-54+'px';
+		$('listCorner'+mineListPos).style.top = -(parseInt( $('list'+mineListPos).style.height )+50)+'px';
+	}
+	mineListPos += _num;
+	if( mineListPos<0){
+		mineListPos=0;
+	}
+	if( mineListPos>curPageCount-1){
+		mineListPos=curPageCount-1;
+	}
+	$('focusDiv').style.left = 246+(mineListPos%5)*191+'px';
+	$('focusDiv').style.top = (mineListPos<5)?'135px':'385px';
+	$('focusImg').src = (mineArea=='list')?'img/focusMine.png':'img/null.png';
+	if( dataArr[mineListPos].name.length>5 && mineArea=='list'){
+		$('listName'+mineListPos).innerHTML =  '<marquee behavior="alternate" direction="left" width="95%" scrollamonut="100" scrolldelay="300">'+dataArr[mineListPos].name +'</marquee>';
+	}
+	if(mineArea=='list'){
+		$('list'+mineListPos).style.left = parseInt($('list'+mineListPos).style.left)-10+'px';
+		$('list'+mineListPos).style.top = parseInt($('list'+mineListPos).style.top)-10+'px';
+		$('list'+mineListPos).style.width = parseInt($('list'+mineListPos).style.width)+20+'px';
+		$('list'+mineListPos).style.height = parseInt($('list'+mineListPos).style.height)+20+'px';
+		
+		$('listCorner'+mineListPos).style.left = parseInt( $('list'+mineListPos).style.width )-54+'px';
+		$('listCorner'+mineListPos).style.top = -(parseInt( $('list'+mineListPos).style.height )+50)+'px';
+	}
+}
+function changePage(_num){
+	if( mineArea == 'list'){
+		mineArea = 'changePage';
+		changeList(0);
+		mineArea = 'list';
+	}
+	removeJsCssfile('data/mine-'+mineTypePos+'-'+minePagePos+'.js', 'js');
+	minePagePos += _num;
+	if( minePagePos>pageAll-1){
+		minePagePos=pageAll-1;
+	}
+	if( minePagePos<0){
+		minePagePos=0;
+	}
+	loadJsCssFile('data/mine-'+mineTypePos+'-'+minePagePos+'.js', 'js');  
+	setTimeout(showList,100);//如果不弄个延时，会加载上一页的数据，实际部署时需根据网络快慢，调整一个合适的延时时间
+}
+function changeRightCornerBg(){
+	$('home').src = (mineArea=='home')?'img/home1.png':'img/home0.png';
+	$('main').src = (mineArea=='main')?'img/main1.png':'img/main0.png';
+	$('back').src = (mineArea=='back')?'img/back1.png':'img/back0.png';	
+}
+
+function init(){
+	showList();
+}
+</script>
+</head>
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+<div style="position:absolute;left:0px;top:0px;width:1280px;height:720px; background:url(img/index.jpg); border-radius:0em;"></div>
+<!-- 首页 -->
+<div style="position:absolute;left:1026px;top:25px;width:64px;height:79px;"><img id="home" src="img/home0.png"/></div>
+<!-- 主页 -->
+<div style="position:absolute;left:1084px;top:25px;width:64px;height:79px;"><img id="main" src="img/main0.png"/></div>
+<!-- 返回 -->
+<div style="position:absolute;left:1141px;top:25px;width:64px;height:79px;"><img id="back" src="img/back0.png"/></div>
+<!-- 左上角图标 -->
+<div style="position:absolute;left:110px;top:80px;width:77px;height:77px;background:url(img/mineLogo.png);"></div>
+<!-- 播放记录 -->
+<div id="mineHistory" style="position:absolute;left:64px;top:180px;width:169px;height:99px;background:url(img/mineHistory0.png);"></div>
+<!-- 我的收藏 -->
+<div id="mineCollect" style="position:absolute;left:64px;top:285px;width:169px;height:99px;background:url(img/mineCollect0.png);"></div>
+<!-- 列表提示 -->
+<div id="minePrompt" style="position:absolute;left:270px;top:100px;width:600px;height:50px;font-size:25px;color:gray;display:none;">影片详情页按“已收藏”键可取消收藏</div>
+<!-- 海报列表
+<div style="position:absolute;left:273px;top:162px;width:1000px;height:500px;"> -->
+	<div id="list0" style="position:absolute;left:273px;top:162px;width:150px;height:200px;">
+    	<img id="listImg0" src="img/null.png"/>
+        <div id="listName0" class="listName"></div>
+        <img id="listCorner0" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list1" style="position:absolute;left:464px;top:162px;width:150px;height:200px;">
+    	<img id="listImg1" src="img/null.png"/>
+        <div id="listName1" class="listName"></div>
+        <img id="listCorner1" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list2" style="position:absolute;left:655px;top:162px;width:150px;height:200px;">
+    	<img id="listImg2" src="img/null.png"/>
+        <div id="listName2" class="listName"></div>
+        <img id="listCorner2" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list3" style="position:absolute;left:846px;top:162px;width:150px;height:200px;">
+    	<img id="listImg3" src="img/null.png"/>
+        <div id="listName3" class="listName"></div>
+        <img id="listCorner3" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list4" style="position:absolute;left:1037px;top:162px;width:150px;height:200px;">
+    	<img id="listImg4" src="img/null.png"/>
+        <div id="listName4" class="listName"></div>
+        <img id="listCorner4" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list5" style="position:absolute;left:273px;top:412px;width:150px;height:200px;">
+    	<img id="listImg5" src="img/null.png"/>
+        <div id="listName5" class="listName"></div>
+        <img id="listCorner5" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list6" style="position:absolute;left:464px;top:412px;width:150px;height:200px;">
+    	<img id="listImg6" src="img/null.png"/>
+        <div id="listName6" class="listName"></div>
+        <img id="listCorner6" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list7" style="position:absolute;left:655px;top:412px;width:150px;height:200px;">
+    	<img id="listImg7" src="img/null.png"/>
+        <div id="listName7" class="listName"></div>
+        <img id="listCorner7" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list8" style="position:absolute;left:846px;top:412px;width:150px;height:200px;">
+    	<img id="listImg8" src="img/null.png"/>
+        <div id="listName8" class="listName"></div>
+        <img id="listCorner8" class="listCorner" src="img/newest.png" />
+    </div>
+	<div id="list9" style="position:absolute;left:1037px;top:412px;width:150px;height:200px;">
+    	<img id="listImg9" src="img/null.png"/>
+        <div id="listName9" class="listName"></div>
+        <img id="listCorner9" class="listCorner" src="img/newest.png" />
+    </div>
+<!--</div>-->
+<!-- 页码 -->
+<div style="position:absolute;left:680px;top:660px;width:500px;line-height:23px;text-align:center;font-size:16px;">
+    <div style="width:25px;height:20px;background:url(img/pageLast.png) no-repeat;float:left;"></div>
+    <div style="width:20px;height:20px;background:url(img/pageNext.png);float:left;"></div>
+    <div id="minePagePos" style="width:20px;height:20px;float:left;color:#e1e1e1;">1</div>
+    <div id="pageAll" style="width:20px;height:20px;float:left;color:#b2c8e1;">/&nbsp;1</div>
+</div>
+<!-- 焦点图片 -->
+<div id="focusDiv" style="position:absolute;left:250px;top:139px;width:204px;height:254px;"><img id="focusImg" src="img/null.png"/></div>
+	</body>
+</html>
