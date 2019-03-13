@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="1280*720; text/html; charset=UTF-8" />
+<title>新片专区</title>
+<style>
+*{margin:0px;padding:0px;border:0px;font-family:SimHei;}
+
+img{width:100%;height:100%; border-radius: 2px;}
+
+</style>
+
+<script type=text/javascript src="../global.js"></script>
+<script>
+var currPos  = getCookie("currPos")?parseInt(getCookie("currPos")):0;
+var listSize   = 3;//图片数
+var url = window.location.href;
+		
+function $(id){return document.getElementById(id);}
+
+var listArray =[//新片专区
+	{nums:"1",title:"匆匆那年",url:"../movie/movie01.htm",img:"0.png"},
+	{nums:"2",title:"超能陆战队",url:"../movie/movie02.htm",img:"1.png"},
+	{nums:"3",title:"匆那年匆匆那年",url:"../movie/movie03.htm",img:"2.png"},
+	{nums:"4",title:"匆那年匆匆那年",url:"../movie/movie04.htm",img:"3.png"},
+	{nums:"5",title:"匆匆那年",url:"../movie/movie05.htm",img:"4.png"},
+	{nums:"6",title:"匆匆那年",url:"../movie/movie06.htm",img:"5.png"},
+	{nums:"7",title:"超能陆战队",url:"../movie/movie07.htm",img:"6.png"},
+	{nums:"8",title:"匆那年匆匆那年",url:"../movie/movie08.htm",img:"7.png"},
+	{nums:"9",title:"匆那年匆匆那年",url:"../movie/movie09.htm",img:"8.png"},
+	{nums:"10",title:"匆匆那年",url:"../movie/movie10.htm",img:"9.png"},	
+	{nums:"11",title:"匆匆那年",url:"../movie/movie11.htm",img:"10.png"},
+	{nums:"12",title:"超能陆战队",url:"../movie/movie12.htm",img:"11.png"}
+];
+
+function showImg(){
+	var currFirst = (parseInt((currPos+listSize)/listSize)-1)*listSize; //当前页的第一个	
+	for(i=0; i<listSize; i++){
+		$("img"+i).src = "../img/null.png";
+		if(listArray[currFirst+i].img){
+			$("img"+i).src = listArray[currFirst+i].img;	
+		}
+	}
+	$("detail"+currPos%3).style.backgroundColor = "green";
+}
+
+function pageDown(){
+	$("detail"+currPos%3).style.backgroundColor = "#333";
+	currPos+=listSize;
+	if(currPos>listArray.length-1)
+	   currPos-=listSize;
+	currPos = (parseInt((currPos+listSize)/listSize)-1)*listSize;//换页后焦点在当前页第一个
+	setCookie("currPos", currPos);
+	showImg();
+}
+		
+function pageUp(){
+	$("detail"+currPos%3).style.backgroundColor = "#333";
+	currPos-=listSize;
+	if(currPos<0)
+	   currPos+=listSize;
+	currPos = (parseInt((currPos+listSize)/listSize)-1)*listSize;
+	setCookie("currPos", currPos);
+	showImg();
+}
+//Cookie
+function setCookie(name, value){
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){//确认键
+		setCookie("currPos", currPos);	
+		location.href = listArray[currPos].url;
+} 
+
+//电脑可操作的键值
+document.onsystemevent = eventHandler;
+//document.onkeypress    = eventHandler;
+document.onirkeypress  = eventHandler; 
+function eventHandler(e,type){
+	var currFirst = (parseInt((currPos+listSize)/listSize)-1)*listSize; //当前页的第一个
+	var key_code = e.code;
+	switch(key_code){		
+		case "KEY_UP": 
+		    pageUp();
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+		    pageDown();
+			return 0;
+			break;
+			
+		case "KEY_LEFT": 
+		    $("detail"+currPos%3).style.backgroundColor = "#333";
+		    currPos-=1;
+			if(currPos<currFirst){currPos=currFirst;}//焦点只在本页切换
+			if(currPos<0){currPos=0;}//焦点至最小值归0
+			$("detail"+currPos%3).style.backgroundColor = "green";
+			return 0;
+			break;
+			
+		case "KEY_RIGHT":
+		    $("detail"+currPos%3).style.backgroundColor = "#333";
+			currPos+=1;
+			if(currPos>currFirst+2){currPos=currFirst+2;}//焦点只在本页切换
+			if(currPos>listArray.length-1){currPos=listArray.length-1;}//焦点至最大值不再增
+			$("detail"+currPos%3).style.backgroundColor = "green";
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN":
+		    pageDown();
+		    return 0;
+			break;	
+			
+		case "PAGE_UP":
+		    pageUp();
+		    return 0;
+			break;		
+				
+		case "KEY_SELECT":
+			doSelect();
+			return 0;
+			break;
+			
+		case "KEY_BACK": 
+		    document.onkeypress    = eventHandler;
+			location.href = "../index.htm";
+			return 0;
+			break;	
+			
+		case "KEY_EXIT":
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC49":
+//			location.href = loopArray[0];
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC50":
+//			location.href = loopArray[1];
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC51":
+//			location.href = loopArray[2];
+			return 0;
+			break;
+	}
+}
+
+function init(){
+    showImg();
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0" onload="init();">
+    
+<div id="logo" style="z-index:1; position: absolute; left: 50px; top: 40px; width: 150px; height: 40px; background: url('zoneLogo.png') no-repeat"></div>    
+
+<div style="z-index:1;position: absolute; left: 0px; top: 40px; width: 1280px; height: 40px;background: url(prompt.png) no-repeat center"></div>
+  
+<div style="position:absolute; left:     0px; top: 0px; width: 426.6px; height: 720px;"><img id="img0" src="../img/null.png"/></div>
+
+<div style="position:absolute; left: 426.6px; top: 0px; width: 426.6px; height: 720px;"><img id="img1" src="../img/null.png"/></div>
+
+<div style="position:absolute; left: 853.2px; top: 0px; width: 426.6px; height: 720px;"><img id="img2" src="../img/null.png"/></div>
+
+<div id="detail0" style="position:absolute; left:165px; top:100px; background-color:#333; color:white; font-size:24px;">专题详情</div>
+<div id="detail1" style="position:absolute; left:590px; top:100px; background-color:#333; color:white; font-size:24px;">专题详情</div>
+<div id="detail2" style="position:absolute; left:1010px; top:100px; background-color:#333; color:white; font-size:24px;">专题详情</div>
+
+</body>
+</html>

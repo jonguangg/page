@@ -1,0 +1,684 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" name="page-view-size" content="text/html; charset=utf-8" />
+<title>首页</title>
+<style>
+*{margin:0px;padding:0px;border:0px;font-family:SimHei;color:white; border-radius:0.2em;}
+
+.nav{z-index:1; position:absolute; top:130px; width:185px; height:45px; line-height:45px; text-align:center; vertical-align:middle;font-size:26px; color:#999;}
+
+img{width:100%;height:100%;}
+
+.movieNameBg{position:relative;left:0px; width:100%; height:14%; background-color:rgba(0,0,0,0.5); border-radius:0px 0px 0.2em 0.2em;}
+
+.movieName{width:100%;height:100%;font-size:130%;}
+
+.boxOffice{z-index:1;position:relative;width:40%;height:100%;border-radius:0 0.2em 0 0;line-height:30px;text-align:right;vertical-align:middle;background-color:#F60;font-size:120%; }
+</style>
+
+<script type=text/javascript src="global.js" charset=UTF-8></script>
+<script>
+
+var areaIndexCollect = "lists";//getCookie("areaIndexCollect")?getCookie("areaIndexCollect"):"lists";
+var ListFocusPosCollect = parseInt(getCookie("ListFocusPosCollect"))?parseInt(getCookie("ListFocusPosCollect")):0;
+var listSize = 12;
+var url = window.location.href;
+var currPos = 0;
+var currPage = parseInt(ListFocusPosCollect/listSize);//当前第几页
+var allPage = 0;
+
+function $(id){return document.getElementById(id);}
+
+var listArray = [
+    {name:"12_",//华语强档
+    list:[
+		  { movieName:"强档名称超长超长1",movieScore:"9.9",url:"xiangQing.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称2",movieScore:"9.9",url:"xiangQing.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称3",movieScore:"9.9",url:"3.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称4",movieScore:"6.9",url:"4.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称超长超长5",movieScore:"5.9",url:"5.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称6",movieScore:"4.9",url:"6.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称7",movieScore:"3.9",url:"7.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称8",movieScore:"2.9",url:"8.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称9",movieScore:"1.9",url:"9.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称10",movieScore:"9.9",url:"10.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称11",movieScore:"9.9",url:"11.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称12",movieScore:"9.9",url:"12.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称13",movieScore:"9.9",url:"13.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称14",movieScore:"9.8",url:"14.htm",img:"img/postersBig.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称15",movieScore:"5.9",url:"15.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称16",movieScore:"4.9",url:"16.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称17",movieScore:"3.9",url:"17.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称18",movieScore:"2.9",url:"18.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称19",movieScore:"1.9",url:"19.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称20",movieScore:"9.9",url:"20.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称21",movieScore:"9.9",url:"21.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称22",movieScore:"9.9",url:"22.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称23",movieScore:"9.9",url:"23.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称24",movieScore:"6.9",url:"24.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称25",movieScore:"5.9",url:"25.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称26",movieScore:"4.9",url:"26.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称27",movieScore:"3.9",url:"27.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称28",movieScore:"2.9",url:"28.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"},
+		  { movieName:"强档名称29",movieScore:"1.9",url:"29.htm",img:"img/postersSmall.png",cornerImg:"img/newest.png",boxOffice:"10.1亿"}
+		 ]
+	},		
+];
+	
+function showList(){//显示导航下的内容
+	showPage();
+	  for(i=0; i<12; i++){//先清空12个海报
+	      $("12_Img"+i).src = "img/null.png";
+		  $("12_movieNameBgDiv_"+i).style.display = "none";
+//		  $("12_corner_"+i).style.display = "none";
+		  $("12_boxOffice_"+i).style.display = "none"; 
+		  $("12_movieName_"+i).innerHTML = "";
+		  $("12_movieScore_"+i).innerHTML = "";  
+	  }
+	  for(i=0; i<12; i++){
+		  if(listSize*currPage+i<listArray[0].list.length){//再显示12个海报
+		      $("12_Img"+i).src = listArray[0].list[12*currPage+i].img;
+//			  $("12_corner_"+i).style.display = "block";			  
+//			  $("12_corner_Img"+i).src = listArray[0].list[12*currPage+i].cornerImg;
+			  $("12_movieNameBgDiv_"+i).style.display = "block";
+			  $("12_movieName_"+i).innerHTML = listArray[0].list[listSize*currPage+i].movieName.slice(0,6);
+			  $("12_movieScore_"+i).innerHTML = listArray[0].list[listSize*currPage+i].movieScore;
+			  $("12_boxOffice_"+i).style.display = "block"; 
+			  $("12_boxOffice_"+i).innerHTML = listArray[0].list[12*currPage+i].boxOffice;		           }
+	  }
+}
+
+function showPage(){//显示页码和翻页箭头
+	allPage = parseInt((listArray[0].list.length-1+listSize)/listSize);
+	if(allPage>1){
+	   $("arrowLeft").style.display = "block";
+	   $("arrowRight").style.display = "block";	
+	   $("pageDown").style.display = "block";
+	   $("pageUp").style.display = "block";
+	}else{
+	   $("arrowLeft").style.display = "none";
+	   $("arrowRight").style.display = "none";
+	   $("pageDown").style.display = "none";
+	   $("pageUp").style.display = "none";
+	}
+	   $("cPage").innerHTML = currPage+1;
+	   $("aPage").innerHTML = "/"+allPage;
+}
+
+function pageDown(){//P+下一页
+	if( allPage-1>currPage ){
+		if(areaIndexCollect=="lists"){
+			changeListFocus(0);
+		}
+		ListFocusPosCollect += listSize;
+		currPage += 1;	
+		ListFocusPosCollect = currPage*listSize;//position;//当前页的第一个
+		showList();
+		if(areaIndexCollect=="lists"){
+			showListFocus();
+		}
+	}
+}
+function pageUp(){//P-上一页
+	if( currPage>0 ){
+		if(areaIndexCollect=="lists"){
+			changeListFocus(0);
+		}
+		ListFocusPosCollect -= listSize;	
+		currPage -= 1;	
+		ListFocusPosCollect = currPage*listSize;//position;//当前页的第一个
+		showList();
+		if(areaIndexCollect=="lists"){
+				showListFocus();
+		}
+	}
+}
+
+function showMovieName(num){//切换焦点时超长名称游动
+		if(listArray[0].list[ListFocusPosCollect].movieName.length>5 && num>0){
+		$("12_movieName_"+ListFocusPosCollect%listSize).innerHTML = '<marquee direction="left" width="95%" scrollamonut="15" scrolldelay="100">'+listArray[0].list[ListFocusPosCollect].movieName+'</marquee>';
+	    }else $("12_movieName_"+ListFocusPosCollect%listSize).innerHTML = listArray[0].list[ListFocusPosCollect].movieName.slice(0,6);
+}
+
+function showListFocus(){
+	showMovieName(1);
+	var oDiv1 = $(listArray[0].name+ListFocusPosCollect%listSize);
+	oDiv1.style.zIndex = "2";
+	oDiv1.style.left = parseInt(oDiv1.style.left)-15+"px";
+	oDiv1.style.top = parseInt(oDiv1.style.top)-15+"px";	
+	oDiv1.style.width = parseInt(oDiv1.style.width)+30+"px";
+	oDiv1.style.height = parseInt(oDiv1.style.height)+30+"px";
+
+	$("focusBg").style.zIndex = "2";
+	$("focusBgImg").src = "img/focusBg.png";
+	$("focusBg").style.left = parseInt(oDiv1.style.left)-3+"px";
+	$("focusBg").style.top =  parseInt(oDiv1.style.top)-3+"px";		
+	$("focusBg").style.width = parseInt(oDiv1.style.width)+6+"px";
+	$("focusBg").style.height= parseInt(oDiv1.style.height)+6+"px";		
+	
+	var oDiv4 = $("12_movieNameBgDiv_"+ListFocusPosCollect%12);
+	oDiv4.style.top = parseInt(oDiv4.style.top)-5+"px";
+	
+	var oDiv5 = $("12_boxOffice_"+ListFocusPosCollect%listSize);
+	oDiv5.style.top = parseInt(oDiv5.style.top)-30+"px";	
+	
+//	var oDiv6 = $("12_corner_"+ListFocusPosCollect%listSize);
+//	oDiv6.style.top = parseInt(oDiv6.style.top)-8+"px";
+}
+
+function changeListFocus(_num){
+	showMovieName(-1);
+	var oDiv1 = $(listArray[0].name+ListFocusPosCollect%listSize);
+	oDiv1.style.zIndex = "1";
+	oDiv1.style.width = parseInt(oDiv1.style.width)-30+"px";
+	oDiv1.style.height = parseInt(oDiv1.style.height)-30+"px";
+	oDiv1.style.left = parseInt(oDiv1.style.left)+15+"px";
+	oDiv1.style.top = parseInt(oDiv1.style.top)+15+"px";
+ 
+	var oDiv4 = $("12_movieNameBgDiv_"+ListFocusPosCollect%listSize);
+	var oDiv6 = $("12_corner_"+ListFocusPosCollect%listSize);
+	oDiv4.style.top = parseInt(oDiv4.style.top)+5+"px";
+	oDiv6.style.top = parseInt(oDiv6.style.top)+29+"px";
+
+	var oDiv5 = $("12_boxOffice_"+ListFocusPosCollect%listSize);
+	oDiv5.style.top = parseInt(oDiv5.style.top)+30+"px";
+
+    var temp = ListFocusPosCollect;
+	ListFocusPosCollect += _num;
+		if(ListFocusPosCollect<0){//小于0就归0
+		   ListFocusPosCollect=0;
+		}
+		if(ListFocusPosCollect>listArray[0].list.length-1 && listArray[0].list.length%listSize>6){//不满一页，第二行还有
+	       ListFocusPosCollect = listArray[0].list.length-1;
+	    }
+		if(ListFocusPosCollect>listArray[0].list.length-1 && listArray[0].list.length%listSize<7){//不满一页，第二行没有了
+	       ListFocusPosCollect = temp;
+	    }
+}
+
+function focusImg(_num){//焦点定位
+	if (areaIndexCollect=="lists"){
+		  $("focusBgImg").src = "img/focusBg.png";
+	}else{$("focusBgImg").src = "img/null.png";}
+
+	if(_num==0){
+		  $(areaIndexCollect).style.backgroundImage= "url(img/"+areaIndexCollect+".png)";
+	}else if(_num==1)$(areaIndexCollect).style.backgroundImage= "url(img/focus_"+areaIndexCollect+".png)";
+}
+
+//Cookie
+function setCookie(name, value){
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + (1*1*60*1000));//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+
+function doSelect(){//确认键
+	setCookie("ListFocusPosCollect", ListFocusPosCollect);
+	setCookie("areaIndexCollect", areaIndexCollect);	
+	if(areaIndexCollect=="search"){
+		location.href = "search.htm";
+	}
+	else if(areaIndexCollect=="buy"){
+		location.href = "buy.htm";
+	}
+	else if(areaIndexCollect=="collect"){
+		location.href = "collect.htm";
+	}
+	else if(areaIndexCollect=="lists"){
+		location.href = listArray[0].list[ListFocusPosCollect].url;
+	}
+	else if(areaIndexCollect=="zhuYe"){
+		location.href = "zhuYe.htm";
+	}
+	else if(areaIndexCollect=="shouYe"){
+		setCookie("ListFocusPosCollect", 0);
+		setCookie("areaIndexCollect", "nav");
+		location.href = "index.htm";
+	}
+	else if(areaIndexCollect=="back"){
+		location.href = "search.htm";
+	}
+	else if(areaIndexCollect=="pageDown"){
+		pageDown();
+	}
+	else if(areaIndexCollect=="pageUp"){
+		pageUp();
+	}
+} 
+
+//按键
+document.onsystemevent = eventHandler;
+//document.onkeypress    = eventHandler;
+document.onirkeypress  = eventHandler; 
+function eventHandler(e,type){
+	var key_code = "";
+	if(navigator.userAgent.indexOf('iPanel')!=-1){
+		key_code=iPanelKey();
+	}else key_code = e.code ;
+	switch(key_code){		
+		case "KEY_UP": 
+		  	if(areaIndexCollect=="lists"){
+			   if( ListFocusPosCollect%listSize<6 ){
+				   areaIndexCollect="search";
+				   changeListFocus(0);
+				   focusImg(1);
+			   }else{
+				   changeListFocus(-6);
+				   showListFocus();	
+			   }
+			}else if(areaIndexCollect=="zhuYe" || areaIndexCollect=="shouYe" || areaIndexCollect=="back" || areaIndexCollect=="pageDown" || areaIndexCollect=="pageUp" ){
+			   focusImg(0);
+			   areaIndexCollect="lists";
+			   showListFocus();
+		    }
+			return 0;
+			break;
+			
+		case "KEY_DOWN":
+			if(areaIndexCollect=="search" || areaIndexCollect=="buy" || areaIndexCollect=="collect"){
+				focusImg(0);
+				areaIndexCollect="lists";
+				showListFocus();
+		    }else if(areaIndexCollect=="lists"){
+				if( ListFocusPosCollect%listSize<6 && ListFocusPosCollect+6<listArray[0].list.length){
+				   changeListFocus(6);
+				   showListFocus(); 
+				}else if( ListFocusPosCollect%listSize>5 ||ListFocusPosCollect+6>listArray[0].list.length-1 ){
+					areaIndexCollect = "zhuYe";
+					changeListFocus(0);
+					focusImg(1);
+				}
+			}
+//		    focusImg();
+			return 0;
+			break;
+			
+		case "KEY_LEFT":
+			if(areaIndexCollect=="pageDown"){
+				focusImg(0);
+				areaIndexCollect="pageUp";
+				focusImg(1);
+			}else if(areaIndexCollect=="pageUp"){
+				focusImg(0);
+				areaIndexCollect="back";
+				focusImg(1);
+			}else if(areaIndexCollect=="back"){
+				focusImg(0);
+				areaIndexCollect="shouYe";
+				focusImg(1);
+			}else if(areaIndexCollect=="shouYe"){
+				focusImg(0);
+				areaIndexCollect="zhuYe";
+				focusImg(1);
+			}else if(areaIndexCollect=="collect"){
+				focusImg(0);
+				areaIndexCollect="buy";
+				focusImg(1);
+			}else if(areaIndexCollect=="buy"){
+				focusImg(0);
+				areaIndexCollect="search";
+				focusImg(1);
+			}else if(areaIndexCollect=="nav"){
+				focusNav(-1);
+				ListFocusPosCollect = 0;
+				setCookie("ListFocusPosCollect", ListFocusPosCollect);
+			}else if(areaIndexCollect=="lists"){
+				if( ListFocusPosCollect%listSize != 0 && ListFocusPosCollect%listSize != 6 ){
+				  changeListFocus(-1);
+				  showListFocus();
+				}
+				else pageUp();
+			}
+//			focusImg();
+			return 0;
+			break;
+			
+		case "KEY_RIGHT": 
+			if(areaIndexCollect=="zhuYe"){
+				focusImg(0);
+				areaIndexCollect="shouYe";
+				focusImg(1);
+			}else if(areaIndexCollect=="shouYe"){
+				focusImg(0);
+				areaIndexCollect="back";
+				focusImg(1);
+			}else if(areaIndexCollect=="back" && allPage>1){
+				focusImg(0);
+				areaIndexCollect="pageUp";
+				focusImg(1);
+			}else if(areaIndexCollect=="pageUp"){
+				focusImg(0);
+				areaIndexCollect="pageDown";
+				focusImg(1);
+			}else if(areaIndexCollect=="search"){
+				focusImg(0);
+				areaIndexCollect="buy";
+				focusImg(1);
+			}else if(areaIndexCollect=="buy"){
+				focusImg(0);
+				areaIndexCollect="collect";
+				focusImg(1);
+			}else if(areaIndexCollect=="lists"){
+				if( ListFocusPosCollect%listSize != 5 && ListFocusPosCollect%listSize != 11 ){
+				  changeListFocus(1);
+				  showListFocus();
+				}
+				else pageDown();
+			}
+//			focusImg();
+			return 0;
+			break;	
+			
+		case "PAGE_DOWN":
+		    pageDown();
+		    return 0;
+			break;	
+			
+		case "PAGE_UP":
+		case 25:
+		    pageUp();
+		    return 0;
+			break;		
+				
+		case "KEY_SELECT":
+			doSelect();
+			return 0;
+			break;
+			
+		case "KEY_BACK":
+		    document.onkeypress    = eventHandler;
+			delCookie("areaIndexCollect");
+
+			delCookie("ListFocusPosCollectIndex");
+			location.href = "1.htm";
+			return 0;
+			break;	
+			
+		case "KEY_EXIT":
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC49":
+
+//			location.href = loopArray[0].url;
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC50":
+			location.href = loopArray[1].url;
+			return 0;
+			break;
+			
+		case "KEY_NUMERIC51":
+			location.href = loopArray[2].url;
+			return 0;
+			break;
+	}
+}
+
+function init(){
+	showList();
+	showListFocus();
+/*	if(areaIndexCollect=="lists"){
+		showListFocus();
+	}else focusImg(1);
+*/
+}
+
+</script>
+
+</head>
+
+<body bgcolor="transparent" leftmargin="0" topmargin="0"  onload="init();">
+
+<div style="z-index:-1; position:absolute; left:0px; right:0px; width:1280px; height:720px; background:url('img/index.jpg');border-radius:0em;"></div>
+    
+<div id="search" style="z-index: 1; position: absolute; left:850px; top:64px; width:115px; height:46px; background: url('img/search.png');"></div> 
+    
+<div id="buy" style="z-index: 1; position: absolute; left:970px; top: 64px; width: 115px; height:46px; background: url('img/buy.png');"></div>
+    
+<div id="collect" style="z-index: 1; position: absolute; left:1090px; top:64px; width:115px; height:46px; background: url('img/collect.png');"></div>
+
+<!--客服电话 
+<div style="z-index: 2; position: absolute; left:745px; top:63px; width: 130px; height: 50px; font-family:Times;font-size: 38px; color: #699999;"><b>96335</b></div>  -->
+
+<!--已购-->
+<div style="position: absolute; left: 105px; top: 130px; width: 80px; height: 45px; line-height: 45px; text-align: center; vertical-align: middle; font-size: 30px; color: white;">收藏</div>
+
+<!--海报-->
+<div id="12_0" style="z-index:1; position:absolute;left:75px;top:190px; width:171px; height:217px;"><img id="12_Img0" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_0" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_0" width="85%" align="center"></td>
+<td id="12_movieScore_0" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_0" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_0" title="0" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img0" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_1" style="position:absolute;left:265px;top:190px; width:171px; height:217px;"><img id="12_Img1" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_1" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_1" width="85%" align="center"></td>
+<td id="12_movieScore_1" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_1" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_1" title="1" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img1" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_2" style="position:absolute;left:455px;top:190px; width:171px; height:217px;"><img id="12_Img2" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_2" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_2" width="85%" align="center"></td>
+<td id="12_movieScore_2" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_2" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_2" title="2" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img2" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_3" style="position:absolute;left:645px;top:190px; width:171px; height:217px;"><img id="12_Img3" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_3" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_3" width="85%" align="center"></td>
+<td id="12_movieScore_3" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_3" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_3" title="3" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img3" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_4" style="position:absolute;left:835px;top:190px; width:171px; height:217px;"><img id="12_Img4"src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_4" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_4" width="85%" align="center"></td>
+<td id="12_movieScore_4" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_4" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_4" title="4" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img4" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_5" style="position:absolute;left:1025px;top:190px; width:171px; height:217px;"><img id="12_Img5" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_5" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_5" width="85%" align="center"></td>
+<td id="12_movieScore_5" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_5" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_5" title="5" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img5" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_6" style="position:absolute;left:75px;top:420px; width:171px; height:217px;"><img id="12_Img6" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_6" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_6" width="85%" align="center"></td>
+<td id="12_movieScore_6" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_6" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_6" title="6" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img6" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_7" style="position:absolute;left:265px;top:420px; width:171px; height:217px;"><img id="12_Img7" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_7" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_7" width="85%" align="center"></td>
+<td id="12_movieScore_7" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_7" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_7" title="7" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img7" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_8" style="position:absolute;left:455px;top:420px; width:171px; height:217px;"><img id="12_Img8" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_8" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_8" width="85%" align="center"></td>
+<td id="12_movieScore_8" width="15%" valign="top" style="color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_8" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_8" title="8" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img8" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_9" style="position:absolute;left:645px;top:420px; width:171px; height:217px;"><img id="12_Img9" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_9" class="movieNameBg" style="top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_9" width="85%" align="center"></td>
+<td id="12_movieScore_9" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_9" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_9" title="9" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img9" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_10" style="position:absolute;left:835px;top:420px; width:171px; height:217px;"><img id="12_Img10" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_10" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_10" width="85%" align="center"></td>
+<td id="12_movieScore_10" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_10" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_10" title="10" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img10" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!--海报-->
+<div id="12_11" style="position:absolute;left:1025px;top:420px; width:171px; height:217px;"><img id="12_Img11" src="img/null.png"/>
+<!--片名背景-->
+<div id="12_movieNameBgDiv_11" class="movieNameBg" style="left:0px; top:-30.38px;">
+<!--片名-->
+<table class="movieName"><tr valign="middle">
+<td id="12_movieName_11" width="85%" align="center"></td>
+<td id="12_movieScore_11" width="15%" valign="top" style=" color:yellow;"></td>
+</tr></table>
+<!-- 票房 -->
+<div id="12_boxOffice_11" class="boxOffice" style="left:60%;top:-217px;"></div>
+
+<div id="12_corner_11" title="11" style="position:relative;left:0px;top:-217px; width:50px; height:50px; z-index:1;"><img id="12_corner_Img11" style="border-radius:0.2em 0 0 0;" src="img/null.png"/></div>
+
+</div></div>
+
+<!-- 左右箭头 -->
+<div id="arrowLeft" style="z-index:1; background: url('img/arrowLeft.png') no-repeat; position: absolute; left:40px; top:400px; width: 20px; height: 35px;"></div>
+<div id="arrowRight" style="z-index:1; background: url('img/arrowRight.png') no-repeat; position: absolute; left:1220px; top:400px; width: 20px; height: 35px;"></div>
+
+<div id="zhuYe" style="z-index: 1; background: url('img/zhuYe.png'); position: absolute; left:100px; top:655px; width: 82px; height: 31px;"></div>
+<div id="shouYe" style="z-index: 1; background: url('img/shouYe.png'); position: absolute; left:200px; top:655px; width: 82px; height: 31px;"></div>
+<div id="back" style="z-index: 1; background: url('img/back.png'); position: absolute; left:300px; top:655px; width: 82px; height: 31px;"></div>
+
+<!-- 页码 -->
+<div id="page" style="position:absolute; left:610px; top:655px; width:50px; height:30px;font-size:25px; text-align:center;background-color:rgba(40,75,159,0.3)"><span id="cPage" style="color:#ddd712;"></span><span id="aPage" style="color:#3054a3;"></span></div>
+
+<!-- 上一页 -->
+<div id="pageUp" style="z-index: 1; background: url('img/pageUp.png'); position: absolute; left:970px; top:655px; width: 92px; height: 31px;"></div>
+
+<!-- 下一页 -->
+<div id="pageDown" style="z-index: 1; background: url('img/pageDown.png'); position: absolute; left:1080px; top:655px; width: 92px; height: 31px;"></div> 
+
+<div id="focusBg" style="z-index:0;position:absolute; left:60px; top:110px; width:240px; height:90px;"><img id="focusBgImg" src="img/focus_nav.png"/></div>
+  
+<div id="prompts" style="z-index:3; background: url('img/prompt.png') no-repeat; position: absolute;padding-top:75px;left:447px; top:240px; width: 386px; height: 224px;line-height:40px;text-align:center; vertical-align:middle;font-size:24px; display:none;"></div>
+
+<div id="test" style="z-index: 5; position: absolute; left: 612px; top: 2px; width: 240px; height: 90px; color: white; font-size: 30px;"></div>
+
+</body>
+</html>

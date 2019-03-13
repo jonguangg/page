@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"  />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Jonguang's test page</title>
+
+<style>
+img{width:100%;height:100%;}
+</style>
+
+<script>
+function $(_id){return document.getElementById(_id);}	
+
+function init(){
+    $("logo").style.width = document.documentElement.clientWidth+"px";//上部图片宽=屏幕宽
+    $("logo").style.heigth = $("logo").offsetWidth*0.6266+"px";//上部图片高按原图等比例缩放
+    
+	for(i=0;i<4;i++){
+    //    $("icon_"+i).style.width = $("logo").style.width*0.2969+"px";//4个图标的宽按屏幕宽等比例缩放
+		$("icon_"+i).style.height = $("icon_0").offsetWidth+"px";//4个图标高=自己的宽，保证是圆的
+	}
+    
+    var cHeight = document.documentElement.clientHeight;//屏幕高
+    var jHeight = (cHeight-$("logo").offsetHeight-$("icon_0").offsetWidth*2)/3//图片上下间隔
+    
+    $("icon_0").style.top = $("logo").offsetHeight+jHeight+"px";//4个图标定位
+    $("icon_1").style.top = $("logo").offsetHeight+jHeight+"px";//4个图标定位
+    $("icon_2").style.top = $("icon_0").offsetTop+$("icon_0").offsetHeight+jHeight+"px";//4个图标定位
+    $("icon_3").style.top = $("icon_0").offsetTop+$("icon_0").offsetHeight+jHeight+"px";//4个图标定位
+}
+
+</script>
+</head>
+
+<body background="bg.png" bgcolor="transparent"  leftmargin="0" topmargin="0" onload="init();">
+
+<div id="logo" style="position:absolute; left:0px; top:0px; width:100%; height:38%;"><img src="img.png" /></div>
+
+<div id="icon_0" style="position:absolute; left:17%; top:45%; width:24%; height:19%;"><img src="icon_01.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">视频通话</div>
+-->
+</div>
+
+<div id="icon_1" style="position:absolute; right:17%; top:45%; width:24%; height:19%;"><img src="icon_02.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">视频留言</div>
+-->
+</div>
+
+<div id="icon_2" style="position:absolute; left:17%; top:70%; width:24%; height:19%;"><img src="icon_03.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">加好友</div>
+-->
+</div>
+
+<div id="icon_3" style="position:absolute; right:17%; top:70%; width:24%; height:19%;"><img src="icon_04.png"/>
+<!--
+<div style="position:relative; left:0%; top:0%; width:100%; height:10%; text-align:center; color:red; font-size:100%; z-index:1;">拍照片</div>
+-->
+</div>
+<!--
+<div id="test" style="position:absolute; left:5%; top:90%; width:80%; height:10px; color:red; font-size:22px; z-index:11"></div>
+-->
+</body>
+</html>
