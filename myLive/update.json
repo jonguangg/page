@@ -1,0 +1,12 @@
+{
+  "url":"http://103.82.219.92:925/apk/dqrm/app-lightningPlus-release.apk",
+  "versionCode":96,
+  "updateMessage":"
+  1. 加入启动画面\n
+  2. 内容页加载完成后启动画面自动消失\n
+  3. 美化手机网络故障提示页\n
+  4. 支持自动升级\n
+  5. 修改包名
+  
+  "
+}

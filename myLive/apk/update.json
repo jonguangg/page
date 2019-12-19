@@ -1,0 +1,11 @@
+{
+  "url":"http://192.168.31.98:925/pages/myLive/apk/aaron.jonguang.myLive_20191218.apk",
+  "versionCode":1,
+  "updateMessage":"
+  1. 内容页加载完成后启动画面自动消失\n
+  2. 美化手机网络故障提示页\n
+  3. 支持自动升级\n
+  4. 修改包名
+  
+  "
+}

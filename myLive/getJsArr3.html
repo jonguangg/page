@@ -1,0 +1,146 @@
+<html>
+<head>
+</head>
+<body>
+        <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    var dataArr0 = [
+	{
+		"group":'北邮央视',
+		"channel":[
+			{channelId:1,name:'CCTV1综合',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8',},
+			{channelId:1,name:'CCTV2财经',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv2.m3u8',},
+			{channelId:1,name:'CCTV3综艺',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv3hd.m3u8',},
+			{channelId:1,name:'CCTV4中文国际',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv4.m3u8',},
+			{channelId:1,name:'CCTV5+',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv5phd.m3u8',},
+			{channelId:1,name:'CCTV6电影',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8',},
+			{channelId:1,name:'CCTV7军事农业',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv7.m3u8',},
+			{channelId:1,name:'CCTV8电视剧',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv8hd.m3u8',},
+			{channelId:1,name:'CCTV9纪录',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv9.m3u8',},
+			{channelId:1,name:'CCTV10科教',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv10.m3u8',},
+			{channelId:1,name:'CCTV11戏剧',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv11.m3u8',},
+			{channelId:1,name:'CCTV12社会与法',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv12.m3u8',},
+			{channelId:1,name:'CCTV13新闻',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv13.m3u8',},
+			{channelId:1,name:'CCTV14少儿',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv14.m3u8',},
+			{channelId:1,name:'CCTV15音乐',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv15.m3u8',},
+			{channelId:1,name:'CCTV-NEWS',videoUrl:'http://ivi.bupt.edu.cn/hls/cctv16.m3u8',},
+		],
+	},
+	
+	{
+		group:'北邮卫视',
+		channel:[
+			{channelId:1,name:'安徽卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/ahtv.m3u8',},
+			{channelId:1,name:'江西卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/jxtv.m3u8',},
+			{channelId:1,name:'北京卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/btv1.m3u8',},
+			{channelId:1,name:'东方卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/dftv.m3u8',},
+			{channelId:1,name:'江苏卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/jstv.m3u8',},
+			{channelId:1,name:'浙江卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/zjtv.m3u8',},
+			{channelId:1,name:'湖南卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/hunantv.m3u8',},
+			{channelId:1,name:'深圳卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/sztv.m3u8',},
+			{channelId:1,name:'河南卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/hntv.m3u8',},
+			{channelId:1,name:'陕西卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/sxtv.m3u8',},
+			{channelId:1,name:'吉林卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/jltv.m3u8',},
+			{channelId:1,name:'广东卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/gdtv.m3u8',},
+			{channelId:1,name:'山东卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/sdtv.m3u8',},
+			{channelId:1,name:'湖北卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/hbtv.m3u8',},
+			{channelId:1,name:'广西卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/gxtv.m3u8',},
+			{channelId:1,name:'河北卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/hebtv.m3u8',},
+			{channelId:1,name:'西藏卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/xztv.m3u8',},
+			{channelId:1,name:'内蒙古卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/nmtv.m3u8',},
+			{channelId:1,name:'青海卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/qhtv.m3u8',},
+			{channelId:1,name:'四川卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/sctv.m3u8',},
+			{channelId:1,name:'天津卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/tjtv.m3u8',},
+			{channelId:1,name:'山西卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/sxtv.m3u8',},
+			{channelId:1,name:'辽宁卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/lntv.m3u8',},
+			{channelId:1,name:'厦门卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/xmtv.m3u8',},
+			{channelId:1,name:'新疆卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/xjtv.m3u8',},
+			{channelId:1,name:'黑龙江卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/hljtv.m3u8',},
+			{channelId:1,name:'云南卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/yntv.m3u8',},
+			{channelId:1,name:'东南卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/dntv.m3u8',},
+			{channelId:1,name:'贵州卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/gztv.m3u8',},
+			{channelId:1,name:'宁夏卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/nxtv.m3u8',},
+			{channelId:1,name:'甘肃卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/gstv.m3u8',},
+			{channelId:1,name:'重庆卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/cqtv.m3u8',},
+			{channelId:1,name:'兵团卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/bttv.m3u8',},
+			{channelId:1,name:'海南卫视',videoUrl:'http://ivi.bupt.edu.cn/hls/lytv.m3u8',},
+		],
+	},
+		
+
+/*		
+	{
+		group:'苹果测试',
+		channel:[
+			{channelId:1,name:'苹果测试',videoUrl:'http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8',},
+		],
+	},
+		
+	{
+		group:'苹果测试',
+		channel:[
+			{channelId:1,name:'苹果测试',videoUrl:'http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8',},
+		],
+	},
+		
+	{
+		group:'苹果测试',
+		channel:[
+			{channelId:1,name:'苹果测试',videoUrl:'http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8',},
+		],
+	},
+		
+	{
+		group:'苹果测试',
+		channel:[
+			{channelId:1,name:'苹果测试',videoUrl:'http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8',},
+		],
+	},
+		
+	{
+		group:'苹果测试',
+		channel:[
+			{channelId:1,name:'苹果测试',videoUrl:'http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8',},
+		],
+	},
+*/
+];
+
+// Javascript以ajax发送数据JSON数据，PHP接收JSON
+var jonguangJson =JSON.stringify(dataArr0); //使用JSON将对象转换成JSON格式数据
+//console.log(jonguangJson);
+$.ajax({   
+    type: "POST", 
+    url: './getJsArr3.php',  
+    dataType: "json",
+    contentType: "application/x-www-form-urlencoded",
+    async:false,
+    data: {
+        jonguang:jonguangJson
+    }, 
+    success: function (data) {  
+        alert('Ok');  
+    }  
+}); 
+
+    // 1.创建XMLHttpRequest对象
+    var xhr = new XMLHttpRequest();
+
+    // 2.请求行
+    xhr.open("POST", "./getJsArr3.php");
+
+    // 3.请求头
+    xhr.setRequestHeader('Content-Type',' application/x-www-form-urlencoded');
+
+    // 4.设置数据
+    xhr.send("jonguang="+jonguangJson);
+
+    // 5.监听服务器响应
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState==4 && xhr.status==200){
+            
+        }
+    }
+</script>
+</body>
+</html>
