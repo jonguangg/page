@@ -11,7 +11,7 @@ set_time_limit(0); //	设置超时时间
 //	编码设置
 //mysql_set_charset('utf8',$connect);
 // 3. 从DBNAME中查询数据，返回数据库结果集
-$queryStb = 'select * from license order by expiretime asc';    
+$queryStb = 'select * from license order by expire_time asc';    
 
 //	结果集
 $resultStb = mysqli_query($connect,$queryStb);
@@ -23,9 +23,9 @@ $newStbArr = array(	//	初始化一个机顶盒数组
 	"mark" => "",
 	"ip" => "",
 	"city" => "",
-	"logintime" => "",
-	"expiretime" => "",
-	"lasttime" => "",
+	"login_time" => "",
+	"expire_time" => "",
+	"last_time" => "",
 	"isonline" => 0
 );
 
@@ -35,9 +35,9 @@ while( $rowStb = mysqli_fetch_assoc($resultStb) ){
 	$newStbArr["mark"] = $rowStb["mark"];
 	$newStbArr["ip"] = $rowStb["ip"];
 	$newStbArr["city"] = $rowStb["city"];
-	$newStbArr["logintime"] = $rowStb["logintime"];
-	$newStbArr["expiretime"] = $rowStb["expiretime"];
-	$newStbArr["lasttime"] = $rowStb["lasttime"];
+	$newStbArr["login_time"] = $rowStb["login_time"];
+	$newStbArr["expire_time"] = $rowStb["expire_time"];
+	$newStbArr["last_time"] = $rowStb["last_time"];
 	$newStbArr["isonline"] = $rowStb["isonline"];
 	//向机顶盒数组中添加一个机顶盒
 //	if( $rowStb["sn"] < count($stbArr)  ){	//加这个判断是解决在后台页面上删除了组,但数据库内还有该组的数据,预览就会报错

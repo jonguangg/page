@@ -51,23 +51,23 @@ function getCity(){			// 获取当前位置所在城市
 	$sn = $_COOKIE["sn"];
 	$mark = $_COOKIE["deviceInfo"];
 //	echo $mark;
-	$logintime = date("Y-m-d"); 
-	$lasttime = date("Y-m-d H:i:s"); 
-	$expiretime = date("Y-m-d",strtotime("+7 day")); 
+	$loginTime = date("Y-m-d"); 
+	$lastTime = date("Y-m-d H:i:s"); 
+	$expireTime = date("Y-m-d",strtotime("+7 day")); 
 	$isonline = "在线";
 	$sql = mysqli_query($connect,"select * from license where sn='$sn' ") or die(mysqli_error($connect));
-	$cuurLogintime = str_replace("-","",$logintime);	
-	$cuurExpiretime = str_replace("-","",$expiretime);	
+	$cuurloginTime = str_replace("-","",$loginTime);	
+	$cuurexpireTime = str_replace("-","",$expireTime);	
 	
 	if( mysqli_num_rows($sql)>0 ){
 		while($row=mysqli_fetch_array($sql)){
-			$logintime = $row["logintime"];
-			$expiretime = $row["expiretime"]; 
-			$cuurExpiretime = str_replace("-","",$expiretime);
+			$loginTime = $row["login_time"];
+			$expireTime = $row["expire_time"]; 
+			$cuurexpireTime = str_replace("-","",$expireTime);
 		}
-		$sql = mysqli_query($connect,"UPDATE license set isonline='$isonline',ip='$ip',city='$city',lasttime='$lasttime' where sn='$sn' ") or die(mysqli_error($connect));
+		$sql = mysqli_query($connect,"UPDATE license set isonline='$isonline',ip='$ip',city='$city',last_time='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));
 	}else if( strlen($sn)>0 ){
-		$sql = mysqli_query($connect,"replace into license(sn,mark,ip,city,logintime,expiretime,lasttime,isonline) values ('$sn','$mark','$ip','$city','$logintime','$expiretime','$lasttime','$isonline')") or die(mysqli_error($connect));
+		$sql = mysqli_query($connect,"replace into license(sn,mark,ip,city,login_time,expire_time,last_time,isonline) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isonline')") or die(mysqli_error($connect));
 	}
 	
 //	session_start(); 
@@ -294,17 +294,16 @@ function stbInfo(){
 	getID("test").innerHTML = "<br> YourSN_"+deviceInfo;
 }
 
-function exitApp(){
-	var logintime = <?php echo $cuurLogintime ?>;
-	var expiretime = <?php echo $cuurExpiretime ?>;
-//	getID("test").innerHTML = "<br> 授权到期_"+expiretime;
-	if( parseInt(logintime) > parseInt(expiretime) ){
+function checkLicense(){
+	var loginTime = <?php echo $cuurloginTime ?>;
+	var expireTime = <?php echo $cuurexpireTime ?>;
+//	getID("test").innerHTML = "<br> 授权到期_"+expireTime;
+	if( parseInt(loginTime) > parseInt(expireTime) ){
 	//	window.androidJs.JsExitApp();
-		getID('buyPrompt').style.display = 'block';
+		getID('cardKey').style.display = 'block';
 	}
-//	window.setTimeout("exitApp()",60000);//60秒后运行
+//	window.setTimeout("checkLicense()",60000);//60秒后运行
 }
-//window.setTimeout("exitApp()",60000);//60秒后运行
 
 function imOnLine(){
 	var now = new Date();
@@ -312,7 +311,7 @@ function imOnLine(){
 	var minu = ( (6-now.getMinutes()%5)*60000>300000 )?60000-sec*1000:(6-now.getMinutes()%5)*60000-sec*1000;
 //	getID("test").innerHTML += "_"+now.getMinutes()+":"+sec;
 	setTimeout('sendAjax();', minu);	
-	exitApp();
+	checkLicense();
 }
 
 function sendAjax(){
@@ -489,7 +488,7 @@ function doSelect(){//确认键
 					getID("card_id").innerText = "Please enter your card number";
 				}
 			}
-		}else if( numId==11){//GO
+		}else if( numId==11){//输入cardId后的GO
 			indexArea = "card_key";
 			getID("card_key").innerText = "Please enter your card key"
 		}else{//数字
@@ -507,9 +506,9 @@ function doSelect(){//确认键
 					getID("card_key").innerText = "Please enter your card key";
 				}
 			}
-		}else if( numId==11){//GO
-
-			
+		}else if( numId==11){//输入key后的GO
+			getID("cardKey").style.display = "none";
+			indexArea = 'live';
 		}else{//数字
 			if( getID("card_key").innerText =="Please enter your card key"){//第一次输入数字
 				getID("card_key").innerText = numId+1;
@@ -574,7 +573,7 @@ function eventHandler(e,type){
 				clearTimeout(backLock);
 				indexArea = "card_id";
 				getID("lockImg").style.display = "none";
-			//	getID("cardKey").style.display = "block";
+				getID("cardKey").style.display = "block";
 			}else if( indexArea=="card_id" || indexArea=="card_key"){
 				if(numId>7){
 					changeNum(-9);

@@ -425,13 +425,13 @@ function showStbList(){
 		newCell3.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=city'+i+' placeholder="登陆地区" autocomplete="off" value='+stbArr[i].city+' />';
 		
 		var newCell4 = newRow.insertCell(4);
-		newCell4.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=logintime'+i+' required="required" placeholder="请输入注册日期" autocomplete="off" value='+stbArr[i].logintime+' />';
+		newCell4.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=logintime'+i+' required="required" placeholder="请输入注册日期" autocomplete="off" value='+stbArr[i].login_time+' />';
 		
 		var newCell5 = newRow.insertCell(5);
-		newCell5.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=expiretime'+i+' required="required" placeholder="到期日期，或续费天数" autocomplete="off" value='+stbArr[i].expiretime+' />';
+		newCell5.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=expiretime'+i+' required="required" placeholder="到期日期，或续费天数" autocomplete="off" value='+stbArr[i].expire_time+' />';
 		
 		var newCell6 = newRow.insertCell(6);
-		newCell6.innerHTML = stbArr[i].lasttime;
+		newCell6.innerHTML = stbArr[i].last_time;
 				
 		var newCell7 = newRow.insertCell(7);
 		newCell7.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=isonline'+i+' required="required" placeholder="0否1是" value='+stbArr[i].isonline+' />';
