@@ -1,9 +1,9 @@
 <?php
-	include "readGroupArray.php";	//为了快速预览,不从js文件读数据,而从mqsql读
-	include "readChannelArray.php"; //为了快速预览,不从js文件读数据,而从mqsql读	
-	include "readStbArray.php";
+	include_once "readGroupArray.php";	//为了快速预览,不从js文件读数据,而从mqsql读
+	include_once "readChannelArray.php"; //为了快速预览,不从js文件读数据,而从mqsql读	
+	include_once "readStbArray.php";
 	$insertToday = date("Y-m-d");
-	$insertExpiretime = date("Y-m-d",strtotime("+31 day"));
+	$insertexpireTime = date("Y-m-d",strtotime("+31 day"));
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -38,9 +38,10 @@
 <a id="a1" name="addChannel" onclick="showArea('addChannel');" href="#">添加一个频道</a><br />
 <a id="a2" name="editChannel" onclick="showArea('editChannel');" href="#">修改频道参数</a><br />
 <a id="a3" name="editChannelList" onclick="showArea('editChannelList');" href="#">编辑频道列表</a><br />
-<a id="a4" name="upLoad" onclick="showArea('upLoad');" href="#">批量导入频道列表</a><br />
-<a id="a5" name="preview" onclick="showArea('preview');" href="#">预览频道列表</a><br />
-<a id="a6" name="stb" onclick="showArea('stb');" href="#">客户端管理</a><br />
+<a id="a4" name="preview" onclick="showArea('preview');" href="#">预览频道列表</a><br />
+<a id="a5" name="upLoad" onclick="showArea('upLoad');" href="#">导入频道列表</a><br />
+<a id="a6" name="upLoadCard" onclick="showArea('upLoadCard');" href="#">导入VIP卡密</a><br />
+<a id="a7" name="stb" onclick="showArea('stb');" href="#">客户端管理</a><br />
 </div>
 
 <!-- 频道组管理 -->
@@ -182,13 +183,25 @@
 <!--  批量导入频道列表  -->
 <div id="upLoad" style="position:absolute;top:80px;left:20%;width:75%;height:120px;text-align:center; display:none;">
 	<h1>请选择excel文件再上传</h1><br /><br />
-    <form enctype="multipart/form-data" action="./upLoad.php?action=excel" method="post" name="excel" id="excel">
+    <form enctype="multipart/form-data" action="./upLoad.php?action=excel" method="post" ><!--name="excel" id="excel"-->
         <input type="hidden" name="MAX_FILE_SIZE" value="104857600" /><!-- value单位是字节（Bytes），除以1024得到KB，再除以1024得到MB，10485760是10M -->
         <input type="file" name="excel" accept=".xls,.xlsx" style="font-size:35px;"/>
         <input type="submit" value="上传频道列表" style="width:150px;height:50px;background:transparent url(upLoad.png);border:0px; font-size:20px; font-weight:900;cursor:pointer;"/>
     </form>
-	<br><br><button onclick="window.open('download.php');" style="width:120px;height:50px;background:transparent url(upLoad.png);background-size:100% 100%;border:0px; font-size:20px; font-weight:900;cursor:pointer;">下载样表</button><br><br>
-    <span style="color:red;"><br />请仔细核对 excel 表格的格式，上传后将清空之前的数据！然后再写入新表格内的数据</span>
+	<!-- br><br><button onclick="window.open('download.php');" style="width:120px;height:50px;background:transparent url(upLoad.png);background-size:100% 100%;border:0px; font-size:20px; font-weight:900;cursor:pointer;">下载样表</button><br><br -->
+    <span style="color:red;"><br /><br /><br>请仔细核对 excel 表格的格式，上传后将增量更新之前的数据</span>
+</div>
+
+<!--  批量导入VIP卡密 -->
+<div id="upLoadCard" style="position:absolute;top:80px;left:20%;width:75%;height:120px;text-align:center; display:none;">
+	<h1>请选择VIP卡密表格文件再上传</h1><br /><br />
+    <form enctype="multipart/form-data" action="./upLoadCard.php?action=excel" method="post"><!-- name="excelCard" id="excelCard"-->
+        <input type="hidden" name="MAX_FILE_SIZE" value="104857600" /><!-- value单位是字节（Bytes），除以1024得到KB，再除以1024得到MB，10485760是10M -->
+        <input type="file" name="excelCard" accept=".xls,.xlsx" style="font-size:35px;"/>
+        <input type="submit" value="上传VIP卡密" style="width:150px;height:50px;background:transparent url(upLoad.png);border:0px; font-size:20px; font-weight:900;cursor:pointer;"/>
+    </form>
+	<!-- br><br><button onclick="window.open('download.php');" style="width:120px;height:50px;background:transparent url(upLoad.png);background-size:100% 100%;border:0px; font-size:20px; font-weight:900;cursor:pointer;">下载样表</button><br><br -->
+    <span style="color:red;"><br /><br /><br />请仔细核对 excel 表格的格式，上传后将增量更新之前的数据！</span>
 </div>
 
 <!-- 预览频道列表   
@@ -296,7 +309,7 @@ var currArea = getCookie("currArea")?getCookie("currArea"):'editGroup';
 var groupArr = <?php echo json_encode($groupArr);?>;
 var dataArr = <?php echo json_encode($channelArr);?>;
 var stbArr = <?php echo json_encode($stbArr);?>;
-//console.log(stbArr[6].lasttime);
+//console.log(stbArr[6].lastTime);
 //console.log(dataArr);
 //console.log(stbArr);
 var groupId = 0;
@@ -321,17 +334,10 @@ for(i=0;i<dataArr.length;i++){
 //	console.log( groupSizeArr );
 
 function showArea(id){
-/*	getID('editGroup').style.display = 'none';	
-	getID('addChannel').style.display = 'none';	
-	getID('editChannel').style.display = 'none';
-	getID('editChannelList').style.display = 'none';
-	getID('upLoad').style.display = 'none';	
-	getID('preview').style.display = 'none';
-	*/
 	getID(currArea).style.display = 'none';
 	getID(id).style.display = 'block';
 	currArea = id;
-	for(i=0;i<7;i++){
+	for(i=0;i<8;i++){
 		getID('a'+i).style.color = 'blue';
 		if( getID('a'+i).name == id ){
 			getID('a'+i).style.color = 'red';
@@ -425,21 +431,21 @@ function showStbList(){
 		newCell3.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=city'+i+' placeholder="登陆地区" autocomplete="off" value='+stbArr[i].city+' />';
 		
 		var newCell4 = newRow.insertCell(4);
-		newCell4.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=logintime'+i+' required="required" placeholder="请输入注册日期" autocomplete="off" value='+stbArr[i].login_time+' />';
+		newCell4.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=loginTime'+i+' required="required" placeholder="请输入注册日期" autocomplete="off" value='+stbArr[i].loginTime+' />';
 		
 		var newCell5 = newRow.insertCell(5);
-		newCell5.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=expiretime'+i+' required="required" placeholder="到期日期，或续费天数" autocomplete="off" value='+stbArr[i].expire_time+' />';
+		newCell5.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=expireTime'+i+' required="required" placeholder="到期日期，或续费天数" autocomplete="off" value='+stbArr[i].expireTime+' />';
 		
 		var newCell6 = newRow.insertCell(6);
-		newCell6.innerHTML = stbArr[i].last_time;
+		newCell6.innerHTML = stbArr[i].lastTime;
 				
 		var newCell7 = newRow.insertCell(7);
-		newCell7.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=isonline'+i+' required="required" placeholder="0否1是" value='+stbArr[i].isonline+' />';
+		newCell7.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=isOnLine'+i+' required="required" placeholder="0否1是" value='+stbArr[i].isOnLine+' />';
 				
 		var newCell8 = newRow.insertCell(8);
 		newCell8.innerHTML = '<input type="submit" name="subStb1" value="提交" onclick="submitStb('+i+');" />';
 		
-		if( stbArr[i].isonline == "在线" || stbArr[i].isonline== 1 ){
+		if( stbArr[i].isOnLine == "在线" || stbArr[i].isOnLine== 1 ){
 		//	console.log(newCell3.firstChild);
 			newCell7.firstChild.style.background = '#66cc33';
 			newCell7.firstChild.style.color = 'yellow';
@@ -502,16 +508,16 @@ function insertStbRow(){
 	newCell3.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=city'+(row-3)+' placeholder="登陆地区" />';
 	
 	var newCell4 = newRow.insertCell(4);
-	newCell4.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=logintime'+(row-3)+' required="required" placeholder="请输入注册日期" autocomplete="off" value='+<?php echo json_encode($insertToday);?>+' />';
+	newCell4.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=loginTime'+(row-3)+' required="required" placeholder="请输入注册日期" autocomplete="off" value='+<?php echo json_encode($insertToday);?>+' />';
 	
 	var newCell5 = newRow.insertCell(5);
-	newCell5.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=expiretime'+(row-3)+' required="required" placeholder="到期日期，或续费天数" autocomplete="off" value='+<?php echo json_encode($insertExpiretime);?>+' />';
+	newCell5.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="date" name=expireTime'+(row-3)+' required="required" placeholder="到期日期，或续费天数" autocomplete="off" value='+<?php echo json_encode($insertexpireTime);?>+' />';
 	
 	var newCell6 = newRow.insertCell(6);
 	newCell6.innerHTML = '0000-00-00 00:00:00';
 	
 	var newCell7 = newRow.insertCell(7);
-	newCell7.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=isonline'+(row-3)+' required="required" placeholder="0否1是" value=0 />';
+	newCell7.innerHTML = '<input style="width:99%; height:37px;border:none;text-align:center;" type="text" name=isOnLine'+(row-3)+' required="required" placeholder="0否1是" value=0 />';
 				
 	var newCell8 = newRow.insertCell(8);
 	newCell8.innerHTML = '<input type="submit" name="subStb1" value="提交" onclick="submitStb('+(row-3)+');" />';
@@ -636,35 +642,10 @@ function init(){
 </script>
 
 <?php
-error_reporting(E_ALL^E_NOTICE);
-include "connectMysql.php";
+//error_reporting(E_ALL^E_NOTICE^E_WARNING);
+include_once "connectMysql.php";
 set_time_limit(0); //	设置超时时间
 //	header('Access-Control-Allow-Origin:*');
-
-/*
-// 从DBNAME中查询数据库
-$sql = 'select * from groups'; 
-
-// 结果集
-$result = mysqli_query($connect,$sql);
-
-//总的频道组
-$groupArr = array();
-
-//初始化一个频道组 
-$groupArrInit = array(
-	"groupId" => 0,
-	"groupName" => "",
-);
-
-//扫描数据库频道组，写入总的频道组数组
-while( $row = mysqli_fetch_assoc($result) ){
-	$groupArrInit["groupId"] = $row["groupId"];
-	$groupArrInit["groupName"] = $row["groupName"];
-	array_push($groupArr,$groupArrInit);
-	echo $row["groupName"].'<br>';
-}
-*/
 
 $tbRow = $_COOKIE["tbRow"];
 $tbRowChannelList = $_COOKIE["tbRowChannelList"];
@@ -753,20 +734,20 @@ if( @$_POST['subEditGroup'] ){	//编辑频道组
         $mark = $_POST['mark'.$i];
         $ip = $_POST['ip'.$i];
         $city = $_POST['city'.$i];
-        $logintime = $_POST['logintime'.$i];
-        $expiretime = $_POST['expiretime'.$i];
-		$lasttime = $stbArr[$i][lasttime];
-		if( strlen($_POST['expiretime'.$i]) <8){
-			$addDays = (int)$_POST['expiretime'.$i].day;
-			$expiretime = date('Y-m-d',strtotime( $addDays,strtotime($logintime) ));
+        $loginTime = $_POST['loginTime'.$i];
+        $expireTime = $_POST['expireTime'.$i];
+		$lastTime = $stbArr[$i][lastTime];
+		if( strlen($_POST['expireTime'.$i]) <8){
+			$addDays = (int)$_POST['expireTime'.$i].day;
+			$expireTime = date('Y-m-d',strtotime( $addDays,strtotime($loginTime) ));
 		}
 
-        if( $_POST['isonline'.$i]==1 || $_POST['isonline'.$i]=="在线"){
-        	$isonline = "在线";
+        if( $_POST['isOnLine'.$i]==1 || $_POST['isOnLine'.$i]=="在线"){
+        	$isOnLine = "在线";
         }else{
-        	$isonline = "离线";
+        	$isOnLine = "离线";
         }
-        $sql = mysqli_query($connect,"replace into license(sn,mark,ip,city,logintime,expiretime,lasttime,isonline) values ('$sn','$mark','$ip','$city','$logintime','$expiretime','$lasttime','$isonline')") or die(mysqli_error($connect)) ;
+        $sql = mysqli_query($connect,"replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect)) ;
 	}     
 	if( $sql ){
 	//	echo "<script>location.href='excelExportStb.php'</script>";  
@@ -781,20 +762,20 @@ if( @$_POST['subEditGroup'] ){	//编辑频道组
 	$mark = $_POST['mark'.$stbRow];
 	$ip = $_POST['ip'.$stbRow];
 	$city = $_POST['city'.$stbRow];
-	$logintime = $_POST['logintime'.$stbRow];
-	$expiretime = $_POST['expiretime'.$stbRow];
-	$lasttime = $stbArr[$stbRow][lasttime];
-	if( strlen($_POST['expiretime'.$stbRow]) <8){
-		$addDays = (int)$_POST['expiretime'.$stbRow].day;
-		$expiretime = date('Y-m-d',strtotime( $addDays,strtotime($logintime) ));
+	$loginTime = $_POST['loginTime'.$stbRow];
+	$expireTime = $_POST['expireTime'.$stbRow];
+	$lastTime = $stbArr[$stbRow][lastTime];
+	if( strlen($_POST['expireTime'.$stbRow]) <8){
+		$addDays = (int)$_POST['expireTime'.$stbRow].day;
+		$expireTime = date('Y-m-d',strtotime( $addDays,strtotime($loginTime) ));
 	}
 
-	if( $_POST['isonline'.$stbRow]==1 || $_POST['isonline'.$stbRow]=="在线"){
-		$isonline = "在线";
+	if( $_POST['isOnLine'.$stbRow]==1 || $_POST['isOnLine'.$stbRow]=="在线"){
+		$isOnLine = "在线";
 	}else{
-		$isonline = "离线";
+		$isOnLine = "离线";
 	}
-	$sql = mysqli_query($connect,"replace into license(sn,mark,ip,city,logintime,expiretime,lasttime,isonline) values ('$sn','$mark','$ip','$city','$logintime','$expiretime','$lasttime','$isonline')") or die(mysqli_error($connect)) ;
+	$sql = mysqli_query($connect,"replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect)) ;
    
 	if( $sql ){
 		echo "<script>location.href='update.php'</script>";    

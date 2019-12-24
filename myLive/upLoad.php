@@ -29,8 +29,7 @@ if(in_array($type, $allow_type)){//如果不被允许，则直接停止程序运
 header("Content-Type:text/html;charset=utf-8");
 date_default_timezone_set('Asia/Shanghai'); 
 
-/**
- * 解析获取php.ini 的upload_max_filesize（单位：byte）
+/* 解析获取php.ini 的upload_max_filesize（单位：byte）
  * @param $dec int 小数位数
  * @return float （单位：byte）
  * 
@@ -48,7 +47,7 @@ echo get_upload_max_filesize_byte(2);
 */
 
 //step 1 使用$_FILES['pic']["error"] 检查错误
-if( isset($_GET["action"])=="excel"){
+if( isset($_GET["action"])&& $_GET["action"]=="excel" ){
 	if( $_FILES["excel"]["error"] > 0){
 		switch($_FILES["excel"]["error"]){
 			case 1:
@@ -67,8 +66,9 @@ if( isset($_GET["action"])=="excel"){
 				echo "<script type='text/javascript'>alert('末知错误');history.back();</script>";
 		}
 		exit;
-}else{
-//	echo "<script type='text/javascript'>alert('末知错误');history.back();</script>";
+	}else{
+	//	echo "<script type='text/javascript'>alert('没有错误');</script>";
+	}
 }
 	
 //step 2 使用$_FILES["pic"]["size"] 限制大小 单位是字节 2M=2000000 这一步应该取消掉，因为频道列表的excel文件可能很大，不能加大小限制，这里只是以前上传图片的步骤
@@ -82,7 +82,7 @@ if( $_FILES["excel"]["size"] > $maxsize ){
 }
 
 //step 3 使用文件的扩展名 限制文件类型 其实这一步可以不要，因为上传的input已经设置了accept=".xls,.xlsx" ，但是还是可以选择其它类型的文件，为了防止用户手贱，非要上传不支持的文件格式，所以加了这一步 
-$allowtype = array("xls","xlsx","mp4");	//	设置允许的扩展名
+$allowtype = array("xls","xlsx");	//	设置允许的扩展名
 $arr = explode(".", $_FILES["excel"]["name"]);//用点将上传的文件名分隔成数组
 $kuoZhanMing = $arr[count($arr)-1];//取数组最后一个，即是上传文件的扩展名
 if( !in_array($kuoZhanMing, $allowtype)){
@@ -110,7 +110,7 @@ if(is_uploaded_file($_FILES["excel"]["tmp_name"])){
 	}
 }else{
    echo"<script type='text/javascript'>alert('不是一个上传文件');history.back();</script>";
-   }
 }
+
 
 ?>

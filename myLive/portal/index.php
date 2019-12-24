@@ -1,41 +1,39 @@
 <?php
-	include "../connectMysql.php";
-	include "../readStbArray.php";
-	set_time_limit(0);
-	error_reporting (E_ALL^E_NOTICE^E_WARNING);
+	include_once "../connectMysql.php";
+	include_once "../readStbArray.php";
+	set_time_limit(0);//限制页面执行时间,0为不限制
+//	error_reporting(0);// 关闭所有PHP错误报告
+//	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
+//	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);// 报告 E_NOTICE也挺好 (报告未初始化的变量或者捕获变量名的错误拼写)
+	error_reporting(E_ALL^E_NOTICE^E_WARNING);
 
-	/**
-	 * 获取用户真实 IP
-	 */
-	function getIP(){
-		static $realip;
-		if (isset($_SERVER)){
-			if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
-				$realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-			} else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
-				$realip = $_SERVER["HTTP_CLIENT_IP"];
-			} else {
-				$realip = $_SERVER["REMOTE_ADDR"];
-			}
+function getIP(){	//获取用户真实 IP
+	static $realip;
+	if (isset($_SERVER)){
+		if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
+			$realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+		} else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+			$realip = $_SERVER["HTTP_CLIENT_IP"];
 		} else {
-			if (getenv("HTTP_X_FORWARDED_FOR")){
-				$realip = getenv("HTTP_X_FORWARDED_FOR");
-			} else if (getenv("HTTP_CLIENT_IP")) {
-				$realip = getenv("HTTP_CLIENT_IP");
-			} else {
-				$realip = getenv("REMOTE_ADDR");
-			}
+			$realip = $_SERVER["REMOTE_ADDR"];
 		}
-		return $realip;
+	} else {
+		if (getenv("HTTP_X_FORWARDED_FOR")){
+			$realip = getenv("HTTP_X_FORWARDED_FOR");
+		} else if (getenv("HTTP_CLIENT_IP")) {
+			$realip = getenv("HTTP_CLIENT_IP");
+		} else {
+			$realip = getenv("REMOTE_ADDR");
+		}
 	}
-	$ip = getIP();
-//echo $ip;
-	/**
-	 * 获取 IP  地理位置
-	 * 淘宝IP接口
-	 * @Return: array
-	 */
-function getCity(){			// 获取当前位置所在城市 
+	return $realip;
+}
+
+$ip = getIP();
+setcookie("ip", $ip, time()+24*3600);//cookie存24小时 
+//	echo $ip;
+
+function getCity(){			// 获取当前IP所在城市 
 	$getIp = getIP(); 
 	$content = file_get_contents("http://api.map.baidu.com/location/ip?ak=2TGbi6zzFm5rjYKqPPomh9GBwcgLW5sS&ip={$getIp}&coor=bd09ll"); 
 	$json = json_decode($content); 
@@ -46,33 +44,37 @@ function getCity(){			// 获取当前位置所在城市
 	return $return['province'].$return['city']; 
 }
 
-	$city = getCity();
+$city = getCity();
+setcookie("city", $city, time()+24*3600);//cookie存24小时
 //	echo $city;
-	$sn = $_COOKIE["sn"];
-	$mark = $_COOKIE["deviceInfo"];
+
+	$sn = $_COOKIE["sn"];//机顶盒序列号（MAC地址和SN结合体）
+	$mark = $_COOKIE["deviceInfo"];//机顶盒备注
 //	echo $mark;
-	$loginTime = date("Y-m-d"); 
-	$lastTime = date("Y-m-d H:i:s"); 
-	$expireTime = date("Y-m-d",strtotime("+7 day")); 
-	$isonline = "在线";
-	$sql = mysqli_query($connect,"select * from license where sn='$sn' ") or die(mysqli_error($connect));
-	$cuurloginTime = str_replace("-","",$loginTime);	
-	$cuurexpireTime = str_replace("-","",$expireTime);	
+	$loginTime = date("Y-m-d"); //机顶盒第一次打开APP的时间
+	$lastTime = date("Y-m-d H:i:s"); //机顶盒上一次打开APP的时间
+	$expireTime = date("Y-m-d",strtotime("+7 day")); //机顶盒授权到期时间
+	$isOnLine = "在线";//每次进入应用都激活在线状态
+	$sql = mysqli_query($connect,"select * from client where sn='$sn' ") or die(mysqli_error($connect));
+	$cuurloginTime = str_replace("-","",$loginTime);	//为了便于比大小将时间内的-删掉
+	$cuurexpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉，这里的到期时间是当天后7天
 	
-	if( mysqli_num_rows($sql)>0 ){
+	if( mysqli_num_rows($sql)>0 ){//如果数据库中有当前机顶盒
 		while($row=mysqli_fetch_array($sql)){
-			$loginTime = $row["login_time"];
-			$expireTime = $row["expire_time"]; 
-			$cuurexpireTime = str_replace("-","",$expireTime);
+		//	$loginTime = $row["loginTime"];	//这个好像没什么用
+			$expireTime = $row["expireTime"];					 //从数据库获取真实的到期时间
+			$cuurexpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
 		}
-		$sql = mysqli_query($connect,"UPDATE license set isonline='$isonline',ip='$ip',city='$city',last_time='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));
-	}else if( strlen($sn)>0 ){
-		$sql = mysqli_query($connect,"replace into license(sn,mark,ip,city,login_time,expire_time,last_time,isonline) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isonline')") or die(mysqli_error($connect));
+		$sql = mysqli_query($connect,"UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));
+	}else if( strlen($sn)>0 ){//如果数据库中没有当前机顶盒，且当前机顶盒有SN
+		$sql = mysqli_query($connect,"replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
 	}
 	
-//	session_start(); 
-//	$_SESSION["$sn"] = $sn;
-
+//	session_start(); //启动会话，session_start()函数必须位于 <html> 标签之前
+//	$_SESSION["$sn"] = $sn;	//存储 session 变量
+//	echo "您存储的SN session是：". $_SESSION['sn'];	//读取session
+//	unset($_SESSION['sn']);	//释放指定的 session 变量
+//	session_destroy() 将重置 session，您将失去所有已存储的 session 数据
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -97,27 +99,28 @@ function getCity(){			// 获取当前位置所在城市
 <script type=text/javascript src="channelArr.js"></script>
 <!-- script type=text/javascript src="jquery-1.11.0.min.js"></script -->
 <script>
-var groupId = parseInt(window.androidJs.JsGetCookie("groupId",0));
-var channelPos = parseInt(window.androidJs.JsGetCookie("channelPos",0));
-var channelPagePos = parseInt(window.androidJs.JsGetCookie("channelPagePos",0));
+var groupId = ( typeof(window.androidJs) != "undefined")?parseInt(window.androidJs.JsGetCookie("groupId",0)):0;
+var channelPos = ( typeof(window.androidJs) != "undefined")?parseInt(window.androidJs.JsGetCookie("channelPos",0)):0;
+var channelPagePos = ( typeof(window.androidJs) != "undefined")?parseInt(window.androidJs.JsGetCookie("channelPagePos",0)):0;
 var channelPageAll = parseInt((channelCount-1+10)/10);
+//channelJump：跳转至，即在右上角显示的频道号
 var channelJump = ( window.androidJs.JsGetCookie("channelJump",0)=='0' )?'1':window.androidJs.JsGetCookie("channelJump",0);
 var videoUrlCookie = ( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?dataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
+//	要在浏览器测试，需将这行上两个设为0
 
 var channelCount = 0;
 var channelPagePosTemp = 0;
 var channelPosTemp = 0;
 var channelArr = [];
-
 var indexArea = "lock"//打开应用后默认为锁定状态
 
-for(i=0;i<dataArr.length;i++){//合并所有频道为一个数组 
+for(i=0;i<dataArr.length;i++){//合并所有频道为一个数组，便于显示所有频道和跳转
 	channelArr = channelArr.concat( dataArr[i].channel );
 }
 //console.log(channelArr[ channelArr.length-1 ].name);
 
 var channelTempArr = [];//当前显示的频道组 
-var groupSizeArr = [];//每个频道的节目数  
+var groupSizeArr = [];//每个组的节目数  
 for(i=0;i<dataArr.length;i++){
 	groupSizeArr.push( dataArr[i].channel.length );
 }
@@ -133,7 +136,7 @@ for( i=1;i<groupSizeArr.length;i++ ){
 }
 //console.log( groupStartArr );
 
-function showChannel(_num){
+function showChannel(_num){//显示频道组，即左右键切换频道组
 /*	if( _num!=0 ){
 		channelPos = 0;
 		channelPagePos = 0;
@@ -169,9 +172,9 @@ function showChannel(_num){
 	}		
 }
 
-function moveChannel(_num){
+function moveChannel(_num){//在频道列表上换台，即上下键移动选择频道
 	try{
-		window.clearTimeout(st);
+		window.clearTimeout(st);//不让频道列表隐藏
 	}catch(err){
 	}
 	
@@ -208,7 +211,7 @@ function moveChannel(_num){
 	st = window.setTimeout("showHiddenChannelList(0)", 3000);//3秒后自动隐藏频道列表 
 }
 
-function changeChannel(_num){//上下键换台 
+function changeChannel(_num){//播放时上下键换台 频道列表不显示出来
 	moveChannel(_num);
 	channelJump = (parseInt(channelJump)+_num).toString();
 	if( parseInt(channelJump)<channelTempArr[0].channelId ){//同组内到了第一个再减，就跳到最后一个
@@ -240,7 +243,7 @@ function showHiddenChannelList(_num){//_num为0，给返回键隐藏频道列表
 	}
 }
 
-function jumpTo(){
+function jumpTo(){// 数字键换台
 	try{ window.androidJs.JsPlayLive(channelArr[parseInt(channelJump)-1].videoUrl); }catch(e){} 
 	getID('jumpChannel').innerText = '';
 	getID('jumpName').innerText = '';
@@ -255,7 +258,7 @@ function jumpTo(){
 	}
 }
 
-function jumpIf(){
+function jumpIf(){//换台时右上角显示频道名
 	getID('jumpError').style.display = 'none';
 	if( parseInt(channelJump)<channelArr.length+1 && channelJump.length<5){
 		getID('jumpChannel').innerText = channelJump;
@@ -284,58 +287,106 @@ var sn = '';
 var deviceBrand = '';
 var systemModel = '';
 function stbInfo(){
-	sn = window.androidJs.JsGetMac();
-	deviceBrand = window.androidJs.JsGetDeviceBrand();
-	systemModel = window.androidJs.JsSystemModel();
+	sn = ( typeof(window.androidJs)!="undefined" )?window.androidJs.JsGetMac():"";
+	deviceBrand = ( typeof(window.androidJs)!="undefined" )?window.androidJs.JsGetDeviceBrand():"";
+	systemModel = ( typeof(window.androidJs)!="undefined" )?window.androidJs.JsSystemModel():"";
 	var deviceInfo = deviceBrand+" "+systemModel;
 	setCookie("sn", sn, '1000d');
 	setCookie("deviceInfo", deviceInfo, '1000d');
+//	getID("test").innerHTML = "<br> YourSN_"+sn+"_deviceInfo_"+deviceInfo;
 	return sn;
-	getID("test").innerHTML = "<br> YourSN_"+deviceInfo;
 }
 
-function checkLicense(){
+function checkLicense(){//检查授权日期
 	var loginTime = <?php echo $cuurloginTime ?>;
 	var expireTime = <?php echo $cuurexpireTime ?>;
 //	getID("test").innerHTML = "<br> 授权到期_"+expireTime;
 	if( parseInt(loginTime) > parseInt(expireTime) ){
 	//	window.androidJs.JsExitApp();
-		getID('cardKey').style.display = 'block';
+		indexArea = "ewm";
+		getID("cardKey").style.display = "block";
+		getID("ewm").style.background = "url(clientQr/"+sn+".png)";
+		setTimeout(function(){ getID("card_key").innerText = ""; }, 5000);
+	}else{
+		indexArea = "live";
 	}
-//	window.setTimeout("checkLicense()",60000);//60秒后运行
 }
 
-function imOnLine(){
-	var now = new Date();
-	var sec = now.getSeconds();
-	var minu = ( (6-now.getMinutes()%5)*60000>300000 )?60000-sec*1000:(6-now.getMinutes()%5)*60000-sec*1000;
+function imOnLine(){//上报在线状态
+	var now = new Date();			//此时此刻
+	var sec = now.getSeconds();		//此时的秒
+	//因为后台是每个被5整除的分钟时下线所有机顶盒，所以这里要在下线后即时（延时1分钟）上线
+	//如果当前分钟正好被5整除，则说明此时后台刚刚下线所有机顶盒，前端延时1分钟上线当前机顶盒 60-sec是为了精确到秒
+	//如果当前分钟离整5有1、2、3、4分钟，则分别延时1、2、3、4分钟。用6减模5余几的数，就是要延时的时间
+	var ms = ( now.getMinutes()%5==0 )?60-sec:(6-now.getMinutes()%5)*60-sec;
+//	var ms = ( (6-now.getMinutes()%5)*60>300 )?60-sec:(6-now.getMinutes()%5)*60-sec;
+//	var ms = ( (6-now.getMinutes()%5)*60000>300000 )?60000-sec*1000:(6-now.getMinutes()%5)*60000-sec*1000;
 //	getID("test").innerHTML += "_"+now.getMinutes()+":"+sec;
-	setTimeout('sendAjax();', minu);	
-	checkLicense();
+	setTimeout(function(){ sendAjax("./ajax.php","sn="+sn);}, ms*1000);
+
+//	checkLicense();//这个不必每5分钟检查一次，只需进应用时检查一次即可
 }
 
-function sendAjax(){
-	// 1.创建XMLHttpRequest对象
-	var xhr = new XMLHttpRequest();
+var xmlHttp;	//1.创建XMLHttpRequest对象
+//var xmlHttp = new XMLHttpRequest();// 1.创建XMLHttpRequest对象(不兼容浏览器)
+function createXmlHttpRequestObject(){
+	if(window.ActiveXObject){	//如果在internet Explorer下运行
+		try{
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}catch(e){
+			xmlHttp = false;
+		}
+	}else{
+		try{	//如果在Mozilla或其他的浏览器下运行
+			xmlHttp = new XMLHttpRequest();
+		}catch(e){
+			xmlHttp = false;
+		}
+	}
+	if(!xmlHttp){	//返回创建的对象或显示错误信息
+		alert("返回创建的对象或显示错误信息");
+	}else{
+		return xmlHttp;
+	}
+}
+
+function sendAjax(_url,_content){
+	createXmlHttpRequestObject();
 	// 2.请求行
-	xhr.open("POST", "./isOnLine.php");
+	xmlHttp.open("POST", _url);//"./isOnLine.php");
 	// 3.请求头
-	xhr.setRequestHeader('Content-Type',' application/x-www-form-urlencoded');
+	xmlHttp.setRequestHeader('Content-Type',' application/x-www-form-urlencoded');
 	// 4.设置数据
-	xhr.send('sn='+sn);
+	xmlHttp.send(_content);//'sn='+sn);
 	// 5.监听服务器响应
-	xhr.onreadystatechange = function(){
-		if (xhr.readyState==4 && xhr.status==200){
-			imOnLine();
-		//	setTimeout('sendAjax();',300000);
-		//	var now = new Date();
-		//	getID("test").innerHTML += "_"+now.getMinutes()+":"+now.getSeconds();
+	xmlHttp.onreadystatechange = function(){
+		if (xmlHttp.readyState==4 && xmlHttp.status==200){
+			if( _content.indexOf('card') < 0 ){//如果没有vip则说明是上报在线状态，而不是输入卡密
+				imOnLine();
+			}else{
+				if( xmlHttp.responseText.indexOf("Succeed")>-1){	//成功延期
+					getID('card_id').innerHTML = "Succeed! Your expire time is "+xmlHttp.responseText.slice(7);
+					getID('card_key').innerHTML = "please press 'GO' to enjoy videos!";
+					indexArea = "vipSuccess";
+				}else{	//失败
+					if( xmlHttp.responseText.indexOf("card") > -1 ){//卡号输错了	
+						getID('card_id').innerHTML = xmlHttp.responseText.slice(5);
+						//如果卡号输错了，密码区有数字就不变，没数字就清空（以免用户不知道当前输入的是卡号还是密码）
+						getID('card_key').innerHTML = "";//(getID('card_key').innerHTML.indexOf("Please")>-1 )?"":getID('card_key').innerHTML;
+						indexArea = "card_id";
+					}else if( xmlHttp.responseText.indexOf("PIN") > -1 ){//密码输错了	
+						getID('card_key').innerHTML = xmlHttp.responseText.slice(5);
+						indexArea = "card_key";
+					}
+					changeNum(-7);//卡号或密码输入了，焦点自动移到 数字5
+				}				
+			}
 		}
 	}
 }
 
 var numId = 4;
-function changeNum(_num){
+function changeNum(_num){//输入卡号卡密时选择数字
 	numId += _num;
 	if( numId < 0 ){
 		numId = 11;
@@ -423,12 +474,12 @@ function init(){
 <div id="jumpError" style="position:absolute;top:300px;left:0px;width:1280px;height:100px;text-align:center;font-size:80px;color:white;display:none;"></div>
 
 <!-- 锁定图片 -->
-<div id="lockImg" style="position:absolute;top:0px;left:0px;width:1280px;height:720px;background:url(lock.jpg);display:block;color: red;"></div>
+<div id="lockImg" style="position:absolute;top:0px;left:0px;width:1280px;height:720px;background:url(lock.jpg);display:block;color: red; z-index:999;"></div>
 
 <!-- 输入卡号及卡密 -->
 <div id="cardKey" style="position:absolute;top:0px;left:0px;width:1280px;height:720px;background:url(cardKey.jpg);text-align:center;line-height:50px;display:none;">
-	<div id="card_id" style="position:absolute;left:0px;top:160px;width:1280px;height:50px;line-height:50px;text-align:center;font-weight:900;">Please enter your card number</div><!-- Please enter the card number -->
-	<div id="card_key" style="position:absolute;left:0px;top:200px;width:1280px;height:50px;line-height:50px;text-align:center;font-weight:900;"></div><!-- Please enter the card key -->
+	<div id="card_id" style="position:absolute;left:0px;top:160px;width:1280px;height:50px;line-height:50px;text-align:center;font-weight:900;">Please scan QR code</div><!-- Please enter the card number -->
+	<div id="card_key" style="position:absolute;left:0px;top:200px;width:1280px;height:50px;line-height:50px;text-align:center;font-weight:900;">You can press Up Down Left Right to enter card PIN code directly</div><!-- Please enter the PIN code -->
 
 	<div class="num" style="left:515px;top:260px;">1</div>
 	<div class="num" style="left:615px;top:260px;">2</div>
@@ -448,6 +499,12 @@ function init(){
 
 	<!-- 数字焦点图片 -->
 	<div id="numBgImg" style="position: absolute;left:590px;top:305px;width:100px;height:100px;background: url(numBgImg.png); "></div>	
+</div>
+
+	<!-- 二维码 -->
+	<div id="ewm" style="position:absolute;left:510px;top:260px;width:260px;height:265px;background:url(null.png);"></div>
+
+
 </div>
 
 <!--div style="position:absolute;top:0px;left:0px;width:1px;height:1px;">
@@ -482,40 +539,55 @@ function doSelect(){//确认键
 		channelPosTemp = channelPos;	
 	}else if( indexArea=="card_id"){//输入卡号
 		if( numId==10 ){//删除
-			if( getID("card_id").innerText !="Please enter your card number"){//显示区为数字才能删除
+			if( getID("card_id").innerText.indexOf("Please") < 0 ){//显示区为数字才能删除
 				getID("card_id").innerText = getID("card_id").innerText.slice(0,getID("card_id").innerText.length-1);
 				if( getID("card_id").innerText.length==0 ){//当显示区没内容时，显示提示语
 					getID("card_id").innerText = "Please enter your card number";
 				}
 			}
 		}else if( numId==11){//输入cardId后的GO
-			indexArea = "card_key";
-			getID("card_key").innerText = "Please enter your card key"
-		}else{//数字
-			if( getID("card_id").innerText =="Please enter your card number"){//第一次输入数字
-				getID("card_id").innerText = numId+1;
+			if( getID("card_id").innerText.indexOf("Please")>-1 ){//有Please，说明没输入卡号，此时按确定跳出二维码
+				sendAjax("./ajax.php","qrCode="+sn);
 			}else{
-				getID("card_id").innerText += numId+1;
+				indexArea = "card_key";
+				changeNum(-7);//焦点移到数字5
+				//密码区有内容就保留，没内容就显示提示语（初如状态是没内容的， 如果卡号错了，返回时，密码区就会有密码）
+				getID("card_key").innerText = "Please enter your PIN code";//(getID("card_key").innerText.length>0 )?getID("card_key").innerText:"Please enter your PIN code";
+			}
+		}else{//数字
+			if( getID("card_id").innerText.indexOf("Please")>-1 ){//第一次输入数字
+				getID("card_id").innerText = (numId==9)?0:numId+1;
+			}else{
+				getID("card_id").innerText += (numId==9)?0:numId+1;
 			}
 		}
 	}else if( indexArea=="card_key"){//输入卡密
 		if( numId==10 ){//删除
-			if( getID("card_key").innerText !="Please enter your card key"){//显示区为数字才能删除
+			if( getID("card_key").innerText.indexOf("Please") < 0 ){//显示区为数字才能删除
 				getID("card_key").innerText = getID("card_key").innerText.slice(0,getID("card_key").innerText.length-1);
 				if( getID("card_key").innerText.length==0 ){//当显示区没内容时，显示提示语
-					getID("card_key").innerText = "Please enter your card key";
+					getID("card_key").innerText = "Now you are edit card number";
+					setTimeout(function(){ getID("card_key").innerText = ""; }, 2000);
+					indexArea = 'card_id';
 				}
 			}
 		}else if( numId==11){//输入key后的GO
-			getID("cardKey").style.display = "none";
-			indexArea = 'live';
+		//	if( getID("card_key").innerText.indexOf("Please")>-1 || getID("card_key").innerText.length==0){	//没输入卡密
+		//		changeNum(-7);
+		//	}else{
+				sendAjax("./ajax.php","sn="+sn+"&cardId="+getID("card_id").innerText+"&cardKey="+getID("card_key").innerText);
+		//	}
 		}else{//数字
-			if( getID("card_key").innerText =="Please enter your card key"){//第一次输入数字
-				getID("card_key").innerText = numId+1;
+			if( getID("card_key").innerText.indexOf("Please")>-1 ){//第一次输入数字
+				getID("card_key").innerText = (numId==9)?0:numId+1;
 			}else{
-				getID("card_key").innerText += numId+1;
+				getID("card_key").innerText += (numId==9)?0:numId+1;
 			}
 		}
+	}else if( indexArea == "vipSuccess"){	//成功授权 进入直播
+		indexArea = "live";
+		getID("cardKey").style.display = "none";
+		try{ window.androidJs.JsPlayLive( videoUrlCookie ); }catch(e){}
 	}
 
 }
@@ -540,24 +612,29 @@ function eventHandler(e,type){
 			}else if( indexArea=="lock"){//锁定状态
 				indexArea = "lock1";
 				backLock = setTimeout( "indexArea = 'lock';" , 3000);//3秒后按键状态返回锁定状态
-			}else if( indexArea=="lock1"){
+			}else if( indexArea=="lock1"){//输入了一次 上 键
 				indexArea = "lock2";
 				clearTimeout(backLock);
 				backLock = setTimeout( "indexArea = 'lock';" , 3000);//3秒后按键状态返回锁定状态
-			}else if( indexArea=="lock2"){
+			}else if( indexArea=="lock2"){//输入了两次 上 键
 				indexArea = "lock3";
 				clearTimeout(backLock);
 				backLock = setTimeout( "indexArea = 'lock';" , 3000);//3秒后按键状态返回锁定状态
-			}else if( indexArea=="lock3"){
-				indexArea = "lock3";
+			}else if( indexArea=="lock3"){//输入了三次 上 键
+				indexArea = "lock";
 				clearTimeout(backLock);
 				backLock = setTimeout( "indexArea = 'lock';" , 3000);//3秒后按键状态返回锁定状态
 			}else if( indexArea=="card_id" || indexArea=="card_key"){
 				if( numId<3){
-					changeNum(9);
+				//	changeNum(9);
 				}else{
 					changeNum(-3);
 				}
+			}else if( indexArea=="ewm"){
+				indexArea = "card_id";
+				getID("ewm").style.display = "none";
+				getID("card_id").innerText = "Please enter your card number";
+				getID("card_key").innerText = "";
 			}
 			return 0;
 			break;
@@ -570,16 +647,21 @@ function eventHandler(e,type){
 					changeChannel(-1);
 				}
 			}else if( indexArea=="lock3"){
-				clearTimeout(backLock);
-				indexArea = "card_id";
+				clearTimeout(backLock);	//清除定时锁定
 				getID("lockImg").style.display = "none";
-				getID("cardKey").style.display = "block";
+				checkLicense();	//检查授权情况
+				try{ window.androidJs.JsPlayLive( videoUrlCookie ); }catch(e){}
 			}else if( indexArea=="card_id" || indexArea=="card_key"){
-				if(numId>7){
-					changeNum(-9);
+				if(numId>8){
+				//	changeNum(-9);
 				}else{
 					changeNum(3);
 				}
+			}else if( indexArea=="ewm"){
+				indexArea = "card_id";
+				getID("ewm").style.display = "none";
+				getID("card_id").innerText = "Please enter your card number";
+				getID("card_key").innerText = "";
 			}
 			return 0;
 			break;
@@ -594,6 +676,11 @@ function eventHandler(e,type){
 				}	
 			}else if( indexArea=="card_id" || indexArea=="card_key"){
 				changeNum(-1);
+			}else if( indexArea=="ewm"){
+				indexArea = "card_id";
+				getID("ewm").style.display = "none";
+				getID("card_id").innerText = "Please enter your card number";
+				getID("card_key").innerText = "";
 			}
 			return 0;
 			break;
@@ -605,9 +692,19 @@ function eventHandler(e,type){
 					channelPagePos = 0;
 					moveChannel(-channelPos);
 					showChannel(1);
+				}else{
+					indexArea = "ewm";
+					getID("cardKey").style.display = "block";
+					getID("ewm").style.background = "url(clientQr/"+sn+".png)";
+					setTimeout(function(){ getID("card_key").innerText = ""; }, 5000);
 				}
 			}else if( indexArea=="card_id" || indexArea=="card_key"){
 				changeNum(1);
+			}else if( indexArea=="ewm"){
+				indexArea = "card_id";
+				getID("ewm").style.display = "none";
+				getID("card_id").innerText = "Please enter your card number";
+				getID("card_key").innerText = "";
 			}
 			return 0;
 			break;	
@@ -758,3 +855,7 @@ function eventHandler(e,type){
 	}
 }
 </script>
+
+<?php
+	include_once "./qrCode.php";
+?>

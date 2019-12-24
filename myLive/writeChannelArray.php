@@ -62,7 +62,7 @@ while( $rowChannel = mysqli_fetch_assoc($resultChannel) ){
 //将数组格式化为json
 $json=json_encode($channelArr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 //将json写入文件
-file_put_contents('myLive/channelArr.js', 'var dataArr = '.print_r($json, true) );
+file_put_contents('./portal/channelArr.js', 'var dataArr = '.print_r($json, true) );
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

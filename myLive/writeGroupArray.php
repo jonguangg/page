@@ -1,7 +1,7 @@
 <?php
 header("Content-Type:text/html;charset=utf-8");
 include "connectMysql.php";
-set_time_limit(600); //	设置超时时间
+set_time_limit(0); //	设置超时时间
 
 // 1.导入配置文件
 //require "dbconfig.php";
