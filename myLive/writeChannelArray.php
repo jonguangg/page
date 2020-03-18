@@ -39,6 +39,7 @@ $newChannelArr = array(//初始化一个频道
 	"videoUrl" => "",
 );
 
+
 //	更新js文件的频道组
 //	$currRow = 0;
 while( $rowGroup = mysqli_fetch_assoc($resultGroup) ){;
@@ -71,7 +72,7 @@ file_put_contents('./portal/channelArr.js', 'var dataArr = '.print_r($json, true
 <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
 <script>
 	function getID(id){return document.getElementById(id);}
-	window.setTimeout("location.href='update.php?from=writeChannelArr?'+Math.random()",500);
+	window.setTimeout("location.href='update.php?'+Math.random()",500);
 //	var channelArr= <?php echo json_encode($channelArr);?>;
 //	console.log(channelArr);
 </script>

@@ -61,6 +61,8 @@ while( $rowChannel = mysqli_fetch_assoc($resultChannel) ){
 		array_push($channelArr[ $rowChannel["groupId"] ]["channel"],$newChannelArr);
 	}
 }
+//	echo '<pre>';
+//	print_r($channelArr);
 
 //	将数组格式化为json
 //	$json=json_encode($channelArr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);

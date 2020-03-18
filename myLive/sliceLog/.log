@@ -1,0 +1,866 @@
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/MV_5.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    creation_time   : 2019-09-21T06:36:44.000000Z
+  Duration: 00:01:30.54, start: 0.000000, bitrate: 853 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, 803 kb/s, 25 fps, 25 tbr, 25k tbn, 50 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/MV_5_%03d.ts':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, q=2-31, 803 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_001.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_002.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_003.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_004.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_005.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_006.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_007.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_008.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_009.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_010.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_011.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_012.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_013.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_014.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_015.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_016.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_017.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_018.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_019.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_020.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_021.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_022.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_023.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_024.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_025.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_026.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_027.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_028.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_029.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_030.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_031.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_032.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_033.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_034.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_035.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_036.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5_037.ts' for writing
+[segment @ 0x4bca1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+frame= 2260 fps=0.0 q=-1.0 Lsize=N/A time=00:01:30.49 bitrate=N/A speed=1.53e+03x    
+video:8871kB audio:531kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/MV_5.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    creation_time   : 2019-09-21T06:36:44.000000Z
+  Duration: 00:01:30.54, start: 0.000000, bitrate: 853 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, 803 kb/s, 25 fps, 25 tbr, 25k tbn, 50 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/MV_5_%03d.ts':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, q=2-31, 803 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_001.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_002.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_003.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_004.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_005.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_006.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_007.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_008.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_009.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_010.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_011.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_012.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_013.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_014.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_015.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_016.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_017.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_018.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_019.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_020.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_021.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_022.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_023.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_024.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_025.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_026.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_027.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_028.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_029.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_030.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_031.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_032.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_033.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_034.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_035.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_036.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5_037.ts' for writing
+[segment @ 0x3d831c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+frame= 2260 fps=0.0 q=-1.0 Lsize=N/A time=00:01:30.49 bitrate=N/A speed=1.54e+03x    
+video:8871kB audio:531kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/59s1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.15.102
+  Duration: 00:00:59.17, start: 0.000000, bitrate: 219 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 764x492 [SAR 1:1 DAR 191:123], 38 kb/s, 24.93 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 176 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/59s1_%03d.ts':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 764x492 [SAR 1:1 DAR 191:123], q=2-31, 38 kb/s, 24.93 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 176 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1_001.ts' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1_002.ts' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1_003.ts' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1_004.ts' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1_005.ts' for writing
+[segment @ 0x3fa1cc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+frame= 1473 fps=0.0 q=-1.0 Lsize=N/A time=00:00:59.09 bitrate=N/A speed=1.67e+03x    
+video:275kB audio:1274kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/MV_4.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    creation_time   : 2019-08-27T09:29:34.000000Z
+  Duration: 00:04:12.33, start: 0.000000, bitrate: 427 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, 375 kb/s, 25 fps, 25 tbr, 25k tbn, 50 tbc (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:29:34.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:28:35.000000Z
+      handler_name    : Sound Media Handler
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/MV_4_%03d.ts':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, q=2-31, 375 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:29:34.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:28:35.000000Z
+      handler_name    : Sound Media Handler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_001.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_002.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_003.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_004.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_005.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_006.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_007.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_008.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_009.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_010.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_011.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_012.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_013.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_014.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_015.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_016.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_017.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_018.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_019.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_020.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_021.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_022.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_023.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_024.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_025.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_026.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_027.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_028.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_029.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_030.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_031.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_032.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_033.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_034.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_035.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_036.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_037.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_038.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_039.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_040.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_041.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4_042.ts' for writing
+[segment @ 0x45fc940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+frame= 6306 fps=0.0 q=-1.0 Lsize=N/A time=00:04:12.28 bitrate=N/A speed=1.66e+03x    
+video:11573kB audio:1484kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/MV_5.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    creation_time   : 2019-09-21T06:36:44.000000Z
+  Duration: 00:01:30.54, start: 0.000000, bitrate: 853 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, 803 kb/s, 25 fps, 25 tbr, 25k tbn, 50 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/MV_5_%03d.ts':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, q=2-31, 803 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_001.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_002.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_003.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_004.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_005.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_006.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_007.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_008.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_009.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_010.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_011.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_012.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_013.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_014.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_015.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_016.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_017.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_018.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_019.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_020.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_021.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_022.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_023.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_024.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_025.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_026.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_027.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_028.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_029.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_030.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_031.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_032.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_033.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_034.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_035.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_036.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5_037.ts' for writing
+[segment @ 0x4d5f1c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+frame= 2260 fps=0.0 q=-1.0 Lsize=N/A time=00:01:30.49 bitrate=N/A speed=1.52e+03x    
+video:8871kB audio:531kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/59s1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.15.102
+  Duration: 00:00:59.17, start: 0.000000, bitrate: 219 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 764x492 [SAR 1:1 DAR 191:123], 38 kb/s, 24.93 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 176 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/59s1_%03d.ts':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 764x492 [SAR 1:1 DAR 191:123], q=2-31, 38 kb/s, 24.93 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 176 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1_001.ts' for writing
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1_002.ts' for writing
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/MV_4.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    creation_time   : 2019-08-27T09:29:34.000000Z
+  Duration: 00:04:12.33, start: 0.000000, bitrate: 427 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, 375 kb/s, 25 fps, 25 tbr, 25k tbn, 50 tbc (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:29:34.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:28:35.000000Z
+      handler_name    : Sound Media Handler
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/MV_4_%03d.ts':
+  Metadata:
+    major_brand     : mp42[segment @ 0x477fcc0] 
+Opening '/usr/local/nginx/html/vod2/59s1_003.ts' for writing
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, q=2-31, 375 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:29:34.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-08-27T09:28:35.000000Z
+      handler_name    : Sound Media Handler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_001.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_002.ts' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1_004.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_003.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_004.ts' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1_005.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_005.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_006.ts' for writing
+[segment @ 0x477fcc0] Opening '/usr/local/nginx/html/vod2/59s1.m3u8.tmp' for writing
+frame= 1473 fps=0.0 q=-1.0 Lsize=N/A time=00:00:59.09 bitrate=N/A speed=1.59e+03x    
+video:275kB audio:1274kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_007.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_008.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_009.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_010.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_011.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_012.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_013.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_014.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_015.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_016.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_017.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_018.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_019.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_020.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_021.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_022.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_023.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_024.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_025.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_026.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_027.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_028.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_029.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_030.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_031.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_032.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_033.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_034.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_035.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_036.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_037.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_038.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_039.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_040.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_041.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4_042.ts' for writing
+[segment @ 0x4167940] Opening '/usr/local/nginx/html/vod2/MV_4.m3u8.tmp' for writing
+frame= 6306 fps=0.0 q=-1.0 Lsize=N/A time=00:04:12.28 bitrate=N/A speed=1.91e+03x    
+video:11573kB audio:1484kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 8 (GCC)
+  configuration: --prefix=/root/ffmpeg_build --pkg-config-flags=--static --extra-cflags=-I/root/ffmpeg_build/include --extra-ldflags=-L/root/ffmpeg_build/lib --extra-libs=-lpthread --extra-libs=-lm --bindir=/root/bin --enable-gpl --enable-libfdk_aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libxvid --enable-libx264 --enable-libx265 --enable-nonfree
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/usr/local/nginx/html/video/MV_5.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    creation_time   : 2019-09-21T06:36:44.000000Z
+  Duration: 00:01:30.54, start: 0.000000, bitrate: 853 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, 803 kb/s, 25 fps, 25 tbr, 25k tbn, 50 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_000.ts' for writing
+Output #0, segment, to '/usr/local/nginx/html/vod2/MV_5_%03d.ts':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isomavc1mp42
+    encoder         : Lavf58.29.100
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 864x486, q=2-31, 803 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:44.000000Z
+      handler_name    : TrackHandler
+    Stream #0:1(und): Audio: aac (HE-AAC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2019-09-21T06:36:09.000000Z
+      handler_name    : Sound Media Handler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_001.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_002.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_003.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_004.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_005.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_006.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_007.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_008.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_009.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_010.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_011.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_012.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_013.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_014.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_015.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_016.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_017.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_018.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_019.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_020.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_021.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_022.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_023.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_024.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_025.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_026.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_027.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_028.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_029.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_030.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_031.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_032.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_033.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_034.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_035.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_036.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5_037.ts' for writing
+[segment @ 0x48b11c0] Opening '/usr/local/nginx/html/vod2/MV_5.m3u8.tmp' for writing
+frame= 2260 fps=0.0 q=-1.0 Lsize=N/A time=00:01:30.49 bitrate=N/A speed=1.48e+03x    
+video:8871kB audio:531kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+sh: "+%Y%m%d%H%M%S": command not found
+sh: "+%Y%m%d%H%M%S": command not found
+sh: "+%Y%m%d%H%M%S": command not found
+sh: "+%Y%m%d%H%M%S": command not found
+sh: "+%Y%m%d%H%M%S": command not found
+sh: "+%Y%m%d%H%M%S": command not found

@@ -1,7 +1,8 @@
 <?php
 	include_once "../connectMysql.php";
 	include_once "../readStbArray.php";
-	set_time_limit(0);//限制页面执行时间,0为不限制
+	ignore_user_abort(true); // 忽略客户端断开 
+	set_time_limit(0);    // 设置执行不超时
 //	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
 //	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);// 报告 E_NOTICE也挺好 (报告未初始化的变量或者捕获变量名的错误拼写)
@@ -28,26 +29,29 @@ function getIP(){	//获取用户真实 IP
 	}
 	return $realip;
 }
-
-$ip = getIP();
-setcookie("ip", $ip, time()+24*3600);//cookie存24小时 
+	$ip = getIP();
+	setcookie("ip", $ip, time()+24*3600);//cookie存24小时 
 //	echo $ip;
 
-function getCity(){			// 获取当前IP所在城市 
-	$getIp = getIP(); 
-	$content = file_get_contents("http://api.map.baidu.com/location/ip?ak=2TGbi6zzFm5rjYKqPPomh9GBwcgLW5sS&ip={$getIp}&coor=bd09ll"); 
-	$json = json_decode($content); 
-	$address = $json->{'content'}->{'address'};//按层级关系提取address数据 
-	$data['address'] = $address; 
-	$return['province'] = mb_substr($data['address'],0,3,'utf-8'); 
-	$return['city'] = mb_substr($data['address'],3,3,'utf-8'); 
-	return $return['province'].$return['city']; 
+function getCity( $ip = '' ){ // 获取 IP  地理位置
+	if( $ip == ''){
+		$url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json";
+		$ip = json_decode(file_get_contents($url),true);
+		$data = $ip;
+	}else{
+		$url="http://ip.taobao.com/service/getIpInfo.php?ip=".$ip;
+		$ip=json_decode(file_get_contents($url));   
+		if((string)$ip->code=='1'){
+		   return false;
+		}
+		$data = (array)$ip->data;
+	}    
+	return $data;   
 }
-
-$city = getCity();
-setcookie("city", $city, time()+24*3600);//cookie存24小时
+	$city = getCity( $ip )['region'].getCity( $ip )['city'];
+	setcookie("city", $city, time()+24*3600);//cookie存24小时
 //	echo $city;
-
+	sleep(3);
 	$sn = $_COOKIE["sn"];//机顶盒序列号（MAC地址和SN结合体）
 	$mark = $_COOKIE["deviceInfo"];//机顶盒备注
 //	echo $mark;
@@ -112,7 +116,7 @@ var channelCount = 0;
 var channelPagePosTemp = 0;
 var channelPosTemp = 0;
 var channelArr = [];
-var indexArea = "lock"//打开应用后默认为锁定状态
+var indexArea = "live"//打开应用后默认为锁定状态
 
 for(i=0;i<dataArr.length;i++){//合并所有频道为一个数组，便于显示所有频道和跳转
 	channelArr = channelArr.concat( dataArr[i].channel );
@@ -474,9 +478,9 @@ function init(){
 <div id="jumpError" style="position:absolute;top:300px;left:0px;width:1280px;height:100px;text-align:center;font-size:80px;color:white;display:none;"></div>
 
 <!-- 锁定图片 -->
-<div id="lockImg" style="position:absolute;top:0px;left:0px;width:1280px;height:720px;background:url(lock.jpg);display:block;color: red; z-index:999;"></div>
+<div id="lockImg" style="position:absolute;top:0px;left:0px;width:1280px;height:720px;background:url(lock.jpg);display:none;color: red; z-index:999;"></div>
 
-<!-- 输入卡号及卡密 -->
+<!-- 导入卡号及卡密 -->
 <div id="cardKey" style="position:absolute;top:0px;left:0px;width:1280px;height:720px;background:url(cardKey.jpg);text-align:center;line-height:50px;display:none;">
 	<div id="card_id" style="position:absolute;left:0px;top:160px;width:1280px;height:50px;line-height:50px;text-align:center;font-weight:900;">Please scan QR code</div><!-- Please enter the card number -->
 	<div id="card_key" style="position:absolute;left:0px;top:200px;width:1280px;height:50px;line-height:50px;text-align:center;font-weight:900;">You can press Up Down Left Right to enter card PIN code directly</div><!-- Please enter the PIN code -->
@@ -857,5 +861,9 @@ function eventHandler(e,type){
 </script>
 
 <?php
-	include_once "./qrCode.php";
+	if( strlen($sn)>1 ){
+		include_once "./qrCode.php";
+	//	$city = getCity( getIP() )['region'].getCity( getIP() )['city'];
+	//	setcookie("city", $city, time()+24*3600);//cookie存24小时
+	}
 ?>

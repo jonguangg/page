@@ -39,10 +39,11 @@ while( $row = mysqli_fetch_assoc($result) ){
 $json=json_encode($groupArr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 //将json写入文件
 file_put_contents('groupArr.js', 'var groupArr = '.print_r($json, true) );
-
+echo "<script>location.href='writeChannelArray.php'</script>";
 // echo "<script>alert('成功更新频道组'); </script>";   
 
 ?>
+<!--
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -57,3 +58,5 @@ file_put_contents('groupArr.js', 'var groupArr = '.print_r($json, true) );
 	<div style="position:absolute;top:0px;left:0px;width:100%;height:100%;background:url(loading.gif); background-size:100% 100%;"></div>	
 </body>
 </html>
+
+-->

@@ -96,12 +96,14 @@ setCookie("ip", ip, '1000d');	//存下来给ajax.php
 setCookie("city", city, '1000d');	//存下来给ajax.php
 //console.log(sn);
 function checkInput(){
-	if( getID("card_id").value.length==0 ){
+	if( getID("card_id").value.length<19 ){
 		alert( "Please enter card number!" );
-	}else if( getID("card_key").value.length==0 ){
+	}else if( getID("card_key").value.length<19 ){
 		alert( "Please enter PIN code!" );
 	}else{
-		sendAjax("./ajax.php","sn="+sn+"&cardId="+getID("card_id").value+"&cardKey="+getID("card_key").value);
+		var cardIdPost = getID("card_id").value.replace(/-/g, "");//把每4位中间的横杠删掉
+		var cardKeyPost = getID("card_key").value.replace(/-/g, "");
+		sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost);
 	}
 }
 
@@ -112,16 +114,24 @@ function onInputHandler(event,_id) {
 //    console.log("刚输入的是："+event.target.value);
 	if( lastLength < event.target.value.length ){	//上次字数少于当前字数，说明新加了，否则就是删除
 		if( event.target.value.length==4 ||  event.target.value.length==9 ||  event.target.value.length==14 ){
-			if( _id=="card_id" ){
+		/*	if( _id=="card_id" ){
 				getID("card_id").value += "-"
 			}else if( _id=="card_key" ){
 				getID("card_key").value += "-"
-			}
+			}*/
+			event.target.value += "-"
 		}
 	}
 	lastLength = event.target.value.length;	//存储当前字数
+	if( event.target.value.length==16 && event.target.value.indexOf("-")<0){//16位没有横杠，说明是直接复制过来的
+		var temp = event.target.value;
+		temp = temp.slice(0, 4) + "-" + temp.slice(4);
+		temp = temp.slice(0, 9) + "-" + temp.slice(9);
+		temp = temp.slice(0, 14) + "-" + temp.slice(14);
+		event.target.value = temp;
+	}
 }
-// Internet Explorer 这个是手机页面，这个函数可以不用
+// Internet Explorer 目前这个是手机页面，这个函数可以不用
 function onPropertyChangeHandler(event) {
     if (event.propertyName.toLowerCase () == "value") {
 //        console.log(event.srcElement.value);

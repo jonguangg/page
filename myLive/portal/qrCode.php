@@ -2,6 +2,9 @@
 //在生成的二维码中加上logo(生成图片文件)
 function scerweima($url=''){
 	$sn = $_COOKIE["sn"];//机顶盒序列号（MAC地址和SN结合体）
+	if( strlen($sn)<1 ){
+		return;
+	}
 	$ip = $_COOKIE["ip"];
 	$city = $_COOKIE["city"];
 	require_once './phpqrcode-2010100721_1.1.4/phpqrcode.php';
@@ -52,7 +55,7 @@ function scerweima($url=''){
 //	echo $publicDecrypt.PHP_EOL.PHP_EOL;
 	
 	// 公钥加密
-	$publicEncrypt = $rsa->publicEncrypt($sn);
+	$publicEncrypt = $sn;//$rsa->publicEncrypt($sn);
 //	echo $publicEncrypt.PHP_EOL.PHP_EOL;
 	
 	// 私钥解密
@@ -63,7 +66,7 @@ function scerweima($url=''){
 //	$snPriv = str_replace("+", "%2B",$privEncrypt); 
 	$snPub = str_replace("+", "%2B",$publicEncrypt); 
 		
-	//调用查看结果
+	//生成二维码
 	echo scerweima("http://192.168.31.225:925/myLive/portal/mobilePostPIN.php?ip=".$ip."&city=".$city."&snPub=".$snPub);
 
 ?>

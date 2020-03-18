@@ -1,4 +1,8 @@
 <?php
+/*
+	获取频道组数据，给后台管理页面预览频道使用
+*/
+//	echo "<pre>";
 //	header("Content-Type:text/html;charset=utf-8");
 include "connectMysql.php";
 set_time_limit(600); //	设置超时时间
@@ -33,6 +37,8 @@ while( $row = mysqli_fetch_assoc($result) ){
 	array_push($groupArr,$groupArrInit);
 //	echo $row["groupName"].'<br>';
 }
+//	echo "<pre>";
+//	print_r ($groupArr);
 
 //将数组格式化为json
 //	$json=json_encode($groupArr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
