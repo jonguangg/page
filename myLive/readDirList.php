@@ -124,13 +124,14 @@
 		$nameShort = $path_parts['filename'];//pathinfo($name, PATHINFO_FILENAME);//这个不支持中文
 		$nameShort = str_replace(" ","",$nameShort);//删除空格
 		$name2 = '/usr/local/nginx/html/myLive/vod/'.$nameShort.'/'.$path_parts['basename'];
-	//	echo '文件夹：'.$path_parts['dirname'].'<br>'.'原路径：'.$name.'<br>'.'文件名：'.$nameShort."<br/>".'新路径：'.$name2.'<br><br>';
+
+echo '文件夹：'.$path_parts['dirname'].'<br>'.'原路径：'.$name.'<br>'.'文件名：'.$nameShort."<br/>".'新路径：'.$name2.'<br><br>';
 	
-	//	$filectime = date("Y-m-d H:i:s",filectime($fileArr[$i]));//索引改变时间	改内容，索引时间一起变
 		$filemtime = date("Y-m-d H:i:s",filemtime($fileArr[$i]));//内容改变时间	改名称，内容时间不变
+	//	$filectime = date("Y-m-d H:i:s",filectime($fileArr[$i]));//索引改变时间	改内容，索引时间一起变
 	//	$fileatime = date("Y-m-d H:i:s",fileatime($fileArr[$i]));//访问时间
 
-		if( strtotime($filemtime)+111115*60 >strtotime($lastScanTime) ){	//文件时间在上上次获取视频参数之后，说明是新文件，因为第一次只记录文件名和上传时间，第二次再对比时间，所以要比较上上次的扫描时间
+		if( strtotime($filemtime)+2*60 >strtotime($lastScanTime) ){	//文件时间在上上次获取视频参数之后，说明是新文件，因为第一次只记录文件名和上传时间，第二次再对比时间，所以要比较上上次的扫描时间
 			$sql = mysqli_query($connect,"select * from video where name='$name2' ") or die(mysqli_error($connect));
 			if( mysqli_num_rows($sql)>0 ){	//有这个文件
 			//	echo $filemtime."<br/>";
@@ -138,13 +139,13 @@
 					$uploadTime = $row["uploadTime"];		//从数据库获取上次记录的上传时间（没传完的，每次扫描会更新时间）
 				}
 				if( strtotime($uploadTime)==strtotime($filemtime) ){//传完的文件，两个时间是一样的	
-				//	切片 
+			//	切片 
 					$time = date("Y-m-d_H:i:s_");
 					exec('mkdir ./vod/'.$nameShort.' && nohup /root/bin/ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/'.$nameShort.'/index.m3u8 ./vod/'.$nameShort.'/%03d.ts >  /dev/null 2>&1 &');
 				//	exec('mkdir ./vod/'.$nameShort.' && nohup /root/bin/ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/'.$nameShort.'/index.m3u8 ./vod/'.$nameShort.'/%03d.ts >> ./sliceLog/'.$time.$nameShort.'.log 2>&1 &');
 				
 				//截取图片
-					exec('/root/bin/ffmpeg -ss 00:00:05  -i '.$name.' ./vod/'.$nameShort.'/'.$nameShort.'_php.png -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
+					exec('/root/bin/ffmpeg -ss 00:00:08  -i '.$name.' ./vod/'.$nameShort.'/'.$nameShort.'.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
 				
 				//	调用ffmpeg获取视频信息，存进mysql
 					$video_info = getVideoInfo($fileArr[$i]);
@@ -186,7 +187,8 @@
 					exec('mv '.$path_parts['dirname'].$nameShort.'* ./vod/'.$nameShort.'/' );
 					exec('chmod -R 777 ./vod/'.$nameShort );
 					$sql = mysqli_query($connect,"UPDATE video set name='$name2' where name='$name' ") or die(mysqli_error($connect));
-					if( strlen($path_parts['dirname'])>36 && isEmptyDir($path_parts['dirname'])=="空"){//删除空文件夹
+				
+					if( $path_parts['dirname'] !="/usr/local/nginx/html/myLive/upload/" && isEmptyDir($path_parts['dirname'])=="空"){//删除空文件夹
 						exec('rm -rf '.$path_parts['dirname']);
 					}
 				}else{	//没传完的，更新上传时间

@@ -2,9 +2,12 @@
 #[mysqldump]
 #user=root
 #password=10Star.925
+
 time=` date +%Y%m%d_%H%M%S`
-/usr/local/mysql/bin/mysqldump myLive | gzip > /usr/local/nginx/html/myLive/myLive$time.sql.gz 
-find /home/ -name "myLive*.sql.gz" -type f -mtime +5 -exec rm {} \; > /dev/null 2>&1 myLive
+backupDir=/usr/local/nginx/html/myLive/backup/
+
+/usr/local/mysql/bin/mysqldump myLive | gzip > $backupDir"myLive"$time.sql.gz 
+find  $backupDir/ -name "myLive*.sql.gz" -type f -mtime +5 -exec rm {} \; > /dev/null 2>&1 
 
 #crontab -e
 #0 2 * * * /usr/local/nginx/html/myLive/backupMySQL5.7.sh
