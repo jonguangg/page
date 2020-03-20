@@ -12,7 +12,6 @@
 		var ms = (now.getMinutes() % 5 == 0) ? 60 - sec : (6 - now.getMinutes() % 5) * 60 - sec;
 		//	var ms = ( (6-now.getMinutes()%5)*60>300 )?60-sec:(6-now.getMinutes()%5)*60-sec;
 		//	var ms = ( (6-now.getMinutes()%5)*60000>300000 )?60000-sec*1000:(6-now.getMinutes()%5)*60000-sec*1000;
-
 		//	sn = ( sn )?sn:window.androidJs.JsGetCookie("sn",0);
 		//	getID("vodListName1").innerHTML += "_"+now.getMinutes()+":"+sec+sn+"<br>";
 		st = setTimeout(function() {
@@ -164,6 +163,7 @@
 include_once "../connectMysql.php";
 //	include_once "../readStbArray.php";
 include_once "../readChannelArray.php";
+include_once "../readTagNav.php";
 set_time_limit(0); //限制页面执行时间,0为不限制
 //	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
@@ -250,7 +250,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<script>
 		var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
 		var dataArr = <?php echo json_encode($channelArr); ?>;
-		//	console.log(dataArr);
+		var tagArr = <?php echo json_encode($tagArr); ?>;
 		var userKey = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetCookie("userKey", 0) : "9527";
 		if (parseInt(userKey) == 0) { //没设置密码时获取到的密码为0
 			userKey = "9527";
@@ -470,7 +470,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var navScrollL = 0;
 		//	var tagNow = "tagChinese";
 		var playUrl = [];
-		var tagArr = ["tagChinese", "tagJapan", "tagEurUSA", "tagMosaic", "tagNP", "tagRole"];
+		//	var tagArr = ["tagChinese", "tagJapan", "tagEurUSA", "tagMosaic", "tagNP", "tagRole"];
+		//	var tagNavArr = ["三国", "水浒", "西游", "初唐", "盛唐"];
 
 		function getTagData(_tagNum, _pageNum, _pageSize, _mobile) {
 			if (navPos < 0) { //从直播切换到点播
@@ -503,7 +504,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				type: 'POST',
 				url: '../readTagJson.php',
 				data: { //这下面的内容没用上，用的是上面的cookie
-					'tagNow': tagArr[_tagNum],
+					'tagNow': tagArr[_tagNum].tagTable,
 					'pageNow': _pageNum,
 					'pageSize': _pageSize,
 					'mobile': _mobile
@@ -522,11 +523,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 							name = name.slice(0, name.length - 4);
 							playUrl.push(name);
 
-							getID("vodListContent").innerHTML += '<div style="height:' + vodImgHeight + ';background:url(../vod/' + name + '/' + name + '.png) " class="vodListImg" onClick="playVod(' + ((pageNow - 1) * 10 + index) + ');" ></div><div class="vodListName">' + title + '</div>'
+							getID("vodListContent").innerHTML += '<div style="height:' + vodImgHeight + ';background:url(../vod/' + name + '/' + name + '.jpg) " class="vodListImg" onClick="playVod(' + ((pageNow - 1) * 10 + index) + ');" ></div><div class="vodListName">' + title + '</div>'
 
 							//	getID("vodListImg"+index).style.display = "block";
 							//	getID("vodListName"+index).style.display = "block";				
-							//	getID("vodListImg"+index).style.backgroundImage = "url(../vod/"+name+"/"+name+".png)";	
+							//	getID("vodListImg"+index).style.backgroundImage = "url(../vod/"+name+"/"+name+".jpg)";	
 							//	getID("vodListName"+index).innerText = 	title;	
 						});
 					setTimeout(function() {
@@ -589,6 +590,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				window.androidJs.JsMovePlayerWindow(0); //每次点播将视频置顶
 			}
 			//	var clientWidth  = document.body.scrollWidth;
+		}
+
+		function showTagNav() {
+			for (i = tagArr.length; i < 21; i++) { //隐藏没有的分类
+				getID("nav" + i).style.display = "none";
+			}
+			for (i = 0; i < tagArr.length; i++) { //显示栏目分类名称
+				getID("nav" + i).innerText = tagArr[i].tagName;
+			}
 		}
 
 		function moveVideoWindow() {
@@ -731,6 +741,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 		}
 
+
 		function init() {
 			stbInfo();
 			var clientWidth = document.body.scrollWidth;
@@ -746,7 +757,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			scrollDisable();
 			getTagData(0, 1, 10, "mobile"); //预加载	
 			bindEvent();
+			showTagNav(); //动态显示下方分类导航
 			//	alert('网页可见区域宽：'+document.body.clientWidth+'\n网页可见区域高：'+document.body.clientHeight+'\n网页可见区域宽：'+document.body.offsetWidth+ '\n网页可见区域高：'+document.body.offsetHeight+ '\n网页正文全文宽：'+document.body.scrollWidth+ '\n网页正文全文高：'+document.body.scrollHeight+ '\n网页被卷去的高：'+document.body.scrollTop+ '\n网页被卷去的左：'+document.body.scrollLeft+'\n网页正文部分上：'+window.screenTop+ '\n网页正文部分左：'+window.screenLeft+ '\n屏幕分辨率的高：'+window.screen.height+ '\n屏幕分辨率的宽：'+window.screen.width+ '\n屏幕可用工作区高度：'+window.screen.availHeight+'\n屏幕可用工作区宽度：'+window.screen.availWidth+'\nwindow.innerHeight：'+window.innerHeight);
+
 		}
 	</script>
 </head>
@@ -759,16 +772,28 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div id="vodNav" style="position:fixed;top:0px;left:0px;width:100%;height:90px;line-height:90px;z-index:2;">
 			<ul id="vodNavList" class="tab-head">
 				<li class="tab-head-item" id="nav-1" onClick="showLiveList();">直播</li>
-				<li class="tab-head-item" id="nav0" onClick="changeTagList(0);">全部</li>
-				<li class="tab-head-item" id="nav1" onClick="changeTagList(1);">新年</li>
-				<li class="tab-head-item" id="nav2" onClick="changeTagList(2);">MTV</li>
-				<li class="tab-head-item" id="nav3" onClick="changeTagList(3);">收集</li>
-				<li class="tab-head-item" id="nav4" onClick="changeTagList(4);">音乐</li>
-				<li class="tab-head-item" id="nav5" onClick="changeTagList(5);">影视</li>
-				<!--li class="tab-head-item" id="nav6" onClick="showVodList(6);">HD</li>
-			<li class="tab-head-item" id="nav7" onClick="showVodList(7);">Chinese</li>
-			<li class="tab-head-item" id="nav8" onClick="showVodList(8);">abuse</li-->
-				<li class="tab-head-item" id="nav8" onClick="showMe();" style="color:#FF8C00;text-shadow:-2px 5px 5px gray;line-height:80px;font-size:75px;">VIP&ensp;</li>
+				<li class="tab-head-item" id="nav0" onClick="changeTagList(0);"></li>
+				<li class="tab-head-item" id="nav1" onClick="changeTagList(1);"></li>
+				<li class="tab-head-item" id="nav2" onClick="changeTagList(2);"></li>
+				<li class="tab-head-item" id="nav3" onClick="changeTagList(3);"></li>
+				<li class="tab-head-item" id="nav4" onClick="changeTagList(4);"></li>
+				<li class="tab-head-item" id="nav5" onClick="changeTagList(5);"></li>
+				<li class="tab-head-item" id="nav6" onClick="changeTagList(6);"></li>
+				<li class="tab-head-item" id="nav7" onClick="changeTagList(7);"></li>
+				<li class="tab-head-item" id="nav8" onClick="changeTagList(8);"></li>
+				<li class="tab-head-item" id="nav9" onClick="changeTagList(9);"></li>
+				<li class="tab-head-item" id="nav10" onClick="changeTagList(10);"></li>
+				<li class="tab-head-item" id="nav11" onClick="changeTagList(11);"></li>
+				<li class="tab-head-item" id="nav12" onClick="changeTagList(12);"></li>
+				<li class="tab-head-item" id="nav13" onClick="changeTagList(13);"></li>
+				<li class="tab-head-item" id="nav14" onClick="changeTagList(14);"></li>
+				<li class="tab-head-item" id="nav15" onClick="changeTagList(15);"></li>
+				<li class="tab-head-item" id="nav16" onClick="changeTagList(16);"></li>
+				<li class="tab-head-item" id="nav17" onClick="changeTagList(17);"></li>
+				<li class="tab-head-item" id="nav18" onClick="changeTagList(18);"></li>
+				<li class="tab-head-item" id="nav19" onClick="changeTagList(19);"></li>
+				<li class="tab-head-item" id="nav20" onClick="changeTagList(20);"></li>
+				<li class="tab-head-item" onClick="showMe();" style="color:#FF8C00;text-shadow:-2px 5px 5px gray;line-height:80px;font-size:75px;">VIP&ensp;</li>
 			</ul>
 		</div>
 
