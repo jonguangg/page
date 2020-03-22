@@ -134,6 +134,7 @@
 		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 		imOnLine();
 		getID("splash").style.display = "none";
+		getID('lock').style.display = 'block';
 	}, 5000);
 	/*检查授权日期
 	function checkLicense(){
@@ -758,7 +759,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		    circle.classList.add("run-anim");
 		}
 
-
+		var splashArr = ['splash0.gif','splash1.gif','splash2.gif','splash.png','splash.jpg'];
+		var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
+		splashIndex ++;
+		if( splashIndex > splashArr.length-1 ){
+			splashIndex = 0;
+		}
+		window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
 		function init() {
 			stbInfo();
 			var clientWidth = document.body.scrollWidth;
@@ -766,7 +773,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			vodImgHeight = clientWidth * 9 / 16 + "px";
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
 			getID("splash").style.height = clientHeight + "px"; //注册VIP卡页面的高
-			getID("splash").style.backgroundImage = 'url(splash.gif)';
+			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
 			startCircle();//右上角跳过圆圈
 			getID("vodNav").style.top = (clientHeight - 90) + "px"; //底部导航栏
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
@@ -881,7 +888,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		</div>
 
 		<!-- 解锁界面 -->
-		<div id="lock" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background-color:#39C5BB;display:block;text-align:center;font-size:80px;color:white; z-index:9;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);">
+		<div id="lock" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background-color:#39C5BB;display:none;text-align:center;font-size:80px;color:white; z-index:9;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);">
 			<div style="position:absolute;top:15%;left:0px;width:100%;height:100px;line-height:100px;font-size:90px;font-weight:900;text-shadow:-5px 5px 5px #000;">Unlock your APP</div>
 
 			<span id="lockKey1" class="lockKey" style="left:15%;"></span>
@@ -938,15 +945,14 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		</div>
 
 		<div id="splash" style="position: absolute;left:0px;top:0px;width:1080px;height:1920px;background:url(null.png);background-size:100% 100%;display:block;z-index:99;">	
-			<div onclick="getID('splash').style.display='none'" style="position: absolute;right:100px;">
+			<div onclick="getID('splash').style.display='none';getID('lock').style.display='block';" style="position: absolute;right:100px;">
 				<div class="flex-container" >
-					<div class="outbox">跳过</div>
+					<div class="outbox" id="splashJump">跳过</div>
 					<svg class="svg">
 						<circle id="cls" class="cls run-anim" cx="70" cy="70" r="65"></circle>
 					</svg>
 				</div>
 			</div>
-			<img width="0px" height="0px" src='splash.gif' /><!--预加载图片 -->
 		</div>
 
 	</div>
