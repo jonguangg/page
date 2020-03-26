@@ -1,34 +1,34 @@
 ﻿<?php
-//	连接数据库	
-include "connectMysql.php";
-include_once "readTagNav.php";
+	//	连接数据库	
+	include "connectMysql.php";
+	include_once "readTagNav.php";
 
-set_time_limit(600); //	设置超时时间
-header('Content-type:text/html;charset=utf-8');
-$currUser = ($_COOKIE["currUser"]) ? $_COOKIE["currUser"] : "null";
+	set_time_limit(600); //	设置超时时间
+	header('Content-type:text/html;charset=utf-8');
+	$currUser = ($_COOKIE["currUser"]) ? $_COOKIE["currUser"] : "null";
 
-//	定义需处理的excel文件
-$fileName = $_COOKIE["randname"];	//	"./channelList.xlsx";
+	//	定义需处理的excel文件
+	$fileName = $_COOKIE["randname"];	//	"./channelList.xlsx";
 
-// 引入PHPExcel
-require_once "./PHPExcel-1.8/Classes/PHPExcel/IOFactory.php";
+	// 引入PHPExcel
+	require_once "./PHPExcel-1.8/Classes/PHPExcel/IOFactory.php";
 
-// 载入当前文件
-$phpExcel = PHPExcel_IOFactory::load("./backup/" . $fileName);
+	// 载入当前文件
+	$phpExcel = PHPExcel_IOFactory::load("./backup/" . $fileName);
 
-// 设置为默认表
-$phpExcel->setActiveSheetIndex(0);
+	// 设置为默认表
+	$phpExcel->setActiveSheetIndex(0);
 
-// 获取表格数量
-$sheetCount = $phpExcel->getSheetCount();
+	// 获取表格数量
+	$sheetCount = $phpExcel->getSheetCount();
 
-// 获取行数
-$row = $phpExcel->getActiveSheet()->getHighestRow();
+	// 获取行数
+	$row = $phpExcel->getActiveSheet()->getHighestRow();
 
-// 获取列数
-$column = $phpExcel->getActiveSheet()->getHighestColumn();
+	// 获取列数
+	$column = $phpExcel->getActiveSheet()->getHighestColumn();
 
-//	echo "表格数目为：$sheetCount" . "<br>表格的行数：$row" . "<br>列数：$column";
+	//	echo "表格数目为：$sheetCount" . "<br>表格的行数：$row" . "<br>列数：$column";
 
 // 遍历表格行列，将数据写入mysql
 if (stripos($fileName, "hannelList")) {
@@ -72,59 +72,43 @@ if (stripos($fileName, "hannelList")) {
 		echo "Error";
 	}
 } else if (stripos($fileName, "ideoTag")) {	//导入分类数据
-	/*	$tagArr = array(
-		array("tagChinese", "中文"),
-		array("tagJapan", "日本"),
-		array("tagEurUSA", "欧美"),
-		array("tagMosaic", "马赛克"),
-		array("tagNP", "多人"),
-		array("tagRole", "角色"),
-	);*/
-	//将原排序统一加新增总数，即新的插在前面
-	for ($k = 0; $k < sizeof($tagArr); $k++) {
+	for ($k = 0; $k < sizeof($tagArr); $k++) {//将原排序统一加新增总数，即新的插在前面
 		$tagTable = $tagArr[$k]['tagTable'];
 		$sql = mysqli_query($connect, "UPDATE $tagTable set sort=sort+$row-1 ") or die(mysqli_error($connect));
 	}
-
+	
 	for ($i = 1; $i <= $row; $i++) {			//行数循环		
 		$excelData = array();					//每换一行都清空临时数组	
-		for ($c = 'A'; $c <= $column; $c++) {	//列数循环	
-			$excelData[] = $phpExcel->getActiveSheet()->getCell($c . $i)->getValue(); //	向临时数组写入当前行的数据
+		for ($c = 0; $c <= PHPExcel_Cell::columnIndexFromString($column); $c++) {	//列数循环	
+			$excelData[] = $phpExcel->getActiveSheet()->getCell(PHPExcel_Cell::stringFromColumnIndex($c) . $i)->getValue(); //	向临时数组写入当前行的数据
 		}
 		if ($i > 1) {	//如果没有表头就用0
-			$nameShort = str_replace(strrchr($excelData[0], "."), "", $excelData[0]); //去掉扩展名
-			$name = '/usr/local/nginx/html/myLive/vod/' . $nameShort . '/' . $excelData[0];
+			$nameShort = str_replace(strrchr($excelData[3], "."), "", $excelData[3]); //去掉扩展名
+			$name = '/usr/local/nginx/html/myLive/vod/' . $nameShort . '/' . $excelData[3];
 		//	echo "<script>alert('" . $name . "')</script>";
-			$tag1 = (strlen($excelData[4]) > 0) ? $excelData[4] . "|" : "";
-			$tag2 = (strlen($excelData[5]) > 0) ? $excelData[5] . "|" : "";
-			$tag3 = (strlen($excelData[6]) > 0) ? $excelData[6] . "|" : "";
-			$tag4 = (strlen($excelData[7]) > 0) ? $excelData[7] . "|" : "";
-			$tag5 = (strlen($excelData[8]) > 0) ? $excelData[8] . "|" : "";
-			$tag6 = (strlen($excelData[9]) > 0) ? $excelData[9] . "|" : "";
-			$tag7 = (strlen($excelData[10]) > 0) ? $excelData[10] . "|" : "";
-			$tag8 = (strlen($excelData[11]) > 0) ? $excelData[11] . "|" : "";
-			$tag9 = (strlen($excelData[12]) > 0) ? $excelData[12] . "|" : "";
-			$tag10 = (strlen($excelData[13]) > 0) ? $excelData[13] . "|" : "";
-			$tag11 = (strlen($excelData[14]) > 0) ? $excelData[14] . "|" : "";
-			$tag12 = (strlen($excelData[15]) > 0) ? $excelData[15] . "|" : "";
-			$tagCurr = "|" . $tag1 . $tag2 . $tag3 . $tag4 . $tag5 . $tag6 . $tag7 . $tag8 . $tag9 . $tag10 . $tag11 . $tag12; 	//当前行数据所有分类（像这样的：|中文|多人|欧美|）	
-			if ((int) $excelData[3] < 1) {	//没填排序的默认按表中从上到下递增
-				$excelData[3] = $i;
+			$tagCurr = "|" ; 	
+			for($m=12;$m<39;$m++){	//分类标签
+				if( strlen($excelData[$m]) > 0 ){
+					$tagCurr = $tagCurr.$excelData[$m]."|";
+				}				
 			}
-			// 更新video表
-			$sql = mysqli_query($connect, "UPDATE video set title='$excelData[1]' ,tag='$tagCurr' where name='$name' ") or die(mysqli_error($connect));
+
+			if ((int) $excelData[11] < 1) {	//没填排序的默认按表中从上到下递增
+				$excelData[11] = $i;
+			}
+			// 更新video表内容
+			$sql = mysqli_query($connect, "UPDATE video set type='$excelData[0]',episode='$excelData[1]',episodes='$excelData[2]',title='$excelData[4]',region='$excelData[5]',year='$excelData[6]',director='$excelData[7]',actor='$excelData[8]',score='$excelData[9]',tag='$tagCurr' where name='$name' ") or die(mysqli_error($connect));
 
 			// 向分类表中插入数据
 			for ($j = 0; $j < sizeof($tagArr); $j++) {	//循环匹配所有分类
 				$tagTable = $tagArr[$j]['tagTable'];				//当前匹配分类所在的数据表（像这样的：tagJapan）
-
 				//在当前类型表内删除当前数据，如果该类型内有此数据，下面再重新插入
 				$sql = mysqli_query($connect, "DELETE FROM $tagTable WHERE fileName='$name' ") or die(mysqli_error($connect));
-				if (strpos($tagCurr, $tagArr[$j]['tagName']) > 0) { //当前行的分类内有当前匹配的分类
+			//	if (strpos($tagCurr, $tagArr[$j]['tagName']) > 0) { //当前行的分类内有当前匹配的分类
+				if ($excelData[0]==$tagArr[$j]['tagName']) { //当前行的一级分类为当前匹配的分类
 					$sql = mysqli_query($connect, "select * from video where name='$name' ") or die(mysqli_error($connect));
-					if (mysqli_num_rows($sql) > 0) {
-						//判断video表是否有当前行的节目，否则插入失败，导致不继续插入下面的数据
-						$sql = mysqli_query($connect, "replace into $tagTable (fileName,title,editor,status,sort) values ('$name','$excelData[1]','$currUser','$excelData[2]','$excelData[3]' )") or die(mysqli_error($connect));
+					if (mysqli_num_rows($sql) > 0) {	//判断video表是否有当前行的节目，否则插入失败，导致不继续插入下面的数据
+						$sql = mysqli_query($connect, "replace into $tagTable (episode,episodes,fileName,title,region,year,director,actor,score,status,sort,tag,editor) values ('$excelData[1]','$excelData[2]','$name','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]','$excelData[9]','$excelData[10]','$excelData[11]','$tagCurr','$currUser')") or die(mysqli_error($connect));
 					}
 				}
 			}

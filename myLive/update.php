@@ -564,9 +564,10 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				<thead>
 					<tr>
 						<td style="width:10%;"><b>排序</b></td>
-						<td style="width:40%;"><b>分类名</b></td>
-						<td style="width:40%;"><b>分类表</b></td>
-						<td style="width:10%;"><b>删除</b></td>
+						<td style="width:30%;"><b>分类名</b></td>
+						<td style="width:30%;"><b>分类表</b></td>
+						<td style="width:15%;"><b>分类级别</b></td>
+						<td style="width:15%;"><b>删除</b></td>
 					</tr>
 				</thead>
 			</table>
@@ -587,6 +588,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			<br />
 			栏目表：
 			<input type="text" id="addTagTable" name="addTagTable" required="required" placeholder="" class="userText"></br></br><br>
+			栏目级别：
+			<input type="text" id="addTagLevel" name="addTagLevel" placeholder="默认为1" class="userText"></br></br><br>
 
 			<input type="button" name="submitAddTag" value="提  交" onclick="addTag()" style="width:45%;height:30px;background-color:green;color:yellow;cursor:pointer;">
 
@@ -677,11 +680,13 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var groupArr = <?php echo json_encode($groupArr); ?>; //从readGroupArray.php读取到的频道组数组，供预览使用
 	var dataArr = <?php echo json_encode($channelArr); ?>; //从readChannelArray.php读取到的频道数组，供预览使用
 	var tagArr = <?php echo json_encode($tagArr); ?>;
-	var tagNow = tagArr[0].tagTable;
+	var tagNow = (tagArr[0])?tagArr[0].tagTable:"";
 
 	function showTagName() {
 		for (i = 0; i < tagArr.length; i++) {
-			getID("sale").innerHTML += '<br><div id=' + tagArr[i].tagTable + ' onclick=getTagData(\'' + tagArr[i].tagTable + '\',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[i].tagName + '</div>';
+			if( tagArr[i].tagLevel==1 ){
+				getID("sale").innerHTML += '<br><div id=' + tagArr[i].tagTable + ' onclick=getTagData(\'' + tagArr[i].tagTable + '\',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[i].tagName + '</div>';
+			}
 		}
 	}
 	showTagName();
@@ -1301,13 +1306,12 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	//	显示栏目分类
 	var tbRowTagNav = 0;
-	var tags = "";
-
+	var tags = "分类标签";
 	function showTagList() {
 		$("#tagNavTb tr:not(:eq(0))").remove();
 		tr = "";
 		for (i = 0; i < tagArr.length; i++) {
-			tr += "<tr><td><input type='text' name=tagSort" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[i].tagSort + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[i].tagName + "'></input></td><td><input type='text' name=tagTable" + i + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[i].tagTable + "'</input></td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
+			tr += "<tr><td><input type='text' name=tagSort" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[i].tagSort + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[i].tagName + "'></input></td><td><input type='text' name=tagTable" + i + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[i].tagTable + "'</input></td><td>"+tagArr[i].tagLevel+"</td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
 			tags += "|" + tagArr[i].tagTable;
 		}
 		$("#tagNavTb tr").eq(0).after(tr);
@@ -1320,6 +1324,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		currArea = "tagNav";
 		var addTagName = document.getElementById("addTagName").value;
 		var addTagTable = document.getElementById("addTagTable").value;
+		var addTagLevel = parseInt(document.getElementById("addTagLevel").value)>0?document.getElementById("addTagLevel").value:1;
 		if (tags.indexOf(addTagTable) > -1) {
 			alert("数据库已有这个表名了！");
 		} else {
@@ -1330,7 +1335,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				data: {
 					"addTagSort": tbRowTagNav,
 					"addTagName": addTagName,
-					"addTagTable": addTagTable
+					"addTagTable": addTagTable,
+					"addTagLevel": addTagLevel
 				},
 				beforeSend: function() {
 					//这里一般显示加载提示
