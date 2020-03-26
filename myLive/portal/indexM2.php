@@ -1,7 +1,7 @@
-<script type=text/javascript src="global.js" charset=UTF-8></script>
-<script type=text/javascript src="register.js"></script>
+<script type=text/javascript src="js/global.js" charset=UTF-8></script>
+<script type=text/javascript src="js/register2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type=text/javascript src="touchMove.js" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMove2.js" charset=UTF-8></script>
 <script>
 	function imOnLine() { //上报在线状态
 		var now = new Date(); //此时此刻
@@ -46,7 +46,6 @@
 	var backArea = "false";
 	var expireTime = "";
 	var intExpireTime = "";
-
 	function sendAjax(_url, _content) {
 		createXmlHttpRequestObject();
 		// 2.请求行
@@ -105,7 +104,7 @@
 							getID("msg").innerHTML = xmlHttp.responseText.slice(xmlHttp.responseText.indexOf("error") + 5);
 						}
 					}
-					getID("msg").style.background = "linear-gradient(to bottom,yellow,green,blue,indigo)";
+					getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
 				}
 			}
 		}
@@ -114,7 +113,6 @@
 	var sn = '';
 	var deviceBrand = '';
 	var systemModel = '';
-
 	function stbInfo() {
 		sn = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetMac() : "";
 		deviceBrand = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetDeviceBrand() : "";
@@ -134,14 +132,11 @@
 		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 		imOnLine();
 		getID("splash").style.display = "none";
-		getID('lock').style.display = 'block';
+		if( indexArea=="lock"){//不加这个，用户点跳过后，还会弹出锁定界面
+			getID('lock').style.display = 'block';
+		}		
 	}, 5000);
-	/*检查授权日期
-	function checkLicense(){
-		sendAjax("./ajax.php","checkLicenseSN="+sn);
-	}
-	setTimeout( checkLicense, 10000);	
-	*/
+
 	var mo = function(e) {
 		e.preventDefault();
 	};
@@ -247,9 +242,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>mLiveIndex</title>
-	<link href="style.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="style2.css"/>
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" /><!--CSS RESET-->
-	<link rel="stylesheet" href="circle/css/style.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="circle/css/style.css"  />
 	<script>
 		var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
 		var dataArr = <?php echo json_encode($channelArr); ?>;
@@ -566,8 +561,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if (navPosTemp < -1) {
 				navPosTemp = 1;
 			}
-			if (navPosTemp > 5) {
-				navPosTemp = 5;
+			if (navPosTemp > tagArr.length-1) {
+				navPosTemp = tagArr.length-1;
 			}
 			if (navPosTemp == -1) {
 				showLiveList();
@@ -661,7 +656,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var pinTemp = "";
 		var pinTemp1 = "";
 		var pinTemp2 = "";
-
 		function clearLockKey() { //清除输入的解锁密码
 			pinTemp = "";
 			getID("lockKey1").innerHTML = "";
@@ -746,20 +740,18 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		var total = 0;
 		function startCircle(){
-		    let minute = 0;// document.getElementById('min').value;
-		    let second = 10;//document.getElementById('sec').value;
-		    // console.log("seconds:"+(minute*60)+"secs:"+second);
+		    var minute = 0;
+		    var second = 10;
 		    total = (parseInt(minute)*60) + parseInt(second);
-			console.log("total:"+total);
 			var circle = getID("cls");
-		    circle.style.strokeDashoffset = "800";
+		//    circle.style.strokeDashoffset = "800";
 		    circle.style.animationDuration = total+"s";
 		    circle.style.animationPlayState = "running";
 		//    set(1000*total);
 		    circle.classList.add("run-anim");
 		}
 
-		var splashArr = ['splash0.gif','splash1.gif','splash2.gif','splash.png','splash.jpg'];
+		var splashArr = ['splash0.gif','splash1.gif','splash2.gif','splash3.gif','splash4.gif','splash5.gif','splash6.gif','splash7.gif','splash8.gif','splash9.gif','splash10.gif','splash11.gif','splash12.gif','splash13.gif','splash14.gif','splash15.gif','splash16.gif','splash17.gif','splash18.gif','splash19.gif','splash20.gif','splash21.gif','splash22.gif','splash23.gif','splash24.gif','splash25.gif','splash26.gif','splash27.gif','splash28.gif','splash29.gif','splash30.gif','splash31.gif','splash32.gif','splash33.gif','splash34.gif','splash35.gif','splash.png','splash.jpg'];
 		var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
 		splashIndex ++;
 		if( splashIndex > splashArr.length-1 ){
@@ -772,15 +764,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			var clientHeight = window.innerHeight;
 			vodImgHeight = clientWidth * 9 / 16 + "px";
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
-			getID("splash").style.height = clientHeight + "px"; //注册VIP卡页面的高
+			getID("splash").style.height = clientHeight + "px"; 
 			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
 			startCircle();//右上角跳过圆圈
 			getID("vodNav").style.top = (clientHeight - 90) + "px"; //底部导航栏
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
-			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
-			//	for(i=0;i<10;i++){
-			//		getID("vodListImg"+i).style.height = (clientWidth*9/16)+"px";
-			//	}	
+			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高	
 			scrollDisable();
 			getTagData(0, 1, 10, "mobile"); //预加载	
 			bindEvent();
@@ -921,27 +910,27 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
 			<h1 id="title" style="position:absolute;left:0px;top:5%;width:100%;height:100px;text-align:center;font-size:90px;text-shadow:-5px 5px 5px #000;">Registered VIP Card</h1>
 
-			<div id="cardId" style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
+			<div style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
 			<!-- 卡号输入框 -->
 			<input type="number" id="card_id" style="position:absolute;left:5%;top:21%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;" maxlength="8" oninput="onInputHandler(event,'card_id')" autofocus="autofocus" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
 			<div style="position:absolute;left:40%;top:21%;width:50%;height:100px;" onClick="window.androidJs.JsShowImm();getID('card_id').focus();"></div>
 
-			<div id="cardKey" style="position:absolute;left:5%;top:30%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">PIN Code</div>
+			<div style="position:absolute;left:5%;top:30%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">PIN Code</div>
 			<!-- 卡密输入框 -->
 			<input type="number" id="card_key" style="position:absolute;left:5%;top:35%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;" maxlength="8" oninput="onInputHandler(event,'card_key')" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
 			<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="window.androidJs.JsShowImm();getID('card_key').focus();"></div>
 
-			<div id="img" style="position:absolute;left:5%;top:45%;width:90%;height:35%;background:url(vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
+			<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
 
-			<div id="exp" style="position:absolute;left:13%;top:50%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
+			<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
 
-			<div id="back" style="position:absolute;left:5%;top:85%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,blue,indigo,violet);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
+			<div id="img" style="position:absolute;left:5%;top:60%;width:90%;height:35%;background:url(vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 
-			<div id="ok" style="position:absolute;left:55%;top:85%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,blue,indigo,violet);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
+			<div id="exp" style="position:absolute;left:13%;top:65%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
 
-			<div id="msg" style="position:absolute;left:5%;top:45%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;"></div>
+			<div id="msg" style="position:absolute;left:5%;top:60%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;"></div>
 		</div>
 
 		<div id="splash" style="position: absolute;left:0px;top:0px;width:1080px;height:1920px;background:url(null.png);background-size:100% 100%;display:block;z-index:99;">	
@@ -957,18 +946,5 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	</div>
 
-	<!-- 换台时右上角的字
-<div id="jumpChannel" style="position:absolute;top:50px;left:900px;width:300px;height:60px;text-align:right;overflow:hidden;font-size:50px;font-weight:900;color:white;"></div>
-
-<div id="jumpName" style="position:absolute;top:110px;left:400px;width:800px;height:50px;text-align:right; overflow:hidden;font-size:30px;font-weight:900;color:white;"></div>
--->
-	<!-- 换台错误提示
-<div id="jumpError" style="position:absolute;top:300px;left:0px;width:1280px;height:100px;text-align:center;font-size:80px;color:white;display:none;"></div>
--->
-
-	<!-- 二维码 
-<div id="ewm" style="position:absolute;left:510px;top:260px;width:260px;height:265px;background:url(null.png);"></div>
--->
 </body>
-
 </html>

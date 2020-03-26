@@ -94,7 +94,7 @@ if (stripos($fileName, "hannelList")) {
 		if ($i > 1) {	//如果没有表头就用0
 			$nameShort = str_replace(strrchr($excelData[0], "."), "", $excelData[0]); //去掉扩展名
 			$name = '/usr/local/nginx/html/myLive/vod/' . $nameShort . '/' . $excelData[0];
-			//	echo "<script>alert('" . $name . "')</script>";
+		//	echo "<script>alert('" . $name . "')</script>";
 			$tag1 = (strlen($excelData[4]) > 0) ? $excelData[4] . "|" : "";
 			$tag2 = (strlen($excelData[5]) > 0) ? $excelData[5] . "|" : "";
 			$tag3 = (strlen($excelData[6]) > 0) ? $excelData[6] . "|" : "";

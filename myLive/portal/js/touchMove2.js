@@ -47,9 +47,9 @@ function touchEndFunc(evt){
 	//	document.getElementById("test").innerHTML = text;
 	
 		if( navPos>-1 ){	//非直播
-			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 ){//左滑
+			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 && startY>700){//左滑
 				moveChangeTag(1);
-			}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600){//右滑
+			}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 && startY>700){//右滑
 				moveChangeTag(-1);
 			}			
 		}else if( navPos==-1){	//直播
@@ -69,11 +69,7 @@ function touchEndFunc(evt){
 	//		text += '<br/>向下滑动';
 		}
 
-		if(moveX < 0 ){
-			
-		}else if(moveX > 0 && focusChart > 5){
-			
-		}
+
 	}
 	catch(e){
 		alert('touchEndFunc：' + e.message);
