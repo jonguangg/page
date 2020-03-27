@@ -680,13 +680,13 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var groupArr = <?php echo json_encode($groupArr); ?>; //从readGroupArray.php读取到的频道组数组，供预览使用
 	var dataArr = <?php echo json_encode($channelArr); ?>; //从readChannelArray.php读取到的频道数组，供预览使用
 	var tagArr = <?php echo json_encode($tagArr); ?>;
-	var tagNow = (tagArr[0])?tagArr[0].tagTable:"";
+	var tagNow = (tagArr[1][0])?tagArr[1][0].tagTable:"";
 
 	function showTagName() {
-		for (i = 0; i < tagArr.length; i++) {
-			if( tagArr[i].tagLevel==1 ){
-				getID("sale").innerHTML += '<br><div id=' + tagArr[i].tagTable + ' onclick=getTagData(\'' + tagArr[i].tagTable + '\',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[i].tagName + '</div>';
-			}
+		for (i = 0; i < tagArr[1].length; i++) {
+		//	if( tagArr[1][i].tagLevel==1 ){
+				getID("sale").innerHTML += '<br><div id=' + tagArr[1][i].tagTable + ' onclick=getTagData(\'' + tagArr[1][i].tagTable + '\',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[1][i].tagName + '</div>';
+		//	}
 		}
 	}
 	showTagName();
@@ -1310,9 +1310,11 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	function showTagList() {
 		$("#tagNavTb tr:not(:eq(0))").remove();
 		tr = "";
-		for (i = 0; i < tagArr.length; i++) {
-			tr += "<tr><td><input type='text' name=tagSort" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[i].tagSort + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[i].tagName + "'></input></td><td><input type='text' name=tagTable" + i + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[i].tagTable + "'</input></td><td>"+tagArr[i].tagLevel+"</td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
-			tags += "|" + tagArr[i].tagTable;
+		for(j=0;j<tagArr.length;j++){
+			for (i = 0; i < tagArr[j].length; i++) {
+				tr += "<tr><td><input type='text' name=tagSort" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagSort + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagName + "'></input></td><td><input type='text' name=tagTable" + i + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[j][i].tagTable + "'</input></td><td>"+tagArr[j][i].tagLevel+"</td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
+				tags += "|" + tagArr[j][i].tagTable;
+			}
 		}
 		$("#tagNavTb tr").eq(0).after(tr);
 		tbRowTagNav = getID('tagNavTb').rows.length; //一共多少行
@@ -1324,7 +1326,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		currArea = "tagNav";
 		var addTagName = document.getElementById("addTagName").value;
 		var addTagTable = document.getElementById("addTagTable").value;
-		var addTagLevel = parseInt(document.getElementById("addTagLevel").value)>0?document.getElementById("addTagLevel").value:1;
+		var addTagLevel = parseInt(document.getElementById("addTagLevel").value)>-1?document.getElementById("addTagLevel").value:1;
 		if (tags.indexOf(addTagTable) > -1) {
 			alert("数据库已有这个表名了！");
 		} else {

@@ -28,14 +28,15 @@ $groupArr = array();
 $groupArrInit = array(
 	"groupId" => 0,
 	"groupName" => "",
+	"groupLogo" => "",
 );
 
 //扫描数据库频道组，写入总的频道组数组
 while( $row = mysqli_fetch_assoc($result) ){
 	$groupArrInit["groupId"] = (int)$row["groupId"];
 	$groupArrInit["groupName"] = $row["groupName"];
+	$groupArrInit["groupLogo"] = $row["groupLogo"];
 	array_push($groupArr,$groupArrInit);
-//	echo $row["groupName"].'<br>';
 }
 //	echo "<pre>";
 //	print_r ($groupArr);

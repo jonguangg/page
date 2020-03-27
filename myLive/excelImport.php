@@ -72,8 +72,8 @@ if (stripos($fileName, "hannelList")) {
 		echo "Error";
 	}
 } else if (stripos($fileName, "ideoTag")) {	//导入分类数据
-	for ($k = 0; $k < sizeof($tagArr); $k++) {//将原排序统一加新增总数，即新的插在前面
-		$tagTable = $tagArr[$k]['tagTable'];
+	for ($k = 0; $k < sizeof($tagArr[1]); $k++) {//将原排序统一加新增总数，即新的插在前面
+		$tagTable = $tagArr[1][$k]['tagTable'];
 		$sql = mysqli_query($connect, "UPDATE $tagTable set sort=sort+$row-1 ") or die(mysqli_error($connect));
 	}
 	
@@ -100,12 +100,12 @@ if (stripos($fileName, "hannelList")) {
 			$sql = mysqli_query($connect, "UPDATE video set type='$excelData[0]',episode='$excelData[1]',episodes='$excelData[2]',title='$excelData[4]',region='$excelData[5]',year='$excelData[6]',director='$excelData[7]',actor='$excelData[8]',score='$excelData[9]',tag='$tagCurr' where name='$name' ") or die(mysqli_error($connect));
 
 			// 向分类表中插入数据
-			for ($j = 0; $j < sizeof($tagArr); $j++) {	//循环匹配所有分类
-				$tagTable = $tagArr[$j]['tagTable'];				//当前匹配分类所在的数据表（像这样的：tagJapan）
+			for ($j = 0; $j < sizeof($tagArr[1]); $j++) {	//循环匹配所有分类
+				$tagTable = $tagArr[1][$j]['tagTable'];				//当前匹配分类所在的数据表（像这样的：tagJapan）
 				//在当前类型表内删除当前数据，如果该类型内有此数据，下面再重新插入
 				$sql = mysqli_query($connect, "DELETE FROM $tagTable WHERE fileName='$name' ") or die(mysqli_error($connect));
 			//	if (strpos($tagCurr, $tagArr[$j]['tagName']) > 0) { //当前行的分类内有当前匹配的分类
-				if ($excelData[0]==$tagArr[$j]['tagName']) { //当前行的一级分类为当前匹配的分类
+				if ($excelData[0]==$tagArr[1][$j]['tagName']) { //当前行的一级分类为当前匹配的分类
 					$sql = mysqli_query($connect, "select * from video where name='$name' ") or die(mysqli_error($connect));
 					if (mysqli_num_rows($sql) > 0) {	//判断video表是否有当前行的节目，否则插入失败，导致不继续插入下面的数据
 						$sql = mysqli_query($connect, "replace into $tagTable (episode,episodes,fileName,title,region,year,director,actor,score,status,sort,tag,editor) values ('$excelData[1]','$excelData[2]','$name','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]','$excelData[9]','$excelData[10]','$excelData[11]','$tagCurr','$currUser')") or die(mysqli_error($connect));
@@ -116,8 +116,8 @@ if (stripos($fileName, "hannelList")) {
 	}
 
 	//修改新表的排序，因为之前把老排序统一加了所有行，实际上有些行没有这个分类，所以导致有空排序数据
-	for ($l = 0; $l < sizeof($tagArr); $l++) {	//遍历每个分类表
-		$tagTable = $tagArr[$l]['tagTable'];
+	for ($l = 0; $l < sizeof($tagArr[1]); $l++) {	//遍历每个分类表
+		$tagTable = $tagArr[1][$l]['tagTable'];
 		$sql = mysqli_query($connect, "select * from $tagTable order by sort ASC");
 		if ($sql) {	//如果该表有数据
 			$tagTotal = mysqli_num_rows($sql);	//总记录数

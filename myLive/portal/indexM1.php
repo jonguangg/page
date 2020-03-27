@@ -468,8 +468,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var navScrollL = 0;
 		//	var tagNow = "tagChinese";
 		var playUrl = [];
-		//	var tagArr = ["tagChinese", "tagJapan", "tagEurUSA", "tagMosaic", "tagNP", "tagRole"];
-		//	var tagNavArr = ["三国", "水浒", "西游", "初唐", "盛唐"];
 
 		function getTagData(_tagNum, _pageNum, _pageSize, _mobile) {
 			if (navPos < 0) { //从直播切换到点播
@@ -502,7 +500,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				type: 'POST',
 				url: '../readTagJson.php',
 				data: { //这下面的内容没用上，用的是上面的cookie
-					'tagNow': tagArr[_tagNum].tagTable,
+					'tagNow': tagArr[1][_tagNum].tagTable,
 					'pageNow': _pageNum,
 					'pageSize': _pageSize,
 					'mobile': _mobile
@@ -591,11 +589,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function showTagNav() {
-			for (i = tagArr.length; i < 21; i++) { //隐藏没有的分类
+			for (i = tagArr[1].length; i < 21; i++) { //隐藏没有的分类
 				getID("nav" + i).style.display = "none";
 			}
-			for (i = 0; i < tagArr.length; i++) { //显示栏目分类名称
-				getID("nav" + i).innerText = tagArr[i].tagName;
+			for (i = 0; i < tagArr[1].length; i++) { //显示栏目分类名称
+				getID("nav" + i).innerText = tagArr[1][i].tagName;
 			}
 		}
 

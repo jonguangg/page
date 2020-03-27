@@ -1,7 +1,7 @@
 <?php
 /*
 			获取栏目分类，给后台管理页面和前台导航使用
-		*/
+*/
 //	echo "<pre>";
 //	header("Content-Type:text/html;charset=utf-8");
 include "connectMysql.php";
@@ -13,8 +13,10 @@ $sql = 'select * from tag order by tagSort ';
 // 结果集
 $result = mysqli_query($connect, $sql);
 
-//总的频道组
-$tagArr = array();
+//总的分类组，包含多个级别
+$tagArr = array(
+	array()
+);
 
 //初始化一个分类 
 $arrInit = array(
@@ -30,9 +32,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 	$arrInit["tagName"] = $row["tagName"];
 	$arrInit["tagTable"] = $row["tagTable"];
 	$arrInit["tagLevel"] = $row["tagLevel"];
-	array_push($tagArr, $arrInit);
+
+	//根据tagLevel，将当前分类插入总数组相应级别内
+	$tagArr[$row["tagLevel"]][] = $arrInit;
 }
-	//	print_r($tagArr);
+
+//	print_r($tagArr);
 
 
 

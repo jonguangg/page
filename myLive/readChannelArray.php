@@ -21,13 +21,16 @@ $resultChannel = mysqli_query($connect,$queryChannel);
 $channelArr = array(); //给机顶盒页面显示用的总数组	
 //$channelListArr = array();	//给后台频道列表显示用的总数组	
 
+/*
 $initGroupArr = array(//初始化单个频道组
 	"group" => "",
+	"groupLogo" => "",
 	"channel" => array()
-);
+);*/
 
-$newGroupArr = array(//单个频道组
+$newGroupArr = array(//初始化一个频道组
 	"group" => "",
+	"groupLogo" => "",
 	"channel" => array()
 );
 
@@ -42,8 +45,10 @@ $newChannelArr = array(//初始化一个频道
 //	更新js文件的频道组
 //	$currRow = 0;
 while( $rowGroup = mysqli_fetch_assoc($resultGroup) ){;
-	$newGroupArr = $initGroupArr;
+//	$newGroupArr = $initGroupArr;
 	$newGroupArr["group"] = $rowGroup["groupName"];	
+	$newGroupArr["groupLogo"] = $rowGroup["groupLogo"];	
+
 	//向总频道组添加一个频道组
 	array_push($channelArr,$newGroupArr);
 //	print_r($rowGroup);
