@@ -139,6 +139,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		function jumpToHome(){
 			getID("channel").style.display = "none";
 			getID("vod").style.display = "block";
+			navPos = 0;
 		}
 
 		var groupScrollL = 0;

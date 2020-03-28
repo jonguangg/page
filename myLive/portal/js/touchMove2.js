@@ -45,17 +45,16 @@ function touchEndFunc(evt){
 		text += '<br>'+'moveX:'+moveX+'<br>'+'moveY:'+moveY+'<br>scrollTop:'+document.body.scrollTop;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-	
 		if( navPos>-1 ){	//非直播
-			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 && startY>700){//左滑
+			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 				moveChangeTag(1);
-			}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 && startY>700){//右滑
+			}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 				moveChangeTag(-1);
 			}			
 		}else if( navPos==-1){	//直播
-			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 && startY>700){//左滑
+			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 				moveChangeGroup(1);
-			}else if( moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY-document.body.scrollTop<1600 && startY>700){//右滑
+			}else if( moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 				moveChangeGroup(-1);
 			}
 		}			
