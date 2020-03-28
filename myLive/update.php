@@ -680,10 +680,9 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var groupArr = <?php echo json_encode($groupArr); ?>; //从readGroupArray.php读取到的频道组数组，供预览使用
 	var dataArr = <?php echo json_encode($channelArr); ?>; //从readChannelArray.php读取到的频道数组，供预览使用
 	var tagArr = <?php echo json_encode($tagArr); ?>;
-	var tagNow = (tagArr[1][0])?tagArr[1][0].tagTable:"";
-
+	var tagNow = (tagArr[1][0])?tagArr[1][1].tagTable:"";
 	function showTagName() {
-		for (i = 0; i < tagArr[1].length; i++) {
+		for (i = 1; i < tagArr[1].length; i++) {
 		//	if( tagArr[1][i].tagLevel==1 ){
 				getID("sale").innerHTML += '<br><div id=' + tagArr[1][i].tagTable + ' onclick=getTagData(\'' + tagArr[1][i].tagTable + '\',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[1][i].tagName + '</div>';
 		//	}
@@ -1247,12 +1246,12 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	}
 
 	//显示节目上下架列表
-	function getTagData(tag, _pageNum, _pageSize) {
+	function getTagData(_tag1, _pageNum, _pageSize) {
 		if (getID("tag").style.display == "none") {
 			getID("tag").style.display = "block";
 		}
 		getID(tagNow).style.color = "black";
-		tagNow = tag;
+		tagNow = _tag1;
 		//	setCookie("pageNow", _pageNum, '1h');
 		//	setCookie("tagNow", tag, '1h');
 		getID(tagNow).style.color = "blue";
@@ -1260,7 +1259,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			type: 'POST',
 			url: 'readTagJson.php',
 			data: {
-				'tagNow': tag,
+				'tag1': _tag1,
 				'pageNow': _pageNum,
 				'pageSize': _pageSize
 			},

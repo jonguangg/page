@@ -2,7 +2,7 @@
 /*
 			获取栏目分类，给后台管理页面和前台导航使用
 */
-//	echo "<pre>";
+
 //	header("Content-Type:text/html;charset=utf-8");
 include "connectMysql.php";
 set_time_limit(600); //	设置超时时间
@@ -36,7 +36,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	//根据tagLevel，将当前分类插入总数组相应级别内
 	$tagArr[$row["tagLevel"]][] = $arrInit;
 }
-
+//	echo "<pre>";
 //	print_r($tagArr);
 
 

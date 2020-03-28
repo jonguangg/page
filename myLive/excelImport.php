@@ -106,8 +106,10 @@ if (stripos($fileName, "hannelList")) {
 				$sql = mysqli_query($connect, "DELETE FROM $tagTable WHERE fileName='$name' ") or die(mysqli_error($connect));
 			//	if (strpos($tagCurr, $tagArr[$j]['tagName']) > 0) { //当前行的分类内有当前匹配的分类
 				if ($excelData[0]==$tagArr[1][$j]['tagName']) { //当前行的一级分类为当前匹配的分类
+					
 					$sql = mysqli_query($connect, "select * from video where name='$name' ") or die(mysqli_error($connect));
 					if (mysqli_num_rows($sql) > 0) {	//判断video表是否有当前行的节目，否则插入失败，导致不继续插入下面的数据
+					//	echo "<script>alert('开始向 ".$tagArr[1][$j]['tagName']." 插入上架数据');</script>";
 						$sql = mysqli_query($connect, "replace into $tagTable (episode,episodes,fileName,title,region,year,director,actor,score,status,sort,tag,editor) values ('$excelData[1]','$excelData[2]','$name','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]','$excelData[9]','$excelData[10]','$excelData[11]','$tagCurr','$currUser')") or die(mysqli_error($connect));
 					}
 				}
