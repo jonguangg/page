@@ -24,22 +24,32 @@
 		if($tag2=="全部"){	//全部地区
 			if($tag3=="全部"){
 				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 order by sort ASC,editTime DESC "); 
+				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}else{
 				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
+				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}
 		}else{	//用户选择了别的地区
 			if($tag3=="全部"){	//用户选择了地区，没选标签
 				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' order by sort ASC,editTime DESC "); 
+				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}else{	//用户选择了地区和标签
 				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
+				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}			
 		}
 	}else{	//CMS后台访问
-		$query = mysqli_query($connect,"select * from $tag1 order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+		$query = mysqli_query($connect,"select * from $tag1 order by sort ASC,editTime DESC limit $startPage,$pageSize");
+		$sql  = mysqli_query($connect,"select * from $tag1 order by sort ASC,editTime DESC ");
+		$tagTotal = mysqli_num_rows($sql);		//总记录数 
 	}
 
 	//统计总记录数方法二 
-	$tagTotal = mysqli_num_rows($query);		//总记录数 
+//	$tagTotal = mysqli_num_rows($query);		//总记录数 
 	$pageAll = ceil($tagTotal/$pageSize);		//总页数  
 	if( $tagTotal==0 ){
 	//	return ;

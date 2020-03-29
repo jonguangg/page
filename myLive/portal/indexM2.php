@@ -238,7 +238,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var pageNow = 1; //第一页是1
 		var vodPageAll = 1;
 		var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
-		var navScrollL = 0;
+	//	var navScrollL = 0;
 		var playUrl = [];
 		var tag1Temp = 1;
 
@@ -253,11 +253,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("nav" + navPos).style.color = "white"; 
 			getID("nav" + navPos).style.backgroundImage = "url(img/"+tagArr[1][navPos].tagTable+"0.png)"; 
 			
-			navScrollL += (_tag1 - Math.abs(navPos)) * 100; //移动分类的位置
-			getID("vodTab1").scrollLeft = navScrollL;
 		//	tag1 = _tag1;
 		//	tag2 = _tag2;
 			navPos = _tag1;
+			getID("vodTab1").scrollLeft = ( (navPos-2)>0 )?(navPos-2)*200:0;
 			getID("nav" + navPos).style.color = "f7a333";
 			getID("nav" + navPos).style.backgroundImage = "url(img/"+tagArr[1][navPos].tagTable+"1.png)"; 			
 			if(_tag1==0){	//显示首页
@@ -277,7 +276,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("vodList"+_tag1).style.display = "block";
 			
 			pageNow = _pageNum; //当前页 
-		//	alert(tagArr[1][_tag1].tagTable+tagArr[2][_tag2].tagName+tagArr[3][_tag3].tagName);
 			$.ajax({
 				type: 'POST',
 				url: '../readTagJson.php',
@@ -316,13 +314,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				}
 			});
 		}
-/*
-		function changeTagList(_tag1) { //点击切换分类列表
-			playUrl = [];
-			getID("vodListContent"+_tag1).innerHTML = "";
-			getTagData(_tag1,0,0, 1, 20, 'mobile');
-		}
-*/
+
 		function moveChangeTag(_num) { //滑动切换分类
 			var navPosTemp = navPos;
 			navPosTemp += _num;
@@ -332,28 +324,22 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if (navPosTemp > tagArr[1].length-1) {
 				navPosTemp = tagArr[1].length-1;
 			}
-		//	if (navPosTemp == -1) {
-		//		showLiveList();
-		//	} else {
-		//		changeTagList(navPosTemp);				
-		//		playUrl = [];
-				if(navPosTemp>0){
-					getID("vodListContent"+navPosTemp).innerHTML = "";
-				}				
-				getTagData(navPosTemp,0,0, 1, 20, 'mobile');
+			if(navPosTemp>0){
+				getID("vodListContent"+navPosTemp).innerHTML = "";
+			}				
+			getTagData(navPosTemp,0,0, 1, 20, 'mobile');
 
-				getID("region"+regionTemp).style.backgroundColor = "";
-				getID("region"+regionTemp).style.color = "white";
-				getID("region0").style.color = "#ff9933";
-				getID("vodTabRegion").scrollLeft = 0;
-				regionTemp = 0;
+			getID("region"+regionTemp).style.backgroundColor = "";
+			getID("region"+regionTemp).style.color = "white";
+			getID("region0").style.color = "#ff9933";
+			getID("vodTabRegion").scrollLeft = 0;
+			regionTemp = 0;
 
-				getID("tag3_"+tag3Temp).style.backgroundColor = "";
-				getID("tag3_"+tag3Temp).style.color = "white";
-				getID("tag3_0").style.color = "#ff9933";
-				getID("vodTab3").scrollLeft = 0;
-				tag3Temp = 0;
-		//	}
+			getID("tag3_"+tag3Temp).style.backgroundColor = "";
+			getID("tag3_"+tag3Temp).style.color = "white";
+			getID("tag3_0").style.color = "#ff9933";
+			getID("vodTab3").scrollLeft = 0;
+			tag3Temp = 0;
 		}
 
 		function changePage(_num) { //VOD列表换页
@@ -361,8 +347,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if (pageNow > vodPageAll || pageNow < 1) {
 				pageNow = vodPageAll;
 			}
-		//	getTagData(navPos, pageNow, 10, "mobile");
-			console.log(navPos + "_" + pageNow);
+			getTagData(navPos,regionTemp,tag3Temp,pageNow, 20, "mobile");
 		}
 
 		function playVod(_num) {
@@ -397,10 +382,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("region"+regionTemp).style.backgroundColor = "";
 			getID("region"+regionTemp).style.color = "white";
 			getID("region0").style.color = "#ff9933";
+			getID("vodTabRegion").scrollLeft = 0;
+		//	regionTemp = 0;
+
 			getID("tag3_"+tag3Temp).style.backgroundColor = "";
 			getID("tag3_"+tag3Temp).style.color = "white";
 			getID("tag3_0").style.color = "#ff9933";
-			regionTemp = 0;
+			getID("vodTab3").scrollLeft = 0;
+		//	tag3Temp = 0;
+
 			if(_num>0){
 				getID("vodListContent"+_num).innerHTML = "";
 			}
@@ -414,20 +404,29 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("nav0").style.backgroundImage = "url(img/typeHome1.png)";
 		}
 
-		var regionScrollL = 0;
+	//	var regionScrollL = 0;
 		var regionTemp = 0;
 		function showTabList2(_num){	//点击二级地区
 			getID("vodListContent"+navPos).innerHTML = "";
-			getID("region"+regionTemp).style.backgroundColor = "";			
-			getID("region"+regionTemp).style.color = "white";
-			getID("tag3_"+tag3Temp).style.backgroundColor = "";	
-			tag3Temp = 0;		
-			getID("tag3_0").style.color = "#ff9933";
-			getID("region"+_num).style.backgroundColor = "#ff9933";
-			regionScrollL += (_num - Math.abs(regionTemp)) * 100; //移动分类的位置
-			getID("vodTabRegion").scrollLeft = regionScrollL;
+			getID("region"+regionTemp).style.backgroundColor = "";	
+			getID("region"+regionTemp).style.color = "white";	
+			getID("region"+_num).style.backgroundColor = "#ff9933";	
 			regionTemp = _num;
+
+			getID("tag3_"+tag3Temp).style.backgroundColor = "";	
+			getID("tag3_0").style.color = "#ff9933";
+			getID("vodTab3").scrollLeft = 0;
+			
+		//	tag3Temp = 0;	
+
 			getTagData(navPos,_num,0,1,20,0);
+			getID("vodTabRegion").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
+		/*	if(_num>2){
+				regionScrollL = (_num-2) * 200; //移动分类的位置
+				getID("vodTabRegion").scrollLeft = regionScrollL;
+			}else{
+				getID("vodTabRegion").scrollLeft = 0;
+			}*/
 		}
 
 		function showTabRegion(){	//显示二级地区分类
@@ -436,20 +435,26 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 		}
 
-		var tag3ScrollL = 0;
+	//	var tag3ScrollL = 0;
 		var tag3Temp = 0;
 		function showTag3List(_num){	//点击三级标签
 			getID("vodListContent"+navPos).innerHTML = "";
 			getID("region"+regionTemp).style.backgroundColor = "";			
 			getID("region"+regionTemp).style.color = "#ff9933";
+
 			getID("tag3_"+tag3Temp).style.backgroundColor = "";			
 			getID("tag3_"+tag3Temp).style.color = "white";
-			getID("tag3_"+_num).style.backgroundColor = "#ff9933";
-		//	tag3ScrollL += (_num - Math.abs(tag3Temp)) * 130; //移动分类的位置			
-			tag3ScrollL = _num* 160; //移动分类的位置
-			getID("vodTab3").scrollLeft = tag3ScrollL;
+			getID("tag3_"+_num).style.backgroundColor = "#ff9933";		
 			tag3Temp = _num;
+
 			getTagData(navPos,regionTemp,_num,1,20,0);
+			getID("vodTab3").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
+		/*	if(_num>2){
+				tag3ScrollL = (_num-2) * 200; //移动分类的位置
+				getID("vodTab3").scrollLeft = tag3ScrollL;
+			}else{
+				getID("vodTab3").scrollLeft = 0;
+			}*/
 		}
 		
 		function showTab3(){	//显示三级分类标签
@@ -472,28 +477,25 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function loadMore() { //加载下一页
 			var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
-			if (loadMoreBottom < 600 && pageNow < vodPageAll && navPos > -1 && changePageStatus == "t") { //数字越大，就越早加载下一页,600大概是最后一个图片刚显示的时候
+			
+		//	getID("test").style.display = "block";
+		//	getID("test").innerHTML = loadMoreBottom+"<br>"+pageNow;
+
+			if (loadMoreBottom < 670 && pageNow < vodPageAll && navPos > 0 && changePageStatus == "t") { //数字越大，就越早加载下一页,670大概是最后一个图片刚显示的时候
 				changePage(1);
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
 			}
-			//	getID("test").style.display = "block";
-			//	getID("test").innerHTML = loadMoreBottom+"<br>"+pageNow;
-			/*	if( pageNow == vodPageAll){
-					getID("loadmore").innerHTML = "- - - - - - the end - - - - - -";
-				}*/
+
+			if( pageNow == vodPageAll && navPos>0){
+				getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;the end&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+			}
+
 		}
 
 		function init() {
 			stbInfo();
 			var clientWidth = document.body.scrollWidth;
 			var clientHeight = window.innerHeight;			
-			
-		/*	for(i=0;i<document.getElementsByClassName("listImg").length;i++){
-				document.getElementsByClassName("listImg")[i].style.height = clientWidth*0.2*16/9+"px";
-			}
-			for(i=0;i<document.getElementsByClassName("listName").top;i++){
-				document.getElementsByClassName("listName")[i].style.height = (clientWidth*0.2*16/9+5)+"px";
-			}*/
 
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
 			getID("splash").style.height = clientHeight + "px"; 
@@ -514,7 +516,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" onScroll="moveVideoWindow();">
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
-	<div id="test" style="position:fixed;top:1000px;left:0px;width:100%;height:200px;z-index:20;background-color:white;font-size:100px;display:none;"></div>
+	<div id="test" style="position:fixed;top:150px;left:0px;width:100%;height:200px;z-index:20;background-color:white;font-size:100px;color:red;display:none;"></div>
 	<!--非直播 -->
 	<div id="vod" style="display:block;">
 		<!-- 顶部图标 -->
@@ -587,31 +589,31 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				<!--div id="vodListImg0" class="vodListImg" onClick="playVod(0);" ></div>
 				<div id="vodListName0" class="vodListName"></div-->
 			</div>
-			<div id="loadmore" class="vodListName" style="height:200px;"></div><br><br>
+			<div id="loadmore1" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 电视剧 列表 -->
 		<div id="vodList2" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
 			<div id="vodListContent2">			</div>
-			<div id="loadmore" class="vodListName" style="height:200px;"></div><br><br>
+			<div id="loadmore2" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 综艺 列表 -->
 		<div id="vodList3" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
 			<div id="vodListContent3">			</div>
-			<div id="loadmore" class="vodListName" style="height:200px;"></div><br><br>
+			<div id="loadmore3" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 动漫 列表 -->
 		<div id="vodList4" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
 			<div id="vodListContent4">			</div>
-			<div id="loadmore" class="vodListName" style="height:200px;"></div><br><br>
+			<div id="loadmore4" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 纪录片 列表 -->
 		<div id="vodList5" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
 			<div id="vodListContent5">			</div>
-			<div id="loadmore" class="vodListName" style="height:200px;"></div><br><br>
+			<div id="loadmore5" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 	</div><!-- 点播尾 -->
@@ -658,7 +660,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<div class="lockNumR" style="left:33.3%;top:50%;" onClick="checkPin(8);">8</div>
 			<div class="lockNum" style="left:66.6%;top:50%;" onClick="checkPin(9);">9</div>
 
-			<div class="lockNumR" style="left:0px;top:75%;font-size:90px;" onClick="checkPin(10);">Alter</div>
+			<div class="lockNumR" style="left:0px;top:75%;font-size:90px;" onClick="checkPin(10);">Alt</div>
 			<div class="lockNumR" style="left:33.3%;top:75%;" onClick="checkPin(0);">0</div>
 			<div class="lockNum" style="left:66.6%;top:75%;font-size:90px;" onClick="checkPin(11);">Del</div>
 		</div>
