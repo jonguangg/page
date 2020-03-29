@@ -267,6 +267,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					getID("vodListContent"+i).innerHTML = "";
 				}
 				getID("vodList0").style.display = "block";
+				getID("vodList0").style.left = "0px";
 				return;
 			}else{
 				getID("vodTab").style.display = "block";
@@ -275,6 +276,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("vodList"+tag1Temp).style.display = "none";
 			tag1Temp = _tag1;			
 			getID("vodList"+_tag1).style.display = "block";
+			getID("vodList"+_tag1).style.left = "0px";
 			
 			pageNow = _pageNum; //当前页 
 			$.ajax({
@@ -487,9 +489,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
 			}
 
-			if( pageNow == vodPageAll && navPos>0){
-				getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;the end&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-			}
+		//	if( pageNow == vodPageAll && navPos>0){
+		//		getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;the end&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+		//	}
 
 		}
 
@@ -524,6 +526,16 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
 		}
+
+		function showSearchInput(){
+			if( parseInt(getID('searchLogo').style.top) < 0 ){
+				getID('searchLogo').style.top='110px';
+				getID('searchLogo').focus();
+				window.androidJs.JsShowImm();
+			}else{
+				alert(getID('searchLogo').value );
+			}
+		}
 	</script>
 </head>
 
@@ -534,9 +546,14 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<div id="vod" style="display:block;">
 		<!-- 顶部图标 -->
 		<div style="position:fixed;width:100%;height:450px;background-color:#000;z-index:1;"></div>
-		<div style="position:fixed;top:100px;left:50px;width:1000px;height:100px;line-height:100px; background:url(img/vip.png) no-repeat;background-size:10% 100% !important; background-color:#000;padding-left:150px;z-index:1;">Mix TV</div>	
-		<div class="homeTop" style="top:110px;right:50px;width:500px;height:80px;line-height:80px;border-radius:50px 50px 50px 50px;background-color:rgba(255,255,255,0.8);font-size:50px;padding-left:20px;">冰雪奇缘2</div>
-		<div style="position:fixed;top:110px;right:70px;width:80px;height:80px;z-index:1;"><img src="img/search.png" /></div>
+
+		<div style="position:fixed;top:100px;left:50px;width:200px;height:100px;line-height:100px; background:url(img/vip.png) no-repeat;background-size:35% 100% !important; background-color:#000;color:white;font-size:50px;padding-left:150px;z-index:1;" onclick="showMe();">Mix TV</div>
+
+		<!--div class="homeTop" id="searchLogo" style="top:-90px;left:400px;width:500px;height:80px;line-height:80px;background-color:rgba(255,255,255,0.5);border-radius:50px 50px 50px 50px;font-size:50px;padding-left:20px;-webkit-transition: 0.6s" >请输入搜索关键字</div-->
+
+		<input type="text" id="searchLogo" class="homeTop" style="left:400px;top:-90px;width:400px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
+
+		<div style="position:fixed;top:112px;left:820px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/search.png" /></div>
 
 		<!-- 首页分类导航栏 -->
 		<div class="homeTop" style="top:250px;left:0px;width:95%;">
@@ -558,7 +575,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 			<!-- 首页 电影入口 -->
 			<div id="homeList0" class="homeListTitle" style="top:550px;background:url(img/typeMovie0.png) no-repeat;">热播电影
-				<span style="position:relative;left:94%;" onclick="showMore();">更多</span>
+				<span style="position:relative;left:94%;" onclick="showTabList1(1);">更多</span>
 			</div>
 			<div id="homeListContent0" style="position:absolute;left:0%;top:700px;width:100%;">
 				<!--div id="homeListImg0" class="listImg" style="background: url(img/poster.jpg)">
@@ -568,19 +585,19 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 			<!-- 首页 电视剧入口 -->
 			<div id="homeList1" class="homeListTitle" style="top:1100px;background:url(img/typeSeries0.png) no-repeat;">热播剧集
-				<span style="position:relative;left:94%;" onclick="showMore();">更多</span>
+				<span style="position:relative;left:94%;" onclick="showTabList1(2);">更多</span>
 			</div>
 			<div id="homeListContent1" style="position:absolute;left:0%;top:1250px;width:100%;">		</div>
 
 			<!-- 首页 综艺入口 -->
 			<div id="homeList2" class="homeListTitle" style="top:1650px;background:url(img/typeVariety0.png) no-repeat;">热播综艺
-				<span style="position:relative;left:94%;" onclick="showMore();">更多</span>
+				<span style="position:relative;left:94%;" onclick="showTabList1(3);">更多</span>
 			</div>
 			<div id="homeListContent2" style="position:absolute;left:0%;top:1800px;width:100%;">		</div>
 
 			<!-- 首页 动漫入口 -->
 			<div id="homeList3" class="homeListTitle" style="top:2200px;background:url(img/typeCartoon0.png) no-repeat;">热播动漫
-				<span style="position:relative;left:94%;" onclick="showMore();">更多</span>
+				<span style="position:relative;left:94%;" onclick="showTabList1(4);">更多</span>
 			</div>
 			<div id="homeListContent3" style="position:absolute;left:0%;top:2350px;width:100%;">		</div>
 		
