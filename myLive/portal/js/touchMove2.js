@@ -30,6 +30,9 @@ function touchMoveFunc(evt){
 	//	var text = 'TouchMove事件触发:<br>' +'endX:'+endX + '<br>' +'endY:'+ endY+'<br>moveX:'+moveX+'<br>moveY:'+moveY;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
+		if(moveX<0 && startY>1050 && navPos<tagArr[1].length ){	//只能向左移
+			document.getElementById("vodList"+navPos).style.left = moveX+"px";
+		}
 	}
 	catch(e){
 		alert('touchMoveFunc：' + e.message);
@@ -59,13 +62,17 @@ function touchEndFunc(evt){
 			}
 		}			
 		
-		if( moveY < -10 && Math.abs(moveX)<Math.abs(moveY) ){
+		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){
 	//		text += '<br/>向上滑动';
 			loadMore();
 		}
 		
 		if( moveY > 200 && Math.abs(moveX)<Math.abs(moveY) ){
 	//		text += '<br/>向下滑动';
+		}
+		
+		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面
+			document.getElementById("vodList"+navPos).style.left = "0px";	
 		}
 
 

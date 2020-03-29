@@ -266,11 +266,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					getID("vodList"+i).style.display = "none";
 					getID("vodListContent"+i).innerHTML = "";
 				}
-				getID("homeList").style.display = "block";
+				getID("vodList0").style.display = "block";
 				return;
 			}else{
 				getID("vodTab").style.display = "block";
-				getID("homeList").style.display = "none";
+				getID("vodList0").style.display = "none";
 			}
 			getID("vodList"+tag1Temp).style.display = "none";
 			tag1Temp = _tag1;			
@@ -497,10 +497,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			var splashArr = <?php echo json_encode($splashArr); ?>;	
 			var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
 			splashIndex ++;
-			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
 			if( splashIndex > splashArr.length-1 ){
 				splashIndex = 0;
 			}
+			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
 			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
 		}
 
@@ -512,8 +512,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			var clientHeight = window.innerHeight;			
 
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
-			getID("splash").style.height = clientHeight + "px"; 
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
+			getID("splash").style.height = clientHeight + "px"; 
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高	
 
 			scrollDisable();		//禁止页面滚动	
@@ -547,7 +547,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		</div>
 
 		<!-- 首页列表 -->
-		<div id="homeList" style="position: absolute;left:0%;top:450px;width:100%;display:block;">
+		<div id="vodList0" style="position: absolute;left:0%;top:450px;width:100%;display:block;">
 			<!-- 首页 直播入口 -->
 			<div class="homeListTitle" style="top:50px;background:url(img/typeLive0.png) no-repeat;">直播频道</div>	
 			<div id="historyCollect" style="position:absolute;left:0%;top:200px;width:100%;">			
@@ -573,13 +573,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<div id="homeListContent1" style="position:absolute;left:0%;top:1250px;width:100%;">		</div>
 
 			<!-- 首页 综艺入口 -->
-			<div id="homeList2" class="homeListTitle" style="top:1650px;background:url(img/typeSeries0.png) no-repeat;">热播综艺
+			<div id="homeList2" class="homeListTitle" style="top:1650px;background:url(img/typeVariety0.png) no-repeat;">热播综艺
 				<span style="position:relative;left:94%;" onclick="showMore();">更多</span>
 			</div>
 			<div id="homeListContent2" style="position:absolute;left:0%;top:1800px;width:100%;">		</div>
 
 			<!-- 首页 动漫入口 -->
-			<div id="homeList3" class="homeListTitle" style="top:2200px;background:url(img/typeSeries0.png) no-repeat;">热播动漫
+			<div id="homeList3" class="homeListTitle" style="top:2200px;background:url(img/typeCartoon0.png) no-repeat;">热播动漫
 				<span style="position:relative;left:94%;" onclick="showMore();">更多</span>
 			</div>
 			<div id="homeListContent3" style="position:absolute;left:0%;top:2350px;width:100%;">		</div>
@@ -685,13 +685,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		<div style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
 		<!-- 卡号输入框 -->
-		<input type="number" id="card_id" style="position:absolute;left:5%;top:21%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;" maxlength="8" oninput="onInputHandler(event,'card_id')" autofocus="autofocus" onkeyup="value=value.replace(/[^-\d]/g,'')" />
+		<input type="number" id="card_id" style="position:absolute;left:5%;top:21%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:black;" maxlength="8" oninput="onInputHandler(event,'card_id')" autofocus="autofocus" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
 		<div style="position:absolute;left:40%;top:21%;width:50%;height:100px;" onClick="window.androidJs.JsShowImm();getID('card_id').focus();"></div>
 
 		<div style="position:absolute;left:5%;top:30%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">PIN Code</div>
 		<!-- 卡密输入框 -->
-		<input type="number" id="card_key" style="position:absolute;left:5%;top:35%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;" maxlength="8" oninput="onInputHandler(event,'card_key')" onkeyup="value=value.replace(/[^-\d]/g,'')" />
+		<input type="number" id="card_key" style="position:absolute;left:5%;top:35%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:black;" maxlength="8" oninput="onInputHandler(event,'card_key')" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
 		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="window.androidJs.JsShowImm();getID('card_key').focus();"></div>
 
@@ -699,11 +699,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
 
-		<div id="img" style="position:absolute;left:5%;top:60%;width:90%;height:35%;background:url(vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
+		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 
-		<div id="exp" style="position:absolute;left:13%;top:65%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
+		<div id="exp" style="position:absolute;left:13%;top:63%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
 
-		<div id="msg" style="position:absolute;left:5%;top:60%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;"></div>
+		<div id="msg" style="position:absolute;left:5%;top:58%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;"></div>
 	</div>
 
 	<!-- 启动图片 -->

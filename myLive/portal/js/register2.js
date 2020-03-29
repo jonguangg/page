@@ -46,7 +46,7 @@
 					} else { //密码正确就隐藏解锁界面并显示点播列表
 						indexArea = "live";
 						getID("lock").style.display = "none";
-						getID("homeList").style.display = "block";
+						getID("vodList0").style.display = "block";
 						var clientWidth = document.body.scrollWidth;
 						scrollEnable();
 					}
