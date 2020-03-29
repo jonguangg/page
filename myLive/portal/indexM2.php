@@ -6,6 +6,7 @@
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 
 <?php
+include_once "readSplash.php";
 include_once "../connectMysql.php";
 //	include_once "../readStbArray.php";
 include_once "../readChannelArray.php";
@@ -492,23 +493,35 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		}
 
+		function showSplash(){
+			var splashArr = <?php echo json_encode($splashArr); ?>;	
+			var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
+			splashIndex ++;
+			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
+			if( splashIndex > splashArr.length-1 ){
+				splashIndex = 0;
+			}
+			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
+		}
+
 		function init() {
-			stbInfo();
+			showSplash();
+			stbInfo();			
+			startCircle();	//右上角跳过圆圈
 			var clientWidth = document.body.scrollWidth;
 			var clientHeight = window.innerHeight;			
 
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
 			getID("splash").style.height = clientHeight + "px"; 
-			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
-			startCircle();//右上角跳过圆圈
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高	
-			scrollDisable();	//禁止页面滚动	
-			bindEvent();	//绑定滑动事件
+
+			scrollDisable();		//禁止页面滚动	
+			bindEvent();		//绑定滑动事件
 			showTab1();				//显示一级分类
-			showTabRegion(); 		//显示地区导航
+			showTabRegion(); 	//显示地区导航
 			showTab3(); 			//显示分类标签
-			showHomeLiveGroup();	//显示首页直播分组入口
+			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
 		}
 	</script>
