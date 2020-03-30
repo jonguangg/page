@@ -30,8 +30,12 @@ function touchMoveFunc(evt){
 	//	var text = 'TouchMove事件触发:<br>' +'endX:'+endX + '<br>' +'endY:'+ endY+'<br>moveX:'+moveX+'<br>moveY:'+moveY;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-		if(moveX<0 && startY>1050 && navPos<tagArr[1].length ){	//只能向左移
-			document.getElementById("vodList"+navPos).style.left = moveX+"px";
+		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>1050 && navPos<tagArr[1].length ){	//只能向左移
+			if(navPos==-1){
+				document.getElementById("channel").style.left = moveX+"px";
+			}else{
+				document.getElementById("vodList"+navPos).style.left = moveX+"px";
+			}			
 		}
 	}
 	catch(e){
@@ -72,7 +76,11 @@ function touchEndFunc(evt){
 		}
 		
 		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面
-			document.getElementById("vodList"+navPos).style.left = "0px";	
+			if(navPos==-1){
+				document.getElementById("channel").style.left = "0px";	
+			}else{
+				document.getElementById("vodList"+navPos).style.left = "0px";
+			}			
 		}
 
 
