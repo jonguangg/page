@@ -1,4 +1,3 @@
-
 	function imOnLine() { //上报在线状态
 		var now = new Date(); //此时此刻
 		var sec = now.getSeconds(); //此时的秒
@@ -113,15 +112,26 @@
 		return sn;
 	}
 
-	//延时3秒钟检查授权日期 同时启动上报在线状态的定时器
+	//延时检查授权日期 同时启动上报在线状态的定时器
 	setTimeout(function() {
 		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 		imOnLine();
-		getID("splash").style.display = "none";
-		if( indexArea=="lock"){//不加这个，用户点跳过后，还会弹出锁定界面
-			getID('lock').style.display = 'block';
-		}		
-	}, 500);
+	//	getID("splash").style.display = "none";
+	//	if( indexArea=="lock"){//不加这个，用户点跳过后，还会弹出锁定界面
+	//		getID('lock').style.display = 'block';
+	//	}
+		splashJump();
+	}, 5000);
+
+	function splashJump(){
+		getID('splash').style.display='none';
+		if(indexArea=="lock"){	//如果设置了启动默认锁定		
+			getID('lock').style.display='block';
+		}else{					//如果没设启动默认锁定，则启动后就进入首页
+			getID("vodList0").style.display = "block";
+			scrollEnable();
+		}
+	}
 
 	var mo = function(e) {
 		e.preventDefault();

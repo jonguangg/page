@@ -105,17 +105,17 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 		var groupId = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("groupId", 0)) : 0;
 		var channelPagePos = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("channelPagePos", 0)) : 0;
-		var channelPageAll = parseInt((channelCount - 1 + 10) / 10);
 		var channelPos = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("channelPos", 0)) : 0;
+		var channelCount = 0;
+		var channelPageAll = parseInt((channelCount - 1 + 10) / 10);
+	//	var channelPagePosTemp = 0;
+	//	var channelPosTemp = channelPos;
+		var channelArr = [];
 		var videoUrlCookie = 0; //( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?channelDataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
 		//	要在浏览器测试，需将这行上1个设为0
 
 		var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-		var channelCount = 0;
-		var channelPagePosTemp = 0;
-		var channelPosTemp = channelPos;
-		var channelArr = [];
-		var indexArea = "lock" //打开应用后默认为锁定状态
+		var indexArea = "home" //打开应用后默认为锁定状态
 		var navPos = 0; //当前分类 0为home 1为movie
 
 		for (i = 0; i < channelDataArr.length; i++) { //合并所有频道为一个数组，便于显示所有频道和跳转
@@ -137,7 +137,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			groupStartArr.push(groupStart);
 		}
 
-		function jumpToHome(){
+		function jumpToHome(){	//供返回键调用
 			getID("channel").style.display = "none";
 			getID("vod").style.display = "block";
 			navPos = 0;
@@ -544,19 +544,21 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
 	<div id="test" style="position:fixed;top:150px;left:0px;width:100%;height:200px;z-index:20;background-color:white;font-size:100px;color:red;display:none;"></div>
 	<!--非直播 -->
-	<div id="vod" style="display:block;">
-		<!-- 顶部图标 -->
+	<div id="vod" style="position:absolute;left:0px;width:100%;display:block;">
+		<!-- 顶部黑底 -->
 		<div style="position:fixed;width:100%;height:450px;background-color:#000;z-index:1;"></div>
-
-		<div style="position:fixed;top:100px;left:50px;width:200px;height:100px;line-height:100px; background:url(img/vip.png) no-repeat;background-size:35% 100% !important; background-color:#000;color:white;font-size:50px;padding-left:150px;z-index:1;" onclick="showMe();">Mix TV</div>
+		<!-- 右上角头像 -->
+		<div style="position:fixed;top:100px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:50px;padding-left:130px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!--div class="homeTop" id="searchLogo" style="top:-90px;left:400px;width:500px;height:80px;line-height:80px;background-color:rgba(255,255,255,0.5);border-radius:50px 50px 50px 50px;font-size:50px;padding-left:20px;-webkit-transition: 0.6s" >请输入搜索关键字</div-->
 
-		<input type="text" id="searchLogo" class="homeTop" style="left:400px;top:-90px;width:400px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
+		<!-- 搜索框 -->
+		<input type="text" id="searchLogo" class="homeTop" style="left:370px;top:-90px;width:400px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
 
-		<div style="position:fixed;top:112px;left:820px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/search.png" /></div>
+		<!-- 搜索图标 -->
+		<div style="position:fixed;top:115px;left:785px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/search.png" /></div>
 
-		<!-- 首页分类导航栏 -->
+		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:250px;left:0px;width:95%;">
 			<ul id="vodTab1" class="tab-head">
 				<!--li class="tab-tab1-item" id="nav0" onClick="showHome();" style="background: url(img/typeHome1.png)">首页</li-->
@@ -665,7 +667,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				<div id="channel0" class="channel"></div>
 			</div-->
 		</div>
-	</div>
+	</div><!-- 直播频道尾 -->
 
 	<!-- 解锁界面 -->
 	<div id="lock" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background-color:#f7a333;display:none;text-align:center;font-size:80px;color:white; z-index:9;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);">
@@ -726,7 +728,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 启动图片 -->
 	<div id="splash" style="position: absolute;left:0px;top:0px;width:1080px;height:1920px;background:url(null.png);background-size:100% 100%;display:block;z-index:99;">	
-		<div onclick="getID('splash').style.display='none';getID('lock').style.display='block';" style="position: absolute;right:100px;">
+		<div onclick="splashJump()" style="position: absolute;right:100px;">
 			<div class="flex-container" >
 				<div class="outbox" id="splashJump">跳过</div>
 				<svg class="svg">
