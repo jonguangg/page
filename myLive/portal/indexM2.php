@@ -209,7 +209,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("channels").innerHTML = "";
 			getID("channel").style.left = "0px";
 			for (i = 0; i < channelTempArr.length; i++) {
-				getID("channels").innerHTML += '<div id=channels' + i + ' class="channels" onClick=startLive(' + i + ');><div id=channelId' + i + ' class="channelID" ><img class="liveListImg" src=live/'+(groupStartArr[groupId]+i)+'.jpg /><div class="liveLine" ></div></div><div id=channel' + i + ' class="channel"></div></div>';
+				getID("channels").innerHTML += '<div id=channels' + i + ' class="channels" onClick=startLive(' + i + ');><div id=channelId' + i + ' class="channelID" ><img class="liveListImg" src=live/'+channelTempArr[i].channelLogo+' /><div class="liveLine" ></div></div><div id=channel' + i + ' class="channel"></div></div>';
 				getID('channel' + i).innerText = channelTempArr[i].name.slice(0, 50);
 			}
 		}
@@ -360,11 +360,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				window.androidJs.JsPlayVod(playUrls);
 				window.androidJs.JsMovePlayerWindow(0); //每次点播将视频置顶
 			}
+			window.androidJs.JsGetPageArea("vod");
 		}
 
 		function showHomeLiveGroup(){	//显示首页直播分组入口
 			for(i=0;i<channelDataArr.length;i++){
-				getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id="homeLiveGroup"'+i+' onClick="showLiveList('+i+');" style="background:url(img/'+channelDataArr[i]["groupLogo"]+')"><div class="tab-homeLive-groupName">'+channelDataArr[i]["group"]+'</div></div>'
+				getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id="homeLiveGroup"'+i+' onClick="showLiveList('+i+');" style="background:url(live/'+channelDataArr[i]["groupLogo"]+')"><div class="tab-homeLive-groupName">'+channelDataArr[i]["group"]+'</div></div>'
 			}
 		}
 

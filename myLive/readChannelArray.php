@@ -40,6 +40,7 @@ $newChannelArr = array(//初始化一个频道
 	"channelId" => 1,
 	"name" => "",
 	"videoUrl" => "",
+	"channelLogo" => "",
 );
 
 //	更新js文件的频道组
@@ -61,6 +62,7 @@ while( $rowChannel = mysqli_fetch_assoc($resultChannel) ){
 	$newChannelArr["channelId"] = $rowChannel["channelId"];
 	$newChannelArr["name"] = $rowChannel["channelName"];
 	$newChannelArr["videoUrl"] = $rowChannel["videoUrl"];
+	$newChannelArr["channelLogo"] = $rowChannel["channelLogo"];
 	//向频道组中添加一个频道
 	if( $rowChannel["groupId"] < count($channelArr)  ){	//加这个判断是解决在后台页面上删除了组,但数据库内还有该组的数据,预览就会报错
 		array_push($channelArr[ $rowChannel["groupId"] ]["channel"],$newChannelArr);
