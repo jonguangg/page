@@ -45,8 +45,9 @@ if (stripos($fileName, "hannelList")) {
 		//	echo "<pre>";
 		//	print_r($excelData);//	输出临时数组显示当前行的内容，实际项目中应该写入数据库	
 		if ($i > 1) { //如果没有表头就用0
-			$sql = mysqli_query($connect, "replace into groups(groupId,groupName) values ($excelData[0],'$excelData[1]')") or die(mysqli_error());
-			$sql = mysqli_query($connect, "replace into channel(groupId,groupName,channelId,channelName,videoUrl) values ($excelData[0],'$excelData[1]',$excelData[2],'$excelData[3]','$excelData[4]')") or die(mysqli_error());
+			$sql = mysqli_query($connect, "replace into groups(groupId,groupName,groupLogo) values ($excelData[0],'$excelData[1]', '$excelData[2]')  ") or die(mysqli_error());
+
+			$sql = mysqli_query($connect, "replace into channel(groupId,groupName,channelId,channelName,videoUrl,channelLogo) values ($excelData[0],'$excelData[1]',$excelData[3],'$excelData[4]','$excelData[5]','$excelData[6]')") or die(mysqli_error());
 		}
 	}
 
