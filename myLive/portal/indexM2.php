@@ -1,7 +1,6 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/init2.js"></script>
 <script type=text/javascript src="js/register2.js"></script>
-<!--script-- type=text/javascript src="js/showHome.js"></!--script-->
 <script type=text/javascript src="js/touchMove2.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 
@@ -115,11 +114,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	//	var channelPosTemp = channelPos;
 		var channelArr = [];
 		var videoUrlCookie = 0; //( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?channelDataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
-		//	要在浏览器测试，需将这行上1个设为0
 
 		var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
 		var indexArea = "home" //打开应用后默认为锁定状态
-		var navPos = 0; //当前分类 0为home 1为movie
+		var navPos = 0; //当前分类 0为home 1为movie -1为直播
 
 		for (i = 0; i < channelDataArr.length; i++) { //合并所有频道为一个数组，便于显示所有频道和跳转
 			channelArr = channelArr.concat(channelDataArr[i].channel);
@@ -161,11 +159,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("channel").style.display = "block";
 			getID("channel" + channelPos).style.color = "#f7a333";
 			getID("channelId" + channelPos).style.color = "#f7a333";
-		//	getID('nav' + navPos).style.color = "white"; //'#081925';
-		//	getID('nav' + navPos).style.fontSize = '60px';
-		//	navPos = 1;
-		//	getID('nav1').style.color = 'f7a333';
-		//	getID("nav1").style.fontSize = "70px";
+
 			getID("group").style.top = (clientWidth * 9 / 16 - 1) + "px"; //频道组
 			getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px"; //频道列表
 			if (typeof(window.androidJs) != "undefined") {
@@ -197,15 +191,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("group" + groupId).style.color = "#f7a333";
 			channelTempArr = [];
 			channelTempArr = (groupId == -1) ? channelArr : channelTempArr.concat(channelDataArr[groupId].channel);
-	/*		if (groupId > -1) {	//不显示所有频道就不要这段
-				for (i = 0; i < channelTempArr.length; i++) { //改写频道号 
-				//	channelTempArr[i].channelId = groupStartArr[groupId] + i;
-				}
-			} else {
-				for (i = 0; i < channelArr.length; i++) { //改写频道号  
-				//	channelArr[i].channelId = i + 1;
-				}
-			}*/
 			channelCount = channelTempArr.length;
 			channelPageAll = parseInt((channelCount - 1 + 10) / 10);
 			scrollTo(0, 0);
@@ -238,17 +223,16 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 	
 		//	显示分类列表
+		var tag1 = 0;	//一级分类，即电影 电视剧……
 		var tag2 = 0;	//二级分类，即地区
 		var tag3 = 0;	//三级分类，即爱情、动作、喜剧之类的分类标签
 		var pageNow = 1; //第一页是1
 		var vodPageAll = 1;
 		var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
-	//	var navScrollL = 0;
-		var playUrl = [];
-		var tag1Temp = 1;
+		var listArrTemp = [];
 
 		function getTagData(_tag1, _tag2,_tag3,_pageNum, _pageSize, _mobile) {
-			if (navPos < 0) { //从直播切换到点播
+			if (navPos < 0) { 	//从直播切换到点播
 				getID("vod").style.display = "block";
 				getID("channel").style.display = "none";
 				if (typeof(window.androidJs) != "undefined") {
@@ -257,9 +241,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 			getID("nav" + navPos).style.color = "white"; 
 			getID("nav" + navPos).style.backgroundImage = "url(img/"+tagArr[1][navPos].tagTable+"0.png)"; 
-			
-		//	tag1 = _tag1;
-		//	tag2 = _tag2;
+
 			navPos = _tag1;
 			getID("vodTab1").scrollLeft = ( (navPos-2)>0 )?(navPos-2)*200:0;
 			getID("nav" + navPos).style.color = "f7a333";
@@ -277,19 +259,18 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				getID("vodTab").style.display = "block";
 				getID("vodList0").style.display = "none";
 			}
-			getID("vodList"+tag1Temp).style.display = "none";
-			tag1Temp = _tag1;			
-			getID("vodList"+_tag1).style.display = "block";
-			getID("vodList"+_tag1).style.left = "0px";
 			
-			pageNow = _pageNum; //当前页 
+			pageNow = _pageNum; //当前页 	
+			getID("vodList"+_tag1).style.display = "block";
+		//	getID("vodList"+_tag1).style.left = "0px";
+
 			$.ajax({
 				type: 'POST',
 				url: '../readTagJson.php',
 				data: {
-					'tag1': tagArr[1][_tag1].tagTable,
-					'tag2': tagArr[2][_tag2].tagName,
-					'tag3': tagArr[3][_tag3].tagName,
+					'tag1': tagArr[1][_tag1].tagName,
+					'tag2': tag2ArrTemp[tag2],
+					'tag3': tag3ArrTemp[tag3],
 					'pageNow': _pageNum,
 					'pageSize': _pageSize,
 					'mobile': "mobile",
@@ -303,14 +284,17 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					vodPageAll = json.pageAll;
 					$.each(list,
 						function(index, array) { //遍历json数据列
-							var name = array['fileName'].slice(array['fileName'].lastIndexOf('/') + 1);
-							var title = array['title'];
+							var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
+							var father = array['father'];
+						//	listArrTemp.push(father);
 							name = name.slice(0, name.length - 4);
-							if( title.length > 4){
-								title = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+title +'</marquee>';
+							if( father.length > 4){
+								var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+title +'</marquee>';
+							}else{
+								var father2 = father;
 							}
-							playUrl.push(name);
-							getID("vodListContent"+_tag1).innerHTML += '<div id=homeListImg'+index+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=location.href="http://tenstar.synology.me:10025/myLive/vod/' +name + '/index.m3u8"><div class="listName">'+title+'</div></div>';
+						//	listArrTemp.push(name);
+							getID("vodListContent"+_tag1).innerHTML += '<div id=homeListImg'+index+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
 						});
 					setTimeout(function() {
 						changePageStatus = "t";
@@ -323,30 +307,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function moveChangeTag(_num) { //滑动切换分类
-			var navPosTemp = navPos;
-			navPosTemp += _num;
-			if (navPosTemp < 0) {
-				navPosTemp = 0;
+			var tag1Temp = navPos;
+			tag1Temp += _num;
+			if (tag1Temp < 0) {
+				tag1Temp = 0;
 			}
-			if (navPosTemp > tagArr[1].length-1) {
-				navPosTemp = tagArr[1].length-1;
-			}
-			if(navPosTemp>0){
-				getID("vodListContent"+navPosTemp).innerHTML = "";
+			if (tag1Temp > tagArr[1].length-1) {
+				tag1Temp = tagArr[1].length-1;
 			}				
-			getTagData(navPosTemp,0,0, 1, 20, 'mobile');
-
-			getID("region"+regionTemp).style.backgroundColor = "";
-			getID("region"+regionTemp).style.color = "white";
-			getID("region0").style.color = "#ff9933";
-			getID("vodTabRegion").scrollLeft = 0;
-			regionTemp = 0;
-
-			getID("tag3_"+tag3Temp).style.backgroundColor = "";
-			getID("tag3_"+tag3Temp).style.color = "white";
-			getID("tag3_0").style.color = "#ff9933";
-			getID("vodTab3").scrollLeft = 0;
-			tag3Temp = 0;
+			showTabList1(tag1Temp);
 		}
 
 		function changePage(_num) { //VOD列表换页
@@ -354,11 +323,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if (pageNow > vodPageAll || pageNow < 1) {
 				pageNow = vodPageAll;
 			}
-			getTagData(navPos,regionTemp,tag3Temp,pageNow, 20, "mobile");
+			getTagData(navPos,tag2,tag3,pageNow, 20, "mobile");
 		}
 
 		function playVod(_num) {
-			var playUrls = "http://tenstar.synology.me:10025/myLive/vod/" + playUrl[_num] + "/index.m3u8";
+			var playUrls = "http://tenstar.synology.me:10025/myLive/vod/" + listArrTemp[_num] + "/index.m3u8";
 			if (typeof(window.androidJs) != "undefined") {
 				window.androidJs.JsPlayVod(playUrls);
 				window.androidJs.JsMovePlayerWindow(0); //每次点播将视频置顶
@@ -375,100 +344,105 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		function showHomeList(){
 			for(i=0;i<4;i++){
 				for(j=0;j<4;j++){
-					var name = homeArr4[i*4+j].fileName.slice(0, homeArr4[i*4+j].fileName.length - 4);
+					var name = homeArr4[i*4+j].name.slice(0, homeArr4[i*4+j].name.length - 4);
 					var homeListIndex = i*4+j;
-					var title = homeArr4[i*4+j].title;
-					if( title.length > 4){
-						title = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+title +'</marquee>';
+					var father = homeArr4[i*4+j].father;
+				//	listArrTemp.push(father);
+					if( father.length > 4){
+						var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
+					}else{
+						var father2 = father;
 					}
-					getID('homeListContent'+i).innerHTML += '<div id=homeListImg'+homeListIndex+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=location.href="http://tenstar.synology.me:10025/myLive/vod/' +name + '/index.m3u8"><div class="listName">'+title+'</div></div>';
+					getID('homeListContent'+i).innerHTML += '<div id=homeListImg'+homeListIndex+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
 				}
 			}
 		}
 
-		function showTabList1(_num){	//点击一级分类
-			getID("region"+regionTemp).style.backgroundColor = "";
-			getID("region"+regionTemp).style.color = "white";
-			getID("region0").style.color = "#ff9933";
-			getID("vodTabRegion").scrollLeft = 0;
-		//	regionTemp = 0;
-
-			getID("tag3_"+tag3Temp).style.backgroundColor = "";
-			getID("tag3_"+tag3Temp).style.color = "white";
-			getID("tag3_0").style.color = "#ff9933";
-			getID("vodTab3").scrollLeft = 0;
-		//	tag3Temp = 0;
-
-			if(_num>0){
-				getID("vodListContent"+_num).innerHTML = "";
-			}
-			getTagData(_num,0,0,1,20,0);
+		function showTabList1(_tag1){	//点击一级分类
+			if(tag1>0){
+				getID("vodListContent"+tag1).innerHTML = "";
+			}			
+			tag1 = _tag1;
+			showTabRegion();	//动态显示二级地区分类
+			listArrTemp = [];
+			getTagData(_tag1,0,0,1,20,0);	//显示海报列表
 		}
 
-		function showTab1(){	//显示一级影视类型		
+		function showTab1(){	//启动APP时根据后台数据动态显示一级影视类型		
 			for(i=0;i<tagArr[1].length;i++){
 				getID('vodTab1').innerHTML += '<li class="tab-tab1-item" id=nav'+i+' onClick="showTabList1('+i+')" style="background:url(img/'+tagArr[1][i].tagTable+'0.png)" >'+tagArr[1][i].tagName+'</li>';
 			}
 			getID("nav0").style.backgroundImage = "url(img/typeHome1.png)";
 		}
 
-	//	var regionScrollL = 0;
-		var regionTemp = 0;
 		function showTabList2(_num){	//点击二级地区
 			getID("vodListContent"+navPos).innerHTML = "";
-			getID("region"+regionTemp).style.backgroundColor = "";	
-			getID("region"+regionTemp).style.color = "white";	
-			getID("region"+_num).style.backgroundColor = "#ff9933";	
-			regionTemp = _num;
+			getID("region"+tag2).style.backgroundColor = "";	
+			getID("region"+tag2).style.color = "white";		
+			tag2 = _num;
+			getID("region"+tag2).style.backgroundColor = "#ff9933";
 
-			getID("tag3_"+tag3Temp).style.backgroundColor = "";	
-			getID("tag3_0").style.color = "#ff9933";
-			getID("vodTab3").scrollLeft = 0;
-			
-		//	tag3Temp = 0;	
-
-			getTagData(navPos,_num,0,1,20,0);
+			showTab3();	
 			getID("vodTabRegion").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
-		/*	if(_num>2){
-				regionScrollL = (_num-2) * 200; //移动分类的位置
-				getID("vodTabRegion").scrollLeft = regionScrollL;
-			}else{
-				getID("vodTabRegion").scrollLeft = 0;
-			}*/
+			listArrTemp = [];
+			getTagData(navPos,_num,0,1,20,0);
 		}
 
-		function showTabRegion(){	//显示二级地区分类
+		var tag2ArrTemp = ["全部"];	//供点击后显示列表时提交ajax使用
+		function showTabRegion(){		//显示二级地区分类
+			tag2 = 0;
+			tag2ArrTemp = ["全部"];
+			var tag2Temp = 1;	
+			getID('vodTabRegion').innerHTML = '<li class="tab-tag2_3-item" id=region0 onClick="showTabList2(0)" >全部</li>';
 			for(i=0;i<tagArr[2].length;i++){
-				getID('vodTabRegion').innerHTML += '<li class="tab-vod-item" id=region'+i+' onClick="showTabList2('+i+')" >'+tagArr[2][i].tagName+'</li>';
+				if( tagArr[2][i].tagFather.indexOf(tagArr[1][tag1].tagName) > -1 ){	//如果当前分类的父级是此时显示的一级分类
+					getID('vodTabRegion').innerHTML += '<li class="tab-tag2_3-item" id=region'+tag2Temp+' onClick="showTabList2('+tag2Temp+')" >'+tagArr[2][i].tagName+'</li>';
+					tag2Temp ++;
+					tag2ArrTemp.push(tagArr[2][i].tagName);
+				}
 			}
+			getID("region0").style.color = "#ff9933";
+			getID("vodTabRegion").scrollLeft = 0;
+			showTab3();			//动态显示三级分类标签
 		}
 
-	//	var tag3ScrollL = 0;
-		var tag3Temp = 0;
 		function showTag3List(_num){	//点击三级标签
 			getID("vodListContent"+navPos).innerHTML = "";
-			getID("region"+regionTemp).style.backgroundColor = "";			
-			getID("region"+regionTemp).style.color = "#ff9933";
+			getID("region"+tag2).style.backgroundColor = "";			
+			getID("region"+tag2).style.color = "#ff9933";
 
-			getID("tag3_"+tag3Temp).style.backgroundColor = "";			
-			getID("tag3_"+tag3Temp).style.color = "white";
-			getID("tag3_"+_num).style.backgroundColor = "#ff9933";		
-			tag3Temp = _num;
-
-			getTagData(navPos,regionTemp,_num,1,20,0);
+			getID("tag3_"+tag3).style.backgroundColor = "";			
+			getID("tag3_"+tag3).style.color = "white";		
+			tag3 = _num;
+			getID("tag3_"+tag3).style.backgroundColor = "#ff9933";
+			listArrTemp = [];
+			getTagData(navPos,tag2,_num,1,20,0);
 			getID("vodTab3").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
-		/*	if(_num>2){
-				tag3ScrollL = (_num-2) * 200; //移动分类的位置
-				getID("vodTab3").scrollLeft = tag3ScrollL;
-			}else{
-				getID("vodTab3").scrollLeft = 0;
-			}*/
 		}
-		
+
+		var tag3ArrTemp = ["全部"];	//供点击后显示列表时提交ajax使用
 		function showTab3(){	//显示三级分类标签
+			tag3 = 0;
+			tag3ArrTemp = ["全部"];
+			var tag3Temp = 1;			
+			getID('vodTab3').innerHTML = '<li class="tab-tag2_3-item" id=tag3_0 onClick="showTag3List(0)" >全部</li>';
+			
 			for(i=0;i<tagArr[3].length;i++){
-				getID('vodTab3').innerHTML += '<li class="tab-vod-item" id=tag3_'+i+' onClick="showTag3List('+i+')" >'+tagArr[3][i].tagName+'</li>';
+				if( tag2ArrTemp[tag2]== "全部" ){
+					getID('vodTab3').innerHTML += '<li class="tab-tag2_3-item" id=tag3_'+(i+1)+' onClick="showTag3List('+(i+1)+')" >'+tagArr[3][i].tagName+'</li>';
+				}else if( tagArr[3][i].tagFather.indexOf( tag2ArrTemp[tag2] ) > -1 ){	//如果当前分类的父级是此时显示的二级分类
+					
+					getID('vodTab3').innerHTML += '<li class="tab-tag2_3-item" id=tag3_'+tag3Temp+' onClick="showTag3List('+tag3Temp+')" >'+tagArr[3][i].tagName+'</li>';			
+					tag3Temp ++;	
+					tag3ArrTemp.push(tagArr[3][i].tagName);	
+				}
 			}
+			getID("tag3_0").style.color = "#ff9933";
+			getID("vodTab3").scrollLeft = 0;
+		}		
+
+		function showDetail(_detailFather){
+			alert(_detailFather);
 		}
 
 		function moveVideoWindow() {	//2.0版不需要移动播放窗口
@@ -508,13 +482,14 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				splashIndex = 0;
 			}
 			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
+			getID("splash").style.display = "block";
 			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
+			startCircle();	//右上角跳过圆圈
 		}
 
 		function init() {
-			showSplash();
+		//	showSplash();
 			stbInfo();			
-			startCircle();	//右上角跳过圆圈
 			var clientWidth = document.body.scrollWidth;
 			var clientHeight = window.innerHeight;			
 
@@ -526,8 +501,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			scrollDisable();		//禁止页面滚动	
 			bindEvent();		//绑定滑动事件
 			showTab1();				//显示一级分类
-			showTabRegion(); 	//显示地区导航
-			showTab3(); 			//显示分类标签
+		//	showTabRegion(); 	//显示地区导航
+		//	showTab3(); 			//显示分类标签
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
 		}
@@ -731,7 +706,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div>
 
 	<!-- 启动图片 -->
-	<div id="splash" style="position: absolute;left:0px;top:0px;width:1080px;height:1920px;background:url(null.png);background-size:100% 100%;display:block;z-index:99;">	
+	<div id="splash" style="position: absolute;left:0px;top:0px;width:1080px;height:1920px;background:url(null.png);background-size:100% 100%;display:none;z-index:99;">	
 		<div onclick="splashJump()" style="position: absolute;right:100px;">
 			<div class="flex-container" >
 				<div class="outbox" id="splashJump">跳过</div>

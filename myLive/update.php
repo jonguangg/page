@@ -557,7 +557,6 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	<!-- 分类管理 -->
 	<div id="tagNav" style="position:absolute;top:115px;left:20%;width:70%; text-align:center;display:none;">
 		<form action="update.php" method="post" id="editTagNavForm-can_delete-">
-			<!--div-->
 			<table id="tagNavTb" style="table-layout: fixed" width="100%" border="1" cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
@@ -569,13 +568,12 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 						<td style="width:5%;"><b>删除</b></td>
 					</tr>
 				</thead>
-			</table>
-			<!--/div-->
-			<div style="position:relative;left:52%;top:10px;width:20%;height:30px;">
+			</table><br>
+			<div style="position:fixed;left:90%;top:115px;width:20%;height:30px;">
 				<button type="submit" name="subEditTagNav" class="pages" value="这里必需写点东西">提交修改</button>
 			</div>
 		</form>
-		<button onclick="getID('tagNav').style.display = 'none';getID('addTag').style.display = 'block';currArea='addTag'" style=" position:relative;top:-20px;left:0%;">添加分类</button>
+		<button onclick="getID('tagNav').style.display = 'none';getID('addTag').style.display = 'block';currArea='addTag'" style="position:fixed;left:92%;top:200px;">添加分类</button>
 	</div>
 
 	<!-- 添加分类 -->

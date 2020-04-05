@@ -11,8 +11,8 @@
 	$tag3 = (@$_POST['tag3'])?$_POST['tag3']:"全部";
 	$mobile = (@$_POST['mobile'])?$_POST['mobile']:"pc";
 	$pageSize = (@$_POST['pageSize'])?$_POST['pageSize']:15;			//每页显示数  
-	$pageNow = ($_POST['pageNow'])?$_POST['pageNow']:1;				//从post取当前页
-	$startPage = ($pageNow-1)*$pageSize;		//起始页
+	$pageNow = (@$_POST['pageNow'])?$_POST['pageNow']:1;				//从post取当前页
+	$startPage = ($pageNow-1)*$pageSize;								//起始页
 
 	/*统计总记录数方法一
 	$sql = mysqli_query($connect,"SELECT COUNT('record_sn') FROM iqiyi_record");
@@ -23,28 +23,28 @@
 	if( $mobile=="mobile"){	//手机访问
 		if($tag2=="全部"){	//全部地区
 			if($tag3=="全部"){
-				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND  status=1 order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND  status=1 order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND  statuss=1 order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND  statuss=1 order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}else{
-				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND statuss=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND statuss=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}
 		}else{	//用户选择了别的地区
 			if($tag3=="全部"){	//用户选择了地区，没选标签
-				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND statuss=1 AND region='$tag2' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND statuss=1 AND region='$tag2' order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}else{	//用户选择了地区和标签
-				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND statuss=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND statuss=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}			
 		}
 	}else{	//CMS后台访问
-		$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND episode=1 order by sort ASC,editTime DESC limit $startPage,$pageSize");
-		$sql  = mysqli_query($connect,"select * from video WHERE types='$tag1' AND episode=1 ");
+		$query = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND episode=1 order by sort ASC,editTime DESC limit $startPage,$pageSize");
+		$sql  = mysqli_query($connect,"SELECT * from video WHERE types='$tag1' AND episode=1 ");
 		$tagTotal = mysqli_num_rows($sql);		//总记录数 
 	}
 
@@ -75,28 +75,15 @@
 		print_r($tagArrJson);  
 		echo "</pre>";
 	*/
+
+
+
+
+
 		echo json_encode($tagArrJson);
 		
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
 
 	//	echo "<br>";
 	//	echo "上面是json_encode<br>";

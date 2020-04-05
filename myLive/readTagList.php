@@ -11,35 +11,35 @@
 		"title" => "",
 	);
 
-	$sql1 = mysqli_query($connect,"select * from typeMovie order by sort asc limit 0,4");
+	$sql1 = mysqli_query($connect,"SELECT * from video WHERE types='电影' ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql1) ){
-		$newArr["fileName"] = substr($row["fileName"],strripos($row["fileName"],"/")+1);
-		$newArr["title"] = $row["title"];		
+		$newArr["name"] = substr($row["name"],strripos($row["name"],"/")+1);
+		$newArr["father"] = $row["father"];		
 		array_push($homeArr4,$newArr);
 	}
 
-	$sql2 = mysqli_query($connect,"select * from typeSeries order by sort asc limit 0,4");
+	$sql2 = mysqli_query($connect,"SELECT * from video 	WHERE types='电视剧' ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql2) ){
-		$newArr["fileName"] = substr($row["fileName"],strripos($row["fileName"],"/")+1);
-		$newArr["title"] = $row["title"];		
+		$newArr["name"] = substr($row["name"],strripos($row["name"],"/")+1);
+		$newArr["father"] = $row["father"];		
 		array_push($homeArr4,$newArr);
 	}
 
-	$sql3 = mysqli_query($connect,"select * from typeVariety order by sort asc limit 0,4");
+	$sql3 = mysqli_query($connect,"SELECT * from video 	WHERE types='综艺' ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql3) ){
-		$newArr["fileName"] = substr($row["fileName"],strripos($row["fileName"],"/")+1);
-		$newArr["title"] = $row["title"];		
+		$newArr["name"] = substr($row["name"],strripos($row["name"],"/")+1);
+		$newArr["father"] = $row["father"];		
 		array_push($homeArr4,$newArr);
 	}
 
-	$sql4 = mysqli_query($connect,"select * from typeCartoon order by sort asc limit 0,4");
+	$sql4 = mysqli_query($connect,"SELECT * from video 	WHERE types='动漫' ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql4) ){
-		$newArr["fileName"] = substr($row["fileName"],strripos($row["fileName"],"/")+1);
-		$newArr["title"] = $row["title"];		
+		$newArr["name"] = substr($row["name"],strripos($row["name"],"/")+1);
+		$newArr["father"] = $row["father"];		
 		array_push($homeArr4,$newArr);
 	}
 
