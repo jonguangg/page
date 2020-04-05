@@ -125,10 +125,12 @@
 
 	function splashJump(){
 		getID('splash').style.display='none';
-		if(indexArea=="lock"){	//如果设置了启动默认锁定		
+		if( indexArea=="lock"){	//如果设置了启动默认锁定		
 			getID('lock').style.display='block';
 		}else{					//如果没设启动默认锁定，则启动后就进入首页
-			getID("vodList0").style.display = "block";
+			if( navPos==0){
+				getID("vodList0").style.display = "block";
+			}			
 			scrollEnable();
 		}
 	}
