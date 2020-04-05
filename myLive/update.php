@@ -555,26 +555,27 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	</div>
 
 	<!-- 分类管理 -->
-	<div id="tagNav" style="position:absolute;top:115px;left:30%;width:50%; text-align:center;display:none;">
+	<div id="tagNav" style="position:absolute;top:115px;left:20%;width:70%; text-align:center;display:none;">
 		<form action="update.php" method="post" id="editTagNavForm-can_delete-">
 			<!--div-->
 			<table id="tagNavTb" style="table-layout: fixed" width="100%" border="1" cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
-						<td style="width:10%;"><b>排序</b></td>
-						<td style="width:30%;"><b>分类名</b></td>
-						<td style="width:30%;"><b>分类表</b></td>
-						<td style="width:15%;"><b>分类级别</b></td>
-						<td style="width:15%;"><b>删除</b></td>
+						<td style="width:5%;"><b>排序</b></td>
+						<td style="width:10%;"><b>分类名</b></td>
+						<td style="width:15%;"><b>分类表</b></td>
+						<td style="width:5%;"><b>级别</b></td>
+						<td style="width:60%;"><b>父级分类</b></td>
+						<td style="width:5%;"><b>删除</b></td>
 					</tr>
 				</thead>
 			</table>
 			<!--/div-->
-			<div style="position:relative;left:70%;top:10px;width:20%;height:30px;">
+			<div style="position:relative;left:52%;top:10px;width:20%;height:30px;">
 				<button type="submit" name="subEditTagNav" class="pages" value="这里必需写点东西">提交修改</button>
 			</div>
 		</form>
-		<button onclick="getID('tagNav').style.display = 'none';getID('addTag').style.display = 'block';currArea='addTag'" style=" position:relative;top:-20px;left:308px;">添加分类</button>
+		<button onclick="getID('tagNav').style.display = 'none';getID('addTag').style.display = 'block';currArea='addTag'" style=" position:relative;top:-20px;left:0%;">添加分类</button>
 	</div>
 
 	<!-- 添加分类 -->
@@ -1075,7 +1076,6 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var pageAll = 1;
 	var pageSize = getCookie("pageSize") ? getCookie("pageSize") : 15;
 	var onLine = 0;
-
 	function getStbData(_pageNum) {
 		setCookie("pageNow", _pageNum, '1h');
 		$.ajax({
@@ -1306,14 +1306,16 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	//	显示栏目分类
 	var tbRowTagNav = 0;
-	var tags = "分类标签";
+	var tags = "分类表:";
 	function showTagList() {
 		$("#tagNavTb tr:not(:eq(0))").remove();
 		tr = "";
 		var lineTemp = 0;
 		for(j=0;j<tagArr.length;j++){	
 			for (i = 0; i < tagArr[j].length; i++) {
-				tr += "<tr><td><input type='text' name=tagSort" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + (i+1) + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagName + "'></input></td><td><input type='text' name=tagTable" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[j][i].tagTable + "'</input></td><td>"+tagArr[j][i].tagLevel+"</td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
+				tr += "<tr><td><input type='text' name=tagSort" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + (i+1) + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagName + "'></input></td><td><input type='text' name=tagTable" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[j][i].tagTable + "'</input></td><td>"+tagArr[j][i].tagLevel+"</td><td><input type='text' name=tagFather" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagFather + "' autocomplete='off' ></input></td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
+				
+				tags += tagArr[j][i].tagTable;	//将所有表名记录供添加分类使用，已有的不能新增
 			}					
 			lineTemp += tagArr[j].length;
 		}
@@ -1328,6 +1330,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		var addTagName = document.getElementById("addTagName").value;
 		var addTagTable = document.getElementById("addTagTable").value;
 		var addTagLevel = parseInt(document.getElementById("addTagLevel").value)>-1?document.getElementById("addTagLevel").value:1;
+alert(tags.indexOf(addTagTable));
 		if (tags.indexOf(addTagTable) > -1) {
 			alert("数据库已有这个表名了！");
 		} else {
@@ -1829,10 +1832,11 @@ if (@$_POST['subEditGroup']) {	//编辑频道组
 			$tagSortTemp = $_POST['tagSort' . $i];
 			$tagNameTemp = $_POST['tagName' . $i];
 			$tagTableTemp = $_POST['tagTable' . $i];
+			$tagFatherTemp = $_POST['tagFather' . $i];
 
-			echo "<script>alert('" . $tagTableTemp . "');</script>";
+		//	echo "<script>alert('" . $tagTableTemp . "');</script>";
 
-			$sql = mysqli_query($connect, "update tag set tagSort=$tagSortTemp, tagName='$tagNameTemp' where tagTable='$tagTableTemp' ") or die(mysqli_error());		
+			$sql = mysqli_query($connect, "update tag set tagSort=$tagSortTemp, tagName='$tagNameTemp' ,tagFather='$tagFatherTemp' where tagTable='$tagTableTemp' ") or die(mysqli_error());		
 		}
 		echo "<script>location.href = 'update.php?'+Math.random();</script>";
 	}

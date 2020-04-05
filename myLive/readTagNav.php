@@ -20,18 +20,20 @@ $tagArr = array(
 
 //初始化一个分类 
 $arrInit = array(
+	"tagLevel" => 0,
 	"tagSort" => 0,
 	"tagName" => "",
-	"tagTable" => "",
-	"tagLevel" => 0,
+	"tagTable" => "",	
+	"tagFather" => "",
 );
 
 //扫描数据库分类表，写入总的数组
 while ($row = mysqli_fetch_assoc($result)) {
+	$arrInit["tagLevel"] = $row["tagLevel"];
 	$arrInit["tagSort"] = (int) $row["tagSort"];
 	$arrInit["tagName"] = $row["tagName"];
 	$arrInit["tagTable"] = $row["tagTable"];
-	$arrInit["tagLevel"] = $row["tagLevel"];
+	$arrInit["tagFather"] = $row["tagFather"];
 
 	//根据tagLevel，将当前分类插入总数组相应级别内
 	$tagArr[$row["tagLevel"]][] = $arrInit;
