@@ -1330,7 +1330,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		var addTagName = document.getElementById("addTagName").value;
 		var addTagTable = document.getElementById("addTagTable").value;
 		var addTagLevel = parseInt(document.getElementById("addTagLevel").value)>-1?document.getElementById("addTagLevel").value:1;
-alert(tags.indexOf(addTagTable));
+//	alert(tags.indexOf(addTagTable));
 		if (tags.indexOf(addTagTable) > -1) {
 			alert("数据库已有这个表名了！");
 		} else {

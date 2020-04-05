@@ -11,13 +11,9 @@
 	$addTagTable = $_POST['addTagTable'];
 	
 	$tagFather = "";
-	for($i=1; $i<sizeof($tagArr)-1; $i++){
-		if( (int)$addTagLevel > 1){ //只有2级地区和3级分类才有父级
-			for($j=1; $j<sizeof($tagArr[$i]); $j++){
-				if( (int)$addTagLevel > $i ){	//$i代表级别，新增的级别大于当前读取的，才需要将其写进父表
-					$tagFather = $tagFather.$tagArr[$i][$j]['tagName']."/";
-				}		
-			}
+	if( (int)$addTagLevel > 1){ //只有2级地区和3级分类才有父级
+		for($j=0; $j<sizeof($tagArr[$addTagLevel-1]); $j++){
+			$tagFather = $tagFather.$tagArr[(int)$addTagLevel-1][$j]['tagName']."/";
 		}
 	}
 	$tagFather = "/".$tagFather;
