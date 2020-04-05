@@ -77,11 +77,11 @@
 		height:95px;
 		background-size:100% 100% !important;
 	}
-	.tab-vod-item{
-		-webkit-box-flex:1;
+	.tab-tag2_3-item{
+	/*	-webkit-box-flex:1;
 		-webkit-flex:1 0 auto;
-		-ms-flex:1 0 auto;
-		flex:1 0 auto;
+		-ms-flex:1 0 auto;*/
+		flex:0 0 auto;
 		color:white;/*#081925;*/
 		margin:0px 0px 0px 0px;
 		padding:0px 50px 0px 50px;
