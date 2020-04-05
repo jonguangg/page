@@ -12,7 +12,7 @@
 //	echo $tagNow.'<br>';
 
 	for( $i=0;$i<sizeof($onOffArr);$i++ ){
-		$sql = mysqli_query($connect,"UPDATE $tagNow set status='$onOff',editTime='$editTime' where fileName='$onOffArr[$i]' ") or die(mysqli_error($connect));//更新上架状态
+		$sql = mysqli_query($connect,"UPDATE video set statuss='$onOff',editTime='$editTime' where name='$onOffArr[$i]' ") or die(mysqli_error($connect));//更新上架状态
 	}
 
 	if( $sql ){

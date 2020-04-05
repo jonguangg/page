@@ -8,7 +8,7 @@ include "connectMysql.php";
 set_time_limit(600); //	设置超时时间
 
 // 3. 从DBNAME中查询到数据库
-$sql = 'select * from tag order by tagSort ';
+$sql = 'select * from tag order by tagLevel,tagSort ';
 
 // 结果集
 $result = mysqli_query($connect, $sql);
@@ -23,7 +23,7 @@ $arrInit = array(
 	"tagSort" => 0,
 	"tagName" => "",
 	"tagTable" => "",
-	"tagLevel" => 1,
+	"tagLevel" => 0,
 );
 
 //扫描数据库分类表，写入总的数组
@@ -36,6 +36,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 	//根据tagLevel，将当前分类插入总数组相应级别内
 	$tagArr[$row["tagLevel"]][] = $arrInit;
 }
+
+
+
+
 //	echo "<pre>";
 //	print_r($tagArr);
 

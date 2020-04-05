@@ -1,5 +1,9 @@
 <?php
 
+/*
+	供媒资管理使用
+*/
+
 include_once('connectMysql.php');
 
 /*统计总记录数方法一
@@ -27,8 +31,10 @@ $query = mysqli_query($connect, "select * from video order by uploadTime DESC li
 while ($row = mysqli_fetch_array($query)) { //遍历查询结果，将每条结果写入数组
 	$videoArr['list'][] = array(
 		'id' => $row['id'],
+		'types' => $row['types'],
 		'name' => $row['name'],
-		'title' => $row['title'],
+		'father' => $row['father'],
+		'episodes' => $row['episodes'],
 		'tag' => $row['tag'],
 		'uploadTime' => $row['uploadTime'],
 		'duration' => $row['duration'],

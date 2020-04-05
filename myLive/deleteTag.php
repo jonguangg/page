@@ -10,7 +10,7 @@
 	
 	//在数据库内删除该文件
 	for( $i=0;$i<sizeof($onOffArr);$i++ ){
-		$sql = mysqli_query($connect,"DELETE FROM $tagNow WHERE fileName='$onOffArr[$i]' ") or die(mysqli_error()) ;
+		$sql = mysqli_query($connect,"UPDATE video SET types='' WHERE name='$onOffArr[$i]' ") or die(mysqli_error()) ;
 	}
 
 	if( $sql ){

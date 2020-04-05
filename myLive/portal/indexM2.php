@@ -70,7 +70,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		//	$intExpireTime = str_replace("-","",$expireTime);		//为了便于比大小将时间内的-删掉
 		//	setcookie("expireTime", $expireTime, time()+8*3600);	//cookie存8小时，供个人中心显示用
 	}
-	$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect)); //更新在线状态
+	$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态
+	
+	$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn' ") or die(mysqli_error($connect)); 	//记录登陆时间
+
 } else if (strlen($sn) > 0) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
 	$sql = mysqli_query($connect, "replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
 }

@@ -101,8 +101,9 @@ if(is_uploaded_file($_FILES["excelTag"]["tmp_name"])){
 	if(move_uploaded_file($_FILES["excelTag"]["tmp_name"],$fileimgweb.$randname)){
 	//	echo "<script type='text/javascript'>alert('上传成功');</script>";
 		echo '<div style="position:absolute;top:0px;left:0px;width:100%;height:100%;background:url(loading.gif); background-size:100% 100%;"></div>';		
+	//	echo "<script>alert('excelImport.php')</script>";  
 		echo "<script>location.href='excelImport.php'</script>";  
-        exit;
+    //    exit;
 	//	session_start();
 	//	$_SESSION['images'] = $fileimgweb.$randname;
 	}else{

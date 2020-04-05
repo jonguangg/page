@@ -43,8 +43,8 @@ function list_file($dir)
 	}
 	return $fileArr;
 }
-$fileArr = list_file("/usr/local/nginx/html/myLive/upload");	//扫描路径下所有视频文件，得到数组
-print_r($fileArr);
+	$fileArr = list_file("/usr/local/nginx/html/myLive/upload");	//扫描路径下所有视频文件，得到数组
+//	print_r($fileArr);
 
 function isEmptyDir($fp)
 {
@@ -128,7 +128,7 @@ for ($i = 0; $i < count($fileArr); $i++) {
 	$nameShort = str_replace(" ", "", $nameShort); //删除空格
 	$name2 = '/usr/local/nginx/html/myLive/vod/' . $nameShort . '/' . $path_parts['basename'];
 
-	echo '文件夹：' . $path_parts['dirname'] . '<br>' . '原路径：' . $name . '<br>' . '文件名：' . $nameShort . "<br/>" . '新路径：' . $name2 . '<br><br>';
+//	echo '文件夹：' . $path_parts['dirname'] . '<br>' . '原路径：' . $name . '<br>' . '文件名：' . $nameShort . "<br/>" . '新路径：' . $name2 . '<br><br>';
 
 	$filemtime = date("Y-m-d H:i:s", filemtime($fileArr[$i])); //内容改变时间	改名称，内容时间不变
 	//	$filectime = date("Y-m-d H:i:s",filectime($fileArr[$i]));//索引改变时间	改内容，索引时间一起变
@@ -191,6 +191,8 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					//	移动视频文件到vod文件夹 并更新数据库内的文件路径
 					//	exec('mv ' . $path_parts['dirname'] . $nameShort . '* ./vod/' . $nameShort . '/');
 					//	exec('chmod -R 777 ./vod/' . $nameShort);
+					//	或者删除
+					exec('rm -f ' . $path_parts['dirname'] . $nameShort . '*' );
 					$sql = mysqli_query($connect, "UPDATE video set name='$name2' where name='$name' ") or die(mysqli_error($connect));
 
 					if (strlen($path_parts['dirname']) > 36 && isEmptyDir($path_parts['dirname']) == "空") { //删除空文件夹

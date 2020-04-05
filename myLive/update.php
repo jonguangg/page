@@ -124,7 +124,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	</style>
 </head>
 
-<body background="bg.jpg" onload="init();" onunload="exit2();">
+<body background="bg.jpg" onload="init();" >
 	<div style="position:absolute;left:30px;top:5%;width:90%;text-align:left;font-size:25px;">TenStar 视频管理系统</div>
 	<div style="position:absolute;left:70px;top:15%;width:150px;height:80%;line-height:15px;text-align:left;">
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('stb');" class="stb">客户管理</div><br />
@@ -133,12 +133,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('video');" class="video">媒资管理</div><br />
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('sale');" class="sale">上架管理</div>
 		<div id="sale" style="display:none;">
-			<!--div onclick="getTagData('tagChinese',1,15);" id="tagChinese" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;中文字幕</div><br />
-			<div onclick="getTagData('tagJapan',1,15);" id="tagJapan" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;日本</div><br>
-			<div onclick="getTagData('tagEurUSA',1,15);" id="tagEurUSA" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;欧美</div><br>
-			<div onclick="getTagData('tagMosaic',1,15);" id="tagMosaic" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;马赛克</div><br>
-			<div onclick="getTagData('tagNP',1,15);" id="tagNP" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;多人</div><br>
-			<div onclick="getTagData('tagRole',1,15);" id="tagRole" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;角色</div-->
+			<!--div onclick="getTagData('tagChinese',1,15);" id="tagChinese" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;中文字幕</div><br /-->
 		</div><br>
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('tagNav');" class="tagNav">栏目分类</div><br>
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('upLoadCard');" class="upLoadCard">导入卡密</div><br />
@@ -476,19 +471,20 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			<table id="videoTb" style="table-layout: fixed" width="100%" border="1" cellpadding="0" cellspacing="0">
 				<tr>
 					<td style="width:5%;"><b>ID</b></td>
-					<td style="width:15%;"><b>文件名</b></td>
-					<td style="width:25%;"><b>描述</b></td>
+					<td style="width:10%;"><b>类型</b></td>
+					<td style="width:15%;"><b>节目名</b></td>
+					<td style="width:18%;"><b>视频名</b></td>
 					<td style="width:25%;"><b>分类</b></td>
 					<td style="width:7%;"><b>时长</b></td>
-					<!--td style="width:5%;"><b>码率</b></td>
-			<td style="width:8%;"><b>分辨率</b></td>
-			<td style="width:7%;"><b>视频编码</b></td>
-			<td style="width:10%;"><b>视频格式</b></td>
-			<td style="width:7%;"><b>音频编码</b></td>
-			<td style="width:8%;"><b>音频采样率</b></td-->
-					<td style="width:8%;"><b>大小</b></td>
+					<td style="width:5%;"><b>集数</b></td>
 					<td style="width:10%;"><b>上传时间</b></td>
 					<td style="width:5%;"><b>删除</b></td>
+					<!--td style="width:5%;"><b>码率</b></td>
+					<td style="width:8%;"><b>分辨率</b></td>
+					<td style="width:7%;"><b>视频编码</b></td>
+					<td style="width:10%;"><b>视频格式</b></td>
+					<td style="width:7%;"><b>音频编码</b></td>
+					<td style="width:8%;"><b>音频采样率</b></td-->
 				</tr>
 			</table>
 		</div>
@@ -498,6 +494,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			<div onclick="pageDown()" style="cursor:pointer;color:blue;" class="pages">下一页</div>
 			<div class="pages">每页
 				<select id="setVideoPageSize"> 
+					<option value=2> 2</option>
 					<option value=10> 10</option>
 					<option value=20> 20</option>
 					<option value=50> 50</option>
@@ -521,8 +518,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 					<tr>
 						<td style="width:5%;cursor:pointer;" onClick="onOffAll()"><b>全选</b></td>
 						<td style="width:5%;"><b>排序</b></td>
-						<td style="width:20%;"><b>文件名</b></td>
-						<td style="width:26%;"><b>描述</b></td>
+						<td style="width:20%;"><b>节目名</b></td>
+						<td style="width:26%;"><b>分类</b></td>
 						<td style="width:7%;"><b>在线状态</b></td>
 						<td style="width:6%;"><b>上下架</b></td>
 						<td style="width:15%;"><b>修改时间</b></td>
@@ -541,6 +538,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			<div onclick="pageDown()" style="cursor:pointer;color:blue;" class="pages">下一页</div>
 			<div class="pages">每页
 				<select id="setPageSize"> 
+					<option value=2> 2</option>
 					<option value=10> 10</option>
 					<option value=20> 20</option>
 					<option value=50> 50</option>
@@ -680,11 +678,13 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var groupArr = <?php echo json_encode($groupArr); ?>; //从readGroupArray.php读取到的频道组数组，供预览使用
 	var dataArr = <?php echo json_encode($channelArr); ?>; //从readChannelArray.php读取到的频道数组，供预览使用
 	var tagArr = <?php echo json_encode($tagArr); ?>;
-	var tagNow = (tagArr[1][0])?tagArr[1][1].tagTable:"";
+	console.log(tagArr);
+//	alert(tagArr.length);
+	var tagNow = 1;
 	function showTagName() {
 		for (i = 1; i < tagArr[1].length; i++) {
 		//	if( tagArr[1][i].tagLevel==1 ){
-				getID("sale").innerHTML += '<br><div id=' + tagArr[1][i].tagTable + ' onclick=getTagData(\'' + tagArr[1][i].tagTable + '\',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[1][i].tagName + '</div>';
+				getID("sale").innerHTML += '<br><div id=' + tagArr[1][i].tagTable + ' onclick=getTagData(' + i + ',1,15); style="cursor:pointer;position:relative;top:20px;" > &emsp; &emsp;' + tagArr[1][i].tagName + '</div>';
 		//	}
 		}
 	}
@@ -1231,7 +1231,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 						} else {
 							var duration = "";
 						}
-						tr += "<tr><td>" + (parseInt(pageNow - 1) * pageSize + index + 1) + "</td><td>" + name + "<input type='hidden' value=\'" + array['name'] + "\' /></td><td>" + array['title'] + "</td><td>" + array['tag'] + "</td><td>" + duration + "</td><td>" + array['size'] + "</td><td>" + array['uploadTime'] + "</td><td><button onClick='deleteVideo(this)'>删除</button></td></tr>";
+						tr += "<tr><td>" + (parseInt(pageNow - 1) * pageSize + index + 1) + "</td><td>" + array['types'] + "<input type='hidden' value=\'" + array['name'] + "\' /></td><td>" + array['father'] + "</td><td>"+name+"</td><td>" + array['tag'] + "</td><td>" + duration + "</td><td>" + array['episodes'] + "</td><td>" + array['uploadTime'] + "</td><td><button onClick='deleteVideo(this)'>删除</button></td></tr>";
 						//	tr += "<tr><td></td><td>"+ name + "<input type='hidden' value=\'"+array['name']+"\' /></td><td>显示名</td><td>分类</td><td>"+array['duration']+"</td><td>"+array['bitrate']+"</td><td>"+array['resolution']+"</td><td>"+vcodec+"</td><td>"+array['vformat']+"</td><td>"+acodec+"</td><td>"+array['asamplerate']+"</td><td>"+array['size']+"</td><td>"+array['uploadTime']+"</td><td><button onClick='deleteVideo(this)'>删除</button></td></tr>";				
 					});
 				$("#videoTb tr").eq(0).after(tr);
@@ -1244,22 +1244,22 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			}
 		});
 	}
-
 	//显示节目上下架列表
 	function getTagData(_tag1, _pageNum, _pageSize) {
 		if (getID("tag").style.display == "none") {
 			getID("tag").style.display = "block";
 		}
-		getID(tagNow).style.color = "black";
+		getID(tagArr[1][tagNow].tagTable).style.color = "black";
 		tagNow = _tag1;
 		//	setCookie("pageNow", _pageNum, '1h');
 		//	setCookie("tagNow", tag, '1h');
-		getID(tagNow).style.color = "blue";
+		getID(tagArr[1][tagNow].tagTable).style.color = "blue";
+	//	alert(tagArr[1][tagNow].tagName);
 		$.ajax({
 			type: 'POST',
 			url: 'readTagJson.php',
 			data: {
-				'tag1': _tag1,
+				'tag1': tagArr[1][tagNow].tagName,
 				'pageNow': _pageNum,
 				'pageSize': _pageSize
 			},
@@ -1280,17 +1280,17 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				var list = json.list;
 				$.each(list,
 					function(index, array) { //遍历json数据列
-						var name = array['fileName'].slice(array['fileName'].lastIndexOf('/') + 1);
+						var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
 						name = name.slice(0, name.length - 4);
-						if (array['status'] == 1) {
+						if (array['statuss'] == 1) {
 							var saling = "已上架";
-							var onOff = "<button onClick='onOffDeleteSale(this," + array['status'] + ",0)'>下架</button>";
+							var onOff = "<button onClick='onOffDeleteSale(this," + array['statuss'] + ",0)'>下架</button>";
 						} else {
 							var saling = "待上";
-							var onOff = "<button onClick='onOffDeleteSale(this," + array['status'] + ",0)' style='color:red'>上架</button>";
+							var onOff = "<button onClick='onOffDeleteSale(this," + array['statuss'] + ",0)' style='color:red'>上架</button>";
 						}
 
-						tr += "<tr><td><input id=checkBox" + index + " type='checkbox' style='width:18px;height:18px;' onClick='addOnOffSale(this)' /></td><td>" + array['sort'] + "</td><td>" + name + "<input type='hidden' value=\'" + array['fileName'] + "\' /></td><td>" + array['title'] + "</td><td>" + saling + "</td><td>" + onOff + "</td><td>" + array['editTime'] + "</td><td>" + array['editor'] + "</td><td><button onClick='onOffDeleteSale(this,0,1)'>删除</button></td></tr>";
+						tr += "<tr><td><input id=checkBox" + index + " type='checkbox' style='width:18px;height:18px;' onClick='addOnOffSale(this)' /></td><td>" + (pageSize*(pageNow-1)+index+1) + "</td><td>" + array['father'] + "<input type='hidden' value=\'" + array['name'] + "\' /></td><td>" + array['tag'] + "</td><td>" + saling + "</td><td>" + onOff + "</td><td>" + array['editTime'] + "</td><td>" + array['editor'] + "</td><td><button onClick='onOffDeleteSale(this,0,1)'>删除</button></td></tr>";
 					});
 				$("#tagTb tr").eq(0).after(tr);
 			},
@@ -1299,6 +1299,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				getID("pageAlltag").innerHTML = 0;
 				getID("tagTotal").innerHTML = "库存总数：" + 0;
 				$("#tagTb tr:not(:eq(0))").remove();
+				alert('暂无数据');
 			}
 		});
 	}
@@ -1309,11 +1310,12 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	function showTagList() {
 		$("#tagNavTb tr:not(:eq(0))").remove();
 		tr = "";
-		for(j=0;j<tagArr.length;j++){
+		var lineTemp = 0;
+		for(j=0;j<tagArr.length;j++){	
 			for (i = 0; i < tagArr[j].length; i++) {
-				tr += "<tr><td><input type='text' name=tagSort" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagSort + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + i + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagName + "'></input></td><td><input type='text' name=tagTable" + i + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[j][i].tagTable + "'</input></td><td>"+tagArr[j][i].tagLevel+"</td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
-				tags += "|" + tagArr[j][i].tagTable;
-			}
+				tr += "<tr><td><input type='text' name=tagSort" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + (i+1) + "' autocomplete='off' ></input></td><td><input type='text' name=tagName" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' value='" + tagArr[j][i].tagName + "'></input></td><td><input type='text' name=tagTable" + (lineTemp+i) + " style='BACKGROUND-COLOR:transparent;' readonly='true' value='" + tagArr[j][i].tagTable + "'</input></td><td>"+tagArr[j][i].tagLevel+"</td><td><button onClick='deleteTag(this)'>删除</button></td></tr>";
+			}					
+			lineTemp += tagArr[j].length;
 		}
 		$("#tagNavTb tr").eq(0).after(tr);
 		tbRowTagNav = getID('tagNavTb').rows.length; //一共多少行
@@ -1383,7 +1385,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			},
 			error: function(data) {
 				console.log(data.responseText);
-				alert(data.responseText);
+			//	alert(data.responseText);
+				alert("\n提交成功");
 			}
 		});
 	}
@@ -1465,7 +1468,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	function deleteVideo(obj) {
 		var x = $(obj).parent().parent().find("td");
 		var name = x.eq(1).find("input").val();
-		//	alert(name);
+			alert(name);
 		$.ajax({
 			type: 'POST',
 			url: 'deleteVideo.php',
@@ -1493,7 +1496,6 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	//上下架，删除
 	var onOffArr = [];
-
 	function onOffDeleteSale(obj, onOff, isDelete) {
 		if (obj != 0) { //没有this就是批量操作
 			var x = $(obj).parent().parent().find("td");
@@ -1555,7 +1557,6 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	//全选
 	var checkAll = 0;
-
 	function onOffAll() {
 		if (checkAll == 0) { //如果原来没选中
 			checkAll = 1;
@@ -1822,15 +1823,18 @@ if (@$_POST['subEditGroup']) {	//编辑频道组
 		}
 	}
 } else if (@$_POST['subEditTagNav']) {
-	$tbRowTagNav = ($_COOKIE["tbRowTagNav"]) ? $_COOKIE["tbRowTagNav"] : 0;
+	$tbRowTagNav = ($_COOKIE["tbRowTagNav"]) ? $_COOKIE["tbRowTagNav"] : 0;	
 	for ($i = 0; $i < $tbRowTagNav; $i++) {
 		if (@$_POST['tagSort' . $i]) {
 			$tagSortTemp = $_POST['tagSort' . $i];
 			$tagNameTemp = $_POST['tagName' . $i];
 			$tagTableTemp = $_POST['tagTable' . $i];
-			$sql = mysqli_query($connect, "update tag set tagSort=$tagSortTemp, tagName='$tagNameTemp' where tagTable='$tagTableTemp' ") or die(mysqli_error());
-			echo "<script>location.href = 'update.php?'+Math.random();</script>";
+
+			echo "<script>alert('" . $tagTableTemp . "');</script>";
+
+			$sql = mysqli_query($connect, "update tag set tagSort=$tagSortTemp, tagName='$tagNameTemp' where tagTable='$tagTableTemp' ") or die(mysqli_error());		
 		}
+		echo "<script>location.href = 'update.php?'+Math.random();</script>";
 	}
 } else if (@$_POST['subEditChannelList']) {	//编辑频道列表	这里不成功八成是因为post内容太大，需改php.ini的max_input_vars = 100000 
 	$tbRowChannelList = ($_COOKIE["tbRowChannelList"]) ? $_COOKIE["tbRowChannelList"] : 0;

@@ -6,9 +6,9 @@
 	//	error_reporting(E_ALL^E_NOTICE^E_WARNING);
 	include_once('connectMysql.php');   
 	
-	$tag1 = $_POST['tag1'];
-	$tag2 = (@$_POST['tag2'])?$_POST['tag2']:"全部3";
-	$tag3 = (@$_POST['tag3'])?$_POST['tag3']:"全部3";
+	$tag1 = (@$_POST['tag1'])?$_POST['tag1']:"电影";
+	$tag2 = (@$_POST['tag2'])?$_POST['tag2']:"全部";
+	$tag3 = (@$_POST['tag3'])?$_POST['tag3']:"全部";
 	$mobile = (@$_POST['mobile'])?$_POST['mobile']:"pc";
 	$pageSize = (@$_POST['pageSize'])?$_POST['pageSize']:15;			//每页显示数  
 	$pageNow = ($_POST['pageNow'])?$_POST['pageNow']:1;				//从post取当前页
@@ -23,28 +23,28 @@
 	if( $mobile=="mobile"){	//手机访问
 		if($tag2=="全部"){	//全部地区
 			if($tag3=="全部"){
-				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND  status=1 order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND  status=1 order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}else{
-				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}
 		}else{	//用户选择了别的地区
 			if($tag3=="全部"){	//用户选择了地区，没选标签
-				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}else{	//用户选择了地区和标签
-				$query = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
-				$sql = mysqli_query($connect,"select * from $tag1 WHERE status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
+				$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC limit $startPage,$pageSize"); 
+				$sql = mysqli_query($connect,"select * from video WHERE types='$tag1' AND status=1 AND region='$tag2' AND tag LIKE '%$tag3%' order by sort ASC,editTime DESC "); 
 				$tagTotal = mysqli_num_rows($sql);		//总记录数 
 			}			
 		}
 	}else{	//CMS后台访问
-		$query = mysqli_query($connect,"select * from $tag1 order by sort ASC,editTime DESC limit $startPage,$pageSize");
-		$sql  = mysqli_query($connect,"select * from $tag1 order by sort ASC,editTime DESC ");
+		$query = mysqli_query($connect,"select * from video WHERE types='$tag1' AND episode=1 order by sort ASC,editTime DESC limit $startPage,$pageSize");
+		$sql  = mysqli_query($connect,"select * from video WHERE types='$tag1' AND episode=1 ");
 		$tagTotal = mysqli_num_rows($sql);		//总记录数 
 	}
 
@@ -60,9 +60,10 @@
 
 	while($row=mysqli_fetch_array($query)){//遍历查询结果，将每条结果写入数组
 		$tagArrJson['list'][] = array(
-			'fileName' => $row['fileName'],
-			'title' => $row['title'],
-			'status' => $row['status'],
+			'name' => $row['name'],
+			'father' => $row['father'],
+			'tag' => $row['tag'],
+			'statuss' => $row['statuss'],
 			'sort' => $row['sort'], 
 			'editor' => $row['editor'],  
 			'editTime' => $row['editTime'], 
@@ -73,7 +74,7 @@
 		echo "<pre>";
 		print_r($tagArrJson);  
 		echo "</pre>";
-	*/	
+	*/
 		echo json_encode($tagArrJson);
 		
 
