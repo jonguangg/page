@@ -1,3 +1,6 @@
+var clientWidth = 1080;
+var clientHeight = 1920;
+	
 	function imOnLine() { //上报在线状态
 		var now = new Date(); //此时此刻
 		var sec = now.getSeconds(); //此时的秒
@@ -116,10 +119,6 @@
 	setTimeout(function() {
 		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 		imOnLine();
-	//	getID("splash").style.display = "none";
-	//	if( indexArea=="lock"){//不加这个，用户点跳过后，还会弹出锁定界面
-	//		getID('lock').style.display = 'block';
-	//	}
 		splashJump();
 	}, 5000);
 

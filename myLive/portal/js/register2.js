@@ -104,6 +104,7 @@
 			window.androidJs.JsClosePlayer();
 		}
 		scrollDisable();
+		indexArea = "register";
 	}
 
 	function back() { //从个人中心返回
@@ -118,8 +119,9 @@
 		} else {
 			getID("msg").style.lineHeight = window.innerHeight * 0.35 + "px"; //只一行内容，行高=div height
 			getID("msg").innerHTML = "Register your VIP card !";
-			getID("msg").style.background = "linear-gradient(to bottom,yellow,green,blue,indigo)";
-		}
+			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
+		}		
+		indexArea = "home";
 	}
 
 	function checkInput(){

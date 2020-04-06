@@ -146,7 +146,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		var groupScrollL = 0;
 		function showLiveList(_num) {	//显示直播列表
-			var clientWidth = document.body.scrollWidth;
+		//	var clientWidth = document.body.scrollWidth;
 			for (i = 0; i < channelDataArr.length; i++) { //显示频道组
 				getID("groups").innerHTML += '<li class=tab-live-item id=group' + i + ' style="font-weight:500" onClick=showChannel(' + i + ');></li>';
 				getID("group" + i).innerHTML = channelDataArr[i].group;
@@ -488,34 +488,45 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function init() {
-		//	showSplash();
 			stbInfo();			
-			var clientWidth = document.body.scrollWidth;
-			var clientHeight = window.innerHeight;			
+			clientWidth = document.body.scrollWidth;
+			clientHeight = window.innerHeight;			
 
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
 			getID("splash").style.height = clientHeight + "px"; 
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高	
 
-			scrollDisable();		//禁止页面滚动	
-			bindEvent();		//绑定滑动事件
+			showSplash();
 			showTab1();				//显示一级分类
 		//	showTabRegion(); 	//显示地区导航
 		//	showTab3(); 			//显示分类标签
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
+			scrollDisable();		//禁止页面滚动	
+			bindEvent();		//绑定滑动事件
 		}
 
-		function showSearchInput(){
-			if( parseInt(getID('searchLogo').style.top) < 0 ){
-				getID('searchLogo').style.top='110px';
-				getID('searchLogo').focus();
+		function searchInput(){
+			if( parseInt(getID('searchInput').style.top) < 0 ){
+				indexArea = "search";
+				getID('searchInput').style.top='110px';
+				getID('searchInput').focus();
 				window.androidJs.JsShowImm();
 			}else{
-				alert(getID('searchLogo').value );
+				indexArea = "home";
+				alert(getID('searchInput').value );
+				getID('searchInput').blur();
+				getID('searchInput').style.top= '-110px';	
 			}
+			st = setTimeout(function() {
+					getID('searchInput').blur();
+					getID('searchInput').style.top= '-110px';						
+				}, 60000);
 		}
+
+
+
 	</script>
 </head>
 
@@ -527,15 +538,21 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<!-- 顶部黑底 -->
 		<div style="position:fixed;width:100%;height:450px;background-color:#000;z-index:1;"></div>
 		<!-- 右上角头像 -->
-		<div style="position:fixed;top:100px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:50px;padding-left:130px;z-index:1;" onclick="showMe();">Mix TV</div>
+		<div style="position:fixed;top:100px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!--div class="homeTop" id="searchLogo" style="top:-90px;left:400px;width:500px;height:80px;line-height:80px;background-color:rgba(255,255,255,0.5);border-radius:50px 50px 50px 50px;font-size:50px;padding-left:20px;-webkit-transition: 0.6s" >请输入搜索关键字</div-->
 
 		<!-- 搜索框 -->
-		<input type="text" id="searchLogo" class="homeTop" style="left:370px;top:-90px;width:400px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
+		<input type="text" id="searchInput" class="homeTop" style="left:280px;top:-90px;width:380px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:115px;left:785px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/search.png" /></div>
+		<div style="position:fixed;top:115px;left:670px;width:80px;height:80px;z-index:1;" onclick="searchInput()"><img src="img/search.png" /></div>
+
+		<!-- 历史图标 -->
+		<div style="position:fixed;top:115px;left:770px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/history0.png" /></div>
+
+		<!-- 收藏图标 -->
+		<div style="position:fixed;top:115px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/collect00.png" /></div>
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:250px;left:0px;width:95%;">
@@ -706,7 +723,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div>
 
 	<!-- 启动图片 -->
-	<div id="splash" style="position: absolute;left:0px;top:0px;width:1080px;height:1920px;background:url(null.png);background-size:100% 100%;display:none;z-index:99;">	
+	<div id="splash" style="position: absolute;left:0px;top:0px;width:100%;height:0px;background:url(null.png);background-size:100% 100%;display:none;z-index:99;">	
 		<div onclick="splashJump()" style="position: absolute;right:100px;">
 			<div class="flex-container" >
 				<div class="outbox" id="splashJump">跳过</div>
@@ -719,3 +736,32 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 </div><!-- bodys尾 -->
 </body></html>
+
+<script>
+//按键
+document.onsystemevent = eventHandler;
+//document.onkeypress    = eventHandler;
+document.onirkeypress  = eventHandler; 
+function eventHandler(e,type){
+	var key_code = "";
+	if(navigator.userAgent.indexOf('iPanel')!=-1){
+		key_code=iPanelKey();
+	}else key_code = e.code ;
+	switch(key_code){		
+						
+		case "KEY_SELECT":
+			if( indexArea=="search" ){
+				alert(indexArea);
+				alert(getID('searchInput').value );
+				getID('searchInput').blur();
+				getID('searchInput').style.top= '-110px';
+				indexArea = "home";
+			}else if( indexArea=="register" ){
+				checkInput();
+				window.androidJs.JsShowImm();
+			}
+			return 0;
+			break;
+	}
+}
+</script>
