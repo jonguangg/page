@@ -30,7 +30,7 @@ function touchMoveFunc(evt){
 	//	var text = 'TouchMove事件触发:<br>' +'endX:'+endX + '<br>' +'endY:'+ endY+'<br>moveX:'+moveX+'<br>moveY:'+moveY;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>1050 && navPos<tagArr[1].length ){	//只能向左移
+		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && navPos<tagArr[1].length ){	//只能向左移
 			if(navPos==-1){
 				document.getElementById("channel").style.left = moveX+"px";
 			}else{

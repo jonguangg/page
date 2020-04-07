@@ -10,7 +10,7 @@ include_once "../connectMysql.php";
 //	include_once "../readStbArray.php";
 include_once "../readChannelArray.php";
 include_once "../readTagNav.php";	//获取分类标签
-include_once "../readTagList.php";	//首页每类前4个
+include_once "../readHomeList.php";	//首页每类前4个
 set_time_limit(0); //限制页面执行时间,0为不限制
 //	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
@@ -138,10 +138,24 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			groupStartArr.push(groupStart);
 		}
 
-		function jumpToHome(){	//供返回键调用
-			getID("channel").style.display = "none";
-			getID("vod").style.display = "block";
-			navPos = 0;
+		function androidBack(){	//供返回键调用
+		//	alert(indexArea);
+			if( indexArea =="live" ){
+				getID("channel").style.display = "none";
+				getID("vod").style.display = "block";
+				navPos = 0;
+			}else if( indexArea == "detail" ){
+				if( from=="home" || from=="vod" || from=="detail" ){
+					getID("vod").style.display = "block";
+					getID("detail").style.display = "none";
+				}else if( from=="search" ){
+
+				}else if( from=="history" ){
+
+				}else if( from=="collect" ){
+
+				}
+			}
 		}
 
 		var groupScrollL = 0;
@@ -169,6 +183,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			groupScrollL = (groupId - 1) * 300;
 			getID("groups").scrollLeft = groupScrollL;
 			window.androidJs.JsGetPageArea("live");
+			indexArea = "live";
 		}
 
 		function startLive(_num) {	//播放直播频道
@@ -247,6 +262,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("nav" + navPos).style.color = "f7a333";
 			getID("nav" + navPos).style.backgroundImage = "url(img/"+tagArr[1][navPos].tagTable+"1.png)"; 			
 			if(_tag1==0){	//显示首页
+				indexArea = "home";
 				getID("vodTab").style.display = "none";
 				for(i=1;i<6;i++){
 					getID("vodList"+i).style.display = "none";
@@ -286,14 +302,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						function(index, array) { //遍历json数据列
 							var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
 							var father = array['father'];
-						//	listArrTemp.push(father);
 							name = name.slice(0, name.length - 4);
+						//	listArrTemp.push(name);
 							if( father.length > 4){
 								var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+title +'</marquee>';
 							}else{
 								var father2 = father;
 							}
-						//	listArrTemp.push(name);
 							getID("vodListContent"+_tag1).innerHTML += '<div id=homeListImg'+index+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
 						});
 					setTimeout(function() {
@@ -327,12 +342,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function playVod(_num) {
-			var playUrls = "http://tenstar.synology.me:10025/myLive/vod/" + listArrTemp[_num] + "/index.m3u8";
+			var playUrls = listArrTemp[_num];
 			if (typeof(window.androidJs) != "undefined") {
 				window.androidJs.JsPlayVod(playUrls);
 				window.androidJs.JsMovePlayerWindow(0); //每次点播将视频置顶
 			}
-			window.androidJs.JsGetPageArea("vod");
+   			window.androidJs.JsGetPageArea("vod");
 		}
 
 		function showHomeLiveGroup(){	//显示首页直播分组入口
@@ -347,7 +362,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					var name = homeArr4[i*4+j].name.slice(0, homeArr4[i*4+j].name.length - 4);
 					var homeListIndex = i*4+j;
 					var father = homeArr4[i*4+j].father;
-				//	listArrTemp.push(father);
+					var id = homeArr4[i*4+j].id;
+				//	listArrTemp.push(name);
 					if( father.length > 4){
 						var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 					}else{
@@ -359,6 +375,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function showTabList1(_tag1){	//点击一级分类
+			indexArea = "vod";
 			if(tag1>0){
 				getID("vodListContent"+tag1).innerHTML = "";
 			}			
@@ -439,10 +456,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 			getID("tag3_0").style.color = "#ff9933";
 			getID("vodTab3").scrollLeft = 0;
-		}		
-
-		function showDetail(_detailFather){
-			alert(_detailFather);
 		}
 
 		function moveVideoWindow() {	//2.0版不需要移动播放窗口
@@ -472,6 +485,24 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		//		getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;the end&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
 		//	}
 
+		}		
+
+		function searchInput(){
+			if( parseInt(getID('searchInput').style.top) < 0 ){
+				indexArea = "search";
+				getID('searchInput').style.top='60px';
+				getID('searchInput').focus();
+				window.androidJs.JsShowImm();
+			}else{
+				indexArea = "home";
+				alert(getID('searchInput').value );
+				getID('searchInput').blur();
+				getID('searchInput').style.top= '-110px';	
+			}
+			st = setTimeout(function() {
+					getID('searchInput').blur();
+					getID('searchInput').style.top= '-110px';						
+				}, 60000);
 		}
 
 		function showSplash(){
@@ -495,7 +526,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
 			getID("splash").style.height = clientHeight + "px"; 
-			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高	
+			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
+			getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
 			showSplash();
 			showTab1();				//显示一级分类
@@ -507,25 +539,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			bindEvent();		//绑定滑动事件
 		}
 
-		function searchInput(){
-			if( parseInt(getID('searchInput').style.top) < 0 ){
-				indexArea = "search";
-				getID('searchInput').style.top='110px';
-				getID('searchInput').focus();
-				window.androidJs.JsShowImm();
-			}else{
-				indexArea = "home";
-				alert(getID('searchInput').value );
-				getID('searchInput').blur();
-				getID('searchInput').style.top= '-110px';	
-			}
-			st = setTimeout(function() {
-					getID('searchInput').blur();
-					getID('searchInput').style.top= '-110px';						
-				}, 60000);
-		}
-
-
 
 	</script>
 </head>
@@ -536,9 +549,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<!--非直播 -->
 	<div id="vod" style="position:absolute;left:0px;width:100%;display:block;">
 		<!-- 顶部黑底 -->
-		<div style="position:fixed;width:100%;height:450px;background-color:#000;z-index:1;"></div>
+		<div style="position:fixed;width:100%;height:380px;background-color:#000;z-index:1;"></div>
 		<!-- 右上角头像 -->
-		<div style="position:fixed;top:100px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
+		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!--div class="homeTop" id="searchLogo" style="top:-90px;left:400px;width:500px;height:80px;line-height:80px;background-color:rgba(255,255,255,0.5);border-radius:50px 50px 50px 50px;font-size:50px;padding-left:20px;-webkit-transition: 0.6s" >请输入搜索关键字</div-->
 
@@ -546,74 +559,85 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<input type="text" id="searchInput" class="homeTop" style="left:280px;top:-90px;width:380px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:115px;left:670px;width:80px;height:80px;z-index:1;" onclick="searchInput()"><img src="img/search.png" /></div>
+		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="searchInput()"><img src="img/search.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:115px;left:770px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/history0.png" /></div>
+		<div style="position:fixed;top:65px;left:770px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/history0.png" /></div>
 
 		<!-- 收藏图标 -->
-		<div style="position:fixed;top:115px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/collect00.png" /></div>
+		<div style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/collect0.png" /></div>
 
 		<!-- 首页一级分类导航 -->
-		<div class="homeTop" style="top:250px;left:0px;width:95%;">
+		<div class="homeTop" style="top:180px;left:0px;width:95%;">
 			<ul id="vodTab1" class="tab-head">
 				<!--li class="tab-tab1-item" id="nav0" onClick="showHome();" style="background: url(img/typeHome1.png)">首页</li-->
 			</ul>
-		<div style="position:fixed;top:450px;left:5%;width:90%;height:10px;background-color:#333333;"></div>
+		<div style="position:fixed;top:365px;left:5%;width:90%;height:10px;background-color:#333333;"></div>
 		</div>
 
 		<!-- 首页列表 -->
-		<div id="vodList0" style="position: absolute;left:0%;top:450px;width:100%;display:block;">
+		<div id="vodList0" style="position: absolute;left:0%;top:350px;width:100%;display:block;">
 			<!-- 首页 直播入口 -->
-			<div class="homeListTitle" style="top:50px;background:url(img/typeLive0.png) no-repeat;">直播频道</div>	
-			<div id="historyCollect" style="position:absolute;left:0%;top:200px;width:100%;">			
-				<ul id="homeNavLive" class="tab-head">
-					<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div-->
-				</ul>
-			</div>
+			<div class="homeList" style="top:50px;">
+				<span style="position:relative;left:15%;">直播频道</span>
+				<div style="background:url(img/typeLive0.png) no-repeat;" class="homeListLogo"></div>
+				<div id="historyCollect.del" style="position:absolute;left:0%;top:110px;width:100%;">			
+					<ul id="homeNavLive" class="tab-head">
+						<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div-->
+					</ul>
+				</div>
+			</div>	
 
 			<!-- 首页 电影入口 -->
-			<div id="homeList0" class="homeListTitle" style="top:550px;background:url(img/typeMovie0.png) no-repeat;">热播电影
-				<span style="position:relative;left:94%;" onclick="showTabList1(1);">更多</span>
-			</div>
-			<div id="homeListContent0" style="position:absolute;left:0%;top:700px;width:100%;">
-				<!--div id="homeListImg0" class="listImg" style="background: url(img/poster.jpg)">
-					<div id="homeListName0" class="listName">影片名称</div>
-				</div-->
+			<div id="homeList0" class="homeList" style="top:400px;">
+				<span style="position:relative;left:15%;">热播电影</span>
+				<span style="position:relative;left:60%;" onclick="showTabList1(1);">更多</span>
+				<div style="background:url(img/typeMovie0.png) no-repeat;" class="homeListLogo"></div>
+				<div id="homeListContent0" style="position:absolute;left:0%;top:110px;width:100%;">
+					<!--div id="homeListImg0" class="listImg" style="background: url(img/poster.jpg)">
+						<div id="homeListName0" class="listName">影片名称</div>
+					</div-->
+				</div>
 			</div>
 
 			<!-- 首页 电视剧入口 -->
-			<div id="homeList1" class="homeListTitle" style="top:1100px;background:url(img/typeSeries0.png) no-repeat;">热播剧集
-				<span style="position:relative;left:94%;" onclick="showTabList1(2);">更多</span>
+			<div id="homeList1" class="homeList" style="top:840px;">
+				<span style="position:relative;left:15%;">热播剧集</span>
+				<span style="position:relative;left:60%;" onclick="showTabList1(2);">更多</span>
+				<div style="background:url(img/typeSeries0.png) no-repeat;" class="homeListLogo"></div>
+				<div id="homeListContent1" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
-			<div id="homeListContent1" style="position:absolute;left:0%;top:1250px;width:100%;">		</div>
 
 			<!-- 首页 综艺入口 -->
-			<div id="homeList2" class="homeListTitle" style="top:1650px;background:url(img/typeVariety0.png) no-repeat;">热播综艺
-				<span style="position:relative;left:94%;" onclick="showTabList1(3);">更多</span>
+			<div id="homeList2" class="homeList" style="top:1280px;">
+				<span style="position:relative;left:15%;">热播综艺</span>
+				<span style="position:relative;left:60%;" onclick="showTabList1(3);">更多</span>
+				<div style="background:url(img/typeVariety0.png) no-repeat;" class="homeListLogo"></div>
+				<div id="homeListContent2" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
-			<div id="homeListContent2" style="position:absolute;left:0%;top:1800px;width:100%;">		</div>
 
 			<!-- 首页 动漫入口 -->
-			<div id="homeList3" class="homeListTitle" style="top:2200px;background:url(img/typeCartoon0.png) no-repeat;">热播动漫
-				<span style="position:relative;left:94%;" onclick="showTabList1(4);">更多</span>
+			<div id="homeList3" class="homeList" style="top:1720px;">
+				<span style="position:relative;left:15%;">热播动漫</span>
+				<span style="position:relative;left:60%;" onclick="showTabList1(4);">更多</span>
+				<div style="background:url(img/typeCartoon0.png) no-repeat;" class="homeListLogo"></div>
+				<div id="homeListContent3" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
-			<div id="homeListContent3" style="position:absolute;left:0%;top:2350px;width:100%;">		</div>
 		
 		</div>
 
 		<!-- 点播分类导航 -->
-		<div id="vodTab" style="position:fixed;left:0%;top:450px;width:100%;display:none;z-index:2;">
-			<ul id="vodTabRegion" class="tab-head" style="background-color:#333333;height:90px;line-height:80px;padding-top:10px;padding-left:20px;">
+		<div id="vodTab" style="position:fixed;left:0%;top:365px;width:100%;display:none;z-index:2;">
+			<ul id="vodTabRegion" class="tab-head" style="background-color:#333333;height:70px;line-height:60px;padding-top:10px;padding-left:20px;">
 				<!--li class="tab-vod-item" id="region0" style="background-color:#ff9933;" onClick="showHome();" >大陆</li-->
 			</ul>
-			<ul id="vodTab3" class="tab-head" style="background-color:#666666;height:90px;line-height:80px;padding-top:10px;padding-left:20px;">
+			<ul id="vodTab3" class="tab-head" style="background-color:#666666;height:70px;line-height:60px;padding-top:10px;padding-left:20px;">
 				<!--li class="tab-vod-item" id="region0" style="background-color:#ff9933;" onClick="showHome();" >大陆</li-->
 			</ul>
 		</div>
 
 		<!-- 点播 电影 列表 -->
-		<div id="vodList1" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
+		<div id="vodList1" style="position:absolute;top:580px;left:0px;width:100%;display:none;">
 			<div id="vodListContent1">
 				<!--div id="vodListImg0" class="vodListImg" onClick="playVod(0);" ></div>
 				<div id="vodListName0" class="vodListName"></div-->
@@ -622,25 +646,25 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		</div>
 
 		<!-- 点播 电视剧 列表 -->
-		<div id="vodList2" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
+		<div id="vodList2" style="position:absolute;top:580px;left:0px;width:100%;display:none;">
 			<div id="vodListContent2">			</div>
 			<div id="loadmore2" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 综艺 列表 -->
-		<div id="vodList3" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
+		<div id="vodList3" style="position:absolute;top:580px;left:0px;width:100%;display:none;">
 			<div id="vodListContent3">			</div>
 			<div id="loadmore3" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 动漫 列表 -->
-		<div id="vodList4" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
+		<div id="vodList4" style="position:absolute;top:580px;left:0px;width:100%;display:none;">
 			<div id="vodListContent4">			</div>
 			<div id="loadmore4" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 纪录片 列表 -->
-		<div id="vodList5" style="position:absolute;top:700px;left:0px;width:100%;display:none;">
+		<div id="vodList5" style="position:absolute;top:580px;left:0px;width:100%;display:none;">
 			<div id="vodListContent5">			</div>
 			<div id="loadmore5" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
@@ -664,6 +688,35 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			</div-->
 		</div>
 	</div><!-- 直播频道尾 -->
+
+	<!-- 详情页 -->
+	<div id="detail" style="position:absolute;left:0px;top:0px;width:100%;z-index:2;background-color:black;display:none;">
+		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;"></div>
+
+		<div class="detailText" style="top:40px;font-size:50px;color:#f7a333;" id="detailName" ></div>
+		<div class="detailText" style=top:60px;"><b>导演：</b><span id="detailDirector" ></span></div>
+		<div class="detailText" style="top:80px;"><b>主演：</b><span id="detailActor" ></span></div>
+		<div class="detailText" style="top:100px;"><b>上映年份：</b><span id="detailYear"></span></div>
+		<div class="detailText" style="top:50px;left:50%;width:45%;"><b>地区：</b><span id="detailRegion"></span></div>
+		<div class="detailText" style="top:70px;"><b>时长：</b><span id="detailDuration"></span></div>
+		<div class="detailText" style="top:20px;left:50%;width:45%;"><b>IMDB评分：</b><span id="detailScore" style="color:#f7a333;"></span></div>
+		<div class="detailText" style="top:40px;"><b>类型：</b><span id="detailTag"></span></div>
+		<div class="detailText" style="top:-120px;left:84%;width:100px;height:100px;background:url(img/collect0.png);" onClick=""></div>
+		<div class="detailText" style="top:-40px;" id="description" onclick="moreDescription()"><b>剧情：</b><span id="detailDescription"></span></div>
+
+		<div id="chooseChapter" class="detailText2" style="top:-40px;display:none;" >选集&emsp;<span id="episodes"></span>
+			<ul id="chooseChapterNum" class="tab-head">
+				<!--div class="tab-chooseChapter-item" onClick="showLiveList(0);" style="">1</!-div-->
+			</ul>
+		</div>
+		<div id="guess" class="detailText2" style="top:-40px;">猜您喜欢
+			<div style="position:relative;left:0%;top:0px;width:100&;">
+				<div style="width:31%;height:400px;margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
+				<div style="width:31%;height:400px;margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
+				<div style="width:31%;height:400px;margin-right:0%;margin-bottom:30px;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 解锁界面 -->
 	<div id="lock" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background-color:#f7a333;display:none;text-align:center;font-size:80px;color:white; z-index:9;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);">
@@ -765,3 +818,4 @@ function eventHandler(e,type){
 	}
 }
 </script>
+<script type=text/javascript src="js/detail.js" charset=UTF-8></script>
