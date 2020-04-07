@@ -358,7 +358,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function showHomeList(){
 			for(i=0;i<4;i++){
-				for(j=0;j<4;j++){
+				for(j=0;j<3;j++){
 					var name = homeArr4[i*4+j].name.slice(0, homeArr4[i*4+j].name.length - 4);
 					var homeListIndex = i*4+j;
 					var father = homeArr4[i*4+j].father;
@@ -589,7 +589,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			</div>	
 
 			<!-- 首页 电影入口 -->
-			<div id="homeList0" class="homeList" style="top:400px;">
+			<div id="homeList0" class="homeList" style="top:300px;">
 				<span style="position:relative;left:15%;">热播电影</span>
 				<span style="position:relative;left:60%;" onclick="showTabList1(1);">更多</span>
 				<div style="background:url(img/typeMovie0.png) no-repeat;" class="homeListLogo"></div>
@@ -609,7 +609,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			</div>
 
 			<!-- 首页 综艺入口 -->
-			<div id="homeList2" class="homeList" style="top:1280px;">
+			<div id="homeList2" class="homeList" style="top:1380px;">
 				<span style="position:relative;left:15%;">热播综艺</span>
 				<span style="position:relative;left:60%;" onclick="showTabList1(3);">更多</span>
 				<div style="background:url(img/typeVariety0.png) no-repeat;" class="homeListLogo"></div>
@@ -617,7 +617,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			</div>
 
 			<!-- 首页 动漫入口 -->
-			<div id="homeList3" class="homeList" style="top:1720px;">
+			<div id="homeList3" class="homeList" style="top:1920px;">
 				<span style="position:relative;left:15%;">热播动漫</span>
 				<span style="position:relative;left:60%;" onclick="showTabList1(4);">更多</span>
 				<div style="background:url(img/typeCartoon0.png) no-repeat;" class="homeListLogo"></div>
