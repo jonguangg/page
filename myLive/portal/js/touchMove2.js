@@ -30,7 +30,7 @@ function touchMoveFunc(evt){
 	//	var text = 'TouchMove事件触发:<br>' +'endX:'+endX + '<br>' +'endY:'+ endY+'<br>moveX:'+moveX+'<br>moveY:'+moveY;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && navPos<tagArr[1].length ){	//只能向左移
+		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && navPos<tagArr[1].length && (indexArea=="home" /* || indexArea == "vod" */|| indexArea=="live") ){	//只能向左移
 			if(navPos==-1){
 				document.getElementById("channel").style.left = moveX+"px";
 			}else{
@@ -53,10 +53,12 @@ function touchEndFunc(evt){
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
 		if( navPos>-1 ){	//非直播
-			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
-				moveChangeTag(1);
-			}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
-				moveChangeTag(-1);
+			if( indexArea=="home" /*|| indexArea == "vod"*/ || indexArea=="live" ){		//只在首页和直播时滑动
+				if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
+					moveChangeTag(1);
+				}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
+					moveChangeTag(-1);
+				}
 			}			
 		}else if( navPos==-1){	//直播
 			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
@@ -68,6 +70,7 @@ function touchEndFunc(evt){
 		
 		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){
 	//		text += '<br/>向上滑动';
+	//		alert(moveY);
 			loadMore();
 		}
 		
