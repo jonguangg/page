@@ -307,7 +307,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						function(index, array) { //遍历json数据列
 							var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
 							var father = array['father'];
-							name = name.slice(0, name.length - 4);
+						//	name = name.slice(0, name.length - 4);
+							name = name.slice(0,name.lastIndexOf('.') );
+						//	alert(name);
 							if( father.length > 4){
 								var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 							}else{
@@ -348,6 +350,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function playVod(_num) {
 			var playUrls = listArrTemp[_num];
+			alert(playUrls);
 			if (typeof(window.androidJs) != "undefined") {
 				window.androidJs.JsPlayVod(playUrls);
 				window.androidJs.JsMovePlayerWindow(0); //每次点播将视频置顶
