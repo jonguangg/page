@@ -1,19 +1,24 @@
 var episodes = 1;
-var episodesPos = 2;
+var episodePos = 1;
 var from = "home";
-var listArrTemp = [];
+var sn = getCookie('sn');
+var detailId = 0;
+var father = "";
+var isCollect = 0;  //默认0未收藏
+
 
 function showDetail( _father ){
     from = indexArea;
-//    alert(from);
     indexArea = "detail";
+    father = _father;
     getID("detail").style.display = "block";
     getID("vod").style.display = "none";
     $.ajax({
         type: 'POST',
-        url: '../readDetailJson.php',
+        url: './readDetailJson.php',
         data: {
             'father': _father,
+            'sn':sn,
         },
         dataType: 'json',
         beforeSend: function() {
@@ -30,7 +35,15 @@ function showDetail( _father ){
             var detailScore = json.detailScore;
             var detailTag = json.detailTag;
             var detailDescription = json.detailDescription;
+            detailId = json.detailId;
+            episodePos = json.episodePos;            
             episodes = json.detailEpisodes;
+            isCollect = json.isCollect;
+            if(isCollect==1){
+                getID("collectImg").style.backgroundImage = 'url(img/collect1.png)';
+            }else{
+                getID("collectImg").style.backgroundImage = 'url(img/collect0.png)';
+            }
             
             getID("detailName").innerHTML = detailName;
             getID("detailDirector").innerHTML = detailDirector;
@@ -42,19 +55,22 @@ function showDetail( _father ){
             getID("detailTag").innerHTML = detailTag;
             getID("detailDescription").innerHTML = detailDescription;
 
-            listArrTemp = [];
+        //    listArrTemp = [];
             getID("chooseChapterNum").innerHTML = "";
             $.each(list,
                 function(index, array) { //遍历json数据列
+                    var detailId = array['id'];
+                //    alert("detailJs"+detailId);
                     var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
                     var episode = array['episode'];
                     name = "http://tenstar.synology.me:10025/myLive/vod/" + name.slice(0,name.lastIndexOf('.') ) + "/index.m3u8";
-                    listArrTemp.push(name);
-                    getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" onClick=playVod('+index+');>'+episode+'</div>';
+                //    listArrTemp.push(name);
+                    getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod('+index+','+detailId+');>'+episode+'</div>';
+                    
                 });
 
             initDetailArea();
-            playVod( 0 );
+            playVod( episodePos-1 ,detailId);   //集数是从1开始，id从0开始，所以减1
         },
         error: function() {
             //	alert("error");
@@ -66,8 +82,8 @@ function showDetail( _father ){
 function initDetailArea(){
     if( episodes>1 ){
         getID("guess").style.top = "70px";
-        getID("chooseChapter").style.display = "block";   
-        getID("chooseChapterNum").scrollLeft = episodesPos*100;    
+        getID("chooseChapter").style.display = "block";
+    //    getID("chooseChapterNum").scrollLeft = ( (episodePos-5)>0 )?(episodePos-5)*100:0;
     }else{
         getID("guess").style.top = "-40px";
         getID("chooseChapter").style.display = "none";
@@ -80,6 +96,37 @@ function moreDescription(){	//展开或收缩影片简介全文
     }else{
         getID("description").style.maxHeight = "150px";
     }
+}
+
+function changeCollect( ){
+    getID("collectImg").style.backgroundImage = ( isCollect==0 )?'url(img/collect1.png)':'url(img/collect0.png)'; 
+    isCollect = ( isCollect==0 )?1:0;
+    getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</b>":"<b>已取消收藏</b>";
+    getID("promptCollect").style.opacity = 1;
+    setTimeout(function() {
+		getID("promptCollect").style.opacity = 0;
+	}, 2000);
+
+    $.ajax({
+        type: 'POST',
+        url: './collect.php',
+        data: {
+            'id':detailId,
+            'sn':sn,
+            'father': father,
+            'isCollect': isCollect,
+        },
+        dataType: 'json',
+        beforeSend: function() {
+            //这里一般显示加载提示;
+        },
+        success: function(json) {
+        //    alert("success");        
+        },
+        error: function() {
+        //    alert("error");
+        }
+    });
 }
 
 

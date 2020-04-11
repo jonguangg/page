@@ -33,6 +33,8 @@
 
 	.detailText2{position:relative;left:4%;width:92%;height:100px;line-height:110px;background-color:black;font-size:45px;color:#f7a333;}
 
+	.promptCollect{position:absolute;left:20%;top:42%;width:60%;height:300px;line-height:300px;text-align:center;color:#f7a333;font-size:80px; font-weight:900; text-shadow:-5px 5px 5px #000; background:url(img/promptBg.png);background-size:100% 100% !important;-webkit-transition:1s; opacity:0;}
+
 /*	.num{position:absolute;width:50px;height:50px;border-radius:50% 50%;border:#F0F 2px solid;color:#F0F;}
 */	
 
@@ -126,6 +128,7 @@
 		-ms-flex:1 0 auto;
 		flex:1 0 auto;
 		color:black;
+		font-weight: 900;
 		margin-right:4%;
 		padding-top:0px;
 		width:10%;

@@ -102,12 +102,12 @@ if (stripos($fileName, "hannelList")) {
 			}
 			// 更新video表内容
 			if($excelData[0]>0){	//外链
-				$sql = mysqli_query($connect, "replace into video (isOutside,status,sort,type,name,father,episode,episodes,region,year,director,actor,score,details,tag,editor) values ($excelData[0],$excelData[1],$excelData[2],'$excelData[3]','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]',$excelData[9],'$excelData[10]','$excelData[11]',$excelData[12],'$excelData[13]','$tagCurr','$currUser')") or die(mysqli_error($connect));
+				$sql = mysqli_query($connect, "replace into video (isOutsite,status,sort,type,name,father,episode,episodes,region,year,director,actor,score,details,tag,editor) values ($excelData[0],$excelData[1],$excelData[2],'$excelData[3]','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]',$excelData[9],'$excelData[10]','$excelData[11]',$excelData[12],'$excelData[13]','$tagCurr','$currUser')") or die(mysqli_error($connect));
 			}else{
 			//	echo "<script>alert('".$excelData[1].$excelData[2].$excelData[3].$excelData[4].$excelData[5].$excelData[6]."');</script>";
 				$sql2 = mysqli_query($connect, "select name from video where name='$name' ") or die(mysqli_error($connect));
 				if (mysqli_num_rows($sql2) > 0) {	//判断video表是否有当前行的节目，否则更新失败，导致不继续更新下面的数据	
-					$sql3 = mysqli_query($connect, "UPDATE video SET statuss=$excelData[1],sort=$excelData[2],types='$excelData[3]',father='$excelData[5]',episode='$excelData[6]',episodes='$excelData[7]',region='$excelData[8]',year='$excelData[9]',director='$excelData[10]',actor='$excelData[11]',score='$excelData[12]',details='$excelData[13]',tag='$tagCurr',editor='$currUser' WHERE name='$name' ") or die(mysqli_error($connect));
+					$sql3 = mysqli_query($connect, "UPDATE video SET isOutsite=0, statuss=$excelData[1],sort=$excelData[2],types='$excelData[3]',father='$excelData[5]',episode='$excelData[6]',episodes='$excelData[7]',region='$excelData[8]',year='$excelData[9]',director='$excelData[10]',actor='$excelData[11]',score='$excelData[12]',details='$excelData[13]',tag='$tagCurr',editor='$currUser' WHERE name='$name' ") or die(mysqli_error($connect));
 				}
 			}
 		}

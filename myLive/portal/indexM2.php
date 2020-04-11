@@ -10,7 +10,7 @@ include_once "../connectMysql.php";
 //	include_once "../readStbArray.php";
 include_once "../readChannelArray.php";
 include_once "../readTagNav.php";	//获取分类标签
-include_once "../readHomeList.php";	//首页每类前4个
+include_once "readHomeList.php";	//首页每类前4个
 set_time_limit(0); //限制页面执行时间,0为不限制
 //	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
@@ -247,7 +247,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var pageNow = 1; //第一页是1
 		var vodPageAll = 1;
 		var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
-		var listArrTemp = [];
+	//	var listArrTemp = [];
 
 		function getTagData(_tag1, _tag2,_tag3,_pageNum, _pageSize, _mobile) {
 			if (navPos < 0) { 	//从直播切换到点播
@@ -310,7 +310,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						//	name = name.slice(0, name.length - 4);
 							name = name.slice(0,name.lastIndexOf('.') );
 						//	alert(name);
-							if( father.length > 4){
+							if( father.length > 6){
 								var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 							}else{
 								var father2 = father;
@@ -348,14 +348,34 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getTagData(navPos,tag2,tag3,pageNow, 9, "mobile");
 		}
 
-		function playVod(_num) {
-			var playUrls = listArrTemp[_num];
-			alert(playUrls);
-			if (typeof(window.androidJs) != "undefined") {
-				window.androidJs.JsPlayVod(playUrls);
-				window.androidJs.JsMovePlayerWindow(0); //每次点播将视频置顶
-			}
+		var episodeTemp = 0;
+		function playVod(_episodePos,_id) {
    			window.androidJs.JsSetPageArea("vod");
+			$.ajax({
+				type: 'POST',
+				url: './playVod.php',
+				data: {
+					'sn':sn,
+					'id':_id,
+				},
+				dataType: 'json',
+				beforeSend: function() {
+					//这里一般显示加载提示;
+				},
+				success: function(json) {
+					var playUrls = json.playUrl;
+					if (typeof(window.androidJs) != "undefined") {
+						window.androidJs.JsPlayVod(playUrls);
+					}
+				},
+				error: function() {
+					alert("something error!");
+				}
+			});
+			getID('chooseChapter'+episodeTemp).style.color = "black";
+			episodeTemp = _episodePos;
+			getID('chooseChapter'+episodeTemp).style.color = "#ff9933";			
+			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*125:0;
 		}
 
 		function showHomeLiveGroup(){	//显示首页直播分组入口
@@ -371,8 +391,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					var homeListIndex = i*4+j;
 					var father = homeArr4[i*4+j].father;
 				//	var id = homeArr4[i*4+j].id;
-					if( father.length > 4){	//father是显示在页面上的节目名称，超长的改为游动的father2
-					console.log(father);
+					if( father.length > 6){	//father是显示在页面上的节目名称，超长的改为游动的father2
 						var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 					}else{
 						var father2 = father;
@@ -391,7 +410,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}			
 			tag1 = _tag1;
 			showTabRegion();	//动态显示二级地区分类
-			listArrTemp = [];
+		//	listArrTemp = [];
 			getTagData(_tag1,0,0,1,9,0);	//显示海报列表
 		}
 
@@ -411,7 +430,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 			showTab3();	
 			getID("vodTabRegion").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
-			listArrTemp = [];
+		//	listArrTemp = [];
 			getTagData(navPos,_num,0,1,9,0);
 		}
 
@@ -442,7 +461,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("tag3_"+tag3).style.color = "white";		
 			tag3 = _num;
 			getID("tag3_"+tag3).style.backgroundColor = "#ff9933";
-			listArrTemp = [];
+		//	listArrTemp = [];
 			getTagData(navPos,tag2,_num,1,9,0);
 			getID("vodTab3").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
 		}
@@ -704,7 +723,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 详情页 -->
 	<div id="detail" style="position:absolute;left:0px;top:0px;width:100%;z-index:2;background-color:black;display:none;">
-		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;"></div>
+		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;"></div>
 
 		<div class="detailText" style="top:40px;font-size:50px;color:#f7a333;" id="detailName" ></div>
 		<div class="detailText" style=top:60px;"><b>导演：</b><span id="detailDirector" ></span></div>
@@ -714,9 +733,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div class="detailText" style="top:70px;"><b>时长：</b><span id="detailDuration"></span></div>
 		<div class="detailText" style="top:20px;left:50%;width:45%;"><b>IMDB评分：</b><span id="detailScore" style="color:#f7a333;"></span></div>
 		<div class="detailText" style="top:40px;"><b>类型：</b><span id="detailTag"></span></div>
-		<div class="detailText" style="top:-120px;left:84%;width:100px;height:100px;background:url(img/collect0.png);" onClick=""></div>
+		<div class="detailText" style="top:-120px;left:84%;width:100px;height:100px;background:url(img/collect0.png);" onClick="changeCollect()" id="collectImg"></div>
 		<div class="detailText" style="top:-40px;" id="description" onclick="moreDescription()"><b>剧情：</b><span id="detailDescription"></span></div>
-
 		<div id="chooseChapter" class="detailText2" style="top:-40px;display:none;" >选集&emsp;<span id="episodes"></span>
 			<ul id="chooseChapterNum" class="tab-head">
 				<!--div class="tab-chooseChapter-item" onClick="showLiveList(0);" style="">1</!-div-->
@@ -729,6 +747,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				<div style="width:31%;height:400px;margin-right:0%;margin-bottom:30px;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
 			</div>
 		</div>
+		<div id="promptCollect" class="promptCollect">已收藏</div>
 	</div>
 
 	<!-- 解锁界面 -->
