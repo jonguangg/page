@@ -8,6 +8,7 @@
 	
     $father = (@$_POST['father'])?$_POST['father']:"";
     $sn = @$_POST['sn'];
+    $tag = "";
 
     //  查询节目ADI信息
     $sql1 = mysqli_query($connect,"SELECT * from video WHERE father='$father' LIMIT 0,1 ") or die(mysqli_error($connect));
@@ -24,6 +25,7 @@
         $detailJson['detailTag'] = $row['tag'];
         $detailJson['detailDescription'] = $row['details'];
         $detailJson['detailEpisodes'] = $row['episodes']; 
+        $tag = $row['tag'];
     } 
   
     //  查询剧集信息
@@ -56,6 +58,9 @@
     }else{
         $detailJson['isCollect'] = 0;
     }
+
+    
+
 
 	/*
 		echo "<pre>";

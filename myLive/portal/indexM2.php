@@ -141,6 +141,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		function androidBack(){	//供返回键调用
 		//	alert("from_"+from);
 			if( indexArea =="live" ){
+				getID("group" + groupId).style.color = 'white';
 				getID("channel").style.display = "none";
 				getID("vod").style.display = "block";
 				indexArea = "home";
@@ -375,7 +376,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID('chooseChapter'+episodeTemp).style.color = "black";
 			episodeTemp = _episodePos;
 			getID('chooseChapter'+episodeTemp).style.color = "#ff9933";			
-			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*125:0;
+			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;
 		}
 
 		function showHomeLiveGroup(){	//显示首页直播分组入口
@@ -741,10 +742,17 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			</ul>
 		</div>
 		<div id="guess" class="detailText2" style="top:-40px;">猜您喜欢
-			<div style="position:relative;left:0%;top:0px;width:100&;">
-				<div style="width:31%;height:400px;margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
-				<div style="width:31%;height:400px;margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
-				<div style="width:31%;height:400px;margin-right:0%;margin-bottom:30px;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
+			<div style="position:relative;left:0%;top:0px;">
+				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
+				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
+				<div id="guess2" class="guess" style="margin-right:0%;margin-bottom:30px;background:url(img/poster.jpg);"></div-->
+
+				<ul id="guesss" class="tab-head" >
+					<div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div>
+					<div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div>
+					<div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div>
+				</ul>
+
 			</div>
 		</div>
 		<div id="promptCollect" class="promptCollect">已收藏</div>
