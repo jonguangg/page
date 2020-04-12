@@ -190,7 +190,7 @@ for ($i = 0; $i < count($fileArr); $i++) {
 
 					//	移动视频文件到vod文件夹 并更新数据库内的文件路径
 					//	exec('mv ' . $path_parts['dirname'] . $nameShort . '* ./vod/' . $nameShort . '/');
-					//	exec('chmod -R 777 ./vod/' . $nameShort);
+						exec('chmod -R 777 ./vod/' . $nameShort);
 					//	或者删除
 					exec('rm -f ' . $path_parts['dirname'] . $nameShort . '*' );
 					$sql = mysqli_query($connect, "UPDATE video set name='$name2' where name='$name' ") or die(mysqli_error($connect));

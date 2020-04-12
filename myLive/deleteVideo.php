@@ -11,6 +11,7 @@
 	$path_parts['basename'] = ltrim(substr($name, strrpos($name, '/')),"/");	//带扩展名的文件名
 	$path_parts['filename'] = ltrim(substr($path_parts ['basename'], 0, strrpos($path_parts ['basename'], '.')),"/"); 		
 	$nameShort = $path_parts ['filename'];//pathinfo($name, PATHINFO_FILENAME);//这个不支持中文
+
 	
 	exec('rm -rf '.$path_parts["dirname"] );
 
@@ -30,6 +31,8 @@
 	
 	//在数据库内删除该文件
 	$sql = mysqli_query($connect,"DELETE FROM video WHERE name='$name' ") or die(mysqli_error()) ;
+	$sql2 = mysqli_query($connect,"DELETE FROM collect WHERE name='$name' ") or die(mysqli_error()) ;
+	$sql3 = mysqli_query($connect,"UPDATE history SET statuss=0 WHERE name='$name' ") or die(mysqli_error()) ;
 
 	if( $sql ){
 		$msg = '{"status":"succeed"}';
@@ -37,5 +40,15 @@
 	}else{
 		echo $path_parts["dirname"]."未知错误！";
 	}
+
+
+
+
+
+
+
+
+
+
 
 ?>
