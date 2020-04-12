@@ -11,7 +11,7 @@
 		"father" => "",
 	);
 
-	$sql1 = mysqli_query($connect,"SELECT * from video WHERE types='电影' AND episode=1 ORDER by sort ASC LIMIT 0,4");
+	$sql1 = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND types='电影' AND episode=1 ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql1) ){	
 	//	$newArr["id"] = $row["id"];	
@@ -20,7 +20,7 @@
 		array_push($homeArr4,$newArr);
 	}
 
-	$sql2 = mysqli_query($connect,"SELECT * from video 	WHERE types='电视剧' AND episode=1 ORDER by sort ASC LIMIT 0,4");
+	$sql2 = mysqli_query($connect,"SELECT * from video 	WHERE statuss=1 AND types='电视剧' AND episode=1 ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql2) ){	
 	//	$newArr["id"] = $row["id"];	
@@ -29,7 +29,7 @@
 		array_push($homeArr4,$newArr);
 	}
 
-	$sql3 = mysqli_query($connect,"SELECT * from video 	WHERE types='综艺' AND episode=1 ORDER by sort ASC LIMIT 0,4");
+	$sql3 = mysqli_query($connect,"SELECT * from video 	WHERE statuss=1 AND types='综艺' AND episode=1 ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql3) ){	
 	//	$newArr["id"] = $row["id"];	
@@ -38,7 +38,7 @@
 		array_push($homeArr4,$newArr);
 	}
 
-	$sql4 = mysqli_query($connect,"SELECT * from video 	WHERE types='动漫' AND episode=1 ORDER by sort ASC LIMIT 0,4");
+	$sql4 = mysqli_query($connect,"SELECT * from video 	WHERE statuss=1 AND types='动漫' AND episode=1 ORDER by sort ASC LIMIT 0,4");
 	//	向总数组添加
 	while( $row = mysqli_fetch_assoc($sql4) ){	
 	//	$newArr["id"] = $row["id"];	
