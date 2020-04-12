@@ -139,6 +139,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function androidBack(){	//供返回键调用
+			window.androidJs.JsClosePlayer();
 		//	alert("from_"+from);
 			if( indexArea =="live" ){
 				getID("group" + groupId).style.color = 'white';
@@ -351,6 +352,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		var episodeTemp = 0;
 		function playVod(_episodePos,_id) {
+			window.androidJs.JsClosePlayer();
    			window.androidJs.JsSetPageArea("vod");
 			$.ajax({
 				type: 'POST',
@@ -734,7 +736,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div class="detailText" style="top:70px;"><b>时长：</b><span id="detailDuration"></span></div>
 		<div class="detailText" style="top:20px;left:50%;width:45%;"><b>IMDB评分：</b><span id="detailScore" style="color:#f7a333;"></span></div>
 		<div class="detailText" style="top:40px;"><b>类型：</b><span id="detailTag"></span></div>
-		<div class="detailText" style="top:-120px;left:84%;width:100px;height:100px;background:url(img/collect0.png);" onClick="changeCollect()" id="collectImg"></div>
+		<div class="detailText" style="top:-160px;left:84%;width:100px;height:100px;background:url(img/collect0.png);" onClick="changeCollect()" id="collectImg"></div>
 		<div class="detailText" style="top:-40px;" id="description" onclick="moreDescription()"><b>剧情：</b><span id="detailDescription"></span></div>
 		<div id="chooseChapter" class="detailText2" style="top:-40px;display:none;" >选集&emsp;<span id="episodes"></span>
 			<ul id="chooseChapterNum" class="tab-head">
@@ -747,10 +749,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
 				<div id="guess2" class="guess" style="margin-right:0%;margin-bottom:30px;background:url(img/poster.jpg);"></div-->
 
-				<ul id="guesss" class="tab-head" >
-					<div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div>
-					<div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div>
-					<div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div>
+				<ul id="guesses" class="tab-head" >
+					<!--div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-guessName">猜您喜欢之一</div></div>
+					<div class="tab-guess-item" onClick="showLiveList(1);" style="background:url(img/poster.jpg)"><div class="tab-guessName">猜您喜欢之二</div></div>
+					<div class="tab-guess-item" onClick="showLiveList(2);" style="background:url(img/poster.jpg)"><div class="tab-guessName">猜您喜欢之三</div></div>
+					<div class="tab-guess-item" onClick="showLiveList(3);" style="background:url(img/poster.jpg)"><div class="tab-guessName">猜您喜欢之四</div></div-->
 				</ul>
 
 			</div>
