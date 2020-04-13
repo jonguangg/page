@@ -102,7 +102,7 @@ if (stripos($fileName, "hannelList")) {
 			}
 			// 更新video表内容
 			if($excelData[0]>0){	//外链
-				$sql = mysqli_query($connect, "replace into video (isOutsite,status,sort,type,name,father,episode,episodes,region,year,director,actor,score,details,tag,editor) values ($excelData[0],$excelData[1],$excelData[2],'$excelData[3]','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]',$excelData[9],'$excelData[10]','$excelData[11]',$excelData[12],'$excelData[13]','$tagCurr','$currUser')") or die(mysqli_error($connect));
+				$sql = mysqli_query($connect, "replace into video (isOutsite,statuss,sort,types,name,father,episode,episodes,region,year,director,actor,score,details,tag,editor,duration) values ($excelData[0],$excelData[1],$excelData[2],'$excelData[3]','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]',$excelData[9],'$excelData[10]','$excelData[11]',$excelData[12],'$excelData[13]','$tagCurr','$currUser','$excelData[42]')") or die(mysqli_error($connect));
 			}else{
 			//	echo "<script>alert('".$excelData[1].$excelData[2].$excelData[3].$excelData[4].$excelData[5].$excelData[6]."');</script>";
 				$sql2 = mysqli_query($connect, "select name from video where name='$name' ") or die(mysqli_error($connect));

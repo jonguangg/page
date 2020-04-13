@@ -1223,7 +1223,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				$.each(list,
 					function(index, array) { //遍历json数据列
 						var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
-						name = name.slice(0, name.length - 4);
+					//	name = name.slice(0, name.length - 4);
+						name = name.slice(0,name.lastIndexOf('.') );
 						if (array['duration']) {
 							var duration = array['duration'].slice(0, 8);
 						} else {

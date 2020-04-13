@@ -353,7 +353,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var episodeTemp = 0;
 		function playVod(_episodePos,_id) {
 			window.androidJs.JsClosePlayer();
-   			window.androidJs.JsSetPageArea("vod");
+			   window.androidJs.JsSetPageArea("vod");
+			//   alert(_id);
 			$.ajax({
 				type: 'POST',
 				url: './playVod.php',
@@ -390,7 +391,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		function showHomeList(){
 			for(i=0;i<4;i++){	//循环电影电视综艺等类型
 				for(j=0;j<3;j++){	//每个类型取前3个影片
-					var name = homeArr4[i*4+j].name.slice(0, homeArr4[i*4+j].name.length - 4);
+					var name = homeArr4[i*4+j].name.slice(0, homeArr4[i*4+j].name.lastIndexOf('.'));
 					var homeListIndex = i*4+j;
 					var father = homeArr4[i*4+j].father;
 				//	var id = homeArr4[i*4+j].id;
@@ -566,7 +567,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
 			getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
-			showSplash();		//显示第二个启动图片
+		//	showSplash();		//显示第二个启动图片
 			showTab1();				//显示一级分类
 		//	showTabRegion(); 	//显示地区导航
 		//	showTab3(); 			//显示分类标签

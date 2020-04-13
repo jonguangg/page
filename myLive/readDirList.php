@@ -151,7 +151,7 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					exec('mkdir ./vod/' . $nameShort . ' && nohup /root/bin/ffmpeg -i ' . $name . ' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
 
 					//截取图片
-					exec('/root/bin/ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/' . $nameShort . '.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
+					exec('/root/bin/ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/poster.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
 
 					$duration = $video_info[0]["duration"];
 					echo $duration;
