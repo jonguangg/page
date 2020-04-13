@@ -27,12 +27,12 @@
 	}
 
 	//统计总记录数
-	if( $total==0 ){
-	//	return ;
-	}
-	$pageAll = ceil($total/$pageSize);		//总页数 
-//	$arrJson['total'] = $total;  
-	$arrJson['pageAll'] = $pageAll;  
+//	if( $total==0 ){
+	//	$arrJson['pageAll'] = 1;
+//	}else{
+		$pageAll = ceil($total/$pageSize);		//总页数 
+		$arrJson['pageAll'] = $pageAll;  
+//	}
 
 	while($row=mysqli_fetch_array($query)){//遍历查询结果，将每条结果写入数组
 		$arrJson['list'][] = array(

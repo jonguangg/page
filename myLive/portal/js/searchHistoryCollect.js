@@ -56,6 +56,11 @@ function showSHC(_area,_pageNum,_key){
             //这里一般显示加载提示;
         },
         success: function(json) {
+            vodPageAll = json.pageAll;
+        //    alert(vodPageAll+"_"+pageNow);
+            if( vodPageAll == 0 || pageNow == vodPageAll){						
+                getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+            }
             var list = json.list;
             $.each(list,
                 function(index, array) { //遍历json数据列
@@ -70,11 +75,6 @@ function showSHC(_area,_pageNum,_key){
                     }
                     getID("shcContent").innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
                 });
-
-            vodPageAll = json.pageAll;
-            if( vodPageAll == 0 || pageNow == vodPageAll){						
-                getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-            }
             setTimeout(function() {
                 changePageStatus = "t";
             }, 1000); // 加载完成后才将状态改为true
