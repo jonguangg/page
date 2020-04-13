@@ -40,7 +40,7 @@
     }
 
     //  查询历史记录
-    $sql3 = mysqli_query($connect,"SELECT * FROM history WHERE father='$father' AND sn='$sn' ORDER BY time ASC ");
+    $sql3 = mysqli_query($connect,"SELECT * FROM history WHERE father='$father' AND sn='$sn' ORDER BY editTime ASC ");
 
     if( mysqli_num_rows($sql3) > 0 ){
         while($row=mysqli_fetch_array($sql3)){ //遍历查询结果，将结果写入数组    
@@ -52,7 +52,7 @@
     }
 
     //  查询收藏记录
-    $sql3 = mysqli_query($connect,"SELECT * from collect WHERE sn='$sn' AND father='$father' ") or die(mysqli_error($connect));
+    $sql3 = mysqli_query($connect,"SELECT * from collect WHERE sn='$sn' AND father='$father' ORDER BY editTime ASC ") or die(mysqli_error($connect));
     if( mysqli_num_rows($sql3)>0 ){
         $detailJson['isCollect'] = 1;
     }else{

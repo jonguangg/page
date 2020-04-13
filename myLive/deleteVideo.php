@@ -31,7 +31,7 @@
 	
 	//在数据库内删除该文件
 	$sql = mysqli_query($connect,"DELETE FROM video WHERE name='$name' ") or die(mysqli_error()) ;
-	$sql2 = mysqli_query($connect,"DELETE FROM collect WHERE name='$name' ") or die(mysqli_error()) ;
+	$sql2 = mysqli_query($connect,"UPDATE collect SET statuss=0 WHERE name='$name' ") or die(mysqli_error()) ;
 	$sql3 = mysqli_query($connect,"UPDATE history SET statuss=0 WHERE name='$name' ") or die(mysqli_error()) ;
 
 	if( $sql ){

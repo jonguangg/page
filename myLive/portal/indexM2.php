@@ -2,6 +2,7 @@
 <script type=text/javascript src="js/init2.js"></script>
 <script type=text/javascript src="js/register2.js"></script>
 <script type=text/javascript src="js/touchMove2.js" charset=UTF-8></script>
+<script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 
 <?php
@@ -303,7 +304,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					var list = json.list;
 					vodPageAll = json.pageAll;
 					if( vodPageAll == 0){						
-						getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+						getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
 					}
 					$.each(list,
 						function(index, array) { //遍历json数据列
@@ -351,6 +352,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		var episodeTemp = 0;
+		var playUrls = "";
 		function playVod(_episodePos,_id) {
 			window.androidJs.JsClosePlayer();
 			   window.androidJs.JsSetPageArea("vod");
@@ -367,7 +369,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					//这里一般显示加载提示;
 				},
 				success: function(json) {
-					var playUrls = json.playUrl;
+					playUrls = json.playUrl;
 					if (typeof(window.androidJs) != "undefined") {
 						window.androidJs.JsPlayVod(playUrls);
 					}
@@ -380,6 +382,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			episodeTemp = _episodePos;
 			getID('chooseChapter'+episodeTemp).style.color = "#ff9933";			
 			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;
+		}
+
+		function rePlay(){
+			window.androidJs.JsPlayVod(playUrls);
 		}
 
 		function showHomeLiveGroup(){	//显示首页直播分组入口
@@ -416,6 +422,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			showTabRegion();	//动态显示二级地区分类
 		//	listArrTemp = [];
 			getTagData(_tag1,0,0,1,9,0);	//显示海报列表
+			getID("searchHistoryCollect").style.display = "none";
 		}
 
 		function showTab1(){	//启动APP时根据后台数据动态显示一级影视类型		
@@ -516,30 +523,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 
 			if( pageNow == vodPageAll && navPos>0){
-				getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+				getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
 			}else if(vodPageAll>0 && navPos>0){
 				getID("loadmore"+navPos).innerHTML = "";
 			}
 
 		}		
-
-		function searchInput(){
-			if( parseInt(getID('searchInput').style.top) < 0 ){
-				indexArea = "search";
-				getID('searchInput').style.top='60px';
-				getID('searchInput').focus();
-				window.androidJs.JsShowImm();
-			}else{
-				indexArea = "home";
-				alert(getID('searchInput').value );
-				getID('searchInput').blur();
-				getID('searchInput').style.top= '-110px';	
-			}
-			st = setTimeout(function() {
-					getID('searchInput').blur();
-					getID('searchInput').style.top= '-110px';						
-				}, 60000);
-		}
 
 		function showSplash(){
 			var splashArr = <?php echo json_encode($splashArr); ?>;	
@@ -567,10 +556,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
 			getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
-		//	showSplash();		//显示第二个启动图片
+			showSplash();		//显示第二个启动图片
 			showTab1();				//显示一级分类
-		//	showTabRegion(); 	//显示地区导航
-		//	showTab3(); 			//显示分类标签
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
 		}
@@ -589,19 +576,17 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<!-- 右上角头像 -->
 		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
-		<!--div class="homeTop" id="searchLogo" style="top:-90px;left:400px;width:500px;height:80px;line-height:80px;background-color:rgba(255,255,255,0.5);border-radius:50px 50px 50px 50px;font-size:50px;padding-left:20px;-webkit-transition: 0.6s" >请输入搜索关键字</div-->
-
 		<!-- 搜索框 -->
 		<input type="text" id="searchInput" class="homeTop" style="left:280px;top:-90px;width:380px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="searchInput()"><img src="img/search.png" /></div>
+		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:770px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/history0.png" /></div>
+		<div style="position:fixed;top:65px;left:770px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 收藏图标 -->
-		<div style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSearchInput()"><img src="img/collect0.png" /></div>
+		<div style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div>
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:95%;">
@@ -707,6 +692,18 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	</div><!-- 点播尾 -->
 
+	<!-- 搜索 历史 收藏 列表页 -->	
+	<div id="searchHistoryCollect" class="homeList" style="top:400px;display:none;">
+		<span id="shcTitle" style="position:relative;left:15%;color:#f7a333;">搜索结果</span>
+		<div id="shcImg" style="background:url(img/typeCartoon0.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
+		<div id="shcContent" style="position:absolute;left:0%;top:110px;width:100%;">
+		<!--	<div class="listImg" style="background: url(./img/poster.jpg)" onClick=showDetail("father")>
+				<div class="listName">father2</div>
+			</div> -->
+		</div>
+		<div id="loadmoreSHC" class="vodListName" style="height:100px;color:gray;"></div>
+	</div>
+
 	<!-- 直播频道列表 -->
 	<div id="channel" style="position:absolute;top:0px;left:0px;width:100%;display:none;">
 		<!-- 频道组 -->
@@ -727,7 +724,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 详情页 -->
 	<div id="detail" style="position:absolute;left:0px;top:0px;width:100%;z-index:2;background-color:black;display:none;">
-		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;"></div>
+		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" onclick="rePlay()"></div>
 
 		<div class="detailText" style="top:40px;font-size:50px;color:#f7a333;" id="detailName" ></div>
 		<div class="detailText" style=top:60px;"><b>导演：</b><span id="detailDirector" ></span></div>
@@ -848,11 +845,12 @@ function eventHandler(e,type){
 						
 		case "KEY_SELECT":
 			if( indexArea=="search" ){
-				alert(indexArea);
-				alert(getID('searchInput').value );
+			//	alert(indexArea);
+			/*	alert(getID('searchInput').value );
 				getID('searchInput').blur();
 				getID('searchInput').style.top= '-110px';
-				indexArea = "home";
+				indexArea = "home";*/
+				showSearchInput();
 			}else if( indexArea=="register" ){
 				checkInput();
 				window.androidJs.JsShowImm();
