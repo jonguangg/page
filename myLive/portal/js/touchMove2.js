@@ -71,7 +71,9 @@ function touchEndFunc(evt){
 		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){
 	//		text += '<br/>向上滑动';
 	//		alert(moveY);
-			loadMore();
+			if( indexArea!="home" ){
+				loadMore();
+			}
 		}
 		
 		if( moveY > 200 && Math.abs(moveX)<Math.abs(moveY) ){

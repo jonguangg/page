@@ -149,7 +149,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				indexArea = "home";
 				navPos = 0;
 			}else if( indexArea == "detail" ){
-				if( from=="home" /*|| from=="vod" */|| from=="detail" ){
+				if( from=="home" || from=="vod" || from=="detail" ){
 					getID("vod").style.display = "block";
 					getID("detail").style.display = "none";
 					indexArea = "home";
@@ -250,7 +250,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var pageNow = 1; //第一页是1
 		var vodPageAll = 1;
 		var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
-	//	var listArrTemp = [];
 
 		function getTagData(_tag1, _tag2,_tag3,_pageNum, _pageSize, _mobile) {
 			if (navPos < 0) { 	//从直播切换到点播
@@ -302,25 +301,23 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				},
 				success: function(json) {
 					var list = json.list;
-					vodPageAll = json.pageAll;
-					if( vodPageAll == 0){						
-						getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-					}
 					$.each(list,
 						function(index, array) { //遍历json数据列
 							var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
 							var father = array['father'];
-						//	name = name.slice(0, name.length - 4);
 							name = name.slice(0,name.lastIndexOf('.') );
-						//	alert(name);
 							if( father.length > 6){
 								var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 							}else{
 								var father2 = father;
 							}
-						//	getID("vodListContent"+_tag1).innerHTML += '<div id=homeListImg'+index+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
 							getID("vodListContent"+_tag1).innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
-						});
+						});	
+
+					vodPageAll = json.pageAll;
+					if( vodPageAll == 0 || pageNow == vodPageAll ){						
+						getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+					}
 					setTimeout(function() {
 						changePageStatus = "t";
 					}, 1000); // 加载完成后才将状态改为true
@@ -347,8 +344,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			pageNow += _num;
 			if (pageNow > vodPageAll || pageNow < 1) {
 				pageNow = vodPageAll;
+			}if( indexArea == "search" || indexArea == "history" ||indexArea == "collect" ){
+				showSHC(indexArea,pageNow,"_key");
+			}else{
+				getTagData(navPos,tag2,tag3,pageNow, 9, "mobile");
 			}
-			getTagData(navPos,tag2,tag3,pageNow, 9, "mobile");
 		}
 
 		var episodeTemp = 0;
@@ -413,14 +413,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function showTabList1(_tag1){	//点击一级分类
-		//	indexArea = "vod";
+			indexArea = "vod";
 			if(tag1>0){
 				getID("vodListContent"+tag1).innerHTML = "";
 				getID("loadmore"+navPos).innerHTML = "";
 			}			
 			tag1 = _tag1;
 			showTabRegion();	//动态显示二级地区分类
-		//	listArrTemp = [];
 			getTagData(_tag1,0,0,1,9,0);	//显示海报列表
 			getID("searchHistoryCollect").style.display = "none";
 		}
@@ -441,7 +440,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 			showTab3();	
 			getID("vodTabRegion").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
-		//	listArrTemp = [];
 			getTagData(navPos,_num,0,1,9,0);
 		}
 
@@ -472,7 +470,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("tag3_"+tag3).style.color = "white";		
 			tag3 = _num;
 			getID("tag3_"+tag3).style.backgroundColor = "#ff9933";
-		//	listArrTemp = [];
 			getTagData(navPos,tag2,_num,1,9,0);
 			getID("vodTab3").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
 		}
@@ -515,18 +512,18 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
 			
 		//	getID("test").style.display = "block";
-		//	getID("test").innerHTML = loadMoreBottom+"<br>"+pageNow;
+		//	getID("test").innerHTML = loadMoreBottom+"<br>"+"pageNow"+pageNow+"pageAll"+vodPageAll;
 
-			if (loadMoreBottom < 2 && pageNow < vodPageAll && navPos > 0 && changePageStatus == "t") { //数字越大，就越早加载下一页
+			if (loadMoreBottom < 2 && pageNow < vodPageAll && navPos > -20 && changePageStatus == "t") { //数字越大，就越早加载下一页
 				changePage(1);
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
 			}
-
-			if( pageNow == vodPageAll && navPos>0){
+/*
+			if( pageNow == vodPageAll && navPos > 0){
 				getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-			}else if(vodPageAll>0 && navPos>0){
+			}else if(vodPageAll>0 && navPos > 0){
 				getID("loadmore"+navPos).innerHTML = "";
-			}
+			}*/
 
 		}		
 
@@ -696,12 +693,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<div id="searchHistoryCollect" class="homeList" style="top:400px;display:none;">
 		<span id="shcTitle" style="position:relative;left:15%;color:#f7a333;">搜索结果</span>
 		<div id="shcImg" style="background:url(img/typeCartoon0.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
-		<div id="shcContent" style="position:absolute;left:0%;top:110px;width:100%;">
-		<!--	<div class="listImg" style="background: url(./img/poster.jpg)" onClick=showDetail("father")>
-				<div class="listName">father2</div>
-			</div> -->
-		</div>
-		<div id="loadmoreSHC" class="vodListName" style="height:100px;color:gray;"></div>
+		<div style="position:absolute;left:0%;top:110px;width:100%;">
+			<div id="shcContent" ></div>
+			<div id="loadmoreSHC" class="vodListName" style="height:100px;color:gray;"></div>
+		</div>		
 	</div>
 
 	<!-- 直播频道列表 -->
