@@ -13,6 +13,10 @@ function showDetail( _father ){
     father = _father;
     getID("detail").style.display = "block";
     getID("vod").style.display = "none";
+    if( from=="search" || from=="history" || from=="collect"){
+        getID("searchHistoryCollect").style.display = "none";
+    }
+//    alert(from);
     $.ajax({
         type: 'POST',
         url: './readDetailJson.php',
@@ -26,6 +30,7 @@ function showDetail( _father ){
         },
         success: function(json) {
             var list = json.list;
+            var guess = json.guess;
             var detailName = json.detailName;
             var detailDirector = json.detailDirector;
             var detailActor = json.detailActor;
@@ -55,17 +60,31 @@ function showDetail( _father ){
             getID("detailTag").innerHTML = detailTag;
             getID("detailDescription").innerHTML = detailDescription;
 
-        //    listArrTemp = [];
             getID("chooseChapterNum").innerHTML = "";
             $.each(list,
                 function(index, array) { //遍历json数据列
                     var detailId = array['id'];
-                //    alert("detailJs"+detailId);
-                    var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
+                //    var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
                     var episode = array['episode'];
-                    name = "http://tenstar.synology.me:10025/myLive/vod/" + name.slice(0,name.lastIndexOf('.') ) + "/index.m3u8";
-                //    listArrTemp.push(name);
+                //    name = "http://tenstar.synology.me:10025/myLive/vod/" + name.slice(0,name.lastIndexOf('.') ) + "/index.m3u8";
                     getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod('+index+','+detailId+');>'+episode+'</div>';
+                    
+                });
+
+            getID("guesses").innerHTML = "";
+            $.each(guess,
+                function(index, array) { //遍历json数据列
+                //  var guessId = array['id'];                    
+                    var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
+                    var father = array['father'];
+                    name = name.slice(0,name.lastIndexOf('.') );   
+                    if( father.length > 6){
+                        var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
+                    }else{
+                        var father2 = father;
+                    }                 
+
+                    getID("guesses").innerHTML += '<div class="tab-guess-item" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="tab-guessName">'+father2+'</div></div>';
                     
                 });
 
@@ -105,7 +124,7 @@ function changeCollect( ){
     getID("promptCollect").style.opacity = 1;
     setTimeout(function() {
 		getID("promptCollect").style.opacity = 0;
-	}, 2000);
+	}, 1500);
 
     $.ajax({
         type: 'POST',

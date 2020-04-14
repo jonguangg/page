@@ -141,7 +141,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function androidBack(){	//供返回键调用
 			window.androidJs.JsClosePlayer();
-		//	alert("from_"+from);
+		//	alert("from_"+from+"_indexArea1_"+indexArea);
 			if( indexArea =="live" ){
 				getID("group" + groupId).style.color = 'white';
 				getID("channel").style.display = "none";
@@ -149,19 +149,14 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				indexArea = "home";
 				navPos = 0;
 			}else if( indexArea == "detail" ){
-				if( from=="home" || from=="vod" || from=="detail" ){
-					getID("vod").style.display = "block";
-					getID("detail").style.display = "none";
-					indexArea = "home";
-				}else if( from=="search" ){
-
-				}else if( from=="history" ){
-
-				}else if( from=="collect" ){
-
+				indexArea = from;
+				getID("vod").style.display = "block";
+				getID("detail").style.display = "none";
+				if( from=="search" || from=="history" ||from=="collect" ){
+					getID("searchHistoryCollect").style.display = "block";
 				}
 			}
-		//	alert("indexArea_"+indexArea);
+		//	alert("from_"+from+"_indexArea2_"+indexArea);
 		}
 
 		var groupScrollL = 0;
@@ -300,10 +295,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					//这里一般显示加载提示;
 				},
 				success: function(json) {
-					vodPageAll = json.pageAll;
+					vodPageAll = json.pageAll;/*
 					if( vodPageAll == 0 || pageNow == vodPageAll ){						
 						getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-					}
+					}*/
 					var list = json.list;
 					$.each(list,
 						function(index, array) { //遍历json数据列
@@ -374,7 +369,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					}
 				},
 				error: function() {
-					alert("something error!");
+				//	alert("something error!");
 				}
 			});
 			getID('chooseChapter'+episodeTemp).style.color = "black";
@@ -517,12 +512,14 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				changePage(1);
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
 			}
-/*
-			if( pageNow == vodPageAll && navPos > 0){
-				getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-			}else if(vodPageAll>0 && navPos > 0){
-				getID("loadmore"+navPos).innerHTML = "";
-			}*/
+			
+			if( vodPageAll == 0 || pageNow == vodPageAll ){		
+				if( indexArea=="vod" ){
+					getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+				}else{
+             	   getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+				}
+			}
 
 		}		
 
@@ -573,7 +570,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!-- 搜索框 -->
-		<input type="text" id="searchInput" class="homeTop" style="left:280px;top:-90px;width:380px;height:80px;line-height:80px;font-size:60px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
+		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:50px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
 
 		<!-- 搜索图标 -->
 		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>

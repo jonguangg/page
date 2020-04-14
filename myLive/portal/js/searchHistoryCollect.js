@@ -57,8 +57,7 @@ function showSHC(_area,_pageNum,_key){
         },
         success: function(json) {
             vodPageAll = json.pageAll;
-        //    alert(vodPageAll+"_"+pageNow);
-            if( vodPageAll == 0 || pageNow == vodPageAll){						
+            if( vodPageAll == 0 && indexArea == "search"){						
                 getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
             }
             var list = json.list;
