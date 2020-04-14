@@ -304,13 +304,16 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						function(index, array) { //遍历json数据列
 							var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
 							var father = array['father'];
+							var id = array["id"];
 							name = name.slice(0,name.lastIndexOf('.') );
 							if( father.length > 6){
 								var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 							}else{
 								var father2 = father;
 							}
-							getID("vodListContent"+_tag1).innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
+						//	getID("vodListContent"+_tag1).innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
+
+							getID("vodListContent"+_tag1).innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="listName">'+father2+'</div></div>';
 						});	
 					setTimeout(function() {
 						changePageStatus = "t";
@@ -394,14 +397,14 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					var name = homeArr4[i*4+j].name.slice(0, homeArr4[i*4+j].name.lastIndexOf('.'));
 					var homeListIndex = i*4+j;
 					var father = homeArr4[i*4+j].father;
-				//	var id = homeArr4[i*4+j].id;
+					var id = homeArr4[i*4+j].id;
 					if( father.length > 6){	//father是显示在页面上的节目名称，超长的改为游动的father2
 						var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
 					}else{
 						var father2 = father;
 					}
 				//	getID('homeListContent'+i).innerHTML += '<div id=homeListImg'+homeListIndex+' class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
-					getID('homeListContent'+i).innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
+					getID('homeListContent'+i).innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="listName">'+father2+'</div></div>';
 				}
 			}
 		}

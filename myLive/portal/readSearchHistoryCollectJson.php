@@ -36,7 +36,7 @@
 
 	while($row=mysqli_fetch_array($query)){//遍历查询结果，将每条结果写入数组
 		$arrJson['list'][] = array(
-		//	'id' => $row['id'],
+			'id' => $row['id'],
 			'name' => $row['name'],
 			'father' => $row['father'],
 		);  

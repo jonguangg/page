@@ -31,7 +31,8 @@
 		}else{
 			$playJson['playUrl'] = $name;
 		}		
-	} $playJson['id'] = $id;
+	} 
+//	$playJson['id'] = $id;
 	
 
 	//	写播放历史

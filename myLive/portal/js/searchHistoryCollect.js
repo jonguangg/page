@@ -63,6 +63,7 @@ function showSHC(_area,_pageNum,_key){
             var list = json.list;
             $.each(list,
                 function(index, array) { //遍历json数据列
+                    var id = array["id"];
                     var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
                     var father = array['father'];
                     name = name.slice(0,name.lastIndexOf('.') );
@@ -72,7 +73,7 @@ function showSHC(_area,_pageNum,_key){
                     }else{
                         var father2 = father;
                     }
-                    getID("shcContent").innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="listName">'+father2+'</div></div>';
+                    getID("shcContent").innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="listName">'+father2+'</div></div>';
                 });
             setTimeout(function() {
                 changePageStatus = "t";

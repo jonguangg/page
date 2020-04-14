@@ -1,27 +1,26 @@
 var episodes = 1;
-var episodePos = 1;
+//var episodePos = 1;
 var from = "home";
 var sn = getCookie('sn');
-var detailId = 0;
-var father = "";
+//var id = 0;
+//var father = "";
 var isCollect = 0;  //默认0未收藏
 
-
-function showDetail( _father ){
+function showDetail( _id ){
     from = indexArea;
     indexArea = "detail";
-    father = _father;
+//    father = _father;
+//    id = _id;
     getID("detail").style.display = "block";
     getID("vod").style.display = "none";
     if( from=="search" || from=="history" || from=="collect"){
         getID("searchHistoryCollect").style.display = "none";
     }
-//    alert(from);
     $.ajax({
         type: 'POST',
         url: './readDetailJson.php',
         data: {
-            'father': _father,
+            'id': _id,
             'sn':sn,
         },
         dataType: 'json',
@@ -29,8 +28,6 @@ function showDetail( _father ){
             //这里一般显示加载提示;
         },
         success: function(json) {
-            var list = json.list;
-            var guess = json.guess;
             var detailName = json.detailName;
             var detailDirector = json.detailDirector;
             var detailActor = json.detailActor;
@@ -40,15 +37,6 @@ function showDetail( _father ){
             var detailScore = json.detailScore;
             var detailTag = json.detailTag;
             var detailDescription = json.detailDescription;
-            detailId = json.detailId;
-            episodePos = json.episodePos;            
-            episodes = json.detailEpisodes;
-            isCollect = json.isCollect;
-            if(isCollect==1){
-                getID("collectImg").style.backgroundImage = 'url(img/collect1.png)';
-            }else{
-                getID("collectImg").style.backgroundImage = 'url(img/collect0.png)';
-            }
             
             getID("detailName").innerHTML = detailName;
             getID("detailDirector").innerHTML = detailDirector;
@@ -59,22 +47,36 @@ function showDetail( _father ){
             getID("detailScore").innerHTML = detailScore;
             getID("detailTag").innerHTML = detailTag;
             getID("detailDescription").innerHTML = detailDescription;
+            
+           
+            episodes = json.detailEpisodes;
+            isCollect = json.isCollect;
+            var idPos = json.id;    //用于进入详情页时播放上次播的那集
+            var episodePos = json.episodePos; 
 
+            if(isCollect==1){
+                getID("collectImg").style.backgroundImage = 'url(img/collect1.png)';
+            }else{
+                getID("collectImg").style.backgroundImage = 'url(img/collect0.png)';
+            }
+
+            var list = json.list;
             getID("chooseChapterNum").innerHTML = "";
             $.each(list,
                 function(index, array) { //遍历json数据列
-                    var detailId = array['id'];
+                    var id = array['id'];   //用于点击选集的播放
                 //    var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
                     var episode = array['episode'];
                 //    name = "http://tenstar.synology.me:10025/myLive/vod/" + name.slice(0,name.lastIndexOf('.') ) + "/index.m3u8";
-                    getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod('+index+','+detailId+');>'+episode+'</div>';
+                    getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod('+index+','+id+');>'+episode+'</div>';
                     
                 });
 
+            var guess = json.guess;
             getID("guesses").innerHTML = "";
             $.each(guess,
                 function(index, array) { //遍历json数据列
-                //  var guessId = array['id'];                    
+                    var id = array['id'];                    
                     var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
                     var father = array['father'];
                     name = name.slice(0,name.lastIndexOf('.') );   
@@ -82,14 +84,14 @@ function showDetail( _father ){
                         var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
                     }else{
                         var father2 = father;
-                    }                 
+                    }              
 
-                    getID("guesses").innerHTML += '<div class="tab-guess-item" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail("'+father+'")><div class="tab-guessName">'+father2+'</div></div>';
+                    getID("guesses").innerHTML += '<div class="tab-guess-item" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="tab-guessName">'+father2+'</div></div>';
                     
                 });
 
             initDetailArea();
-            playVod( episodePos-1 ,detailId);   //集数是从1开始，id从0开始，所以减1
+            playVod( episodePos-1 ,idPos);   //集数是从1开始，id从0开始，所以减1
         },
         error: function() {
             //	alert("error");
@@ -130,7 +132,7 @@ function changeCollect( ){
         type: 'POST',
         url: './collect.php',
         data: {
-            'id':detailId,
+            'id':id,
             'sn':sn,
             'father': father,
             'isCollect': isCollect,

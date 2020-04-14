@@ -17,7 +17,7 @@
 	//	根据id去video表查询视频名称，再拼出播放串
 	$sql1 = mysqli_query($connect,"SELECT * from video WHERE id='$id' ") or die(mysqli_error($connect));
 
-	while($row=mysqli_fetch_array($sql1)){ //遍历查询结果，将结果写入数组 
+	while($row=mysqli_fetch_array($sql1)){ //遍历查询结果，将结果写入数组
 		$name = $row['name'];
 		$father = $row['father'];
 	} 
