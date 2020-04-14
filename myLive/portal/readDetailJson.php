@@ -44,7 +44,7 @@
 
     if( mysqli_num_rows($sql3) > 0 ){
         while($row=mysqli_fetch_array($sql3)){ //遍历查询结果，将结果写入数组    
-        //    $detailJson['detailId'] = $row['id'];
+            $detailJson['detailId'] = $row['id'];
             $detailJson['episodePos'] = $row['episode'];
         } 
     }else{
