@@ -2,7 +2,7 @@ var episodes = 1;
 //var episodePos = 1;
 var from = "home";
 var sn = getCookie('sn');
-//var id = 0;
+var id = 0;
 //var father = "";
 var isCollect = 0;  //默认0未收藏
 
@@ -10,7 +10,7 @@ function showDetail( _id ){
     from = indexArea;
     indexArea = "detail";
 //    father = _father;
-//    id = _id;
+    id = _id;
     getID("detail").style.display = "block";
     getID("vod").style.display = "none";
     if( from=="search" || from=="history" || from=="collect"){
@@ -134,7 +134,7 @@ function changeCollect( ){
         data: {
             'id':id,
             'sn':sn,
-            'father': father,
+        //    'father': father,
             'isCollect': isCollect,
         },
         dataType: 'json',
