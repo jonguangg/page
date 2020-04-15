@@ -65,7 +65,7 @@
     $tagArr = explode("|",$tag) ;
     $guessFatherArr = [];
     for($i=1; $i<sizeof($tagArr)-1; $i++){
-        $sql4 = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND id!='$id' AND tag LIKE '%$tagArr[$i]%' ORDER BY playNum DESC limit 0,1 ") or die(mysqli_error($connect));
+        $sql4 = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND father!='$father' AND tag LIKE '%$tagArr[$i]%' ORDER BY playNum DESC limit 0,1 ") or die(mysqli_error($connect));
         while($row=mysqli_fetch_array($sql4)){//遍历查询结果，将每条结果写入数组
             if( !in_array($row['father'], $guessFatherArr) ){   //如果当前节目没推荐过才推荐
                 $detailJson['guess'][] = array(
@@ -80,7 +80,7 @@
 
     //  防止分类不足3个，致使推荐位排不满，故再选3个最新上线的
     $guessCollect = 0;  //从收藏表内推荐的数量，只需要3个，但可能前面两个已推荐了，所以取前20个
-    $sql5 = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND id!='$id' ORDER BY uploadTime DESC limit 0,20 ") or die(mysqli_error($connect));
+    $sql5 = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND father!='$father' ORDER BY uploadTime DESC limit 0,20 ") or die(mysqli_error($connect));
      while($row=mysqli_fetch_array($sql5)){//遍历查询结果，将每条结果写入数组
         if( !in_array($row['father'], $guessFatherArr)  && $guessCollect < 3){   //如果当前节目没推荐过才推荐
             $detailJson['guess'][] = array(

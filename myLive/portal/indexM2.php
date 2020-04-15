@@ -5,10 +5,10 @@
 <script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 
+
 <?php
 include_once "readSplash.php";
 include_once "../connectMysql.php";
-//	include_once "../readStbArray.php";
 include_once "../readChannelArray.php";
 include_once "../readTagNav.php";	//获取分类标签
 include_once "readHomeList.php";	//首页每类前4个
@@ -141,7 +141,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function androidBack(){	//供返回键调用
 			window.androidJs.JsClosePlayer();
-		//	alert("from_"+from+"_indexArea1_"+indexArea);
+			alert("from_"+from+"_indexArea1_"+indexArea);
 			if( indexArea =="live" ){
 				getID("group" + groupId).style.color = 'white';
 				getID("channel").style.display = "none";
@@ -152,11 +152,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				indexArea = from;
 				getID("vod").style.display = "block";
 				getID("detail").style.display = "none";
-				if( from=="search" || from=="history" ||from=="collect" ){
+				if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 					getID("searchHistoryCollect").style.display = "block";
 				}
 			}
-		//	alert("from_"+from+"_indexArea2_"+indexArea);
+			alert("from_"+from+"_indexArea2_"+indexArea);
 		}
 
 		var groupScrollL = 0;
@@ -557,8 +557,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
 		}
-
-
 	</script>
 </head>
 
@@ -803,7 +801,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
 
-		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
+		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(img/vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 
 		<div id="exp" style="position:absolute;left:13%;top:63%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
 
@@ -811,7 +809,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div>
 
 	<!-- 启动图片 -->
-	<div id="splash" style="position: absolute;left:0px;top:0px;width:100%;height:0px;background:url(null.png);background-size:100% 100%;display:none;z-index:99;">	
+	<div id="splash" style="position: absolute;left:0px;top:0px;width:100%;height:0px;background:url(img/null.png);background-size:100% 100%;display:none;z-index:99;">	
 		<div onclick="splashJump()" style="position: absolute;right:100px;">
 			<div class="flex-container" >
 				<div class="outbox" id="splashJump">跳过</div>

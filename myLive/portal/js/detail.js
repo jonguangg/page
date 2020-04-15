@@ -7,7 +7,9 @@ var id = 0;
 var isCollect = 0;  //默认0未收藏
 
 function showDetail( _id ){
-    from = indexArea;
+    if( indexArea!="detail" ){  //详情页点击猜您喜欢，不改变from，这样回到首页才正常
+        from = indexArea;
+    }    
     indexArea = "detail";
 //    father = _father;
     id = _id;
