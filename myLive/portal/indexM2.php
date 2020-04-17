@@ -4,6 +4,7 @@
 <script type=text/javascript src="js/touchMove2.js" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
+<script type=text/javascript src="js/zhiBoArr.js" charset=UTF-8></script>
 
 
 <?php
@@ -117,7 +118,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var videoUrlCookie = 0; //( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?channelDataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
 
 		var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-		var indexArea = "home";
+		var indexArea = "zhiBo";
 		var navPos = 0; //当前分类 0为home 1为movie -1为直播
 
 		for (i = 0; i < channelDataArr.length; i++) { //合并所有频道为一个数组，便于显示所有频道和跳转
@@ -141,7 +142,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function androidBack(){	//供返回键调用
 			window.androidJs.JsClosePlayer();
-			alert("from_"+from+"_indexArea1_"+indexArea);
+		//	alert("from_"+from+"_indexArea1_"+indexArea);
 			if( indexArea =="live" ){
 				getID("group" + groupId).style.color = 'white';
 				getID("channel").style.display = "none";
@@ -156,7 +157,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					getID("searchHistoryCollect").style.display = "block";
 				}
 			}
-			alert("from_"+from+"_indexArea2_"+indexArea);
+		//	alert("from_"+from+"_indexArea2_"+indexArea);
 		}
 
 		var groupScrollL = 0;
@@ -539,6 +540,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			startCircle();	//右上角跳过圆圈
 		}
 
+		var pageZhiBo = 0;
+		function showZhiBoList(_pageNum){
+			for(i=0; i<10; i++){
+				getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick="playStopZhuBo()"><video id=zhiBo'+(i+_pageNum*10)+' width="100%" height='+clientHeight+'px'+' poster="img/poster.jpg" preload="auto" src='+zhiBoArr[i+_pageNum]+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
+			}
+		}
+
+		var clientWidth = 0 ;
+		var clientHeight = 0 ;
 		function init() {
 			stbInfo();			
 			scrollDisable();		//禁止页面滚动	
@@ -552,17 +562,23 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
 			getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
-			showSplash();		//显示第二个启动图片
+		//	showSplash();		//显示第二个启动图片
 			showTab1();				//显示一级分类
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
+		//	getID("zhiBo0").play();
+		//	for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
+		//		document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
+		//	}
+			showZhiBoList(0);
+			getID("zhiBo0").play();
 		}
 	</script>
 </head>
 
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" onScroll="moveVideoWindow();">
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
-	<div id="test" style="position:fixed;top:150px;left:0px;width:100%;height:200px;z-index:20;background-color:white;font-size:100px;color:red;display:none;">test</div>
+	<div id="test" style="position:fixed;top:150px;left:0px;width:100%;height:200px;z-index:9999;background-color:white;font-size:100px;color:red;display:none;"></div>
 	<!--非直播 -->
 	<div id="vod" style="position:absolute;left:0px;width:100%;display:block;">
 		<!-- 顶部黑底 -->
@@ -571,7 +587,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!-- 搜索框 -->
-		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:50px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" />
+		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();window.androidJs.JsShowImm();" />
 
 		<!-- 搜索图标 -->
 		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
@@ -682,9 +698,24 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div id="vodList5" style="position:absolute;top:580px;left:0px;width:100%;display:none;">
 			<div id="vodListContent5">			</div>
 			<div id="loadmore5" class="vodListName" style="height:100px;color:gray;"></div>
-		</div>
+		</div>	
 
 	</div><!-- 点播尾 -->
+
+	<div id="zhiBo" style="display:block;z-index:999;">		
+	<!--	<div class="zhiBoImg" onclick="playStopZhuBo()">
+			<video id="zhiBo0" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
+			</video>
+		</div>		
+		<div class="zhiBoImg" onclick="playStopZhuBo()">
+			<video id="zhiBo1" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
+			</video>
+		</div>		
+		<div class="zhiBoImg" onclick="playStopZhuBo()">
+			<video id="zhiBo2" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv3_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
+			</video>
+		</div>-->
+	</div>
 
 	<!-- 搜索 历史 收藏 列表页 -->	
 	<div id="searchHistoryCollect" class="homeList" style="top:400px;display:none;">

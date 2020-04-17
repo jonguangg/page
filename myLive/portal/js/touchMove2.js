@@ -68,16 +68,34 @@ function touchEndFunc(evt){
 			}
 		}			
 		
-		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){
-	//		text += '<br/>向上滑动';
-	//		alert(moveY);
-			if( indexArea!="home"  && indexArea!="detail"){
+		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){	//向上滑动		
+		//	getID("test").style.display = "block";
+		//	getID("test").innerHTML = $(document).height() +"_"+ document.body.scrollTop+"_"+clientHeight;
+			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo"){
 				loadMore();
+			}else if( indexArea=="zhiBo"){
+				var zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
+			//	getID("test").innerHTML =  zhiBoPos+"_"+zhiBoArr.length;
+				if( zhiBoPos>0){
+					getID("zhiBo"+(zhiBoPos-1) ).pause();
+				}				
+				getID("zhiBo"+zhiBoPos).play();
 			}
 		}
 		
-		if( moveY > 200 && Math.abs(moveX)<Math.abs(moveY) ){
-	//		text += '<br/>向下滑动';
+		if( moveY > 0 && Math.abs(moveX)<Math.abs(moveY) ){	//向下滑动
+			var zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
+		//	getID("test").innerHTML =  zhiBoPos+"_"+zhiBoArr.length;
+			if( zhiBoPos < zhiBoArr.length ){
+				if( getID("zhiBo"+(zhiBoPos+1) ) ){
+					getID("zhiBo"+(zhiBoPos+1) ).pause();
+				}				
+				getID("zhiBo"+zhiBoPos).play();
+			}
+		}
+		
+		if( moveY > 200 && Math.abs(moveX)<Math.abs(moveY) ){ //向下滑动
+
 		}
 		
 		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面
