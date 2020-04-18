@@ -118,7 +118,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var videoUrlCookie = 0; //( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?channelDataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
 
 		var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-		var indexArea = "zhiBo";
+		var indexArea = "home";
 		var navPos = 0; //当前分类 0为home 1为movie -1为直播
 
 		for (i = 0; i < channelDataArr.length; i++) { //合并所有频道为一个数组，便于显示所有频道和跳转
@@ -156,6 +156,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 					getID("searchHistoryCollect").style.display = "block";
 				}
+			}else if( indexArea == "zhiBo"){
+				getID("zhiBo"+zhiBoPos).pause();
+				getID("zhiBo").style.display = "none";
+				indexArea = "home";
 			}
 		//	alert("from_"+from+"_indexArea2_"+indexArea);
 		}
@@ -353,7 +357,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var playUrls = "";
 		function playVod(_episodePos,_id) {
 			window.androidJs.JsClosePlayer();
-			   window.androidJs.JsSetPageArea("vod");
+			window.androidJs.JsSetPageArea("vod");
 			//   alert(_id);
 			$.ajax({
 				type: 'POST',
@@ -415,7 +419,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if(tag1>0){
 				getID("vodListContent"+tag1).innerHTML = "";
 				getID("loadmore"+navPos).innerHTML = "";
-			}			
+			}
+			if(_tag1==6){
+				indexArea = "zhiBo";
+				window.androidJs.JsSetPageArea("zhiBo");
+				getID("zhiBo").style.display = "block";
+				showZhiBoList(0);
+				getID("zhiBo0").play();
+				return;
+			}	
 			tag1 = _tag1;
 			showTabRegion();	//动态显示二级地区分类
 			getTagData(_tag1,0,0,1,9,0);	//显示海报列表
@@ -551,7 +563,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var pageZhiBo = 0;
 		function showZhiBoList(_pageNum){
 			getID("zhiBo").style.display = "block";
-			for(i=0; i<10; i++){
+			for(i=0; i<20; i++){
 			//	getID("zhiBo").innerHTML += '<div class="zhiBoImg"  onclick=window.androidJs.JsPlayZhiBo("'+zhiBoArr[i+_pageNum]+'")></div>';
 				getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick=window.androidJs.JsPlayZhiBo("'+zhiBoArr[i+_pageNum].url+'")><video id=zhiBo'+(i+_pageNum*10)+' width="100%" height='+clientHeight+'px'+' poster="'+zhiBoArr[(i+_pageNum*10)].poster+'" preload="auto" src='+zhiBoArr[i+_pageNum].url+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
 			}
@@ -579,9 +591,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
 				document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
 			}
-			getID("zhiBo").style.display = "block";
-			showZhiBoList(0);
-			getID("zhiBo0").play();
+		//	getID("zhiBo").style.display = "block";
+		//	showZhiBoList(0);
+		//	getID("zhiBo0").play();
 		}
 	</script>
 </head>
@@ -712,7 +724,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	</div><!-- 点播尾 -->
 
-	<div id="zhiBo" style="display:none;z-index:999;">		
+	<!-- 主播 -->
+	<div id="zhiBo" style="display:none;z-index:2;">		
 	<!--	<div class="zhiBoImg" onclick="playStopZhuBo()">
 			<video id="zhiBo0" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
 			</video>
