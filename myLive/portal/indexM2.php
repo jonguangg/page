@@ -506,17 +506,26 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}*/
 		}
 
+		
+		st2 = setTimeout(function(){ }, 1000);
+		function scrollWindow(){
+			clearTimeout(st2);
+			if( indexArea=="zhiBo"){
+				changeZhiBo();				
+			}
+			st2 = setTimeout(function() {
+				scrollTo(0,zhiBoPos*clientHeight);
+			}, 1000);
+		}
+
 		function loadMore() { //加载下一页
-			var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
-			
+			var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();			
 		//	getID("test").style.display = "block";
 		//	getID("test").innerHTML = loadMoreBottom+"<br>"+"pageNow"+pageNow+"pageAll"+vodPageAll;
-
 			if (loadMoreBottom < 2 && pageNow < vodPageAll && navPos > -20 && changePageStatus == "t") { //数字越大，就越早加载下一页
 				changePage(1);
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
-			}
-			
+			}			
 			if( vodPageAll == 0 || pageNow == vodPageAll ){		
 				if( indexArea=="vod" ){
 					getID("loadmore"+navPos).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
@@ -524,7 +533,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
              	   getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
 				}
 			}
-
 		}		
 
 		function showSplash(){
@@ -542,8 +550,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		var pageZhiBo = 0;
 		function showZhiBoList(_pageNum){
+			getID("zhiBo").style.display = "block";
 			for(i=0; i<10; i++){
-				getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick="playStopZhuBo()"><video id=zhiBo'+(i+_pageNum*10)+' width="100%" height='+clientHeight+'px'+' poster="img/poster.jpg" preload="auto" src='+zhiBoArr[i+_pageNum]+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
+			//	getID("zhiBo").innerHTML += '<div class="zhiBoImg"  onclick=window.androidJs.JsPlayZhiBo("'+zhiBoArr[i+_pageNum]+'")></div>';
+				getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick=window.androidJs.JsPlayZhiBo("'+zhiBoArr[i+_pageNum].url+'")><video id=zhiBo'+(i+_pageNum*10)+' width="100%" height='+clientHeight+'px'+' poster="'+zhiBoArr[(i+_pageNum*10)].poster+'" preload="auto" src='+zhiBoArr[i+_pageNum].url+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
 			}
 		}
 
@@ -566,19 +576,19 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			showTab1();				//显示一级分类
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
-		//	getID("zhiBo0").play();
-		//	for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
-		//		document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
-		//	}
+			for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
+				document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
+			}
+			getID("zhiBo").style.display = "block";
 			showZhiBoList(0);
 			getID("zhiBo0").play();
 		}
 	</script>
 </head>
 
-<body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" onScroll="moveVideoWindow();">
+<body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" onScroll="scrollWindow();">
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
-	<div id="test" style="position:fixed;top:150px;left:0px;width:100%;height:200px;z-index:9999;background-color:white;font-size:100px;color:red;display:none;"></div>
+	<div id="test" style="position:fixed;top:100px;left:0px;width:100%;max-height:900px;overflow:auto;line-height:100px;z-index:9999;background-color:white;font-size:100px;color:red;display:none;"></div>
 	<!--非直播 -->
 	<div id="vod" style="position:absolute;left:0px;width:100%;display:block;">
 		<!-- 顶部黑底 -->
@@ -702,7 +712,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	</div><!-- 点播尾 -->
 
-	<div id="zhiBo" style="display:block;z-index:999;">		
+	<div id="zhiBo" style="display:none;z-index:999;">		
 	<!--	<div class="zhiBoImg" onclick="playStopZhuBo()">
 			<video id="zhiBo0" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
 			</video>

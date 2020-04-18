@@ -19,6 +19,17 @@ function touchSatrtFunc(evt){
 	}
 }
 
+var zhiBoTemp = 0;
+var zhiBoPos = 0;
+function changeZhiBo(){
+	zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
+	getID("test").style.display = "block";
+	getID("test").innerHTML = $(document).height() +"<br>scrollTop_"+ document.body.scrollTop+"<br>clientHeight_"+clientHeight+"<br>zhiBoPos_"+zhiBoPos;				
+	getID("zhiBo"+zhiBoTemp ).pause();
+	getID("zhiBo"+zhiBoPos).play();
+	zhiBoTemp = zhiBoPos;
+}
+
 function touchMoveFunc(evt){
 	try{
 		//evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
@@ -36,6 +47,10 @@ function touchMoveFunc(evt){
 			}else{
 				document.getElementById("vodList"+navPos).style.left = moveX+"px";
 			}			
+		}
+
+		if( moveY != 0 && indexArea=="zhiBo"){	//上下滑
+			changeZhiBo();
 		}
 	}
 	catch(e){
@@ -70,32 +85,24 @@ function touchEndFunc(evt){
 		
 		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){	//向上滑动		
 		//	getID("test").style.display = "block";
-		//	getID("test").innerHTML = $(document).height() +"_"+ document.body.scrollTop+"_"+clientHeight;
 			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo"){
 				loadMore();
-			}else if( indexArea=="zhiBo"){
-				var zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
-			//	getID("test").innerHTML =  zhiBoPos+"_"+zhiBoArr.length;
-				if( zhiBoPos>0){
-					getID("zhiBo"+(zhiBoPos-1) ).pause();
-				}				
-				getID("zhiBo"+zhiBoPos).play();
+			}
+			if( indexArea=="zhiBo" ){
+				if(zhiBoTemp!=zhiBoPos){
+					getID("zhiBo"+zhiBoTemp ).pause();
+				}
+				changeZhiBo();
 			}
 		}
 		
-		if( moveY > 0 && Math.abs(moveX)<Math.abs(moveY) ){	//向下滑动
-			var zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
-		//	getID("test").innerHTML =  zhiBoPos+"_"+zhiBoArr.length;
-			if( zhiBoPos < zhiBoArr.length ){
-				if( getID("zhiBo"+(zhiBoPos+1) ) ){
-					getID("zhiBo"+(zhiBoPos+1) ).pause();
-				}				
-				getID("zhiBo"+zhiBoPos).play();
+		if( moveY > 0 && Math.abs(moveX)<Math.abs(moveY) ){ //向下滑动			
+			if( indexArea=="zhiBo" ){
+				if(zhiBoTemp!=zhiBoPos){
+					getID("zhiBo"+zhiBoTemp ).pause();
+				}
+				changeZhiBo();
 			}
-		}
-		
-		if( moveY > 200 && Math.abs(moveX)<Math.abs(moveY) ){ //向下滑动
-
 		}
 		
 		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面

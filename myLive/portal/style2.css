@@ -42,6 +42,8 @@
 
 	.tab-homeLive-groupName{background:rgba(0,0,0,0.7);height:50px;line-height:50px;border-radius:0px 0px 10px 10px;font-size:45px;}
 
+	.zhiBoImg{position:relative;left:0%;top:0px;width:100%;background:url('./img/poster.jpg');z-index:99;}
+
 	.tab-head{
 		list-style-type: none;
 		display:-webkit-box;
@@ -157,4 +159,6 @@
 		background-size:100% 100% !important;
 	}
 	.tab-guessName{position:relative;top:420px;height:50px;line-height:50px;font-size:45px;}
+	
+
 	
