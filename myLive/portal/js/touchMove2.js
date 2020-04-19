@@ -23,10 +23,10 @@ var zhiBoTemp = 0;
 var zhiBoPos = 0;
 function changeZhiBo(){
 	zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
-	getID("test").style.display = "block";
-	getID("test").innerHTML = $(document).height() +"<br>scrollTop_"+ document.body.scrollTop+"<br>clientHeight_"+clientHeight+"<br>zhiBoPos_"+zhiBoPos;				
-	getID("zhiBo"+zhiBoTemp ).pause();
-	getID("zhiBo"+zhiBoPos).play();
+//	getID("test").style.display = "block";
+//	getID("test").innerHTML = $(document).height() +"<br>scrollTop_"+ document.body.scrollTop+"<br>clientHeight_"+clientHeight+"<br>zhiBoPos_"+zhiBoPos;				
+//	getID("zhiBo"+zhiBoTemp ).pause();
+//	getID("zhiBo"+zhiBoPos).play();
 	zhiBoTemp = zhiBoPos;
 }
 
@@ -90,7 +90,7 @@ function touchEndFunc(evt){
 			}
 			if( indexArea=="zhiBo" ){
 				if(zhiBoTemp!=zhiBoPos){
-					getID("zhiBo"+zhiBoTemp ).pause();
+			//		getID("zhiBo"+zhiBoTemp ).pause();
 				}
 				changeZhiBo();
 			}
@@ -99,7 +99,7 @@ function touchEndFunc(evt){
 		if( moveY > 0 && Math.abs(moveX)<Math.abs(moveY) ){ //向下滑动			
 			if( indexArea=="zhiBo" ){
 				if(zhiBoTemp!=zhiBoPos){
-					getID("zhiBo"+zhiBoTemp ).pause();
+			//		getID("zhiBo"+zhiBoTemp ).pause();
 				}
 				changeZhiBo();
 			}

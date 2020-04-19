@@ -142,7 +142,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		function androidBack(){	//供返回键调用
 			window.androidJs.JsClosePlayer();
-		//	alert("from_"+from+"_indexArea1_"+indexArea);
+		//	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
 			if( indexArea =="live" ){
 				getID("group" + groupId).style.color = 'white';
 				getID("channel").style.display = "none";
@@ -157,11 +157,17 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					getID("searchHistoryCollect").style.display = "block";
 				}
 			}else if( indexArea == "zhiBo"){
-				getID("zhiBo"+zhiBoPos).pause();
-				getID("zhiBo").style.display = "none";
-				indexArea = "home";
+				if( isZhiBo ){	//先退出播放窗口
+					isZhiBo = false;
+					window.androidJs.JsSetPageArea("zhiBo");
+				}else{	//再退出直播界面
+					getID("zhiBo"+zhiBoPos).pause();
+					getID("zhiBo").style.display = "none";
+					indexArea = "home";
+					scrollTo(0,0);
+				}
 			}
-		//	alert("from_"+from+"_indexArea2_"+indexArea);
+		//	alert("from_"+from+"_indexArea2_"+indexArea+"_isZhiBo_"+isZhiBo);
 		}
 
 		var groupScrollL = 0;
@@ -422,8 +428,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 			if(_tag1==6){
 				indexArea = "zhiBo";
-				window.androidJs.JsSetPageArea("zhiBo");
+			//	window.androidJs.JsSetPageArea("zhiBo");
 				getID("zhiBo").style.display = "block";
+				getID("zhiBo").innerHTML = "";
 				showZhiBoList(0);
 				getID("zhiBo0").play();
 				return;
@@ -519,15 +526,18 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		
-		st2 = setTimeout(function(){ }, 1000);
+		st2 = setTimeout(function(){ }, 1000);	//防止scrollWindow第一次执行找不到st2
 		function scrollWindow(){
-			clearTimeout(st2);
 			if( indexArea=="zhiBo"){
-				changeZhiBo();				
+				clearTimeout(st2);
+				changeZhiBo();		
+				st2 = setTimeout(function() {
+					scrollTo(0,zhiBoPos*clientHeight);
+					if( zhiBoPos%10 >7 && changePageStatus == "t" ){
+						showZhiBoList(1);
+					}
+				}, 1000);	//1秒后将当前窗口的top放到屏幕顶端
 			}
-			st2 = setTimeout(function() {
-				scrollTo(0,zhiBoPos*clientHeight);
-			}, 1000);
 		}
 
 		function loadMore() { //加载下一页
@@ -561,12 +571,23 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		var pageZhiBo = 0;
+		var isZhiBo = false;
+		var pageZhiBo = 0;
 		function showZhiBoList(_pageNum){
-			getID("zhiBo").style.display = "block";
-			for(i=0; i<20; i++){
-			//	getID("zhiBo").innerHTML += '<div class="zhiBoImg"  onclick=window.androidJs.JsPlayZhiBo("'+zhiBoArr[i+_pageNum]+'")></div>';
-				getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick=window.androidJs.JsPlayZhiBo("'+zhiBoArr[i+_pageNum].url+'")><video id=zhiBo'+(i+_pageNum*10)+' width="100%" height='+clientHeight+'px'+' poster="'+zhiBoArr[(i+_pageNum*10)].poster+'" preload="auto" src='+zhiBoArr[i+_pageNum].url+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
+			pageZhiBo += _pageNum;
+			changePageStatus = "f";
+			for(i=0; i<10; i++){
+				getID("zhiBo").innerHTML += '<div class="zhiBoImg" style="height:'+clientHeight+'px; background:url('+zhiBoArr[(i+pageZhiBo*10)].poster+')" onclick=playZhiBo("'+zhiBoArr[i+pageZhiBo*10].url+'") ><div class="zhiBoName">'+decodeURIComponent(zhiBoArr[i+pageZhiBo*10].title)+'</div></div>';
+			//	getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick=playZhiBo("'+zhiBoArr[i+pageZhiBo*10].url+'")><video id=zhiBo'+(i+pageZhiBo*10)+' width="100%" height='+clientHeight+'px'+' poster="'+zhiBoArr[(i+pageZhiBo*10)].poster+'" preload="auto" src='+zhiBoArr[i+pageZhiBo*10].url+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
 			}
+			setTimeout(function() {
+				changePageStatus = "t";
+			}, 1000); // 加载完成后才将状态改为true
+		}
+
+		function playZhiBo(_playUrl){
+			isZhiBo = true;
+			window.androidJs.JsPlayZhiBo(_playUrl);
 		}
 
 		var clientWidth = 0 ;
