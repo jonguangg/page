@@ -4,6 +4,7 @@
 <script type=text/javascript src="js/touchMove2.js" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
+<script type=text/javascript src="js/zhiBo.js" charset=UTF-8></script>
 <script type=text/javascript src="js/zhiBoArr.js" charset=UTF-8></script>
 
 
@@ -161,9 +162,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					isZhiBo = false;
 					window.androidJs.JsSetPageArea("zhiBo");
 				}else{	//再退出直播界面
-					getID("zhiBo"+zhiBoPos).pause();
+				//	getID("zhiBo"+zhiBoPos).pause();
 					getID("zhiBo").style.display = "none";
 					indexArea = "home";
+					showTabList1(0);
 					scrollTo(0,0);
 				}
 			}
@@ -428,11 +430,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 			if(_tag1==6){
 				indexArea = "zhiBo";
-			//	window.androidJs.JsSetPageArea("zhiBo");
+				window.androidJs.JsSetPageArea("zhiBo");
 				getID("zhiBo").style.display = "block";
 				getID("zhiBo").innerHTML = "";
+			//	alert(pageZhiBo);
+				if( pageZhiBo*10 > zhiBoArr.length-11 ){	//上次在最后一页，则显示第1页
+					pageZhiBo = 0;
+				}
 				showZhiBoList(0);
-				getID("zhiBo0").play();
+				scrollTo(0,0);
 				return;
 			}	
 			tag1 = _tag1;
@@ -558,6 +564,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}		
 
 		function showSplash(){
+			getID("splash").style.height = clientHeight + "px"; 
 			var splashArr = <?php echo json_encode($splashArr); ?>;	
 			var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
 			splashIndex ++;
@@ -570,26 +577,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			startCircle();	//右上角跳过圆圈
 		}
 
-		var pageZhiBo = 0;
-		var isZhiBo = false;
-		var pageZhiBo = 0;
-		function showZhiBoList(_pageNum){
-			pageZhiBo += _pageNum;
-			changePageStatus = "f";
-			for(i=0; i<10; i++){
-				getID("zhiBo").innerHTML += '<div class="zhiBoImg" style="height:'+clientHeight+'px; background:url('+zhiBoArr[(i+pageZhiBo*10)].poster+')" onclick=playZhiBo("'+zhiBoArr[i+pageZhiBo*10].url+'") ><div class="zhiBoName">'+decodeURIComponent(zhiBoArr[i+pageZhiBo*10].title)+'</div></div>';
-			//	getID("zhiBo").innerHTML += '<div class="zhiBoImg" onclick=playZhiBo("'+zhiBoArr[i+pageZhiBo*10].url+'")><video id=zhiBo'+(i+pageZhiBo*10)+' width="100%" height='+clientHeight+'px'+' poster="'+zhiBoArr[(i+pageZhiBo*10)].poster+'" preload="auto" src='+zhiBoArr[i+pageZhiBo*10].url+' style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" ></video></div>';
-			}
-			setTimeout(function() {
-				changePageStatus = "t";
-			}, 1000); // 加载完成后才将状态改为true
-		}
-
-		function playZhiBo(_playUrl){
-			isZhiBo = true;
-			window.androidJs.JsPlayZhiBo(_playUrl);
-		}
-
 		var clientWidth = 0 ;
 		var clientHeight = 0 ;
 		function init() {
@@ -600,26 +587,20 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			clientHeight = window.innerHeight;			
 
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
-			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
-			getID("splash").style.height = clientHeight + "px"; 
-			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
 			getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
-		//	showSplash();		//显示第二个启动图片
+			showSplash();		//显示第二个启动图片
 			showTab1();				//显示一级分类
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
-			for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
-				document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
-			}
-		//	getID("zhiBo").style.display = "block";
-		//	showZhiBoList(0);
-		//	getID("zhiBo0").play();
+		//	for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
+		//		document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
+		//	}
 		}
 	</script>
 </head>
 
-<body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" onScroll="scrollWindow();">
+<body bgcolor="black" leftmargin="0" topmargin="0" onload="init();"  onScroll="scrollWindow();">
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
 	<div id="test" style="position:fixed;top:100px;left:0px;width:100%;max-height:900px;overflow:auto;line-height:100px;z-index:9999;background-color:white;font-size:100px;color:red;display:none;"></div>
 	<!--非直播 -->

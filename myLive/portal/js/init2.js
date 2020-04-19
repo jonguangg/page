@@ -126,6 +126,7 @@ var clientHeight = 1920;
 		getID('splash').style.display='none';
 		if( indexArea=="lock"){	//如果设置了启动默认锁定		
 			getID('lock').style.display='block';
+			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
 		}else{					//如果没设启动默认锁定，则启动后就进入首页
 			if( navPos==0){
 				getID("vodList0").style.display = "block";

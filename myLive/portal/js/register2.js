@@ -97,6 +97,7 @@
 	function showMe() { //进入个人中心
 		scrollTo(0, 0);
 		getID('cardKey').style.display = 'block';
+		getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
 		getID("exp").innerHTML = "Exp. " + expireTime;
 		getID("msg").style.background = ""; //多次进入个人中心，这里可能会显示注册时的信息
 		getID("msg").innerHTML = ""; //所以先清空

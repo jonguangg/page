@@ -43,7 +43,7 @@
 	.tab-homeLive-groupName{background:rgba(0,0,0,0.7);height:50px;line-height:50px;border-radius:0px 0px 10px 10px;font-size:45px;}
 
 	.zhiBoImg{position:relative;left:0%;top:0px;width:100%;background-size:100% 100% !important;background:url('./img/poster.jpg');z-index:99;}
-	.zhiBoName{position:relative;top:-100px;width:100%;height:100px;line-height:100px;text-align:center;font-size:50px;color:red;}
+	.zhiBoName{position:absolute;bottom:0px;width:100%;height:100px;line-height:100px;text-align:center;font-size:50px;color:red;}
 
 	.tab-head{
 		list-style-type: none;
