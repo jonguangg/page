@@ -593,9 +593,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			showTab1();				//显示一级分类
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
-		//	for(i=0;i<document.getElementsByClassName("zhiBoImg").length;i++){
-		//		document.getElementsByClassName("zhiBoImg")[i].style.height = clientHeight+"px";
-		//	}
 		}
 	</script>
 </head>
@@ -727,17 +724,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div><!-- 点播尾 -->
 
 	<!-- 主播 -->
-	<div id="zhiBo" style="display:none;z-index:2;">		
+	<div id="zhiBo" style="background-color:black;display:none;z-index:9;">		
 	<!--	<div class="zhiBoImg" onclick="playStopZhuBo()">
 			<video id="zhiBo0" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
-			</video>
-		</div>		
-		<div class="zhiBoImg" onclick="playStopZhuBo()">
-			<video id="zhiBo1" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
-			</video>
-		</div>		
-		<div class="zhiBoImg" onclick="playStopZhuBo()">
-			<video id="zhiBo2" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv3_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
 			</video>
 		</div>-->
 	</div>
