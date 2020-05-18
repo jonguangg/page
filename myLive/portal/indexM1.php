@@ -469,7 +469,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		//	var tagNow = "tagChinese";
 		var playUrl = [];
 
-		function getTagData(_tagNum, _pageNum, _pageSize, _mobile) {
+		function getTagData(_tag1,_tag2,_tag3, _pageNum, _pageSize, _mobile) {
 			if (navPos < 0) { //从直播切换到点播
 				getID("vodList").style.display = "block";
 				getID("channel").style.display = "none";
@@ -487,20 +487,22 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("nav" + navPos).style.color = "white"; //"#081925";
 			getID("nav" + navPos).style.fontSize = "60px";
 			//	playUrl = [];
-			//	if( _tagNum > navPos ){	//点击的在当前的右边
-			navScrollL += (_tagNum - Math.abs(navPos)) * 150; //移动分类的位置
+			//	if( _tag1 > navPos ){	//点击的在当前的右边
+			navScrollL += (_tag1 - Math.abs(navPos)) * 150; //移动分类的位置
 			getID("vodNavList").scrollLeft = navScrollL;
 			//	}
-			navPos = _tagNum;
+			navPos = _tag1;
 			getID("nav" + navPos).style.color = "39C5BB";
 			getID("nav" + navPos).style.fontSize = "70px";
-			//	tagNow = tagArr[_tagNum];		//当前分类
+			//	tagNow = tagArr[_tag1];		//当前分类
 			pageNow = _pageNum; //当前页 
 			$.ajax({
 				type: 'POST',
 				url: '../readTagJson.php',
 				data: { //这下面的内容没用上，用的是上面的cookie
-					'tagNow': tagArr[1][_tagNum].tagTable,
+					'tag1': tagArr[1][_tag1].tagTable,
+					'tag2': tagArr[2][_tag2].tagName,
+					'tag3': tagArr[3][_tag3].tagName,
 					'pageNow': _pageNum,
 					'pageSize': _pageSize,
 					'mobile': _mobile
@@ -550,7 +552,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		function changeTagList(_tagNum) { //点击切换分类列表
 			playUrl = [];
 			getID('vodListContent').innerHTML = '';
-			getTagData(_tagNum, 1, 10, 'mobile');
+			getTagData(_tagNum,0,0,1, 10, 'mobile');
 		}
 
 		function moveChangeTag(_num) { //滑动切换分类
@@ -574,7 +576,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if (pageNow > vodPageAll || pageNow < 1) {
 				pageNow = vodPageAll;
 			}
-			getTagData(navPos, pageNow, 10, "mobile");
+			getTagData(navPos, 0,0,pageNow, 10, "mobile");
 			console.log(navPos + "_" + pageNow);
 			//	scrollTo(0,0);
 		}
@@ -592,7 +594,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			for (i = tagArr[1].length; i < 21; i++) { //隐藏没有的分类
 				getID("nav" + i).style.display = "none";
 			}
-			for (i = 0; i < tagArr[1].length; i++) { //显示栏目分类名称
+			for (i = 1; i < tagArr[1].length; i++) { //显示栏目分类名称
 				getID("nav" + i).innerText = tagArr[1][i].tagName;
 			}
 		}
@@ -607,7 +609,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			} else {
 				window.androidJs.JsMovePlayerWindow(0);
 			}
-			//	loadMore();//监测页面最下方定位符的位置，当这个位置大概为100时，表示最后一个图片已显示，此时应加载下一页
+		//	loadMore();//监测页面最下方定位符的位置，当这个位置大概为100时，表示最后一个图片已显示，此时应加载下一页
 		}
 
 		function loadMore() { //加载下一页
@@ -769,7 +771,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
 			getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高	
 			scrollDisable();
-			getTagData(0, 1, 10, "mobile"); //预加载	
+			getTagData(1, 0,0,1, 10, "mobile"); //预加载	
 			bindEvent();
 			showTagNav(); //动态显示下方分类导航
 			//	alert('网页可见区域宽：'+document.body.clientWidth+'\n网页可见区域高：'+document.body.clientHeight+'\n网页可见区域宽：'+document.body.offsetWidth+ '\n网页可见区域高：'+document.body.offsetHeight+ '\n网页正文全文宽：'+document.body.scrollWidth+ '\n网页正文全文高：'+document.body.scrollHeight+ '\n网页被卷去的高：'+document.body.scrollTop+ '\n网页被卷去的左：'+document.body.scrollLeft+'\n网页正文部分上：'+window.screenTop+ '\n网页正文部分左：'+window.screenLeft+ '\n屏幕分辨率的高：'+window.screen.height+ '\n屏幕分辨率的宽：'+window.screen.width+ '\n屏幕可用工作区高度：'+window.screen.availHeight+'\n屏幕可用工作区宽度：'+window.screen.availWidth+'\nwindow.innerHeight：'+window.innerHeight);

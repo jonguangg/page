@@ -152,3 +152,43 @@ var clientHeight = 1920;
 			passive: false
 		});
 	}
+
+	function androidBack(){	//供返回键调用
+		window.androidJs.JsClosePlayer();
+	//	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
+		if( indexArea =="live" ){
+			getID("group" + groupId).style.color = 'white';
+			getID("channel").style.display = "none";
+			getID("vod").style.display = "block";
+			indexArea = "home";
+			navPos = 0;
+			scrollTo(0,0);
+		}else if( indexArea == "detail" ){
+			indexArea = from;
+			getID("vod").style.display = "block";
+			getID("detail").style.display = "none";
+			if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
+				getID("searchHistoryCollect").style.display = "block";
+			}
+		}else if( indexArea == "zhiBo"){
+			if( isZhiBo ){	//先退出播放窗口
+				isZhiBo = false;
+				window.androidJs.JsSetPageArea("zhiBo");
+			}else{	//再退出直播界面
+			//	getID("zhiBo"+zhiBoPos).pause();
+				getID("zhiBo").style.display = "none";
+				indexArea = "home";
+				showTabList1(0);
+				scrollTo(0,0);
+			}
+		}
+	//	alert("from_"+from+"_indexArea2_"+indexArea+"_isZhiBo_"+isZhiBo);
+	}
+
+	function updateCookie() {
+		if (typeof(window.androidJs) != "undefined") {
+			window.androidJs.JsSetCookie("groupId", groupId, '12h');
+			window.androidJs.JsSetCookie("channelPos", channelPos, '12h');
+			//	window.androidJs.JsSetCookie("videoUrlCookie",channelTempArr[channelPos].videoUrl,'12h');
+		}
+	}

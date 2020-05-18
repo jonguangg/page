@@ -152,7 +152,29 @@ function changeCollect( ){
     });
 }
 
+function showDetailFromHome(i,j){
+    if( indexArea!="detail" ){  //详情页点击猜您喜欢，不改变from，这样回到首页才正常
+        from = indexArea;
+    }    
+    indexArea = "detail";
 
+
+    getID("detail").style.display = "block";
+    getID("vod").style.display = "none";
+
+	getID("detailName").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].videoName;
+	getID("detailDirector").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].director;
+	getID("detailActor").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].tostar;
+	getID("detailYear").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].showTime;
+	getID("detailRegion").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].showRegion;
+	getID("detailDuration").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].videoLength;
+	getID("detailScore").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].imdbScore;
+	getID("detailTag").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].videoTopic;
+	getID("detailDescription").innerHTML = homeListArr["data"][i+1]["videoInfo"][j].videoBriefing;
+
+	episodes = homeListArr["data"][i+1]["videoInfo"][j].videoBriefing;
+
+}
 
 
 

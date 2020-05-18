@@ -567,7 +567,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" onScroll="moveVideoWindow();">
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
-	<div id="test" style="position:fixed;top:800px;left:0px;width:100%;max-height:400px;overflow:auto;line-height:80px;z-index:20;background-color:white;font-size:100px;color:red;display:none;">test</div>
+	<div id="test" style="position:fixed;top:800px;left:0px;width:100%;max-height:400px;overflow:auto;line-height:80px;z-index:20;background-color:white;font-size:80px;color:red;display:none;">test</div>
 	<!--非直播 -->
 	<div id="vod" style="position:absolute;left:0px;width:100%;display:block;">
 		<!-- 顶部黑底 -->

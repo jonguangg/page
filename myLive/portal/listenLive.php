@@ -29,7 +29,7 @@
 
 //    echo $msectime;
 
-    $filename="./戢无地方和影视v2r_".$sn.".txt";
+    $filename="./马新v2r_".$sn.".txt";
 
     $handle=fopen($filename,"a+");
 

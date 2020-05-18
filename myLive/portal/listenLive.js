@@ -6,6 +6,7 @@ var lastChannelName = "";
 var lastUrl = "";
 var listenNum = 0;
 
+
 function listenLive(){	//每10秒换一个台
 	startTime =  (new Date()).valueOf();
 	lastGroupId = listenArr[0].groupId;
@@ -15,7 +16,7 @@ function listenLive(){	//每10秒换一个台
 	lastUrl = listenArr[0].videoUrl;
 	listenNum ++;
 	getID("test").style.display = "block";
-	getID("test").innerHTML = listenNum+"<br>"+lastUrl;
+	getID("test").innerHTML = listenNum+"_"+lastChannelName+"<br>"+lastUrl;
 	window.androidJs.JsPlayLive( lastUrl );
 	listenArr.splice(0,1);	//将数组第一个元素删除，下次再从新数组第1个开始检测
 	if( listenArr.length == 0 ){

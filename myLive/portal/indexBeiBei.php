@@ -862,7 +862,7 @@ function eventHandler(e,type){
 
 <?php
 	if( strlen($sn)>1 ){
-	//	include_once "./qrCode.php";
+		include_once "./qrCode.php";
 		$city = getCity( getIP() )['region'].getCity( getIP() )['city'];
 		setcookie("city", $city, time()+24*3600);//cookie存24小时
 	}

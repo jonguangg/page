@@ -7,7 +7,6 @@
 <script type=text/javascript src="js/zhiBo.js" charset=UTF-8></script>
 <script type=text/javascript src="js/zhiBoArr.js" charset=UTF-8></script>
 
-
 <?php
 include_once "readSplash.php";
 include_once "../connectMysql.php";
@@ -95,7 +94,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
-	<title>mLiveIndex</title>
+	<title>mLive</title>
 	<link rel="stylesheet" type="text/css" href="style2.css" >
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" /><!--CSS RESET-->
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
@@ -150,6 +149,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				getID("vod").style.display = "block";
 				indexArea = "home";
 				navPos = 0;
+				scrollTo(0,0);
 			}else if( indexArea == "detail" ){
 				indexArea = from;
 				getID("vod").style.display = "block";
@@ -194,7 +194,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				window.androidJs.JsPlayLive(channelTempArr[channelPos].videoUrl);
 			//	window.androidJs.JsMovePlayerWindow(0);	//2.0版小窗口固定在上方，不需移动
 			}
-			groupScrollL = (groupId - 1) * 300;
+			groupScrollL = (groupId - 1) * 150;//大概两个汉字150，4个汉字300
 			getID("groups").scrollLeft = groupScrollL;
 			window.androidJs.JsSetPageArea("live");
 			indexArea = "live";
@@ -213,7 +213,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function showChannel(_num) { //切换频道组
-			groupScrollL += (_num - groupId) * 300; //移动分类的位置
+			groupScrollL += (_num - groupId) * 150; //移动分类的位置
 			getID("groups").scrollLeft = groupScrollL;
 			getID("group" + groupId).style.color = 'white'; //"#081925";
 			groupId = _num;
@@ -430,9 +430,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 			if(_tag1==6){
 				indexArea = "zhiBo";
-				window.androidJs.JsSetPageArea("zhiBo");
+				if (typeof(window.androidJs) != "undefined") {
+					window.androidJs.JsSetPageArea("zhiBo");
+				}
 				getID("zhiBo").style.display = "block";
-				getID("zhiBo").innerHTML = "";
+				getID("zhiBoContent").innerHTML = "";
 			//	alert(pageZhiBo);
 				if( pageZhiBo*10 > zhiBoArr.length-11 ){	//上次在最后一页，则显示第1页
 					pageZhiBo = 0;
@@ -724,7 +726,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div><!-- 点播尾 -->
 
 	<!-- 主播 -->
-	<div id="zhiBo" style="background-color:black;display:none;z-index:9;">		
+	<div id="zhiBo" style="background-color:black;display:none;z-index:2;">	
+		<div style="position:fixed;left:0px;top:0px;width:100%;height:2000px;background:url(./img/loading.gif);background-size:100% 100%;z-index:2;"></div>
+		<div id="zhiBoContent"></div>
 	<!--	<div class="zhiBoImg" onclick="playStopZhuBo()">
 			<video id="zhiBo0" width="100%" height="100%" poster="img/poster.jpg" preload="auto" src="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8" style="object-fit:fill"  x5-video-player-fullscreen="true" x5-video-orientation="landscape" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" >
 			</video>
@@ -879,7 +883,7 @@ function eventHandler(e,type){
 		key_code=iPanelKey();
 	}else key_code = e.code ;
 	switch(key_code){		
-						
+
 		case "KEY_SELECT":
 			if( indexArea=="search" ){
 			//	alert(indexArea);

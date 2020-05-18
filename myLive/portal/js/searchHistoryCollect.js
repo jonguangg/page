@@ -9,16 +9,16 @@ function showSearchInput(){
         window.androidJs.JsShowImm();
     }else{
         indexArea = "home";
-    //    alert(getID('searchInput').value );
         searchTemp = getID('searchInput').value;
+        getID("shcContent").innerHTML = "";
         showSHC("search",1,searchTemp);
         getID('searchInput').blur();
-        getID('searchInput').style.top= '-110px';	
+    //    getID('searchInput').style.top= '-110px';	
     }
     st = setTimeout(function() {
             getID('searchInput').blur();
             getID('searchInput').style.top= '-110px';						
-        }, 60000);
+        }, 30000);
 }
 
 //	显示搜索 历史 收藏列表
