@@ -32,7 +32,7 @@ function changeZhiBo(){
 
 function touchMoveFunc(evt){
 	try{
-		//evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+		evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
 		var touch = evt.touches[0]; //获取第一个触点
 		endX = Number(touch.pageX); //页面触点X坐标
 		endY = Number(touch.pageY); //页面触点Y坐标
@@ -83,8 +83,10 @@ function touchEndFunc(evt){
 			}
 		}			
 		
-		if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){	//向上滑动		
-		//	getID("test").style.display = "block";
+	//	if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){	//向上滑动	
+		if( moveY < -0 ){	//向上滑动
+		//	var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
+		//	alert(loadMoreBottom);
 			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo"){
 				loadMore();
 			}

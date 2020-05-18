@@ -366,3 +366,103 @@ function delCookie(name){
   exp.setTime(exp.getTime() -1000);
   window.document.cookie = name + "= null; expires=" + exp.toGMTString();
 }
+
+window.alert = function(name){
+	var iframe = document.createElement("IFRAME");
+	iframe.style.display="none";
+	document.documentElement.appendChild(iframe);
+	window.frames[0].window.alert(name);
+	iframe.parentNode.removeChild(iframe);
+}
+
+window.confirm = function (message) {
+	var iframe = document.createElement("IFRAME");
+	iframe.style.display = "none";
+	iframe.setAttribute("src", 'data:text/plain,');
+	document.documentElement.appendChild(iframe);
+	var alertFrame = window.frames[0];
+	var result = alertFrame.window.confirm(message);
+	iframe.parentNode.removeChild(iframe);
+	return result;
+}
+
+/*
+    window.alert = alert;
+    function alert(data, callback) { //回调函数
+        var alert_bg = document.createElement('div'),
+        alert_box = document.createElement('div'),
+        alert_text = document.createElement('div'),
+        alert_btn = document.createElement('div'),
+        textNode = document.createTextNode(data ? data : ''),
+        btnText = document.createTextNode('确 定');
+
+        // 控制样式
+        css(alert_bg, {
+            'position': 'fixed',
+            'top': '0',
+            'left': '0',
+            'right': '0',
+            'bottom': '0',
+            'background-color': 'rgba(0, 0, 0, 0.1)',
+            'z-index': '999999999'
+        });
+
+        css(alert_box, {
+            'width': '80%',
+            'max-width': '90%',
+            'font-size': '50px',
+            'text-align': 'center',
+            'background-color': '#fff',
+            'border-radius': '15px',
+            'position': 'absolute',
+            'top': '50%',
+            'left': '50%',
+            'transform': 'translate(-50%, -50%)'
+        });
+
+        css(alert_text, {
+            'padding': '10px 15px',
+            'border-bottom': '1px solid #ddd'
+        });
+
+        css(alert_btn, {
+            'padding': '10px 0',
+            'color': '#007aff',
+            'font-weight': '600',
+            'cursor': 'pointer'
+        });
+
+        // 内部结构套入
+        alert_text.appendChild(textNode);
+        alert_btn.appendChild(btnText);
+        alert_box.appendChild(alert_text);
+        alert_box.appendChild(alert_btn);
+        alert_bg.appendChild(alert_box);
+
+        // 整体显示到页面内
+        document.getElementsByTagName('body')[0].appendChild(alert_bg);
+
+        // 确定绑定点击事件删除标签
+        alert_btn.onclick = function() {
+            alert_bg.parentNode.removeChild(alert_bg);
+            if (typeof callback === 'function') {
+                callback(); //回调
+            }
+        }
+    }
+
+    function css(targetObj, cssObj) {
+        var str = targetObj.getAttribute("style") ? targetObj.getAttribute('style') : '';
+        for (var i in cssObj) {
+            str += i + ':' + cssObj[i] + ';';
+        }
+        targetObj.style.cssText = str;
+    }
+
+    alert('提示信息!', function() {
+        window.location.href = 'http://cn.bing.com';
+    });
+
+
+
+	*/

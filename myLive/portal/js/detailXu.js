@@ -8,6 +8,8 @@ var poster = "";
 var isCollect = 0;  //默认0未收藏
 
 function showDetail( _id ){
+    scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去 
+    scrollTo(0, 0);                         //再滚到最顶
 	if (typeof(window.androidJs) != "undefined") {
 		window.androidJs.JsClosePlayer();
 	}
@@ -126,7 +128,6 @@ function showDetail( _id ){
             //	alert("error");
         }
     });
-    scrollTo(0, 0);
 }
 
 function initDetailArea(){

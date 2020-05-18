@@ -15,7 +15,7 @@
 //	if( $_POST["channelId"] != null ){	//有频道ID，说明是请求当前频道的海报列表
 	//	$urlChannelList="http://mixtvapi.mixtvapp.com/ott/videoinfo/page?channelId=".$channelId."&filterCondition0=".urlencode($tab2)."&filterCondition1=".urlencode($tab3)."&current=".$pageNow."&size=12&orderByDate=yes";
 
-		$urlChannelList="http://mixtvapi.mixtvapp.com/ott/videoinfo/page?channelId=".$channelId."&filterCondition0=".urlencode($tab2)."&filterCondition1=".urlencode($tab3)."&current=".$pageNow."&size=12";
+		$urlChannelList="http://mixtvapi.mixtvapp.com/ott/videoinfo/page?channelId=".$channelId."&filterCondition0=".urlencode($tab2)."&filterCondition1=".urlencode($tab3)."&current=".$pageNow."&size=30";
 
 		$channelListJsonStr = file_get_contents($urlChannelList);
 

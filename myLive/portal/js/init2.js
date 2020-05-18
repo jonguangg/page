@@ -120,7 +120,7 @@ var clientHeight = 1920;
 		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 		imOnLine();
 		splashJump();
-	}, 5000);
+	}, 10000);
 
 	function splashJump(){
 		getID('splash').style.display='none';
@@ -170,6 +170,7 @@ var clientHeight = 1920;
 			if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 				getID("searchHistoryCollect").style.display = "block";
 			}
+			scrollTo(0,scrollTops);
 		}else if( indexArea == "zhiBo"){
 			if( isZhiBo ){	//先退出播放窗口
 				isZhiBo = false;

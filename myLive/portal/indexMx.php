@@ -1,11 +1,11 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/init2.js"></script>
 <script type=text/javascript src="js/register2.js"></script>
+<script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <!--script type=text/javascript src="js/getXuData.js" charset=UTF-8></script-->
 <script type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
 
 <?php
 //	error_reporting(0);// 关闭所有PHP错误报告
@@ -96,7 +96,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>mixTVx</title>
-	<link rel="stylesheet" type="text/css" href="style2.css" >
+	<link rel="stylesheet" type="text/css" href="styleXu.css" >
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" /><!--CSS RESET-->
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<script>
@@ -116,6 +116,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var channelArr = [];
 		var videoUrlCookie = 0; //( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?channelDataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
 
+		var scrollTops = 0;
 		var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
 		var indexArea = "home";
 		var navPos = 0; //当前分类 0为home 1为movie -1为直播
@@ -260,19 +261,17 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var tab2 = 0;	//二级分类，即地区
 		var tab3 = 0;	//三级分类，即爱情、动作、喜剧之类的分类标签
 		var pageNow = 1; //第一页是1
-		var pageNow1=0, pageNow2=0, pageNow3=0, pageNow4=0, pageNow5=0, pageNow6=0, pageNow7=0, pageNow8=0, pageNow9=0, pageNow10=0, pageNow11=0, pageNow12=0, vodPageAll = 1;
+		var pageNow1=0, pageNow2=0, pageNow3=0, pageNow4=0, pageNow5=0, pageNow6=0, pageNow7=0, pageNow8=0, pageNow9=0, pageNow10=0, pageNow11=0, pageNow12=0, vodPageAll = 1, vodPageAll1 = 1, vodPageAll2 = 1, vodPageAll3 = 1, vodPageAll4 = 1, vodPageAll5 = 1, vodPageAll6 = 1, vodPageAll7 = 1, vodPageAll8 = 1, vodPageAll9 = 1, vodPageAll10 = 1, vodPageAll11 = 1, vodPageAll12 = 1 ;
 		var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
-		function getXuList(_tab1, _tab2,_tab3,_pageNow, _pageSize) {	
-			
-			var	tab2s = ( _tab2==0 || !tab2Arr[_tab1][_tab2-1] )?"":tab2Arr[_tab1][_tab2-1]["name"];
-			var tab3s = ( _tab3==0 || !tab3Arr[_tab1][_tab3-1] )?"":tab3Arr[_tab1][_tab3-1]["name"];
-			alert(tab1+"_"+tab2s+"_"+tab3s+"_"+eval("pageNow"+tab1));
 
-			pageNow = _pageNow; //当前请求页码
-		//	alert("已显示页码："+eval("pageNow"+tab1)+"当前请求页码："+pageNow);
-			if( eval("pageNow"+tab1)>=pageNow ){//如果上次已显示的页码>=当前请求的页码，就不再请求了,并且更新当前页为上次已显示的
-				pageNow = eval("pageNow"+tab1);
-				alert("上次页码>=请求页码");
+		function getXuList(_tab1, _tab2,_tab3,_pageNow, _pageSize) {				
+		//	var	tab2s = ( _tab2==0 || !tab2Arr[_tab1][_tab2-1] )?"":tab2Arr[_tab1][_tab2-1]["name"];
+		//	var tab3s = ( _tab3==0 || !tab3Arr[_tab1][_tab3-1] )?"":tab3Arr[_tab1][_tab3-1]["name"];
+		//	alert("当前栏目："+tab1+"\n二级栏目："+tab2s+"\n三级栏目："+tab3s+"\n已显示页码："+eval("pageNow"+tab1)+"\n当前请求页码："+_pageNow+"\npageAll："+eval("vodPageAll"+tab1));
+			pageNow = eval("pageNow"+tab1)+1; //当前请求页码为已显示页面+1，即下一页
+			if( eval("vodPageAll"+tab1)==eval("pageNow"+tab1) ){	//如果总页数 == 已显示的页码，则不再请求
+				pageNow = eval("vodPageAll"+tab1);
+			//	alert("没有了");
 				return;
 			}
 			$.ajax({
@@ -282,7 +281,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					'channelId': tab1Arr["data"][_tab1].channelId,
 					'tab2': ( _tab2==0 || !tab2Arr[_tab1][_tab2-1] )?"":tab2Arr[_tab1][_tab2-1]["name"],
 					'tab3': ( _tab3==0 || !tab3Arr[_tab1][_tab3-1] )?"":tab3Arr[_tab1][_tab3-1]["name"],
-					'pageNow': eval("pageNow"+tab1)+1,
+					'pageNow': pageNow,
 					'pageSize': 12
 				},
 				dataType: 'json',
@@ -290,18 +289,20 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					//这里一般显示加载提示;
 				},
 				success: function(json) {
-					eval("pageNow"+tab1+"="+pageNow);//请求成功才更新当前页码
-					alert("当前页："+eval("pageNow"+tab1));
+					eval("pageNow"+tab1+"="+pageNow);	//请求成功才更新当前页码
+					eval("vodPageAll"+tab1+"="+json.pages);	//请求成功才更新总页数
 					vodPageAll = json.pages;
-					if( vodPageAll == 0 || pageNow == vodPageAll ){	//打开这段就直接显示no more，否则需上拉一下			
+				//	alert("当前页："+eval("pageNow"+tab1));
+					if( vodPageAll == 0 || pageNow == vodPageAll || pageNow > vodPageAll){	//打开这段就直接显示no more，否则需上拉一下			
 						getID("loadmore"+tab1).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
 						getID("loading"+tab1).style.display = "none";
+						eval("pageNow"+tab1+"="+vodPageAll);
 					}else{
 						getID("loadmore"+tab1).innerHTML = "";
 						getID("loading"+tab1).style.display = "block";
 					}
 					var list = json.records;
-					console.log(list);
+				//	console.log(list);
 					$.each(list,
 						function(index, array) { //遍历json数据列
 							var id = array["id"];
@@ -323,7 +324,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function moveChangeTag(_num) { //滑动切换分类
-			var tag1Temp = navPos;
+			var tag1Temp = tab1;
 			tag1Temp += _num;
 			if (tag1Temp < 0) {
 				tag1Temp = 0;
@@ -337,12 +338,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		function changePage(_num) { //VOD列表换页
 			pageNow += _num;
 			if (pageNow > vodPageAll || pageNow < 1) {
-			//	pageNow = vodPageAll;
+				pageNow = vodPageAll;
 			}
 			if( indexArea == "search" || indexArea == "history" ||indexArea == "collect" ){
 				showSHC(indexArea,pageNow,"_key");
 			}else{
-				getXuList(tab1,tab2,tab3,pageNow, 9);
+				getXuList(tab1,tab2,tab3,pageNow, 12);
 			}
 		}
 
@@ -415,6 +416,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function clickTab1(_tab1){	//点击一级分类
+			scrollTo(0, 0); 
 			indexArea = "vod";
 		/*	if (navPos < 0) { 	//从直播切换到点播，这个版本不需要这段，因为一级栏目没有直播
 				getID("vod").style.display = "block";
@@ -433,34 +435,26 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			if(_tab1==0){	//显示首页
 				indexArea = "home";
 				getID("vodTab").style.display = "none";
-			//	for(i=1;i<6;i++){
-			//		getID("vodList"+i).style.display = "none";
-			//		getID("vodListContent"+i).innerHTML = "";
-			//	}
 				getID("vodList"+tab1).style.display = "none";
 				getID("vodList0").style.display = "block";
-				getID("vodList0").style.left = "0px";
 				return;
 			}else{
 				getID("vodTab").style.display = "block";
 				getID("vodList0").style.display = "none";
 			}
 
-			if(tab1>0){
-			//	getID("vodListContent"+tab1).style.display = "none";
-			//	getID("loadmore"+tab1).style.display = "none";
+		//	if(tab1>0){
 				getID("vodList"+tab1).style.display = "none";
-			}
+		//	}
 			tab1 = _tab1;
 			getID("vodList"+tab1).style.display = "block";
-		//	getID("vodList"+tab1).style.left = "0px";
 			showTab2and3( _tab1 );	//动态显示二三级分类
-			getXuList(_tab1,0,0,1,9);	//显示海报列表
+			getXuList(_tab1,0,0,1,12);	//显示海报列表
 			getID("searchHistoryCollect").style.display = "none";
 		}
 
 		function clickTab2(_num){	//点击二级地区
-			getID("vodListContent"+navPos).innerHTML = "";
+			getID("vodListContent"+tab1).innerHTML = "";
 			getID("region"+tab2).style.backgroundColor = "";	
 			getID("region"+tab2).style.color = "white";	
 			if( tab3Arr[tab1].length>0){	//如果是从三级转到二级
@@ -471,22 +465,28 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 			tab2 = _num;
 			eval("pageNow"+tab1+"=0");	//当前页置0，否则因当前页可能大于请求页，而不会请求数据
+			eval("vodPageAll"+tab1+"=1");	//总页数置1，否则因请求页大于总页数，而不会请求数据
 			getID("region"+tab2).style.backgroundColor = "#ff9933";
 			getID("vodTabRegion").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
 			getXuList(tab1,_num,0,1,12);
+			getID("loadmore"+tab1).innerHTML = "";
+			getID("loading"+tab1).style.display = "block";
 		}
 
 		function clickTag3(_num){	//点击三级标签
-			getID("vodListContent"+navPos).innerHTML = "";
+			getID("vodListContent"+tab1).innerHTML = "";
 			getID("region"+tab2).style.backgroundColor = "";			
 			getID("region"+tab2).style.color = "#ff9933";
 			getID("tag3_"+tab3).style.backgroundColor = "";			
 			getID("tag3_"+tab3).style.color = "white";		
 			tab3 = _num;
 			eval("pageNow"+tab1+"=0");	//当前页置0，否则因当前页可能大于请求页，而不会请求数据
+			eval("vodPageAll"+tab1+"=1");	//总页数置1，否则因请求页大于总页数，而不会请求数据
 			getID("tag3_"+tab3).style.backgroundColor = "#ff9933";
 			getID("vodTab3").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
 			getXuList(tab1,tab2,_num,1,12);
+			getID("loadmore"+tab1).innerHTML = "";
+			getID("loading"+tab1).style.display = "block";
 		}
 
 		function moveVideoWindow() {	//2.0版不需要移动播放窗口
@@ -516,10 +516,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function loadMore() { //加载下一页
-			var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();			
+			var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
+		//	alert(loadMoreBottom);		
 		//	getID("test").style.display = "block";
 		//	getID("test").innerHTML = loadMoreBottom+"<br>"+"pageNow"+pageNow+"pageAll"+vodPageAll;
-			if (loadMoreBottom < 850 && pageNow < vodPageAll && navPos > -20 && changePageStatus == "t") { //loadMoreBottom数字越大，就越早加载下一页
+			if (loadMoreBottom < 3000 && pageNow < vodPageAll && navPos > -20 && changePageStatus == "t") { //loadMoreBottom数字越大，就越早加载下一页
 				changePage(1);
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
 			}			
@@ -534,6 +535,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}		
 
 		function showSplash(){
+			getID("splash").style.display = "block";
 			getID("splash").style.height = clientHeight + "px"; 
 			var splashArr = <?php echo json_encode($splashArr); ?>;	
 			var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
@@ -542,7 +544,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				splashIndex = 0;
 			}
 			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
-			getID("splash").style.display = "block";
 			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
 			startCircle();	//右上角跳过圆圈
 		}
@@ -559,7 +560,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
 			getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
-		//	showSplash();		//显示第二个启动图片
+			showSplash();		//显示第二个启动图片
 			showTab1();				//显示一级分类
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
@@ -592,7 +593,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:95%;">
 			<ul id="vodTab1" class="tab-head">
-				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:25px;background: url(img/null.png) center no-repeat;">首页</li>
+				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;background: url(img/null.png) center no-repeat;">首页</li>
 			</ul>
 		<div style="position:fixed;top:300px;left:5%;width:90%;height:10px;background-color:#333333;"></div>
 		</div>
@@ -680,42 +681,42 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				<!--div id="vodListImg0" class="vodListImg" onClick="playVod(0);" ></div>
 				<div id="vodListName0" class="vodListName"></div-->
 			</div>
-			<div id="loading1" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 40%;padding-top:150px;">loading</div>
+			<div id="loading1" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore1" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
 		<!-- 点播 电视剧 列表 -->
 		<div id="vodList2" class="vodList" style="top:455px;">
 			<div id="vodListContent2">			</div>
-			<div id="loading2" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 40%;padding-top:150px;">loading</div>
+			<div id="loading2" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore2" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
-		<!-- 点播 综艺 列表 -->
+		<!-- 点播 短视频 列表 -->
 		<div id="vodList3" class="vodList" style="top:455px;">
 			<div id="vodListContent3">			</div>
-			<div id="loading3" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 40%;padding-top:150px;">loading</div>
+			<div id="loading3" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore3" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
-		<!-- 点播 动漫 列表 -->
+		<!-- 点播 综艺 列表 -->
 		<div id="vodList4" class="vodList" style="top:455px;">
 			<div id="vodListContent4">			</div>
-			<div id="loading4" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 40%;padding-top:150px;">loading</div>
+			<div id="loading4" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore4" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
-		<!-- 点播 纪录片 列表 -->
+		<!-- 点播 动漫 列表 -->
 		<div id="vodList5" class="vodList" style="top:455px;">
 			<div id="vodListContent5">			</div>
-			<div id="loading5" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 40%;padding-top:150px;">loading</div>
+			<div id="loading5" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore5" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>	
 
-		<!-- 点播 纪录片 列表 -->
+		<!-- 点播 体育 列表 -->
 		<div id="vodList6" class="vodList" style="top:455px;">
 			<div id="vodListContent6">			</div>
-			<div id="loading6" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 40%;padding-top:150px;">loading</div>
+			<div id="loading6" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore6" class="vodListName" style="height:100px;color:gray;"></div>
 		</div>
 
