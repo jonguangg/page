@@ -1,3 +1,15 @@
+function moveVideoWindow() {	//2.0版不需要移动播放窗口
+    /*	if (navPos > -1 && document.body.scrollTop == 0) { //只在点播列表且第一个图被挡住时才移动
+            var clientWidth = document.body.scrollWidth;
+            var clientHeight = window.innerHeight;
+            if (typeof(window.androidJs) != "undefined") {
+                window.androidJs.JsMovePlayerWindow(clientHeight - clientWidth * 9 / 16);
+            }
+        } else {
+            window.androidJs.JsMovePlayerWindow(0);
+        }*/
+    }
+
 function moveChannel(_num) { //在频道列表上换台，即上下键移动选择频道
     try {
         window.clearTimeout(st); //不让频道列表隐藏

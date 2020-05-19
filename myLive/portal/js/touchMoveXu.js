@@ -41,11 +41,11 @@ function touchMoveFunc(evt){
 	//	var text = 'TouchMove事件触发:<br>' +'endX:'+endX + '<br>' +'endY:'+ endY+'<br>moveX:'+moveX+'<br>moveY:'+moveY;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && navPos<tab1Arr["data"].length && (indexArea=="home" || indexArea == "vod" || indexArea=="live") ){	//只能向左移
-			if(navPos==-1){
+		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && tab1<tab1Arr["data"].length-1 && (indexArea=="home" || indexArea == "vod" || indexArea=="live") ){	//只能向左移
+			if( tab1==-1){
 				document.getElementById("channel").style.left = moveX+"px";
 			}else{
-				document.getElementById("vodList"+navPos).style.left = moveX+"px";
+				document.getElementById("vodList"+tab1).style.left = moveX+"px";
 			}			
 		}
 
@@ -67,7 +67,7 @@ function touchEndFunc(evt){
 		text += '<br>'+'moveX:'+moveX+'<br>'+'moveY:'+moveY+'<br>scrollTop:'+document.body.scrollTop;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-		if( navPos>-1 ){	//非直播
+		if( tab1>-1 ){	//非直播
 			if( indexArea=="home" || indexArea == "vod" || indexArea=="live" ){		//只在首页和直播时滑动
 				if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 					moveChangeTag(1);
@@ -75,7 +75,7 @@ function touchEndFunc(evt){
 					moveChangeTag(-1);
 				}
 			}			
-		}else if( navPos==-1){	//直播
+		}else if( tab1==-1){	//直播
 			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 				moveChangeGroup(1);
 			}else if( moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
@@ -108,10 +108,10 @@ function touchEndFunc(evt){
 		}
 		
 		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面
-			if(navPos==-1){
+			if(tab1==-1){
 				document.getElementById("channel").style.left = "0px";	
 			}else{
-				document.getElementById("vodList"+navPos).style.left = "0px";
+				document.getElementById("vodList"+tab1).style.left = "0px";
 			}			
 		}
 

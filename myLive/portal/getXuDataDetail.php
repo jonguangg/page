@@ -16,7 +16,7 @@
 //	根据当前栏目和节目类型随机选猜您喜欢
 	$channelId = $detailArr["data"]["channelId"];
 	$videoTopic = $detailArr["data"]["videoTopic"];
-	$urlXuGuess = "http://mixtvapi.mixtvapp.com/ott/videoinfo/getVideoInfoByRandom?channelId=".$channelId."&videoId=".$id."&videoTopic=".urlencode($videoTopic);
+    $urlXuGuess = "http://mixtvapi.mixtvapp.com/ott/videoinfo/getVideoInfoByRandom?channelId=".$channelId."&videoId=".$id."&videoTopic=".urlencode($videoTopic)."&limit=6";
 	$guess = file_get_contents($urlXuGuess);	//从许的后台获取猜您喜欢数据
 	$guess = json_decode($guess,true);	//将从后台获取的json数据转为PHP数组
 
@@ -43,6 +43,7 @@
 //	echo "<pre>";
 //	print_r($detailArr);
 
+//    $detailArr["urlXuGuess"] = $urlXuGuess; //输出猜您喜欢的请求地址，供调试
 //	将从后台获取的json数组转为json字符串，用于ajax传输
 	echo json_encode($detailArr,true);
 

@@ -8,6 +8,8 @@ var poster = "";
 var isCollect = 0;  //默认0未收藏
 
 function showDetail( _id ){
+    getID("detail").style.display = "none"; 
+    getID("detail").style.left = "-2000px";
     scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去 
     scrollTo(0, 0);                         //再滚到最顶
 	if (typeof(window.androidJs) != "undefined") {
@@ -19,10 +21,10 @@ function showDetail( _id ){
     indexArea = "detail";
     id = _id;
 
-    getID("detail").style.display = "block";
     getID("vod").style.display = "none";
     if( from=="search" || from=="history" || from=="collect"){
         getID("searchHistoryCollect").style.display = "none";
+    //    alert("隐藏搜索历史收藏");
     }
     $.ajax({
         type: 'POST',
@@ -35,7 +37,12 @@ function showDetail( _id ){
         beforeSend: function() {
             //这里一般显示加载提示;
         },
-        success: function(json) {      
+        success: function(json) {
+            getID("detail").style.display = "block";
+            setTimeout(function() {
+                getID("detail").style.left = "0px";
+            }, 1000);
+            
 			var videoType = json["data"].videoType;
 			father = json["data"].videoName;
 			poster = json["data"].imgUrl;      
@@ -44,7 +51,6 @@ function showDetail( _id ){
 			getID("detailTag").innerHTML = json["data"].videoTopic;
 			getID("detailDescription").innerHTML = json["data"].videoBriefing;	
 			
-
 			if( json["data"].tostar==null ){
 				getID("actor").style.display = "none";
 			}else{
@@ -80,7 +86,8 @@ function showDetail( _id ){
 				getID("detailScore").innerHTML = json["data"].imdbScore;
 			}				
 					
-			isCollect = json["isCollect"];
+            isCollect = json["isCollect"];
+        //    alert(json["urlXuGuess"]);
             if(isCollect==1){
                 getID("collectImg").style.backgroundImage = 'url(img/collect1.png)';
             }else{
@@ -98,7 +105,7 @@ function showDetail( _id ){
 					//	var episode = list[index].videoSort+1;
 						var playUrl = list[index].videoPath;
 
-						getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod("'+id+'","'+playUrl+'","'+father+'","'+poster+'",'+index+','+videoType+');>'+(index+1)+'</div>';
+						getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod("'+id+'","'+playUrl+'","'+father+'","'+poster+'",'+index+','+episodes+');>'+(index+1)+'</div>';
 						
 					});
 				getID("collectImg").style.top = "-120px";
@@ -109,7 +116,7 @@ function showDetail( _id ){
             initDetailArea();
             var episodePos = json["episodePos"];
 			var playUrl = (videoType==2)?json["data"].videoPath:json["data"].videoTvList[episodePos]["videoPath"];
-            playVod( id,playUrl,father,poster,episodePos,videoType ); 
+            playVod( id,playUrl,father,poster,episodePos,episodes ); 
 
             var guess = json["guess"];
             getID("guesses").innerHTML = "";

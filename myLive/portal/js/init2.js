@@ -123,15 +123,17 @@ var clientHeight = 1920;
 	}, 10000);
 
 	function splashJump(){
-		getID('splash').style.display='none';
-		if( indexArea=="lock"){	//如果设置了启动默认锁定		
-			getID('lock').style.display='block';
-			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
-		}else{					//如果没设启动默认锁定，则启动后就进入首页
-			if( navPos==0){
-				getID("vodList0").style.display = "block";
-			}			
-			scrollEnable();
+		if(getID('splash')){	//加这个是为了兼容PC
+			getID('splash').style.display='none';
+			if( indexArea=="lock"){	//如果设置了启动默认锁定		
+				getID('lock').style.display='block';
+				getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
+			}else{					//如果没设启动默认锁定，则启动后就进入首页
+				if( navPos==0){
+					getID("vodList0").style.display = "block";
+				}			
+				scrollEnable();
+			}
 		}
 	}
 
@@ -191,5 +193,12 @@ var clientHeight = 1920;
 			window.androidJs.JsSetCookie("groupId", groupId, '12h');
 			window.androidJs.JsSetCookie("channelPos", channelPos, '12h');
 			//	window.androidJs.JsSetCookie("videoUrlCookie",channelTempArr[channelPos].videoUrl,'12h');
+		}
+	}
+
+	var preLoadImageArr = ["直播0.png","電影1.png","劇集1.png","動漫1.png","短视频1.png","體育1.png","綜藝1.png","search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif"];
+	function preLoadImages(){
+		for(i=0;i<preLoadImageArr.length;i++){
+			getID("preLoadImg").innerHTML += '<img src=img/'+preLoadImageArr[i]+'>';
 		}
 	}

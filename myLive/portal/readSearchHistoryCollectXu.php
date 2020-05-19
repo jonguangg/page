@@ -4,10 +4,10 @@
 	*/
 
 	//	error_reporting(E_ALL^E_NOTICE^E_WARNING);
+	set_time_limit(0); //限制页面执行时间,0为不限制
 	include_once('../connectMysql.php');
 
-	$sn = $_COOKIE["sn"];
-	
+	$sn = $_COOKIE["sn"];	
 	$area = (@$_POST['area'])?$_POST['area']:"history";
 	$pageNow = (@$_POST['pageNow'])?$_POST['pageNow']:1;
 	$key = (@$_POST['key'])?$_POST['key']:"null";
@@ -37,8 +37,8 @@
 	while($row=mysqli_fetch_array($query)){//遍历查询结果，将每条结果写入数组
 		$arrJson['list'][] = array(
 			'id' => $row['id'],
-			'name' => $row['name'],
 			'father' => $row['father'],
+			'poster' => $row['poster']
 		);  
 	} 
 

@@ -2,7 +2,7 @@
 <script type=text/javascript src="js/init2.js"></script>
 <script type=text/javascript src="js/register2.js"></script>
 <script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
-<script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
+<script type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <!--script type=text/javascript src="js/getXuData.js" charset=UTF-8></script-->
 <script type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script>
@@ -148,7 +148,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				getID("group" + i).innerHTML = channelDataArr[i].group;
 			}
 			channelPos = (groupId == _num)?channelPos:0;	//如果回上次看的组，则不变频道，否则播放第1个
-			navPos = -1;	//当前区域定为直播
+			tab1 = -1;	//当前区域定为直播
 			groupId = _num;
 			showChannel(groupId); 
 			getID("vod").style.display = "none";
@@ -213,7 +213,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		var episodeTemp = 0;
 	//	var playUrls = "";
-		function playVod(_id,_playUrl,_father,_poster,_episodePos,_videoType) {
+		function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
 			var playUrl = _playUrl.replace("128.1.160.114","mixtvapi.mixtvapp.com");
 			if (typeof(window.androidJs) != "undefined") {
 				window.androidJs.JsClosePlayer();
@@ -244,7 +244,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				}
 			});
 
-			if( _videoType>2 ){	//多集的才需定位当前集
+			if( _episodes>1 ){	//多集的才需定位当前集
 				getID('chooseChapter'+episodeTemp).style.color = "black";
 				episodeTemp = _episodePos;
 				getID('chooseChapter'+episodeTemp).style.color = "#ff9933";			
@@ -324,7 +324,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		function moveChangeTag(_num) { //滑动切换分类
-			var tag1Temp = tab1;
+			getID("vodList"+tab1).style.left = "0px";
+			var tag1Temp = tab1;	//如果此时直接改tab1,就无法在切换栏目时通过clickTab1修改相关参数
 			tag1Temp += _num;
 			if (tag1Temp < 0) {
 				tag1Temp = 0;
@@ -425,32 +426,29 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					window.androidJs.JsClosePlayer();
 				}
 			}*/
-			getID("nav" + navPos).style.color = "white"; 
-			getID("nav" + navPos).style.backgroundImage = "url(img/"+tab1Arr["data"][navPos].channelName+"0.png)"; 
-			navPos = _tab1;
-			getID("nav" + navPos).style.color = "f7a333";
-			getID("nav" + navPos).style.backgroundImage = "url(img/"+tab1Arr["data"][navPos].channelName+"1.png)"; 
-			getID("vodTab1").scrollLeft = ( (navPos-2)>0 )?(navPos-2)*200:0;
+			getID("vodList"+tab1).style.display = "none";			//	隐藏当前栏目 海报列表
+			getID("nav" + tab1).style.color = "white"; 
+			getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"0.png)"; 
+			navPos = _tab1;	//注释掉看看有没有影响，之前很多地方是用navPos来定位的，后来统一改为tab1了
+			tab1 = _tab1;
+			getID("nav" + tab1).style.color = "f7a333";
+			getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"1.png)"; 
+			getID("vodTab1").scrollLeft = ( (tab1-2)>0 )?(tab1-2)*200:0;
+			getID("searchHistoryCollect").style.display = "none";	//..隐藏搜索 历史 收藏 海报列表
 
 			if(_tab1==0){	//显示首页
 				indexArea = "home";
-				getID("vodTab").style.display = "none";
-				getID("vodList"+tab1).style.display = "none";
-				getID("vodList0").style.display = "block";
+				getID("vodTab").style.display = "none";			//..隐藏分类标签
+				getID("vodList0").style.display = "block";		//..显示首页
 				return;
 			}else{
 				getID("vodTab").style.display = "block";
 				getID("vodList0").style.display = "none";
 			}
 
-		//	if(tab1>0){
-				getID("vodList"+tab1).style.display = "none";
-		//	}
-			tab1 = _tab1;
-			getID("vodList"+tab1).style.display = "block";
+			getID("vodList"+tab1).style.display = "block";	//	显示当前栏目 海报列表
 			showTab2and3( _tab1 );	//动态显示二三级分类
 			getXuList(_tab1,0,0,1,12);	//显示海报列表
-			getID("searchHistoryCollect").style.display = "none";
 		}
 
 		function clickTab2(_num){	//点击二级地区
@@ -467,7 +465,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			eval("pageNow"+tab1+"=0");	//当前页置0，否则因当前页可能大于请求页，而不会请求数据
 			eval("vodPageAll"+tab1+"=1");	//总页数置1，否则因请求页大于总页数，而不会请求数据
 			getID("region"+tab2).style.backgroundColor = "#ff9933";
-			getID("vodTabRegion").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
+			getID("vodTabRegion").scrollLeft = ((_num-3) * 138<0)?0:(_num-3) * 138;
 			getXuList(tab1,_num,0,1,12);
 			getID("loadmore"+tab1).innerHTML = "";
 			getID("loading"+tab1).style.display = "block";
@@ -483,22 +481,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			eval("pageNow"+tab1+"=0");	//当前页置0，否则因当前页可能大于请求页，而不会请求数据
 			eval("vodPageAll"+tab1+"=1");	//总页数置1，否则因请求页大于总页数，而不会请求数据
 			getID("tag3_"+tab3).style.backgroundColor = "#ff9933";
-			getID("vodTab3").scrollLeft = ((_num-2) * 200<0)?0:(_num-2) * 200;
+			getID("vodTab3").scrollLeft = ((_num-3) * 138<0)?0:(_num-3) * 138;
 			getXuList(tab1,tab2,_num,1,12);
 			getID("loadmore"+tab1).innerHTML = "";
 			getID("loading"+tab1).style.display = "block";
-		}
-
-		function moveVideoWindow() {	//2.0版不需要移动播放窗口
-		/*	if (navPos > -1 && document.body.scrollTop == 0) { //只在点播列表且第一个图被挡住时才移动
-				var clientWidth = document.body.scrollWidth;
-				var clientHeight = window.innerHeight;
-				if (typeof(window.androidJs) != "undefined") {
-					window.androidJs.JsMovePlayerWindow(clientHeight - clientWidth * 9 / 16);
-				}
-			} else {
-				window.androidJs.JsMovePlayerWindow(0);
-			}*/
 		}
 		
 		st2 = setTimeout(function(){ }, 1000);	//防止scrollWindow第一次执行找不到st2
@@ -520,7 +506,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		//	alert(loadMoreBottom);		
 		//	getID("test").style.display = "block";
 		//	getID("test").innerHTML = loadMoreBottom+"<br>"+"pageNow"+pageNow+"pageAll"+vodPageAll;
-			if (loadMoreBottom < 3000 && pageNow < vodPageAll && navPos > -20 && changePageStatus == "t") { //loadMoreBottom数字越大，就越早加载下一页
+			if (loadMoreBottom < 3000 && pageNow < vodPageAll && tab1 > -20 && changePageStatus == "t") { //loadMoreBottom数字越大，就越早加载下一页
 				changePage(1);
 				changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
 			}			
@@ -535,17 +521,19 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}		
 
 		function showSplash(){
-			getID("splash").style.display = "block";
-			getID("splash").style.height = clientHeight + "px"; 
-			var splashArr = <?php echo json_encode($splashArr); ?>;	
-			var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
-			splashIndex ++;
-			if( splashIndex > splashArr.length-1 ){
-				splashIndex = 0;
+			if( typeof(window.androidJs) != "undefined" ){
+				getID("splash").style.display = "block";
+				getID("splash").style.height = clientHeight + "px"; 
+				var splashArr = <?php echo json_encode($splashArr); ?>;	
+				var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
+				splashIndex ++;
+				if( splashIndex > splashArr.length-1 ){
+					splashIndex = 0;
+				}
+				window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
+				getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
+				startCircle();	//右上角跳过圆圈
 			}
-			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
-			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
-			startCircle();	//右上角跳过圆圈
 		}
 
 		var clientWidth = 0 ;
@@ -564,6 +552,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			showTab1();				//显示一级分类
 			showHomeLiveGroup();//显示首页直播分组入口
 			showHomeList();			//显示首页热播列表
+			preLoadImages();
 		}
 	</script>
 </head>
@@ -733,9 +722,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div>
 
 	<!-- 搜索 历史 收藏 列表页 -->	
-	<div id="searchHistoryCollect" class="homeList" style="top:400px;display:none;">
+	<div id="searchHistoryCollect" class="homeList" style="top:335px;display:none;">
 		<span id="shcTitle" style="position:relative;left:15%;color:#f7a333;">搜索结果</span>
-		<div id="shcImg" style="background:url(img/typeCartoon0.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
+		<div id="shcImg" style="background:url(img/null.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
 		<div style="position:absolute;left:0%;top:110px;width:100%;">
 			<div id="shcContent" ></div>
 			<div id="loadmoreSHC" class="vodListName" style="height:100px;color:gray;"></div>
@@ -761,9 +750,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div><!-- 直播频道尾 -->
 
 	<!-- 详情页 -->
-	<div id="detail" style="position:absolute;left:0px;top:0px;width:100%;z-index:2;background-color:black;display:none;">
+	<div id="detail" style="position:absolute;left:2000px;top:0px;width:100%;z-index:2;background-color:black;display:none;-webkit-transition:2s;">
 		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" onclick="rePlay()"></div>
-
 		<div class="detailText" style="top:40px;font-size:50px;color:#f7a333;" id="detailName" ></div>
 		<div class="detailText" style="top:60px;"><b>类型：</b><span id="detailTag"></span></div>
 		<div class="detailText" style="top:80px;"><b>地区：</b><span id="detailRegion"></span></div>
@@ -868,6 +856,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	</div>
 
 </div><!-- bodys尾 -->
+<!-- 预加载图片 -->
+<div id="preLoadImg" style="position: absolute;left:0px;top:0px;width:1px;height:1px;opacity:0;">
+
+</div>
 </body></html>
 
 <script>
