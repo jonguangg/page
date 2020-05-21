@@ -1,17 +1,16 @@
 var clientWidth = 1080;
 var clientHeight = 1920;
-
+	
 function imOnLine() { //上报在线状态
 	var now = new Date(); //此时此刻
 	var sec = now.getSeconds(); //此时的秒
-	//因为后台是每个被5整除的分钟时下线所有机顶盒，所以这里要在下线后即时（延时1分钟）上线
+	//因为后台是每个被5整除的分钟时下线所有机顶盒，所以机顶盒要在下线后（延时1分钟）上报在线状态
 	//如果当前分钟正好被5整除，则说明此时后台刚刚下线所有机顶盒，前端延时1分钟上线当前机顶盒 60-sec是为了精确到秒
 	//如果当前分钟离整5有1、2、3、4分钟，则分别延时1、2、3、4分钟。用6减模5余几的数，就是要延时的时间
 	var ms = (now.getMinutes() % 5 == 0) ? 60 - sec : (6 - now.getMinutes() % 5) * 60 - sec;
 	//	var ms = ( (6-now.getMinutes()%5)*60>300 )?60-sec:(6-now.getMinutes()%5)*60-sec;
 	//	var ms = ( (6-now.getMinutes()%5)*60000>300000 )?60000-sec*1000:(6-now.getMinutes()%5)*60000-sec*1000;
 	//	sn = ( sn )?sn:window.androidJs.JsGetCookie("sn",0);
-	//	getID("vodListName1").innerHTML += "_"+now.getMinutes()+":"+sec+sn+"<br>";
 	st = setTimeout(function() {
 		sendAjax("./ajax.php", "imOnlineSN=" + sn);
 		imOnLine();
@@ -115,27 +114,11 @@ function stbInfo() {
 	return sn;
 }
 
-//延时检查授权日期 同时启动上报在线状态的定时器
-setTimeout(function() {
+setTimeout(function() {	//延时检查授权日期 同时启动上报在线状态的定时器
 	sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 	imOnLine();
 	splashJump();
 }, 10000);
-
-function splashJump(){
-	if(getID('splash')){	//加这个是为了兼容PC
-		getID('splash').style.display='none';
-		if( indexArea=="lock"){	//如果设置了启动默认锁定		
-			getID('lock').style.display='block';
-			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
-		}else{					//如果没设启动默认锁定，则启动后就进入首页
-			if( navPos==0){
-				getID("vodList0").style.display = "block";
-			}			
-			scrollEnable();
-		}
-	}
-}
 
 var mo = function(e) {
 	e.preventDefault();
@@ -157,6 +140,7 @@ function scrollEnable() {
 
 function androidBack(){	//供返回键调用
 	window.androidJs.JsClosePlayer();
+	getID("h5video").src = "";
 //	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
 	if( indexArea =="live" ){
 		getID("group" + groupId).style.color = 'white';
@@ -197,12 +181,13 @@ function updateCookie() {
 }
 
 var preLoadImageArr = ["直播0.png","電影1.png","劇集1.png","動漫1.png","短视频1.png","體育1.png","綜藝1.png","search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif"];
+
 function preLoadImages(){
 	for(i=0;i<preLoadImageArr.length;i++){
 		getID("preLoadImg").innerHTML += '<img src=img/'+preLoadImageArr[i]+'>';
 	}
 }
-	
+
 //	var total = 0;
 function startCircle(){
 	var minute = 0;
@@ -215,3 +200,19 @@ function startCircle(){
 //    set(1000*total);
 	circle.classList.add("run-anim");
 }
+
+function splashJump(){
+	if( getID('splash') ){	//加这个是为了兼容PC
+		getID('splash').style.display='none';
+		if( indexArea=="lock"){	//如果设置了启动默认锁定		
+			getID('lock').style.display='block';
+			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
+		}else{					//如果没设启动默认锁定，则启动后就进入首页
+		//	if( navPos==0){
+				getID("vod").style.opacity = 1;
+		//	}			
+			scrollEnable();
+		}
+	}
+}
+	

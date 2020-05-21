@@ -27,10 +27,12 @@
 
     if( mysqli_num_rows($sql1) > 0 ){
         while($row=mysqli_fetch_array($sql1)){ //遍历查询结果，将结果写入数组    
-            $detailArr['episodePos'] = $row['episode'];    //用于定位选集第几集
+            $detailArr['episodePos'] = $row['episode'];          //用于定位选集第几集
+            $detailArr['currentTime'] = $row['currentTime'];    //用于定位视频播放的位置
         } 
     }else{
         $detailArr['episodePos'] = 0;  //没有历史记录就从第1集开始播
+        $detailArr['currentTime'] = 0;    //用于定位视频播放的位置
     }
 
 //  查询收藏记录

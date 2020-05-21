@@ -63,9 +63,9 @@
 		-ms-flex-wrap:nowrap;	
 		flex-wrap:nowrap;	
 		-webkit-box-pack:justify;	
-		-webkit-justify-content:space-between;	
 		-ms-flex-pack:justify;	
-		justify-content:space-between;
+		-webkit-justify-content:flex-start;	
+		justify-content:flex-start;
 		background:black;/*#D3D3D3;	<!--FF4878-->*/
 		padding:0px;
 		overflow:auto;
@@ -111,18 +111,18 @@
 		border-radius:40px;
 		background-size:100% 100% !important;
 	}
-	.tab-live-item{	//直播列表页面的组标签
+	.tab-live-item{	
 		-webkit-box-flex:1;
 		-webkit-flex:1 0 auto;
 		-ms-flex:1 0 auto;
 		flex:1 0 auto;
-		color:white;/*#081925;*/
+		color:white;
 		padding:0px 30px 0px 30px;
 		font-size:60px;
 		font-weight:900;
 		text-shadow:-0px 0px 0px #000;
 	}
-	.tab-homeLive-item{	//首页直播入口的组标签
+	.tab-homeLive-item{	
 		-webkit-box-flex:1;
 		-webkit-flex:1 0 auto;
 		-ms-flex:1 0 auto;
@@ -137,25 +137,24 @@
 	}
 
 	.tab-chooseChapter-item{	
-		-webkit-box-flex:1;
+	/*	-webkit-box-flex:1;
 		-webkit-flex:1 0 auto;
-		-ms-flex:1 0 auto;
-		flex:1 0 auto;
+		-ms-flex:1 0 auto;*/
+		flex:0 0 90px;
 		color:black;
 		font-weight: 900;
 		margin-right:4%;
 		padding-top:0px;
-		width:10%;
+	/*	width:90px;*/
 		height:90px;
 		text-align:center;
 		line-height:90px;
 		background-size:100% 100% !important;
-		background-color:#ccc;
-		border-radius:10px;
+		background-color: snow;
+		border-radius:15px;
 	}
-
 	
-	.tab-guess-item{	//猜您喜欢
+	.tab-guess-item{
 		-webkit-box-flex:1;
 		-webkit-flex:1 0 auto;
 		-ms-flex:1 0 auto;

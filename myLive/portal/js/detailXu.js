@@ -1,15 +1,17 @@
 var episodes = 1;
 //var episodePos = 0;
 var from = "home";
-var sn = getCookie('sn');
+sn = (getCookie('sn').length>0)?getCookie('sn'):"iPhone";
 var id = 0;
 var father = "";
 var poster = "";
 var isCollect = 0;  //默认0未收藏
-
 function showDetail( _id ){
+    alert(sn);
     getID("detail").style.display = "none"; 
     getID("detail").style.left = "-2000px";
+    updateCurrentTime();
+    getID("h5video").src = "";
     scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去 
     scrollTo(0, 0);                         //再滚到最顶
 	if (typeof(window.androidJs) != "undefined") {
@@ -38,6 +40,7 @@ function showDetail( _id ){
             //这里一般显示加载提示;
         },
         success: function(json) {
+            currentTime = json["currentTime"];  //  视频上次播放的位置
             getID("detail").style.display = "block";
             setTimeout(function() {
                 getID("detail").style.left = "0px";
@@ -188,8 +191,7 @@ function changeCollect( ){
     });
 }
 
-
-function orderBy(propertyName){
+function orderBy(propertyName){ //  选集排序乱序才需要
     return function(object1,object2){
         var value1 = object1[propertyName];
         var value2 = object2[propertyName];
@@ -203,7 +205,31 @@ function orderBy(propertyName){
     }
 }
 
-
+function updateCurrentTime(){   //  更新播放视频位置进数据库
+    currentTime = Math.floor(getID("h5video").currentTime);
+    if( id == 0 || currentTime==0 ){
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: './writeCurrentTimeXu.php',
+        data: {
+            'sn':sn,
+            'id':id,
+            'currentTime':currentTime
+        },
+        dataType: 'json',
+        beforeSend: function() {
+            //这里一般显示加载提示;
+        },
+        success: function(json) {
+        //	alert(json.status);
+        },
+        error: function() {
+        //	alert("写入失败!");
+        }
+    });
+}
 
 
 

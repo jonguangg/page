@@ -69,16 +69,16 @@ function touchEndFunc(evt){
 	//	document.getElementById("test").innerHTML = text;
 		if( tab1>-1 ){	//非直播
 			if( indexArea=="home" || indexArea == "vod" || indexArea=="live" ){		//只在首页和直播时滑动
-				if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
+				if( moveX < -300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 					moveChangeTag(1);
-				}else if(moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
+				}else if(moveX > 300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 					moveChangeTag(-1);
 				}
 			}			
 		}else if( tab1==-1){	//直播
-			if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
+			if( moveX < -300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 				moveChangeGroup(1);
-			}else if( moveX > 500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
+			}else if( moveX > 300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 				moveChangeGroup(-1);
 			}
 		}			

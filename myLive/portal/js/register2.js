@@ -1,18 +1,3 @@
-	//	var total = 0;
-	function startCircle(){
-		var minute = 0;
-		var second = 10;
-		var total = (parseInt(minute)*60) + parseInt(second);
-		var circle = getID("cls");
-	//    circle.style.strokeDashoffset = "800";
-		circle.style.animationDuration = total+"s";
-		circle.style.animationPlayState = "running";
-	//    set(1000*total);
-		circle.classList.add("run-anim");
-	}
-
-	//var splashArr = ['splash0.gif','splash1.gif','splash2.gif','splash3.gif','splash4.gif','splash5.gif','splash6.gif','splash7.gif','splash8.gif','splash9.gif','splash10.gif','splash11.gif','splash12.gif','splash13.gif','splash14.gif','splash15.gif','splash16.gif','splash17.gif','splash18.gif','splash19.gif','splash20.gif','splash21.gif','splash22.gif','splash23.gif','splash24.gif','splash25.gif','splash26.gif','splash27.gif','splash28.gif','splash29.gif','splash30.gif','splash31.gif','splash32.gif','splash33.gif','splash34.gif','splash35.gif','splash.jpg'];
-	
 	var pinTemp = "";
 	var pinTemp1 = "";
 	var pinTemp2 = "";
@@ -144,8 +129,8 @@
 
 	//监听input value
 	var lastLength = 0;
-	// Firefox, Google Chrome, Opera, Safari, Internet Explorer from version 9
-	function onInputHandler(event,_id) {
+	
+	function onInputHandler(event,_id) {// Firefox, Google Chrome, Opera, Safari, Internet Explorer from version 9
 	//    console.log("刚输入的是："+event.target.value);
 		if( lastLength < event.target.value.length ){	//上次字数少于当前字数，说明新加了，否则就是删除
 			if( event.target.value.length==4 ){
@@ -159,9 +144,9 @@
 			event.target.value = temp.slice(0,8);
 		}
 	}
-	// Internet Explorer 目前这个是手机页面，这个函数可以不用
+	
 	/*
-	function onPropertyChangeHandler(event) {
+	function onPropertyChangeHandler(event) {// Internet Explorer 目前这个是手机页面，这个函数可以不用
 		if (event.propertyName.toLowerCase () == "value") {
 	//        console.log(event.srcElement.value);
 			if( event.target.value.length==4 ){
