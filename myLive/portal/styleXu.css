@@ -1,3 +1,5 @@
+	html,body{-webkit-user-select:none; user-select: none; }
+	
 	*{margin:0px;padding:0px;}
 
 	div::-webkit-scrollbar  
@@ -37,11 +39,11 @@
 	
 	.lockNum{position:absolute;width:33.3%;height:25%;font-size:100px;font-weight:900;display:flex;align-items:center;justify-content:center;border-top:10px yellow ridge;text-shadow:-5px 5px 5px #000;}
 
-	.detailText{position:relative;left:4%;width:92%;max-height:150px;overflow:auto;line-height:50px;font-size:40px;color:white;background-size: 100% 100% !important;}
+	.detailText{position:relative;left:4%;width:92%;max-height:150px;overflow:auto;line-height:50px;font-size:40px;color:white;background-size: 100% 100% !important;float: left;margin-bottom:20px;}
 
-	.detailText2{position:relative;left:4%;width:92%;height:100px;line-height:110px;background-color:black;font-size:45px;color:#f7a333;}
+	.detailText2{position:relative;left:4%;width:92%;height:70px;line-height:80px;background-color:black;font-size:45px;color:#f7a333;float: left;margin-bottom:20px;}
 
-	.promptCollect{position: fixed;;left:20%;top:35%;width:60%;height:300px;line-height:300px;text-align:center;color:#f7a333;font-size:80px; font-weight:900; text-shadow:-5px 5px 5px #000; background:url(img/promptBg.png);background-size:100% 100% !important;-webkit-transition:1s; opacity:0;}
+	.promptCollect{position: fixed;;left:20%;top:40%;width:60%;height:300px;line-height:300px;text-align:center;color:#f7a333;font-size:80px; font-weight:900; text-shadow:-5px 5px 5px #000; background:url(img/promptBg.png);background-size:100% 100% !important;-webkit-transition:1s; opacity:0;}
 
 	.guess{width:31%;height:400px;float:left;background-size:100% 100% !important;}
 

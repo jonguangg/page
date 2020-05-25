@@ -2,8 +2,8 @@
 <script type=text/javascript src="js/initXu.js"></script>
 <script type=text/javascript src="js/register2.js"></script>
 <script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
-<script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script>
+<script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 
 <?php
 //	error_reporting(0);// 关闭所有PHP错误报告
@@ -88,16 +88,60 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<meta charset="utf-8">
-	<!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />-->
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
 	<title>MixTV</title>
+	<meta charset="utf-8">
+	<meta http-equiv="content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3"><!-- 搜索关键字 -->
+	<meta http-equiv="description" content="This is my page"><!-- 页面描述 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" /--><!-- 定义IE显示模式，在移动端页面没什么用 -->
+	<meta http-equiv="Expires" content="0" /><!-- 可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输 -->
+	<meta http-equiv="Pragma" content="no-cache"><!-- 这样设定，访问者将无法脱机浏览 -->
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /><!--清除缓存,再访问这个网站要重新下载-->
+	<meta http-equiv="Window-target" content="_top"><!-- 强制页面在当前窗口以独立页面显示，用来防止别人在框架里调用自己的页面-->
+	<meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=12)">
+	<meta http-equiv="Page-Exit" contect="revealTrans(duration=1.0,transtion=12)">
+	<!-- 设定进入页面时的特殊效果 
+			Duration的值为网页动态过渡的时间，单位为秒。  
+			Transition是过渡方式，它的值为0到23，分别对应24种过渡方式。如下表：  
+			0    盒状收缩    1    盒状放射  
+			2    圆形收缩    3    圆形放射  
+			4    由下往上    5    由上往下  
+			6    从左至右    7    从右至左  
+			8    垂直百叶窗    9    水平百叶窗  
+			10    水平格状百叶窗    11垂直格状百叶窗  
+			12    随意溶解    13从左右两端向中间展开  
+			14从中间向左右两端展开    15从上下两端向中间展开  
+			16从中间向上下两端展开    17    从右上角向左下角展开  
+			18    从右下角向左上角展开    19    从左上角向右下角展开  
+			20    从左下角向右上角展开    21    水平线状展开  
+			22    垂直线状展开    23    随机产生一种过渡方式	
+	-->
+
+	<!--meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" /><强制让文档的宽度与设备的宽度保持1:1，并且文档最大的宽度比例是1.0，且不允许用户点击屏幕放大浏览-->
+	<meta name="apple-mobile-web-app-capable" content="yes"><!--iphone设备中的safari私有meta标签：允许全屏模式浏览，在ios上，用户将网页添加到主屏后，再从主屏幕打开这个网页，可以隐藏浏览器的地址栏和下面的toolbar-->
+	<meta name="apple-mobile-web-app-title" content="MixTV"><!-- 在发送到屏幕的时候默认的命名 -->	
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" /><!-- iphone中safari顶端的状态条的样式，其值有三个：default、black、black-translucent -->
+	<meta name='full-screen' content='true' />
+	<meta name='x5-fullscreen' content='true' />
+	<meta name='360-fullscreen' content='true' />
+
+	<link rel="apple-touch-icon"  sizes="72x72"  href="apple-touch-icon.png">
+	<!--link rel="apple-touch-icon-precomposed"  sizes="72x72"  href="apple-touch-icon-precomposed.png">添加到主屏后的图标，以上只能选其一，区别在于如果使用apple-touch-icon，iOS会给icon加上一些NB的效果，包括圆角，阴影，反光。如果使用apple-touch-icon-precomposed则iOS不会加这个效果。如果你的网站也要可以在Ipad上访问，那么你还要针对不同的设备准备不同尺寸的icon，你可以通过sizes属性来指定icon的尺寸，如果你不指定size属性，那么默认为57x57 -->
+	<link rel="apple-touch-startup-image" href="/startup.png" /><!-- ios允许我们使用一个初始化图片来替代白色的浏览器屏幕-->
+	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
 	<link rel="stylesheet" type="text/css" href="styleXu.css" >
-	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" /><!--CSS RESET-->
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
 </head>
+<style>
+.full{
+	transform:rotate(90deg);
+	-ms-transform:rotate(90deg); 	/* IE 9 */
+	-moz-transform:rotate(90deg); 	/* Firefox */
+	-webkit-transform:rotate(270deg); /* Safari 和 Chrome */
+	-o-transform:rotate(90deg); 	/* Opera */
+}
+</style>
 
 <script>
 	var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
@@ -215,44 +259,50 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 //	var playUrls = "";
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
 	//	var playUrl = _playUrl.replace("128.1.160.114","mixtvapi.mixtvapp.com");
-		getID("h5video").src = _playUrl; 
-
-		//监听播放开始
-		getID("h5video").addEventListener('play',function(){
-			setTimeout(function() {
-			//	getID("h5video").currentTime = 600;
-			}, 1000);
-		});
-
-			//监听播放暂停
-			getID("h5video").addEventListener('pause',function(){
-			setTimeout(function() {
-			//	getID("h5video").currentTime = 600;
-			}, 1000);
-		}); 
-
-		//监听播放结束
-		getID("h5video").addEventListener('ended',function(){
-			alert("播放结束");
-		});
-
-		//使用事件监听方式捕捉事件， 此事件可作为实时监测video播放状态
-		getID("h5video").addEventListener("timeupdate",function(){
-			var timeDisplay = Math.floor(getID("h5video").currentTime);
-			if( timeDisplay == 1 ){
-				if( currentTime>1 ){ 
-					getID("h5video").currentTime = currentTime;
-				}
-				getID("h5video").playbackRate = 3;
-			}
-		},false);
-
 		if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsClosePlayer();
 			window.androidJs.JsSetPageArea("vod");
-		//	window.androidJs.JsPlayVod(_playUrl);
+			window.androidJs.JsPlayVod(_playUrl);
+			getID("speeds").style.opacity = 0;
+			getID("fullscreens").style.opacity = 0;
+		}else{
+			getID("h5video").src = _playUrl; 
+			getID("speeds").style.opacity = 1;
+			getID("fullscreens").style.opacity = 1;
+			getID("speedNum").innerHTML = speed;
+			document.title = _father;
+			//监听播放开始
+			getID("h5video").addEventListener('play',function(){
+				setTimeout(function() {
+				//	getID("h5video").currentTime = 600;
+				}, 1000);
+			});
+			//监听播放暂停
+			getID("h5video").addEventListener('pause',function(){
+				setTimeout(function() {
+				//	getID("h5video").currentTime = 600;
+				}, 1000);
+			}); 
+			//监听播放结束
+			getID("h5video").addEventListener('ended',function(){
+				//模拟点击自动播放下一集
+				if( _episodePos<_episodes-1 ){
+				//	alert(list[parseInt(episodeTemp)+1].videoPath+"_"+(parseInt(episodeTemp)+1) );
+   					playVod( id,list[parseInt(episodeTemp)+1].videoPath,father,poster,(parseInt(episodeTemp)+1),episodes );
+				//	getID( "chooseChapter"+(_episodePos+1) ).click();	//手机端不触发click事件
+				}
+			});
+			//使用事件监听方式捕捉事件， 此事件可作为实时监测video播放状态
+			getID("h5video").addEventListener("timeupdate",function(){
+				var timeDisplay = Math.floor(getID("h5video").currentTime);
+				if( timeDisplay == 1 ){
+					if( currentTime>5 ){ 
+						getID("h5video").currentTime = currentTime-5;	//从上次离开时前5秒开始播放
+					}
+					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
+				}
+			},false);
 		}
-
 		$.ajax({
 			type: 'POST',
 			url: './playVodXu.php',	//写当前的播放记录
@@ -275,12 +325,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			//	alert("something error!");
 			}
 		});
-
 		if( _episodes>1 ){	//多集的才需定位当前集
 			getID('chooseChapter'+episodeTemp).style.backgroundColor = "snow";
 			episodeTemp = _episodePos;
 			getID('chooseChapter'+episodeTemp).style.backgroundColor = "#ff9933";			
-			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;
+			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;			
+			document.title = _father+"(第"+(parseInt(episodeTemp)+1)+"集)";
 		}
 	}
 
@@ -334,7 +384,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					getID("loading"+tab1).style.display = "block";
 				}
 				var list = json.records;
-			//	console.log(list);
+				console.log(list);
 				$.each(list,
 					function(index, array) { //遍历json数据列
 						var id = array["id"];
@@ -592,8 +642,6 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 	}
 
-//	var clientWidth = 0 ;
-//	var clientHeight = 0 ;
 	function init() {
 		stbInfo();			
 		showSplash();			//显示启动图片
@@ -602,6 +650,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		clientWidth = document.body.scrollWidth;
 		clientHeight = window.innerHeight;
+	//	alert(screen.availWidth * window.devicePixelRatio+"_"+screen.availHeight * window.devicePixelRatio);
+
 		getID('bodys').style.width = clientWidth + "px"; //全局宽
 		getID("detaiPoster").style.height = clientWidth*9/16+"px";
 
@@ -610,6 +660,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		showHomeList();			//显示首页热播列表
 		preLoadImages();
 	}
+
 </script>
 
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();"  onScroll="scrollWindow();">
@@ -639,7 +690,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<ul id="vodTab1" class="tab-head">
 				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;background: url(img/null.png) center no-repeat;">首页</li>
 			</ul>
-		<div style="position:fixed;top:300px;left:5%;width:90%;height:10px;background-color:#333333;"></div>
+		<div style="position:fixed;top:300px;left:5%;width:90%;height:0px;background-color:#333333;"></div>
 		</div>
 
 		<!-- 首页列表 -->
@@ -807,27 +858,37 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 详情页 -->
 	<div id="detail" style="position:absolute;left:-2000px;top:0px;width:100%;z-index:2;background-color:black;display:none;-webkit-transition:1s;">
-		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" onclick="rePlay()">
-			<video id="h5video" style="object-fit:fill" width="100%" height="100%" poster="img/null.png" autoplay controls preload="auto" src="" x5-playsinline playsinline="playsinline" webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" >
+		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" >
+			<video id="h5video" style="object-fit:fill" width="100%" height="100%" poster="img/null.png" autoplay controls preload="auto" src="" x5-playsinline playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" >
 			</vide>
 		</div>
-		<div class="detailText" style="top:40px;font-size:50px;color:#f7a333;" id="detailName" ></div>
-		<div class="detailText" style="top:60px;"><b>类型：</b><span id="detailTag"></span></div>
-		<div class="detailText" style="top:80px;"><b>地区：</b><span id="detailRegion"></span></div>
-		<div class="detailText" style="top:100px;" id="year" ><b>上映年份：</b><span id="detailYear"></span></div>
-		<div class="detailText" style="top:120px;" id="duration"><b>时长：</b><span id="detailDuration"></span></div>
-		<div class="detailText" style="top:0px;left:50%;width:45%;" id="score"><b>IMDB评分：</b><span id="detailScore" style="color:#f7a333;"></span></div>
 
-		<div class="detailText" style="top:80px;" id="director"><b>导演：</b><span id="detailDirector" ></span></div>
-		<div class="detailText" style="top:100px;" id="actor"><b>主演：</b><span id="detailActor" ></span></div>
-		<div class="detailText" style="top:-160px;left:84%;width:100px;height:100px;background:url(img/collect0.png);" onClick="changeCollect()" id="collectImg"></div>
-		<div class="detailText" style="top:20px;" id="description" onclick="moreDescription()"><b>剧情：</b><span id="detailDescription"></span></div>
-		<div class="detailText2" style="top:-40px;display:none;" id="chooseChapter">选集&emsp;<span id="episodes"></span>
+		<div style="position:relative;top:20px;left:70%;width:30%;height:50px;z-index:3;">
+			<table><tr>
+				<td id="fullscreens" onclick="fullscreenH5();" style="opacity:0;"><img src=img/fullscreen.png style="width:50px;height:50px;"/>&emsp;</td>
+
+				<td onClick="changeCollect()"><img src=img/collect0.png style="width:70px;height:70px;" id="collectImg" />&emsp;</td>
+
+				<td id="speeds" onclick="changeSpeedH5();" style="color:white;font-size:40px;opacity:0;">x <span id="speedNum">1</span></td>
+			</tr></table>
+		</div>
+
+		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName"></div>
+		<div class="detailText" style="top:0px;" id="tab"><b>类型：</b><span id="detailTab"></span></div>
+		<div class="detailText" style="top:0px;" id="region"><b>地区：</b><span id="detailRegion"></span></div>
+		<div class="detailText" style="top:0px;" id="actor"><b>主演：</b><span id="detailActor" ></span></div>
+		<div class="detailText" style="top:0px;" id="director"><b>导演：</b><span id="detailDirector" ></span></div>
+		<div class="detailText" style="top:0px;width:45%" id="duration"><b>时长：</b><span id="detailDuration"></span></div>
+		<div class="detailText" style="top:0px;width:45%;" id="score"><b>IMDB评分：</b><span id="detailScore" style="color:#f7a333;"></span></div>
+		<div class="detailText" style="top:0px;width:45%;" id="year" ><b>上映年份：</b><span id="detailYear"></span></div>
+		<div class="detailText" style="top:0px;" id="description" onclick="moreDescription()"><b>剧情：</b><span id="detailDescription"></span></div>
+		<div class="detailText2" style="top:0px;display:none;" id="chooseChapter">选集&emsp;<span id="episodes"></span>
 			<ul id="chooseChapterNum" class="tab-head">
 				<!--div class="tab-chooseChapter-item" onClick="showLiveList(0);" style="">1</!-div-->
 			</ul>
 		</div>
-		<div id="guess" class="detailText2" style="top:-40px;">猜您喜欢
+		<!--div class="detailText" style="top:-220px;left:84%;width:100px;height:100px;background:url(img/collect0.png);"  ></div-->
+		<div id="guess" class="detailText2" style="top:0px;">猜您喜欢
 			<div style="position:relative;left:0%;top:0px;">
 				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
 				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>

@@ -1,13 +1,14 @@
 var episodes = 1;
-//var episodePos = 0;
+var episodePos = 0;
 var from = "home";
 sn = (getCookie('sn').length>0)?getCookie('sn'):"iPhone";
 var id = 0;
 var father = "";
 var poster = "";
 var isCollect = 0;  //默认0未收藏
+var list = [];
 function showDetail( _id ){
-    alert(sn);
+//  alert(sn);
     getID("detail").style.display = "none"; 
     getID("detail").style.left = "-2000px";
     updateCurrentTime();
@@ -40,6 +41,7 @@ function showDetail( _id ){
             //这里一般显示加载提示;
         },
         success: function(json) {
+            console.log(json);
             currentTime = json["currentTime"];  //  视频上次播放的位置
             getID("detail").style.display = "block";
             setTimeout(function() {
@@ -50,9 +52,21 @@ function showDetail( _id ){
 			father = json["data"].videoName;
 			poster = json["data"].imgUrl;      
 			getID("detailName").innerHTML = father;
-			getID("detailRegion").innerHTML = json["data"].showRegion;
-			getID("detailTag").innerHTML = json["data"].videoTopic;
 			getID("detailDescription").innerHTML = json["data"].videoBriefing;	
+			
+			if( json["data"].showRegion==null ){
+				getID("region").style.display = "none";
+			}else{
+				getID("region").style.display = "block";
+				getID("detailRegion").innerHTML = json["data"].showRegion;
+			}
+			
+			if( json["data"].videoTopic==null ){
+				getID("tab").style.display = "none";
+			}else{
+				getID("tab").style.display = "block";
+				getID("detailTab").innerHTML = json["data"].videoTopic;
+			}
 			
 			if( json["data"].tostar==null ){
 				getID("actor").style.display = "none";
@@ -92,14 +106,16 @@ function showDetail( _id ){
             isCollect = json["isCollect"];
         //    alert(json["urlXuGuess"]);
             if(isCollect==1){
-                getID("collectImg").style.backgroundImage = 'url(img/collect1.png)';
+            //    getID("collectImg").style.backgroundImage = 'url(img/collect1.png)';
+                getID("collectImg").src = 'img/collect1.png';
             }else{
-                getID("collectImg").style.backgroundImage = 'url(img/collect0.png)';
+            //    getID("collectImg").style.backgroundImage = 'url(img/collect0.png)';
+                getID("collectImg").src = 'img/collect0.png';
             }
 
             episodes = (json["data"].videoTvList==null)?1:json["data"].videoTvList.length;	//集数
 			if( episodes>1){	//多集的才需显示选集
-				var list = json["data"].videoTvList;
+				list = json["data"].videoTvList;
 			//	list.sort(orderBy("videoSort"));	//选集排序乱序才需要
 				getID("chooseChapterNum").innerHTML = "";
 				$.each(list,
@@ -108,16 +124,15 @@ function showDetail( _id ){
 					//	var episode = list[index].videoSort+1;
 						var playUrl = list[index].videoPath;
 
-						getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod("'+id+'","'+playUrl+'","'+father+'","'+poster+'",'+index+','+episodes+');>'+(index+1)+'</div>';
-						
+						getID("chooseChapterNum").innerHTML += '<div class="tab-chooseChapter-item" id=chooseChapter'+index+' onClick=playVod("'+id+'","'+playUrl+'","'+father+'","'+poster+'",'+index+','+episodes+');>'+(index+1)+'</div>';						
 					});
-				getID("collectImg").style.top = "-120px";
+			//	getID("collectImg").style.top = "-360px";
 			}else{
-				getID("collectImg").style.top = "-160px";
+			//	getID("collectImg").style.top = "-360px";
 			}
 
             initDetailArea();
-            var episodePos = json["episodePos"];
+            episodePos = json["episodePos"];
 			var playUrl = (videoType==2)?json["data"].videoPath:json["data"].videoTvList[episodePos]["videoPath"];
             playVod( id,playUrl,father,poster,episodePos,episodes ); 
 
@@ -142,11 +157,10 @@ function showDetail( _id ){
 
 function initDetailArea(){
     if( episodes>1 ){
-        getID("guess").style.top = "70px";
+        getID("guess").style.top = "100px";
         getID("chooseChapter").style.display = "block";
-    //    getID("chooseChapterNum").scrollLeft = ( (episodePos-5)>0 )?(episodePos-5)*100:0;
     }else{
-        getID("guess").style.top = "-40px";
+        getID("guess").style.top = "0px";
         getID("chooseChapter").style.display = "none";
     }
 }
@@ -160,7 +174,7 @@ function moreDescription(){	//展开或收缩影片简介全文
 }
 
 function changeCollect( ){
-    getID("collectImg").style.backgroundImage = ( isCollect==0 )?'url(img/collect1.png)':'url(img/collect0.png)'; 
+    getID("collectImg").src = ( isCollect==0 )?'img/collect1.png':'img/collect0.png'; 
     isCollect = ( isCollect==0 )?1:0;
     getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</b>":"<b>已取消收藏</b>";
     getID("promptCollect").style.opacity = 1;
@@ -231,6 +245,25 @@ function updateCurrentTime(){   //  更新播放视频位置进数据库
     });
 }
 
+var speed = (getCookie('speed'))?getCookie('speed'):1;
+function changeSpeedH5(){
+    if( typeof(window.androidJs) == "undefined" ){
+        if( speed<2.5 ){
+            speed += 0.25;
+        }else{
+            speed = 0.5;
+        }
+        setCookie("speed",speed,"30d");
+        getID('h5video').playbackRate = speed;
+        getID("speedNum").innerHTML = speed;
+    }
+}
+
+function fullscreenH5(){
+    if( typeof(window.androidJs) == "undefined" ){
+        requestFullScreen(getID('h5video'));
+    }
+}
 
 
 
