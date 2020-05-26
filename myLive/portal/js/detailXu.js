@@ -8,16 +8,18 @@ var poster = "";
 var isCollect = 0;  //默认0未收藏
 var list = [];
 function showDetail( _id ){
-//  alert(sn);
-    getID("detail").style.display = "none"; 
-    getID("detail").style.left = "-2000px";
-    updateCurrentTime();
-    getID("h5video").src = "";
+//  getID("detail").style.display = "none"; //这是为了点击猜您喜欢后详情马上消失
+    getID("detail").style.left = "-2000px"; //这是为了获取到数据后从左边进入的效果
+    if( indexArea=="detail"){
+        updateCurrentTime();                    //点击猜您喜欢时记录当前播放位置
+    }
     scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去 
     scrollTo(0, 0);                         //再滚到最顶
 	if (typeof(window.androidJs) != "undefined") {
 		window.androidJs.JsClosePlayer();
-	}
+	}else{        
+        getID("h5video").src = "";
+    }
     if( indexArea!="detail" ){  //详情页点击猜您喜欢，不改变from，这样回到首页才正常
         from = indexArea;
     }    
@@ -220,7 +222,11 @@ function orderBy(propertyName){ //  选集排序乱序才需要
 }
 
 function updateCurrentTime(){   //  更新播放视频位置进数据库
-    currentTime = Math.floor(getID("h5video").currentTime);
+    if( typeof(window.androidJs) != "undefined") {
+	    currentTime = window.androidJs.JsCurrentPosition();
+	}else{
+        currentTime = Math.floor(getID("h5video").currentTime);
+    }
     if( id == 0 || currentTime==0 ){
         return;
     }
@@ -245,7 +251,6 @@ function updateCurrentTime(){   //  更新播放视频位置进数据库
     });
 }
 
-var speed = (getCookie('speed'))?getCookie('speed'):1;
 function changeSpeedH5(){
     if( typeof(window.androidJs) == "undefined" ){
         if( speed<2.5 ){

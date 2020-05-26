@@ -12,11 +12,12 @@
 	$father = @$_POST['father'];
 	$poster = @$_POST['poster'];
 	$episodePos = @$_POST['episodePos'];
+	$currentTime = @$_POST['currentTime'];
 
 	$playJson['status'] = "success";
 
 	//	写播放历史
-	$sql = mysqli_query($connect, "replace into history(sn,id,father,poster,episode) values ('$sn','$id','$father','$poster',$episodePos) ") or die(mysqli_error($connect));
+	$sql = mysqli_query($connect, "replace into history(sn,id,father,poster,episode,currentTime) values ('$sn','$id','$father','$poster',$episodePos,$currentTime) ") or die(mysqli_error($connect));
 
 	if( $sql ){
 		$playJson['status'] = "success";

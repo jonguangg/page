@@ -101,7 +101,7 @@ var sn = '';
 var deviceBrand = '';
 var systemModel = '';
 function stbInfo() {
-	sn = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetMac() : "";
+	sn = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetMac() : getCookie("snH5");
 	deviceBrand = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetDeviceBrand() : "";
 	systemModel = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsSystemModel() : "";
 	deviceBrand = deviceBrand.replace(/\s*/g, ""); //删除空格
@@ -109,13 +109,12 @@ function stbInfo() {
 	sn = sn + deviceBrand + systemModel; //用厂家型号和MAC拼接成一个新的SN
 	var deviceInfo = deviceBrand + "_" + systemModel;
 	setCookie("deviceInfo", deviceInfo, '1000d'); //供php页面记录备注
-	setCookie("sn", sn, '1000d'); //供app从后台唤醒时使用
+//	setCookie("sn", sn, '1000d'); //供app从后台唤醒时使用
 	sendAjax("./indexM2.php", "imOnLineSN=" + sn); //传递当前SN给php页面去获取授权信息
 	return sn;
 }
 
-setTimeout(function() {	//延时检查授权日期 同时启动上报在线状态的定时器
-	sendAjax("./ajax.php", "checkLicenseSN=" + sn);
+setTimeout(function() {	//延时启动上报在线状态的定时器，同时检查授权日期（为兼容用户直接点击跳过，检查授权代码写在splashJump内）
 	imOnLine();
 	splashJump();
 }, 10000);
@@ -150,9 +149,15 @@ function androidBack(){	//供返回键调用
 		navPos = 0;
 		scrollTo(0,0);
 	}else if( indexArea == "detail" ){
+		updateCurrentTime();
 		indexArea = from;
 		getID("vod").style.display = "block";
-		getID("detail").style.display = "none";
+		getID("detail").style.left = "-2000px";
+	//	getID("detail").style.opacity = 0
+	//	setTimeout(function(){
+			getID("detail").style.display = "none";
+	//		getID("detail").style.opacity = 1;
+	//	},1000);
 		if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 			getID("searchHistoryCollect").style.display = "block";
 		}
@@ -168,6 +173,14 @@ function androidBack(){	//供返回键调用
 			showTabList1(0);
 			scrollTo(0,0);
 		}
+	}else if( indexArea == "me" || indexArea == "login"){
+		scrollEnable();
+		indexArea = "home";
+		getID("me").style.opacity = 0;
+		setTimeout(function(){
+			getID("me").style.display = "none";			
+			getID("me").style.opacity = 1;	
+		},1000);
 	}
 //	alert("from_"+from+"_indexArea2_"+indexArea+"_isZhiBo_"+isZhiBo);
 }
@@ -202,7 +215,8 @@ function startCircle(){
 }
 
 function splashJump(){
-	if( getID('splash') ){	//加这个是为了兼容PC
+	if( getID('splash') ){	//加这个是为了兼容浏览器访问
+		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
 		getID('splash').style.display='none';
 		if( indexArea=="lock"){	//如果设置了启动默认锁定		
 			getID('lock').style.display='block';
@@ -214,5 +228,69 @@ function splashJump(){
 			scrollEnable();
 		}
 	}
+//	requestFullScreen(document.documentElement);
+//	getID("bodys").className = "full";
 }
-	
+
+function requestFullScreen(element){
+	var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+	if(	requestMethod){
+		requestMethod.call(element);
+	}else if(typeof window.ActiveXObject !== "undefined"){
+		var wscript = new ActiveXObject("WScript.Shell");
+		if(wscript !== null){
+			wscript.SendKeys("{F11}");
+		}
+	}
+}
+
+var fingers = "";
+//	var hasConsole = typeof console !== "undefined";
+var fingerprintReport = function () {
+    var d1 = new Date();
+
+    Fingerprint2.get(function(components) {
+        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31);
+        var d2 = new Date();
+        var time = d2 - d1;
+        var details = "";
+
+    //    if(hasConsole) {
+        //    console.log("time", time);
+        //    console.log("fingerprint hash", murmur);
+            fingers += murmur;
+        //    alert(fingers);
+    //    }
+        for (var index in components) {
+            var obj = components[index];
+            var line = obj.key + " = " + String(obj.value).substr(0, 100);
+        //    if (hasConsole) {
+            //	console.log(line)
+        //    }
+            details += line + "\n";
+        }
+    })
+}
+
+var cancelId;
+var cancelFunction;
+
+if (window.requestIdleCallback) {
+    cancelId = requestIdleCallback(fingerprintReport);
+    cancelFunction = cancelIdleCallback;
+} else {
+    cancelId = setTimeout(fingerprintReport, 500);
+    cancelFunction = clearTimeout;
+}
+
+function changeDefaultSpeed(){
+    if( typeof(window.androidJs) == "undefined" ){
+        if( speed<2.5 ){
+            speed = parseFloat(speed)+0.25;
+        }else{
+            speed = 0.5;
+        }
+        setCookie("speed",speed,"30d");
+        getID("defaultSpeed").innerHTML = speed;
+    }
+}

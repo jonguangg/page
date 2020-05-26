@@ -1,6 +1,7 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
+<script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="js/initXu.js"></script>
-<script type=text/javascript src="js/register2.js"></script>
+<script type=text/javascript src="js/registerXu.js"></script>
 <script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
 <script type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
@@ -262,6 +263,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsClosePlayer();
 			window.androidJs.JsSetPageArea("vod");
+			window.androidJs.JsLastPosition(parseInt(currentTime));
 			window.androidJs.JsPlayVod(_playUrl);
 			getID("speeds").style.opacity = 0;
 			getID("fullscreens").style.opacity = 0;
@@ -309,10 +311,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			data: {
 				'sn':sn,
 				'id':_id,
-			//	'name':_playUrl,
 				'father':_father,
 				'poster':_poster,
-				'episodePos':_episodePos
+				'episodePos':_episodePos,
+				'currentTime':currentTime
 			},
 			dataType: 'json',
 			beforeSend: function() {
@@ -329,13 +331,9 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID('chooseChapter'+episodeTemp).style.backgroundColor = "snow";
 			episodeTemp = _episodePos;
 			getID('chooseChapter'+episodeTemp).style.backgroundColor = "#ff9933";			
-			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;			
+			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;	
 			document.title = _father+"(第"+(parseInt(episodeTemp)+1)+"集)";
 		}
-	}
-
-	function rePlay(){
-	//	window.androidJs.JsPlayVod(playUrls);
 	}
 
 	//	显示海报列表
@@ -680,10 +678,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:770px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
-		<!-- 收藏图标 -->
-		<div style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div>
+		<!-- 收藏图标 --
+		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:95%;">
@@ -938,7 +936,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 输入卡号及卡密 -->
 	<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
-		<h1 id="title" style="position:absolute;left:0px;top:5%;width:100%;height:100px;text-align:center;font-size:90px;text-shadow:-5px 5px 5px #000;">Registered VIP Card</h1>
+		<h1 id="title" style="position:absolute;left:0px;top:3%;width:100%;height:100px;text-align:center;font-size:90px;text-shadow:-5px 5px 5px #000;">Registered VIP Card</h1>
 
 		<div style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
 		<!-- 卡号输入框 -->
@@ -961,6 +959,42 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<div id="exp" style="position:absolute;left:13%;top:63%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
 
 		<div id="msg" style="position:absolute;left:5%;top:58%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;"></div>
+	</div>
+
+	<!-- 个人中心 -->
+	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
+		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
+		<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
+		<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" onclick="indexArea='login'">
+			<input id="usernameInput" type="text" style="width:100%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		</div>
+	<!--	<div-- class="PersonalCenterR" style="margin-top: 100px;display:block;" id="usernameInputDiv">
+			<input id="usernameInput" type="text" style="width:100%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
+		</div-->
+		<div class="PersonalCenter">Expire time</div>
+		<div class="PersonalCenterR" id="expireTimeH5"></div>
+		<div onclick="registedVipCard();">
+			<div class="PersonalCenter">VIP</div>
+			<div class="PersonalCenterR">></div>
+		</div>
+		<div onclick="getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';">
+			<div class="PersonalCenter">History</div>
+			<div class="PersonalCenterR">></div>
+		</div>
+		<div onclick="getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';">
+			<div class="PersonalCenter" >Collection</div>
+			<div class="PersonalCenterR" >></div>
+		</div>
+		<div>
+			<div class="PersonalCenter">clear cache</div>
+			<div class="PersonalCenterR">></div>
+		</div>
+		<div onclick="changeDefaultSpeed();">
+			<div class="PersonalCenter">Default speed</div>
+			<div class="PersonalCenterR" id="defaultSpeed">1.0</div>
+		</div>
+		
+		<div id="promptMe" class="promptCollect" style="top:45%;">Success</div>
 	</div>
 
 	<!-- 启动图片 -->
@@ -1000,6 +1034,16 @@ function eventHandler(e,type){
 				showSearchInput();
 			}else if( indexArea=="register" ){
 				checkInput();
+			}else if( indexArea=="login"){
+				if( getID('usernameInput').value.length>0 ){
+					setCookie("username",getID('usernameInput').value,"1000d");
+					setCookie("snH5",getID('usernameInput').value+fingers,"1000d");
+					getID("promptMe").style.opacity = 1;
+					setTimeout(function() {
+						getID("promptMe").style.opacity = 0;
+					}, 1500);
+				//	alert(getID('usernameInput').value+fingers );
+				}
 			}
 			return 0;
 			break;
