@@ -81,7 +81,35 @@ function touchEndFunc(evt){
 			}else if( moveX > 300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 				moveChangeGroup(-1);
 			}
-		}			
+		}
+
+		if( indexArea=="detail" ){//详情页左滑或下滑返回首页
+		//	alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
+			if( ( moveX < -300 || moveY > 300 )&& startY<900 ){
+				getID("vod").style.display = "block";
+				getID("detail").style.left = "-2000px";
+				scrollTo(0,scrollTops);
+				setTimeout(function(){androidBack();},1000);			
+			}	/*		
+			if( moveY > 300 && startY<1200 ){//详情页下滑返回首页				
+				getID("vod").style.display = "block";
+				getID("detail").style.left = "-2000px";
+				scrollTo(0,scrollTops);
+				setTimeout(function(){androidBack();},1000);			
+			}*/
+		}
+
+		if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 )){
+			if( getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
+				scrollEnable();
+				indexArea = "home";
+				getID("me").style.opacity = 0;
+				setTimeout(function(){
+					getID("me").style.display = "none";			
+					getID("me").style.opacity = 1;	
+				},1000);
+			}
+		}
 		
 	//	if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){	//向上滑动	
 		if( moveY < -0 ){	//向上滑动

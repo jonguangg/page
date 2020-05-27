@@ -118,15 +118,15 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			22    垂直线状展开    23    随机产生一种过渡方式	
 	-->
 
-	<!--meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" /><强制让文档的宽度与设备的宽度保持1:1，并且文档最大的宽度比例是1.0，且不允许用户点击屏幕放大浏览-->
+	<!--meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" /><!--强制让文档的宽度与设备的宽度保持1:1，并且文档最大的宽度比例是1.0，且不允许用户点击屏幕放大浏览-->
 	<meta name="apple-mobile-web-app-capable" content="yes"><!--iphone设备中的safari私有meta标签：允许全屏模式浏览，在ios上，用户将网页添加到主屏后，再从主屏幕打开这个网页，可以隐藏浏览器的地址栏和下面的toolbar-->
-	<meta name="apple-mobile-web-app-title" content="MixTV"><!-- 在发送到屏幕的时候默认的命名 -->	
+	<meta name="apple-mobile-web-app-title" content="MixTViP"><!-- 在发送到屏幕的时候默认的命名 -->	
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" /><!-- iphone中safari顶端的状态条的样式，其值有三个：default、black、black-translucent -->
 	<meta name='full-screen' content='true' />
 	<meta name='x5-fullscreen' content='true' />
 	<meta name='360-fullscreen' content='true' />
 
-	<link rel="apple-touch-icon"  sizes="72x72"  href="apple-touch-icon.png">
+	<link rel="apple-touch-icon"  sizes="72x72"  href=".img/ic_launcher.png">
 	<!--link rel="apple-touch-icon-precomposed"  sizes="72x72"  href="apple-touch-icon-precomposed.png">添加到主屏后的图标，以上只能选其一，区别在于如果使用apple-touch-icon，iOS会给icon加上一些NB的效果，包括圆角，阴影，反光。如果使用apple-touch-icon-precomposed则iOS不会加这个效果。如果你的网站也要可以在Ipad上访问，那么你还要针对不同的设备准备不同尺寸的icon，你可以通过sizes属性来指定icon的尺寸，如果你不指定size属性，那么默认为57x57 -->
 	<link rel="apple-touch-startup-image" href="/startup.png" /><!-- ios允许我们使用一个初始化图片来替代白色的浏览器屏幕-->
 	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
@@ -255,23 +255,36 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		showChannel(groupIdTemp);
 	}
 
-	var episodeTemp = 0;
-	var currentTime = 0;   //播放位置 单位秒
+//	var episodeTemp = 0;
 //	var playUrls = "";
+	var currentTime = 0;   //播放位置 单位秒
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
+		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
+			registedVipCard();
+			return;
+		}
 	//	var playUrl = _playUrl.replace("128.1.160.114","mixtvapi.mixtvapp.com");
 		if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsClosePlayer();
 			window.androidJs.JsSetPageArea("vod");
-			window.androidJs.JsLastPosition(parseInt(currentTime));
+			if( episodePos==_episodePos ){	//播上次那集，就从上次位置继续播，否则换集了，就从头播
+				window.androidJs.JsLastPosition(parseInt(currentTime));
+			}else{
+				window.androidJs.JsLastPosition(0);
+			}
 			window.androidJs.JsPlayVod(_playUrl);
 			getID("speeds").style.opacity = 0;
 			getID("fullscreens").style.opacity = 0;
 		}else{
-			getID("h5video").src = _playUrl; 
+			getID("h5video").src = _playUrl; //"http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";//_playUrl; 
 			getID("speeds").style.opacity = 1;
-			getID("fullscreens").style.opacity = 1;
 			getID("speedNum").innerHTML = speed;
+			if( isAndroid){			
+				getID("fullscreens").style.opacity = 1;
+				getID("h5video").muted = false;
+			}else if( isIOS){
+				getID("fullscreens").style.opacity = 0;
+			}
 			document.title = _father;
 			//监听播放开始
 			getID("h5video").addEventListener('play',function(){
@@ -286,11 +299,10 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				}, 1000);
 			}); 
 			//监听播放结束
-			getID("h5video").addEventListener('ended',function(){
-				//模拟点击自动播放下一集
-				if( _episodePos<_episodes-1 ){
-				//	alert(list[parseInt(episodeTemp)+1].videoPath+"_"+(parseInt(episodeTemp)+1) );
-   					playVod( id,list[parseInt(episodeTemp)+1].videoPath,father,poster,(parseInt(episodeTemp)+1),episodes );
+			getID("h5video").addEventListener('ended',function(){				
+				if( _episodePos<_episodes-1 ){//自动播放下一集
+   					playVod( id,list[parseInt(episodePos)+1].videoPath,father,poster,(parseInt(episodePos)+1),episodes );
+				//	alert(list[parseInt(episodePos)+1].videoPath+"_"+(parseInt(episodePos)+1) );
 				//	getID( "chooseChapter"+(_episodePos+1) ).click();	//手机端不触发click事件
 				}
 			});
@@ -328,11 +340,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}
 		});
 		if( _episodes>1 ){	//多集的才需定位当前集
-			getID('chooseChapter'+episodeTemp).style.backgroundColor = "snow";
-			episodeTemp = _episodePos;
-			getID('chooseChapter'+episodeTemp).style.backgroundColor = "#ff9933";			
-			getID("chooseChapterNum").scrollLeft = ( (episodeTemp-3)>0 )?(episodeTemp-3)*126:0;	
-			document.title = _father+"(第"+(parseInt(episodeTemp)+1)+"集)";
+			getID('chooseChapter'+episodePos).style.backgroundColor = "snow";
+			episodePos = _episodePos;
+			getID('chooseChapter'+episodePos).style.backgroundColor = "#ff9933";			
+			getID("chooseChapterNum").scrollLeft = ( (episodePos-3)>0 )?(episodePos-3)*126:0;	
+			document.title = _father+"(第"+(parseInt(episodePos)+1)+"集)";
 		}
 	}
 
@@ -641,7 +653,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	}
 
 	function init() {
-		stbInfo();			
+		stbInfo();
 		showSplash();			//显示启动图片
 		scrollDisable();		//禁止页面滚动	
 		bindEvent();			//绑定滑动事件
@@ -857,16 +869,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<!-- 详情页 -->
 	<div id="detail" style="position:absolute;left:-2000px;top:0px;width:100%;z-index:2;background-color:black;display:none;-webkit-transition:1s;">
 		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" >
-			<video id="h5video" style="object-fit:fill" width="100%" height="100%" poster="img/null.png" autoplay controls preload="auto" src="" x5-playsinline playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" >
-			</vide>
+			<video id="h5video" style="object-fit:fill" width="100%" height="100%" poster="../loading.gif" autoplay controls muted preload="auto" src="" playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" ></vide>
 		</div>
 
 		<div style="position:relative;top:20px;left:70%;width:30%;height:50px;z-index:3;">
 			<table><tr>
 				<td id="fullscreens" onclick="fullscreenH5();" style="opacity:0;"><img src=img/fullscreen.png style="width:50px;height:50px;"/>&emsp;</td>
-
 				<td onClick="changeCollect()"><img src=img/collect0.png style="width:70px;height:70px;" id="collectImg" />&emsp;</td>
-
 				<td id="speeds" onclick="changeSpeedH5();" style="color:white;font-size:40px;opacity:0;">x <span id="speedNum">1</span></td>
 			</tr></table>
 		</div>
@@ -942,13 +951,13 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<!-- 卡号输入框 -->
 		<input type="number" id="card_id" style="position:absolute;left:5%;top:21%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:black;" maxlength="8" oninput="onInputHandler(event,'card_id')" autofocus="autofocus" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
-		<div style="position:absolute;left:40%;top:21%;width:50%;height:100px;" onClick="window.androidJs.JsShowImm();getID('card_id').focus();"></div>
+		<div style="position:absolute;left:40%;top:21%;width:50%;height:100px;" onClick="getID('card_id').focus();window.androidJs.JsShowImm();"></div>
 
 		<div style="position:absolute;left:5%;top:30%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">PIN Code</div>
 		<!-- 卡密输入框 -->
 		<input type="number" id="card_key" style="position:absolute;left:5%;top:35%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:black;" maxlength="8" oninput="onInputHandler(event,'card_key')" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
-		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="window.androidJs.JsShowImm();getID('card_key').focus();"></div>
+		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
 		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
 
@@ -966,7 +975,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
 		<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
 		<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" onclick="indexArea='login'">
-			<input id="usernameInput" type="text" style="width:100%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+			<input id="usernameInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
 		</div>
 	<!--	<div-- class="PersonalCenterR" style="margin-top: 100px;display:block;" id="usernameInputDiv">
 			<input id="usernameInput" type="text" style="width:100%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
@@ -977,19 +986,23 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<div class="PersonalCenter">VIP</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';">
+		<div onclick="share();">
+			<div class="PersonalCenter">Share</div>
+			<div class="PersonalCenterR">></div>
+		</div>
+		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter">History</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';">
+		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>
 		<div>
-			<div class="PersonalCenter">clear cache</div>
+			<div class="PersonalCenter">Clear cache</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="changeDefaultSpeed();">
+		<div id="speedDiv" onclick="changeDefaultSpeed();">
 			<div class="PersonalCenter">Default speed</div>
 			<div class="PersonalCenterR" id="defaultSpeed">1.0</div>
 		</div>
@@ -1038,6 +1051,7 @@ function eventHandler(e,type){
 				if( getID('usernameInput').value.length>0 ){
 					setCookie("username",getID('usernameInput').value,"1000d");
 					setCookie("snH5",getID('usernameInput').value+fingers,"1000d");
+					getID("promptMe").innerHTML = "Success";
 					getID("promptMe").style.opacity = 1;
 					setTimeout(function() {
 						getID("promptMe").style.opacity = 0;
@@ -1052,3 +1066,34 @@ function eventHandler(e,type){
 </script>
 <script type=text/javascript src="js/detailXu.js" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script>
+<script>
+
+	function orient() {
+		if (window.orientation == 0 || window.orientation == 180) {
+		//	$("bodys").attr("class", "portrait");
+		//	orientation = 'portrait';
+		//	getID("h5video").play();
+			return false;
+		}
+		else if (window.orientation == 90 || window.orientation == -90) {
+		//	$("bodys").attr("class", "portrait");
+		//	orientation = 'portrait';
+		//	getID("h5video").muted = false;
+		//	getID("h5video").play();
+			return false;
+		}
+	}
+
+	$(function(){
+		orient();
+	});
+
+	$(window).bind( 'orientationchange', function(e){
+		orient();
+	});
+
+
+
+</script>
+
+

@@ -81,18 +81,27 @@
 
 	var speed = (getCookie('speed'))?getCookie('speed'):1;
 	function showMe() { //进入个人中心
-	//	alert( getCookie("snH5") );
+		alert( getCookie("snH5") );
+		scrollTo(0, 0);
+		scrollDisable();
 		if( getCookie("username") && getCookie("username").length>0 ){
 			getID("usernameH5").innerHTML = getCookie("username");
 			getID("expireTimeH5").innerHTML = expireTime;
 			getID("defaultSpeed").innerHTML = speed;
+		}else{			
+			getID("promptMe").innerHTML = "Please login";
+			getID("promptMe").style.opacity = 1;
+			setTimeout(function() {
+				getID("promptMe").style.opacity = 0;
+			}, 1500);
 		}
-		scrollTo(0, 0);
 		getID('me').style.display = 'block';
-		getID("me").style.height = clientHeight + "px";
-		scrollDisable();
+		getID("me").style.height = (clientHeight +0)+ "px";
 		indexArea = "me";
-		window.androidJs.JsSetPageArea("me");
+		if( typeof(window.androidJs)!="undefined"){
+			window.androidJs.JsSetPageArea("me");
+			getID("speedDiv").style.display = "none";
+		}
 	}
 
 	function registedVipCard(){
@@ -103,9 +112,11 @@
 		getID("exp").innerHTML = "Exp. " + expireTime;
 		getID("msg").style.background = ""; //多次进入个人中心，这里可能会显示注册时的信息
 		getID("msg").innerHTML = ""; //所以先清空
-		if (typeof(window.androidJs) != "undefined") {
+	/*	if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsClosePlayer();
-		}
+		}else{
+			getID('card_id').focus();
+		}*/
 		scrollDisable();
 		indexArea = "register";
 	}

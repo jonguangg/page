@@ -1,5 +1,8 @@
 var clientWidth = 1080;
 var clientHeight = 1920;
+var u = navigator.userAgent, app = navigator.appVersion; 
+var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; 	//android终端或者uc浏览器 
+var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 				//ios终端 
 	
 function imOnLine() { //上报在线状态
 	var now = new Date(); //此时此刻
@@ -61,14 +64,7 @@ function sendAjax(_url, _content) {
 				setCookie("intExpireTime", intExpireTime, "8h");
 				if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
 					setTimeout(function() {
-						scrollTo(0, 0);
-						getID("cardKey").style.display = "block";
-						getID("exp").innerHTML = "Exp. " + expireTime;
-						scrollDisable();
-						if (typeof(window.androidJs) != "undefined") {
-							window.androidJs.JsClosePlayer();
-							window.androidJs.JsShowImm();
-						}
+					//	registedVipCard();	//改在playvod()内弹出授权界面，让用户可以浏览，不能播放
 					}, 10000); //10秒后弹出注册页面
 				} else {
 					backArea = "true";						
@@ -138,7 +134,9 @@ function scrollEnable() {
 }
 
 function androidBack(){	//供返回键调用
-	window.androidJs.JsClosePlayer();
+	if( typeof(window.androidJs)!="undefined"){
+		window.androidJs.JsClosePlayer();
+	}
 	getID("h5video").src = "";
 //	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
 	if( indexArea =="live" ){
@@ -215,17 +213,22 @@ function startCircle(){
 }
 
 function splashJump(){
-	if( getID('splash') ){	//加这个是为了兼容浏览器访问
-		sendAjax("./ajax.php", "checkLicenseSN=" + sn);
+	if( getID('splash') ){	//加这个是为了兼容浏览器访问	
 		getID('splash').style.display='none';
-		if( indexArea=="lock"){	//如果设置了启动默认锁定		
+		if( !getCookie("username") || getCookie("username").length<1 ){
+			showMe();
+		}else{			
+			scrollEnable();
+		}
+		sendAjax("./ajax.php", "checkLicenseSN=" + sn);	//检查到期日期
+		if( indexArea=="lock"){	//如果设置了启动默认锁定
+			scrollDisable();	
 			getID('lock').style.display='block';
 			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
 		}else{					//如果没设启动默认锁定，则启动后就进入首页
 		//	if( navPos==0){
 				getID("vod").style.opacity = 1;
-		//	}			
-			scrollEnable();
+		//	}
 		}
 	}
 //	requestFullScreen(document.documentElement);
@@ -294,3 +297,8 @@ function changeDefaultSpeed(){
         getID("defaultSpeed").innerHTML = speed;
     }
 }
+
+
+
+
+	
