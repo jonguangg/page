@@ -1,6 +1,10 @@
 1、定时运行
 crontab -e
+
 00,05,10,15,20,25,30,35,40,45,50,55 * * * * /usr/bin/php /usr/local/nginx/html/myLive/downLine.php
+#docker需用curl
+curl -i "http://128.69.108.181:8080/myLive/readDirList.php"
+
 */2 * * * * /usr/local/nginx/html/myLive/scanVideo.sh
 0 2 * * * /usr/local/nginx/html/myLive/backupMySQL5.7.sh
 
@@ -32,5 +36,7 @@ firewall-cmd --zone=public --add-port=8035/tcp --permanent
 firewall-cmd --zone=public --add-port=8055/tcp --permanent 
 修改后要重新载入
 firewall-cmd --reload
+
+4、readVipCardArray.php等文件内的echo需注释掉
 
 

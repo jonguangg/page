@@ -1,3 +1,39 @@
+<?php
+error_reporting(E_ALL^E_NOTICE);
+include "connectMysql.php";
+set_time_limit(0); //	设置超时时间
+
+if( @$_POST['submitUser'] ){	  
+    $user = $_POST['user'];
+    $password = $_POST['password'];
+//	echo "<script>alert('$password');</script>";
+	$queryUser = "select * from user where username='$user'";
+	$resultUser = mysqli_query($connect,$queryUser);
+	if( mysqli_fetch_assoc($resultUser) ){	//查询到用户，核对密码
+	//	echo "<script>alert('有这个用户！');</script>";
+		$queryPassword = "select password from user where username='$user'";//查询该用户密码的mysql命令
+		$resultPassword = mysqli_fetch_assoc( mysqli_query( $connect,$queryPassword) );//先执行查询命令，再从结果集中取一行
+		
+		$queryMark = "select mark from user where username='$user'";//查询该用户密码的mysql命令
+		$resultMark = mysqli_fetch_assoc( mysqli_query( $connect,$queryMark) );
+	//	echo "<script>alert('$resultPassword[password]');</script>";
+		
+		if( password_verify( $password,$resultPassword["password"] ) ){	//密码一致，前面是用户输入的，后面是数据库中的 
+	//	if(  $password==$resultPassword[password] ){	//密码一致，前面是用户输入的，后面是数据库中的 
+			setCookie("currUser",$user );		//设置cookie，会话结束时失效
+			setCookie("currUserMark",urlencode($resultMark["mark"]) );
+		//	echo "<script>alert('密码正确！');</script>";
+			echo "<script>location.href='http://192.168.168.225:8080/myLive/update.php'</script>";
+		}else{//密码不一致
+			echo "<script>alert('密码不正确！');</script>";
+		}
+	}else{	//没有这个用户，提示没有这个用户
+		echo "<script>alert('没有这个用户！');</script>";    
+	} 
+}
+
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -49,35 +85,3 @@ function init(){
 }
 
 </script>
-
-<?php
-error_reporting(E_ALL^E_NOTICE);
-include "connectMysql.php";
-set_time_limit(0); //	设置超时时间
-
-if( @$_POST['submitUser'] ){	  
-    $user = $_POST['user'];
-    $password = $_POST['password'];
-	$queryUser = "select * from user where username='$user'";
-	$resultUser = mysqli_query($connect,$queryUser);
-	if( mysqli_fetch_assoc($resultUser) ){	//查询到用户，核对密码
-	//	echo "<script>alert('有这个用户！');</script>";
-		$queryPassword = "select password from user where username='$user'";//查询该用户密码的mysql命令
-		$resultPassword = mysqli_fetch_assoc( mysqli_query( $connect,$queryPassword) );//先执行查询命令，再从结果集中取一行
-		
-		$queryMark = "select mark from user where username='$user'";//查询该用户密码的mysql命令
-		$resultMark = mysqli_fetch_assoc( mysqli_query( $connect,$queryMark) );
-		
-		if( password_verify( $password,$resultPassword[password] ) ){	//密码一致，前面是用户输入的，后面是数据库中的 
-			setCookie("currUser",$user);		//设置cookie，会话结束时失效
-			setCookie("currUserMark",urlencode($resultMark[mark]));
-			echo "<script>location.href='update.php'</script>";
-		}else{//密码不一致
-			echo "<script>alert('密码不正确！');</script>";
-		}
-	}else{	//没有这个用户，提示没有这个用户
-		echo "<script>alert('没有这个用户！');</script>";    
-	} 
-}
-
-?>

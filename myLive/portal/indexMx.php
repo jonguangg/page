@@ -40,11 +40,26 @@ function getIP(){	//获取用户真实 IP
 	}
 	return $realip;
 }
+
 $ip = getIP();
+//	echo '<script>alert("php ip1_'.$ip."_".strpos($ip,",").'")</script>';
+
+if( strpos($ip,",")>0 ){//有两个IP
+	$douHaoPos = strpos($ip,",");
+	$ip = substr($ip,0,$douHaoPos);
+//	echo '<script>alert("php ip2_'.$ip.'")</script>';
+}
+
 setcookie("ip", $ip, time() + 24 * 3600); //cookie存24小时	echo $ip;
 
 function getCity(){			// 获取当前IP所在城市 
 	$getIp = getIP();
+	if( strpos($getIp,",")>0 ){//有两个IP
+		$douHaoPos = strpos($getIp,",");
+		$getIp = substr($getIp,0,$douHaoPos);
+	//	echo '<script>alert("php ipCity1_'.$getIp.'")</script>';
+	}
+//	echo '<script>alert("php ipCity2_'.$getIp.'")</script>';
 	$content = file_get_contents("http://api.map.baidu.com/location/ip?ak=2TGbi6zzFm5rjYKqPPomh9GBwcgLW5sS&ip={$getIp}&coor=bd09ll");
 	$json = json_decode($content);
 	$address = $json->{'content'}->{'address'}; //按层级关系提取address数据 
@@ -54,9 +69,10 @@ function getCity(){			// 获取当前IP所在城市
 	return $return['province'] . $return['city'];
 }
 $city = getCity();
+//	echo '<script>alert("php city_'.$city.'")</script>';
 setcookie("city", $city, time() + 24 * 3600); //cookie存24小时	echo $city;
 
-$sn = $_POST['imOnLineSN'];
+$sn = $_COOKIE["sn"];//$_POST['imOnLineSN'];
 $mark = $_COOKIE["deviceInfo"];	//机顶盒备注
 $loginTime = date("Y-m-d"); 						//机顶盒打开APP的时间
 $intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
@@ -65,7 +81,8 @@ $expireTime = date("Y-m-d", strtotime("+1 day")); 	//初次安装的授权到期
 $lastTime = date("Y-m-d H:i:s"); 					//机顶盒上一次打开APP的时间
 $isOnLine = "在线";									//每次进入应用都激活在线状态
 $sql = mysqli_query($connect, "select * from client where sn='$sn' ") or die(mysqli_error($connect));
-if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
+
+if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	while ($row = mysqli_fetch_array($sql)) {
 		//	$expireTime = $row["expireTime"];						//从数据库获取真实的到期时间
 		//	$intExpireTime = str_replace("-","",$expireTime);		//为了便于比大小将时间内的-删掉
@@ -74,8 +91,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态
 	
 	$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn' ") or die(mysqli_error($connect)); 	//记录登陆时间
-
-} else if (strlen($sn) > 0) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
+} else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
 	$sql = mysqli_query($connect, "replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
 }
 
@@ -259,6 +275,7 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 //	var playUrls = "";
 	var currentTime = 0;   //播放位置 单位秒
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
+	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime);
 		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
 			registedVipCard();
 			return;
@@ -973,9 +990,11 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<!-- 个人中心 -->
 	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
 		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
-		<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
-		<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" onclick="indexArea='login'">
-			<input id="usernameInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		<div id="usernameDiv">
+			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
+			<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" onclick="indexArea='login'">
+				<input id="usernameInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+			</div>
 		</div>
 	<!--	<div-- class="PersonalCenterR" style="margin-top: 100px;display:block;" id="usernameInputDiv">
 			<input id="usernameInput" type="text" style="width:100%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
@@ -1049,14 +1068,16 @@ function eventHandler(e,type){
 				checkInput();
 			}else if( indexArea=="login"){
 				if( getID('usernameInput').value.length>0 ){
-					setCookie("username",getID('usernameInput').value,"1000d");
-					setCookie("snH5",getID('usernameInput').value+fingers,"1000d");
+					username = getID('usernameInput').value;
+					sn = getID('usernameInput').value+fingers;
+					setCookie("username",username,"1000d");
+					setCookie("sn",sn,"1000d");
 					getID("promptMe").innerHTML = "Success";
 					getID("promptMe").style.opacity = 1;
 					setTimeout(function() {
 						getID("promptMe").style.opacity = 0;
+						location.href = "./indexMx.php";
 					}, 1500);
-				//	alert(getID('usernameInput').value+fingers );
 				}
 			}
 			return 0;
@@ -1095,5 +1116,3 @@ function eventHandler(e,type){
 
 
 </script>
-
-

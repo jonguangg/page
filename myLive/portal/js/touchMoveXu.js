@@ -69,9 +69,9 @@ function touchEndFunc(evt){
 	//	document.getElementById("test").innerHTML = text;
 		if( tab1>-1 ){	//非直播
 			if( indexArea=="home" || indexArea == "vod" || indexArea=="live" ){		//只在首页和直播时滑动
-				if( moveX < -300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
+				if( moveX < -200 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 					moveChangeTag(1);
-				}else if(moveX > 300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
+				}else if(moveX > 200 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 					moveChangeTag(-1);
 				}
 			}			
@@ -86,6 +86,7 @@ function touchEndFunc(evt){
 		if( indexArea=="detail" ){//详情页左滑或下滑返回首页
 		//	alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
 			if( ( moveX < -300 || moveY > 300 )&& startY<900 ){
+				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
 				scrollTo(0,scrollTops);
@@ -100,7 +101,7 @@ function touchEndFunc(evt){
 		}
 
 		if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 )){
-			if( getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
+			if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
 				scrollEnable();
 				indexArea = "home";
 				getID("me").style.opacity = 0;

@@ -80,28 +80,50 @@
 	}		
 
 	var speed = (getCookie('speed'))?getCookie('speed'):1;
-	function showMe() { //进入个人中心
-		alert( getCookie("snH5") );
+	function showMe() { //进入个人中心		
+	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime+"\r\n"+expireTime);
 		scrollTo(0, 0);
 		scrollDisable();
-		if( getCookie("username") && getCookie("username").length>0 ){
-			getID("usernameH5").innerHTML = getCookie("username");
-			getID("expireTimeH5").innerHTML = expireTime;
-			getID("defaultSpeed").innerHTML = speed;
-		}else{			
-			getID("promptMe").innerHTML = "Please login";
-			getID("promptMe").style.opacity = 1;
-			setTimeout(function() {
-				getID("promptMe").style.opacity = 0;
-			}, 1500);
+		getID("expireTimeH5").innerHTML = expireTime;
+		if( typeof(window.androidJs)=="undefined"){	//浏览器访问才检查username
+			if( getCookie("username") && getCookie("username").length>0  ){
+				getID("usernameH5").innerHTML = getCookie("username");
+				getID("defaultSpeed").innerHTML = speed;
+			}else{
+				getID("promptMe").innerHTML = "Please login";
+				getID("promptMe").style.opacity = 1;
+				setTimeout(function() {
+					getID("promptMe").style.opacity = 0;
+				}, 1500);
+			}
+		}else{	//非浏览器访问，不显示username和默认速度（因为还不能设置app的默认速度）
+			window.androidJs.JsSetPageArea("me");
+			getID("speedDiv").style.display = "none";
+			getID("usernameDiv").style.display = "none";
 		}
+
+
+/*
+		if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){
+			getID("usernameH5").innerHTML = getCookie("username");
+			getID("defaultSpeed").innerHTML = speed;
+		}else{
+			if( typeof(window.androidJs)=="undefined"){
+				getID("promptMe").innerHTML = "Please login";
+				getID("promptMe").style.opacity = 1;
+				setTimeout(function() {
+					getID("promptMe").style.opacity = 0;
+				}, 1500);
+			}
+		}*/
 		getID('me').style.display = 'block';
 		getID("me").style.height = (clientHeight +0)+ "px";
 		indexArea = "me";
-		if( typeof(window.androidJs)!="undefined"){
+	/*	if( typeof(window.androidJs)!="undefined"){
 			window.androidJs.JsSetPageArea("me");
 			getID("speedDiv").style.display = "none";
-		}
+			getID("usernameDiv").style.display = "none";
+		}*/
 	}
 
 	function registedVipCard(){

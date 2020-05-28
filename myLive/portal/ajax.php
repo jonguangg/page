@@ -45,6 +45,7 @@ if( $_POST['cardId'] ){//用户提交了卡号和密码
 	$cardKey = $_POST['cardKey'];
 	$ip = ($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
 	$city = isset($_COOKIE["city"])?$_COOKIE["city"]:getCity();
+//	echo '<script>alert("ajax city_'.$city.'")</script>';
 	
 	$sql = mysqli_query($connect,"select * from client where sn='$sn' ") or die(mysqli_error($connect));//查找当前机顶盒
 

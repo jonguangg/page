@@ -2,7 +2,8 @@ var clientWidth = 1080;
 var clientHeight = 1920;
 var u = navigator.userAgent, app = navigator.appVersion; 
 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; 	//android终端或者uc浏览器 
-var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 				//ios终端 
+var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 				//ios终端
+var username = ( getCookie("username") )?getCookie("username"):"";
 	
 function imOnLine() { //上报在线状态
 	var now = new Date(); //此时此刻
@@ -47,6 +48,7 @@ var backArea = "false";
 var expireTime = "";
 var intExpireTime = "";
 function sendAjax(_url, _content) {
+//	alert("sendAjax"+sn);
 	createXmlHttpRequestObject();
 	// 2.请求行
 	xmlHttp.open("POST", _url); //"./isOnLine.php");
@@ -93,20 +95,65 @@ function sendAjax(_url, _content) {
 	}
 }
 
+var fingers = "";
+//	var hasConsole = typeof console !== "undefined";
+var fingerprintReport = function () {
+    var d1 = new Date();
+    Fingerprint2.get(function(components) {
+        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31);
+        var d2 = new Date();
+        var time = d2 - d1;
+        var details = "";
+
+    //    if(hasConsole) {
+        //    console.log("time", time);
+        //    console.log("fingerprint hash", murmur);
+            fingers += murmur;
+        //    setCookie("fingers",fingers,"1d");;
+    //    }
+        for (var index in components) {
+            var obj = components[index];
+            var line = obj.key + " = " + String(obj.value).substr(0, 100);
+        //    if (hasConsole) {
+            //	console.log(line)
+        //    }
+            details += line + "\n";
+        }
+    })
+}
+
+var cancelId;
+var cancelFunction;
+if (window.requestIdleCallback) {
+    cancelId = requestIdleCallback(fingerprintReport);
+    cancelFunction = cancelIdleCallback;
+} else {
+    cancelId = setTimeout(fingerprintReport, 500);
+    cancelFunction = clearTimeout;
+}
+
 var sn = '';
 var deviceBrand = '';
 var systemModel = '';
-function stbInfo() {
-	sn = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetMac() : getCookie("snH5");
-	deviceBrand = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetDeviceBrand() : "";
-	systemModel = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsSystemModel() : "";
-	deviceBrand = deviceBrand.replace(/\s*/g, ""); //删除空格
-	systemModel = systemModel.replace(/\s*/g, ""); //删除空格
-	sn = sn + deviceBrand + systemModel; //用厂家型号和MAC拼接成一个新的SN
-	var deviceInfo = deviceBrand + "_" + systemModel;
-	setCookie("deviceInfo", deviceInfo, '1000d'); //供php页面记录备注
-//	setCookie("sn", sn, '1000d'); //供app从后台唤醒时使用
-	sendAjax("./indexM2.php", "imOnLineSN=" + sn); //传递当前SN给php页面去获取授权信息
+function stbInfo(){
+	if( typeof(window.androidJs) != "undefined"){	//app
+		sn =  window.androidJs.JsGetMac();
+		deviceBrand = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetDeviceBrand() : "";
+		systemModel = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsSystemModel() : "";
+		deviceBrand = deviceBrand.replace(/\s*/g, ""); //删除空格
+		systemModel = systemModel.replace(/\s*/g, ""); //删除空格
+		sn = sn + deviceBrand + systemModel; //用厂家型号和MAC拼接成一个新的SN
+		var deviceInfo = deviceBrand + "_" + systemModel;
+		setCookie("deviceInfo", deviceInfo, '1000d'); //供php页面记录备注
+	}else{	//浏览器
+		sn = getCookie("sn");
+		setCookie("deviceInfo", getCookie("username"), '1000d'); //供php页面记录备注
+		if( getCookie("sn")==null && getCookie("username")!= null ){	//	防止有username却没有sn
+			sn = getCookie("username")+fingers;	
+		}
+	}
+	setCookie("sn", sn, '1000d'); //供app从后台唤醒时使用
+	sendAjax("./indexMx.php", "imOnLineSN=" + sn); //传递当前SN给php页面去获取授权信息
 	return sn;
 }
 
@@ -215,7 +262,7 @@ function startCircle(){
 function splashJump(){
 	if( getID('splash') ){	//加这个是为了兼容浏览器访问	
 		getID('splash').style.display='none';
-		if( !getCookie("username") || getCookie("username").length<1 ){
+		if( typeof(window.androidJs)=="undefined" && (!getCookie("username") || getCookie("username").length<1) ){
 			showMe();
 		}else{			
 			scrollEnable();
@@ -245,45 +292,6 @@ function requestFullScreen(element){
 			wscript.SendKeys("{F11}");
 		}
 	}
-}
-
-var fingers = "";
-//	var hasConsole = typeof console !== "undefined";
-var fingerprintReport = function () {
-    var d1 = new Date();
-
-    Fingerprint2.get(function(components) {
-        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31);
-        var d2 = new Date();
-        var time = d2 - d1;
-        var details = "";
-
-    //    if(hasConsole) {
-        //    console.log("time", time);
-        //    console.log("fingerprint hash", murmur);
-            fingers += murmur;
-        //    alert(fingers);
-    //    }
-        for (var index in components) {
-            var obj = components[index];
-            var line = obj.key + " = " + String(obj.value).substr(0, 100);
-        //    if (hasConsole) {
-            //	console.log(line)
-        //    }
-            details += line + "\n";
-        }
-    })
-}
-
-var cancelId;
-var cancelFunction;
-
-if (window.requestIdleCallback) {
-    cancelId = requestIdleCallback(fingerprintReport);
-    cancelFunction = cancelIdleCallback;
-} else {
-    cancelId = setTimeout(fingerprintReport, 500);
-    cancelFunction = clearTimeout;
 }
 
 function changeDefaultSpeed(){

@@ -1,7 +1,8 @@
 var episodes = 1;
 var episodePos = 0;
 var from = "home";
-sn = (getCookie('sn').length>0)?getCookie('sn'):"iPhone";
+//sn = (getCookie('sn') && getCookie('sn').length>0)?getCookie('sn'):"";
+//alert("detail"+sn);
 var id = 0;
 var father = "";
 var poster = "";
@@ -11,7 +12,7 @@ function showDetail( _id ){
 //  getID("detail").style.display = "none"; //这是为了点击猜您喜欢后详情马上消失
     getID("detail").style.left = "-2000px"; //这是为了获取到数据后从左边进入的效果
     if( indexArea=="detail"){
-        updateCurrentTime();                    //点击猜您喜欢时记录当前播放位置
+        updateCurrentTime();                //点击猜您喜欢时记录当前播放位置
     }
     scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去 
     scrollTo(0, 0);                         //再滚到最顶
