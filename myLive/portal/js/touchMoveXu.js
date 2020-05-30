@@ -65,8 +65,6 @@ function touchEndFunc(evt){
 		var moveY = endY-startY;
 		var text = 'TouchEnd事件触发:<br>' +'startX:'+startX+'<br>'+'startY:'+startY;
 		text += '<br>'+'moveX:'+moveX+'<br>'+'moveY:'+moveY+'<br>scrollTop:'+document.body.scrollTop;
-	//	document.getElementById("test").style.display = "block";
-	//	document.getElementById("test").innerHTML = text;
 		if( tab1>-1 ){	//非直播
 			if( indexArea=="home" || indexArea == "vod" || indexArea=="live" ){		//只在首页和直播时滑动
 				if( moveX < -200 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
@@ -76,31 +74,46 @@ function touchEndFunc(evt){
 				}
 			}			
 		}else if( tab1==-1){	//直播
-			if( moveX < -300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
+		/*	if( moveX < -200 && Math.abs(moveX)>Math.abs(moveY) && startY>(videoHeight+100)){//左滑
 				moveChangeGroup(1);
-			}else if( moveX > 300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
+			}else if( moveX > 200 && Math.abs(moveX)>Math.abs(moveY) && startY>(videoHeight+100)){//右滑
 				moveChangeGroup(-1);
+			}
+			if( startY < (videoHeight-100) && (moveX<-100 || moveX>100 || moveY<-100 || moveY>100) ){
+				androidBack();
+			}*/
+			if( startY < (videoHeight-100) ){	//在播放窗口滑动
+				if( moveX<-100 || moveX>100 || moveY<-100 || moveY>100 ){
+					androidBack();
+				}
+			}else if( startY > (videoHeight+100) ){	//在播放窗口下方滑动
+				if( moveX < -200 && Math.abs(moveX)>Math.abs(moveY) ){	//左滑
+					moveChangeGroup(1);
+				}else if( moveX > 200 && Math.abs(moveX)>Math.abs(moveY) ){	//右滑
+					moveChangeGroup(-1);
+				}
 			}
 		}
 
-		if( indexArea=="detail" ){//详情页左滑或下滑返回首页
-		//	alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
-			if( ( moveX < -300 || moveY > 300 )&& startY<900 ){
+		if( moveX > -200 ){	//移动距离不满足切换类型时，向右返回当前页面
+			if(tab1==-1){
+				document.getElementById("channel").style.left = "0px";	
+			}else{
+				document.getElementById("vodList"+tab1).style.left = "0px";
+			}			
+		}
+
+		if( indexArea=="detail" ){//详情页左、右、下滑返回首页	//alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
+			if( startY < (videoHeight-100) && ( moveX < -100 || moveX > 100 || startY < -100 || startY > 100 ) ){
 				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
 				scrollTo(0,scrollTops);
 				setTimeout(function(){androidBack();},1000);			
-			}	/*		
-			if( moveY > 300 && startY<1200 ){//详情页下滑返回首页				
-				getID("vod").style.display = "block";
-				getID("detail").style.left = "-2000px";
-				scrollTo(0,scrollTops);
-				setTimeout(function(){androidBack();},1000);			
-			}*/
+			}
 		}
 
-		if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 )){
+		if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 || moveY < -300)){
 			if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
 				scrollEnable();
 				indexArea = "home";
@@ -112,7 +125,21 @@ function touchEndFunc(evt){
 			}
 		}
 		
-	//	if( moveY < -0 && Math.abs(moveX)<Math.abs(moveY) ){	//向上滑动	
+		if( indexArea=="home" && tab1==0 ){ //首页向下或向右滑动 刷新页面
+		//	alert(moveX+"_"+moveY);
+			if(  moveY > 900  || moveX > 800 ){
+				alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
+				location.href = "./indexMx.php?"+Math.random();
+			}
+		}
+/*
+		if( indexArea=="zhiBo" && moveY > 0 ){	//这段是老版本主播有的，可以删掉
+			if(zhiBoTemp!=zhiBoPos){
+		//		getID("zhiBo"+zhiBoTemp ).pause();
+			}
+			changeZhiBo();
+		}*/
+		
 		if( moveY < -0 ){	//向上滑动
 		//	var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
 		//	alert(loadMoreBottom);
@@ -126,24 +153,6 @@ function touchEndFunc(evt){
 				changeZhiBo();
 			}
 		}
-		
-		if( moveY > 0 && Math.abs(moveX)<Math.abs(moveY) ){ //向下滑动			
-			if( indexArea=="zhiBo" ){
-				if(zhiBoTemp!=zhiBoPos){
-			//		getID("zhiBo"+zhiBoTemp ).pause();
-				}
-				changeZhiBo();
-			}
-		}
-		
-		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面
-			if(tab1==-1){
-				document.getElementById("channel").style.left = "0px";	
-			}else{
-				document.getElementById("vodList"+tab1).style.left = "0px";
-			}			
-		}
-
 
 	}
 	catch(e){
@@ -157,8 +166,6 @@ function bindEvent(){
 	document.addEventListener('touchmove', touchMoveFunc, false);
 	document.addEventListener('touchend', touchEndFunc, false);
 }
-
-
 
 //判断是否支持触摸事件，可以不要这个函数
 function isTouchDevice(){

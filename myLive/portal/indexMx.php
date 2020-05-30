@@ -2,7 +2,6 @@
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="js/initXu.js"></script>
 <script type=text/javascript src="js/registerXu.js"></script>
-<script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
 <script type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 
@@ -142,7 +141,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<meta name='x5-fullscreen' content='true' />
 	<meta name='360-fullscreen' content='true' />
 
-	<link rel="apple-touch-icon"  sizes="72x72"  href=".img/ic_launcher.png">
+	<link rel="apple-touch-icon"  sizes="72x72"  href="./img/ic_launcher.png">
 	<!--link rel="apple-touch-icon-precomposed"  sizes="72x72"  href="apple-touch-icon-precomposed.png">添加到主屏后的图标，以上只能选其一，区别在于如果使用apple-touch-icon，iOS会给icon加上一些NB的效果，包括圆角，阴影，反光。如果使用apple-touch-icon-precomposed则iOS不会加这个效果。如果你的网站也要可以在Ipad上访问，那么你还要针对不同的设备准备不同尺寸的icon，你可以通过sizes属性来指定icon的尺寸，如果你不指定size属性，那么默认为57x57 -->
 	<link rel="apple-touch-startup-image" href="/startup.png" /><!-- ios允许我们使用一个初始化图片来替代白色的浏览器屏幕-->
 	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
@@ -151,15 +150,54 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
 </head>
 <style>
-.full{
-	transform:rotate(90deg);
-	-ms-transform:rotate(90deg); 	/* IE 9 */
-	-moz-transform:rotate(90deg); 	/* Firefox */
-	-webkit-transform:rotate(270deg); /* Safari 和 Chrome */
-	-o-transform:rotate(90deg); 	/* Opera */
-}
-</style>
+	.full{
+		transform:rotate(90deg);
+		-ms-transform:rotate(90deg); 	/* IE 9 */
+		-moz-transform:rotate(90deg); 	/* Firefox */
+		-webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+		-o-transform:rotate(90deg); 	/* Opera */
+	}
+	:-webkit-full-screen { 
 
+	} 
+
+	:-moz-full-screen { 
+
+	} 
+
+	:-ms-fullscreen { 
+
+	} 
+
+	:-o-fullscreen { 
+
+	} 
+
+	:full-screen {  
+
+	} 
+
+	:fullscreen { 
+
+	} 
+
+	:-webkit-full-screen video {
+	width: 100%;
+	height: 100%;
+	}
+
+	:-moz-full-screen video{
+	width: 100%;
+	height: 100%;
+	}
+</style>
+<!--
+	div.style.webkitTransform = 'rotate(90deg)';
+	div.style.mozTransform = 'rotate(90deg)';
+	div.style.msTransform = 'rotate(90deg)';
+	div.style.oTransform = 'rotate(90deg)';
+	div.style.transform = 'rotate(90deg)';
+-->
 <script>
 	var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
 	var channelDataArr = <?php echo json_encode($channelArr); ?>;
@@ -216,19 +254,35 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		getID("channel" + channelPos).style.color = "#f7a333";
 		getID("channelId" + channelPos).style.color = "#f7a333";
 
-		getID("group").style.top = (clientWidth * 9 / 16 - 1) + "px"; //频道组
-		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px"; //频道列表
-		if (typeof(window.androidJs) != "undefined") {
-			window.androidJs.JsPlayLive(channelTempArr[channelPos].videoUrl);
-		//	window.androidJs.JsMovePlayerWindow(0);	//2.0版小窗口固定在上方，不需移动
-		}
+		getID("liveVideoDiv").style.height = (clientWidth * 9 / 16 - 1) + "px";	//视频窗口
+		getID("group").style.top = (clientWidth * 9 / 16 - 1) + "px"; 			//频道组
+		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px";		 //频道列表
+	//	if (parseInt(intLoginTime) < parseInt(intExpireTime)) { //授权没过期
+			if (typeof(window.androidJs) != "undefined") {
+				window.androidJs.JsPlayLive(channelTempArr[channelPos].videoUrl);
+				window.androidJs.JsSetPageArea("live");
+			//	window.androidJs.JsMovePlayerWindow(0);	//2.0版小窗口固定在上方，不需移动
+			}else{
+				getID("liveVideo").src = channelTempArr[channelPos].videoUrl;			
+				getID("liveVideo").addEventListener("play",function(){
+				//	var timeDisplay = Math.floor(getID("liveVideo").currentTime);
+				//	if( timeDisplay == 1 ){
+					//	getID("h5video").muted = (isAndroid)?false:true;
+						getID("liveVideo").muted = (isAndroid)?false:true;
+				//	}
+				},false);
+			}
+	//	}		
 		groupScrollL = (groupId - 1) * 150;//大概两个汉字150，4个汉字300
 		getID("groups").scrollLeft = groupScrollL;
-		window.androidJs.JsSetPageArea("live");
 		indexArea = "live";
 	}
 
 	function startLive(_num) {	//播放直播频道
+		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
+			registedVipCard();
+			return;
+		}
 		getID("channel" + channelPos).style.color = "white";
 		getID("channelId" + channelPos).style.color = "white";
 		channelPos = _num;
@@ -237,6 +291,8 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		updateCookie();
 		if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsPlayLive(channelTempArr[_num].videoUrl);
+		}else{
+			getID("liveVideo").src = channelTempArr[_num].videoUrl;
 		}
 	}
 
@@ -293,15 +349,15 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("speeds").style.opacity = 0;
 			getID("fullscreens").style.opacity = 0;
 		}else{
-			getID("h5video").src = _playUrl; //"http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";//_playUrl; 
+			getID("h5video").src = _playUrl; //"http://live.nbs.cn/channels/njtv/sepd/m3u8:500k/live.m3u8";//_playUrl; //"http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
 			getID("speeds").style.opacity = 1;
 			getID("speedNum").innerHTML = speed;
-			if( isAndroid){			
+			getID("fullscreens").style.opacity = (isAndroid)?1:0;
+		/*	if( isAndroid){			
 				getID("fullscreens").style.opacity = 1;
-				getID("h5video").muted = false;
 			}else if( isIOS){
 				getID("fullscreens").style.opacity = 0;
-			}
+			}*/
 			document.title = _father;
 			//监听播放开始
 			getID("h5video").addEventListener('play',function(){
@@ -331,6 +387,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						getID("h5video").currentTime = currentTime-5;	//从上次离开时前5秒开始播放
 					}
 					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
+					getID("h5video").muted = (isAndroid)?false:true;
 				}
 			},false);
 		}
@@ -634,22 +691,6 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 	}		
 
-/*	function showSplash(){
-		if( typeof(window.androidJs) != "undefined" ){
-			getID("splash").style.display = "block";
-			getID("splash").style.height = clientHeight + "px"; 
-			var splashArr = <?php echo json_encode($splashArr); ?>;	
-			var splashIndex = window.androidJs.JsGetCookie("splashIndex",0)?window.androidJs.JsGetCookie("splashIndex",0):0;
-			splashIndex ++;
-			if( splashIndex > splashArr.length-1 ){
-				splashIndex = 0;
-			}
-			window.androidJs.JsSetCookie("splashIndex", splashIndex, '12h');
-			getID("splash").style.backgroundImage = 'url(./splash/'+splashArr[splashIndex]+')';
-			startCircle();	//右上角跳过圆圈
-		}
-	}
-*/
 	var isShowSplash = 1;	//0为不显示启动图片，其它数字都代表显示启动图片
 	function showSplash(){
 		if( isShowSplash ){
@@ -680,7 +721,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 	//	alert(screen.availWidth * window.devicePixelRatio+"_"+screen.availHeight * window.devicePixelRatio);
 
 		getID('bodys').style.width = clientWidth + "px"; //全局宽
-		getID("detaiPoster").style.height = clientWidth*9/16+"px";
+		getID("detailPoster").style.height = clientWidth*9/16+"px";
 
 		showTab1();				//显示一级分类
 		showHomeLiveGroup();	//显示首页直播分组入口
@@ -736,7 +777,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<!-- 首页 电影入口 -->
 			<div id="homeList0" class="homeList" style="top:300px;">
 				<span style="position:relative;left:15%;" id="homeListName0">热播电影</span>
-				<span style="position:relative;left:60%;" onclick="showTabList1(1);">更多</span>
+				<span style="position:relative;left:60%;" onclick="clickTab1(1);">更多</span>
 				<div style="background:url(img/typeMovie0.png) no-repeat;" class="homeListLogo"></div>
 				<div id="homeListContent0" style="position:absolute;left:0%;top:110px;width:100%;">
 					<!--div id="homeListImg0" class="listImg" style="background: url(img/poster.jpg)">
@@ -748,7 +789,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<!-- 首页 电视剧入口 -->
 			<div id="homeList1" class="homeList" style="top:840px;">
 				<span style="position:relative;left:15%;" id="homeListName1">热播剧集</span>
-				<span style="position:relative;left:60%;" onclick="showTabList1(2);">更多</span>
+				<span style="position:relative;left:60%;" onclick="clickTab1(2);">更多</span>
 				<div style="background:url(img/劇集0.png) no-repeat;" class="homeListLogo"></div>
 				<div id="homeListContent1" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
@@ -756,7 +797,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<!-- 首页 综艺入口 -->
 			<div id="homeList2" class="homeList" style="top:1380px;">
 				<span style="position:relative;left:15%;" id="homeListName2">热播短视频</span>
-				<span style="position:relative;left:60%;" onclick="showTabList1(3);">更多</span>
+				<span style="position:relative;left:60%;" onclick="clickTab1(3);">更多</span>
 				<div style="background:url(img/短视频0.png) no-repeat;" class="homeListLogo"></div>
 				<div id="homeListContent2" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
@@ -764,7 +805,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<!-- 首页 动漫入口 -->
 			<div id="homeList3" class="homeList" style="top:1920px;">
 				<span style="position:relative;left:15%;" id="homeListName3">热播综艺</span>
-				<span style="position:relative;left:60%;" onclick="showTabList1(4);">更多</span>
+				<span style="position:relative;left:60%;" onclick="clickTab1(4);">更多</span>
 				<div style="background:url(img/綜藝0.png) no-repeat;" class="homeListLogo"></div>
 				<div id="homeListContent3" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
@@ -772,7 +813,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<!-- 首页 动漫入口 -->
 			<div id="homeList4" class="homeList" style="top:2460px;">
 				<span style="position:relative;left:15%;" id="homeListName4">热播动漫</span>
-				<span style="position:relative;left:60%;" onclick="showTabList1(5);">更多</span>
+				<span style="position:relative;left:60%;" onclick="clickTab1(5);">更多</span>
 				<div style="background:url(img/動漫0.png) no-repeat;" class="homeListLogo"></div>
 				<div id="homeListContent4" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
@@ -780,7 +821,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<!-- 首页 动漫入口 -->
 			<div id="homeList5" class="homeList" style="top:3000px;">
 				<span style="position:relative;left:15%;" id="homeListName5">热播体育</span>
-				<span style="position:relative;left:60%;" onclick="showTabList1(6);">更多</span>
+				<span style="position:relative;left:60%;" onclick="clickTab1(6);">更多</span>
 				<div style="background:url(img/體育0.png) no-repeat;" class="homeListLogo"></div>
 				<div id="homeListContent5" style="position:absolute;left:0%;top:110px;width:100%;"></div>
 			</div>
@@ -867,6 +908,9 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 直播频道列表 -->
 	<div id="channel" style="position:absolute;top:0px;left:0px;width:100%;display:none;">
+		<div id="liveVideoDiv" style="position:fixed;left:0%;top:0px;width:100%;height:0px;background-color:black;background:url(../loading.gif);background-size:100% 100% !important;z-index:2;" >
+			<video id="liveVideo" style="object-fit:fill" width="100%" height="100%" autoplay controls muted preload="auto" type="application/x-mpegURL" src="" playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" ></video>
+		</div>
 		<!-- 频道组 -->
 		<div id="group" style="position:fixed;top:0px;left:0px;width:100%; height:90px;line-height:90px;z-index:2;">
 			<ul id="groups" class="tab-head" style="background-color:#333333;">
@@ -885,8 +929,8 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	<!-- 详情页 -->
 	<div id="detail" style="position:absolute;left:-2000px;top:0px;width:100%;z-index:2;background-color:black;display:none;-webkit-transition:1s;">
-		<div id="detaiPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" >
-			<video id="h5video" style="object-fit:fill" width="100%" height="100%" poster="../loading.gif" autoplay controls muted preload="auto" src="" playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" ></vide>
+		<div id="detailPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background:url(../loading.gif);background-size:100% 100% !important;" >
+			<video id="h5video" style="object-fit:fill" width="100%" height="100%" autoplay controls muted preload="auto" src="" playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" ></video>
 		</div>
 
 		<div style="position:relative;top:20px;left:70%;width:30%;height:50px;z-index:3;">
@@ -897,7 +941,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			</tr></table>
 		</div>
 
-		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName"></div>
+		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="FullScreen();"></div>
 		<div class="detailText" style="top:0px;" id="tab"><b>类型：</b><span id="detailTab"></span></div>
 		<div class="detailText" style="top:0px;" id="region"><b>地区：</b><span id="detailRegion"></span></div>
 		<div class="detailText" style="top:0px;" id="actor"><b>主演：</b><span id="detailActor" ></span></div>
@@ -1049,17 +1093,15 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 </body></html>
 
 <script>
-//按键
 document.onsystemevent = eventHandler;
 //document.onkeypress    = eventHandler;
 document.onirkeypress  = eventHandler; 
-function eventHandler(e,type){
+function eventHandler(e,type){	//按键
 	var key_code = "";
 	if(navigator.userAgent.indexOf('iPanel')!=-1){
 		key_code=iPanelKey();
 	}else key_code = e.code ;
-	switch(key_code){	
-
+	switch(key_code){
 		case "KEY_SELECT":
 			if( indexArea=="search" ){
 			//	alert(getID('searchInput').value );
@@ -1082,29 +1124,128 @@ function eventHandler(e,type){
 			}
 			return 0;
 			break;
+	}	
+}
+
+function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
+	if( typeof(window.androidJs)!="undefined"){
+		window.androidJs.JsClosePlayer();
+	}
+	if( indexArea =="live" ){
+		getID("vod").style.display = "block";
+		getID("group" + groupId).style.color = 'white';
+		getID("channel").style.display = "none";
+		getID("liveVideo").src = "";
+		indexArea = "home";
+		navPos = 0;
+		tab1 = 0;
+		scrollTo(0,0);
+	}else if( indexArea == "detail" ){
+		getID("h5video").src = "";
+		updateCurrentTime();
+		indexArea = from;
+		getID("vod").style.display = "block";
+		getID("detail").style.left = "-2000px";
+	//	getID("detail").style.opacity = 0
+	//	setTimeout(function(){
+			getID("detail").style.display = "none";
+	//		getID("detail").style.opacity = 1;
+	//	},1000);
+		if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
+			getID("searchHistoryCollect").style.display = "block";
+		}
+		scrollTo(0,scrollTops);
+	}else if( indexArea == "zhiBo"){
+		if( isZhiBo ){	//先退出播放窗口
+			isZhiBo = false;
+			window.androidJs.JsSetPageArea("zhiBo");
+		}else{	//再退出直播界面
+		//	getID("zhiBo"+zhiBoPos).pause();
+			getID("zhiBo").style.display = "none";
+			indexArea = "home";
+			showTabList1(0);
+			scrollTo(0,0);
+		}
+	}else if( indexArea == "me" || indexArea == "login"){
+		scrollEnable();
+		indexArea = "home";
+		getID("me").style.opacity = 0;
+		setTimeout(function(){
+			getID("me").style.display = "none";			
+			getID("me").style.opacity = 1;	
+		},1000);
+	}
+//	alert("from_"+from+"_indexArea2_"+indexArea+"_isZhiBo_"+isZhiBo);
+}
+
+function updateCookie(){
+	if (typeof(window.androidJs) != "undefined") {
+		window.androidJs.JsSetCookie("groupId", groupId, '12h');
+		window.androidJs.JsSetCookie("channelPos", channelPos, '12h');
+		//	window.androidJs.JsSetCookie("videoUrlCookie",channelTempArr[channelPos].videoUrl,'12h');
 	}
 }
-</script>
-<script type=text/javascript src="js/detailXu.js" charset=UTF-8></script>
-<script type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script>
-<script>
 
-	function orient() {
-		if (window.orientation == 0 || window.orientation == 180) {
-		//	$("bodys").attr("class", "portrait");
-		//	orientation = 'portrait';
-		//	getID("h5video").play();
-			return false;
+function requestFullScreen(element){	//全屏
+	var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+	if(	requestMethod){
+		requestMethod.call(element);
+	}else if(typeof window.ActiveXObject !== "undefined"){
+		var wscript = new ActiveXObject("WScript.Shell");
+		if(wscript !== null){
+			wscript.SendKeys("{F11}");
 		}
-		else if (window.orientation == 90 || window.orientation == -90) {
+	}
+}
+
+function fullscreenH5(){	//全屏
+    if( typeof(window.androidJs) == "undefined" ){
+        requestFullScreen(getID('h5video'));
+    }
+}
+
+function changeDefaultSpeed(){	//设置默认播放速度
+    if( typeof(window.androidJs) == "undefined" ){
+        if( speed<2.5 ){
+            speed = parseFloat(speed)+0.25;
+        }else{
+            speed = 0.5;
+        }
+        setCookie("speed",speed,"30d");
+        getID("defaultSpeed").innerHTML = speed;
+    }
+}
+
+function orient(){	//旋转屏幕
+		if( window.orientation == 0 || window.orientation == 180) {	//竖屏
+		//	alert(window.orientation);
 		//	$("bodys").attr("class", "portrait");
 		//	orientation = 'portrait';
-		//	getID("h5video").muted = false;
-		//	getID("h5video").play();
+			getID('h5video').width = clientWidth;
+			getID('h5video').height = clientWidth*9/16;
+			getID('bodys').style.width = clientWidth + "px";
+			getID("bodys").style.transform = "scale(1)";
+			return false;
+		}else if( window.orientation == 90 || window.orientation == -90) {	//横屏
+		//	alert(window.orientation);
+		//	$("h5video").attr("class", "landscape");
+		//	orientation = 'landscape';
+			getID('detailPoster').style.zIndex ="999";
+			getID('h5video').width = clientHeight;	//横屏宽高对换
+			getID('h5video').height = clientWidth-180;
+			getID('bodys').style.width = clientHeight + "px";
+			getID("bodys").style.transform = "scale(1)";
+			scrollTo(0,0);
 			return false;
 		}
 	}
 
+	window.addEventListener("orientationchange", function() {
+		orient();
+	//	alert(window.orientation);
+	}, false);
+
+/*
 	$(function(){
 		orient();
 	});
@@ -1112,7 +1253,14 @@ function eventHandler(e,type){
 	$(window).bind( 'orientationchange', function(e){
 		orient();
 	});
+*/
 
+
+</script>
+<script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
+<script type=text/javascript src="js/detailXu.js" charset=UTF-8></script>
+<script type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script>
+<script>
 
 
 </script>
