@@ -265,11 +265,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			}else{
 				getID("liveVideo").src = channelTempArr[channelPos].videoUrl;			
 				getID("liveVideo").addEventListener("play",function(){
-				//	var timeDisplay = Math.floor(getID("liveVideo").currentTime);
-				//	if( timeDisplay == 1 ){
-					//	getID("h5video").muted = (isAndroid)?false:true;
-						getID("liveVideo").muted = (isAndroid)?false:true;
-				//	}
+				//	getID("liveVideo").muted = (isAndroid)?false:true;
 				},false);
 			}
 	//	}		
@@ -353,13 +349,8 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			getID("speeds").style.opacity = 1;
 			getID("speedNum").innerHTML = speed;
 			getID("fullscreens").style.opacity = (isAndroid)?1:0;
-		/*	if( isAndroid){			
-				getID("fullscreens").style.opacity = 1;
-			}else if( isIOS){
-				getID("fullscreens").style.opacity = 0;
-			}*/
 			document.title = _father;
-			//监听播放开始
+	/*		//监听播放开始
 			getID("h5video").addEventListener('play',function(){
 				setTimeout(function() {
 				//	getID("h5video").currentTime = 600;
@@ -370,7 +361,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				setTimeout(function() {
 				//	getID("h5video").currentTime = 600;
 				}, 1000);
-			}); 
+			}); */
 			//监听播放结束
 			getID("h5video").addEventListener('ended',function(){				
 				if( _episodePos<_episodes-1 ){//自动播放下一集
@@ -387,7 +378,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						getID("h5video").currentTime = currentTime-5;	//从上次离开时前5秒开始播放
 					}
 					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
-					getID("h5video").muted = (isAndroid)?false:true;
+				//	getID("h5video").muted = (isAndroid)?false:true;
 				}
 			},false);
 		}
@@ -477,7 +468,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 						if( name.length > 6){
 							name = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+name +'</marquee>';
 						}
-						getID("vodListContent"+_tab1).innerHTML += '<div class="listImg" style="background: url('+poster+')" onClick=showDetail("'+id+'")><div class="listName">'+name+'</div></div>';
+						getID("vodListContent"+_tab1).innerHTML += '<div class="listImg" style="background: url('+poster+')" onClick=getID("h5video").muted=false;showDetail('+'"'+id+'"'+'); ><div class="listName">'+name+'</div></div>';
 					});	
 				setTimeout(function() {
 					changePageStatus = "t";
@@ -516,7 +507,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 	function showHomeLiveGroup(){	//显示首页直播分组入口
 		for(i=0;i<channelDataArr.length;i++){
-			getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id="homeLiveGroup"'+i+' onClick="showLiveList('+i+');" style="background:url(live/'+channelDataArr[i]["groupLogo"]+')"><div class="tab-homeLive-groupName">'+channelDataArr[i]["group"]+'</div></div>'
+			getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id="homeLiveGroup"'+i+' onClick=getID("liveVideo").muted=false;showLiveList('+i+'); style="background:url(live/'+channelDataArr[i]["groupLogo"]+')"><div class="tab-homeLive-groupName">'+channelDataArr[i]["group"]+'</div></div>'
 		}
 	}
 
@@ -532,7 +523,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 				if( name.length > 6){	
 					name = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+name +'</marquee>';
 				}
-				getID('homeListContent'+i).innerHTML += '<div class="listImg" style="background: url('+poster+')" onClick=showDetail("'+id+'")><div class="listName">'+name+'</div></div>';
+				getID('homeListContent'+i).innerHTML += '<div class="listImg" style="background: url('+poster+')" onClick=getID("h5video").muted=false;showDetail('+'"'+id+'"'+'); ><div class="listName">'+name+'</div></div>';
 			}
 		}
 	}
@@ -745,13 +736,13 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
+		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 收藏图标 --
-		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
+		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:95%;">
@@ -1053,11 +1044,11 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<div class="PersonalCenter">Share</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(getCookie('username')){getID('h5video').muted=false;getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter">History</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(getCookie('username')){getID('h5video').muted=false;getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>

@@ -82,6 +82,7 @@ function touchEndFunc(evt){
 			if( startY < (videoHeight-100) && (moveX<-100 || moveX>100 || moveY<-100 || moveY>100) ){
 				androidBack();
 			}*/
+		//	alert(startY+"_"+videoHeight);
 			if( startY < (videoHeight-100) ){	//在播放窗口滑动
 				if( moveX<-100 || moveX>100 || moveY<-100 || moveY>100 ){
 					androidBack();
@@ -91,6 +92,9 @@ function touchEndFunc(evt){
 					moveChangeGroup(1);
 				}else if( moveX > 200 && Math.abs(moveX)>Math.abs(moveY) ){	//右滑
 					moveChangeGroup(-1);
+				}
+				if( moveY > 500 ){	//下滑
+					androidBack();
 				}
 			}
 		}
@@ -104,12 +108,21 @@ function touchEndFunc(evt){
 		}
 
 		if( indexArea=="detail" ){//详情页左、右、下滑返回首页	//alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
-			if( startY < (videoHeight-100) && ( moveX < -100 || moveX > 100 || startY < -100 || startY > 100 ) ){
+			if( startY < (videoHeight-100) && ( moveX < -100 || moveX > 100 || moveY < -100 || moveY > 100 ) ){
 				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
 				scrollTo(0,scrollTops);
 				setTimeout(function(){androidBack();},1000);			
+			}
+			if( startY < 900 ){
+				if( moveX < -200 || moveX > 200 || moveY > 500){
+					updateCurrentTime();
+					getID("vod").style.display = "block";
+					getID("detail").style.left = "-2000px";
+					scrollTo(0,scrollTops);
+					setTimeout(function(){androidBack();},1000);
+				}
 			}
 		}
 
