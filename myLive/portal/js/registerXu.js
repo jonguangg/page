@@ -101,8 +101,6 @@
 			getID("speedDiv").style.display = "none";
 			getID("usernameDiv").style.display = "none";
 		}
-
-
 /*
 		if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){
 			getID("usernameH5").innerHTML = getCookie("username");

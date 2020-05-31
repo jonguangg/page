@@ -1,10 +1,11 @@
 var clientWidth = 1080;
+var videoHeight = clientWidth*9/16;
 var clientHeight = 1920;
 var u = navigator.userAgent, app = navigator.appVersion; 
 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; 	//android终端或者uc浏览器 
 var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 				//ios终端
 var username = ( getCookie("username") )?getCookie("username"):"";
-	
+//	alert(isAndroid+"-"+isIOS)
 function imOnLine() { //上报在线状态
 	var now = new Date(); //此时此刻
 	var sec = now.getSeconds(); //此时的秒
@@ -97,14 +98,13 @@ function sendAjax(_url, _content) {
 
 var fingers = "";
 //	var hasConsole = typeof console !== "undefined";
-var fingerprintReport = function () {
+var fingerprintReport = function(){		//获取浏览器指纹
     var d1 = new Date();
     Fingerprint2.get(function(components) {
         var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31);
         var d2 = new Date();
         var time = d2 - d1;
         var details = "";
-
     //    if(hasConsole) {
         //    console.log("time", time);
         //    console.log("fingerprint hash", murmur);
@@ -124,10 +124,10 @@ var fingerprintReport = function () {
 
 var cancelId;
 var cancelFunction;
-if (window.requestIdleCallback) {
+if (window.requestIdleCallback){	//获取浏览器指纹
     cancelId = requestIdleCallback(fingerprintReport);
     cancelFunction = cancelIdleCallback;
-} else {
+}else{
     cancelId = setTimeout(fingerprintReport, 500);
     cancelFunction = clearTimeout;
 }
@@ -157,11 +157,6 @@ function stbInfo(){
 	return sn;
 }
 
-setTimeout(function() {	//延时启动上报在线状态的定时器，同时检查授权日期（为兼容用户直接点击跳过，检查授权代码写在splashJump内）
-	imOnLine();
-	splashJump();
-}, 10000);
-
 var mo = function(e) {
 	e.preventDefault();
 };
@@ -180,70 +175,17 @@ function scrollEnable() {
 	});
 }
 
-function androidBack(){	//供返回键调用
-	if( typeof(window.androidJs)!="undefined"){
-		window.androidJs.JsClosePlayer();
-	}
-	getID("h5video").src = "";
-//	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
-	if( indexArea =="live" ){
-		getID("group" + groupId).style.color = 'white';
-		getID("channel").style.display = "none";
-		getID("vod").style.display = "block";
-		indexArea = "home";
-		navPos = 0;
-		scrollTo(0,0);
-	}else if( indexArea == "detail" ){
-		updateCurrentTime();
-		indexArea = from;
-		getID("vod").style.display = "block";
-		getID("detail").style.left = "-2000px";
-	//	getID("detail").style.opacity = 0
-	//	setTimeout(function(){
-			getID("detail").style.display = "none";
-	//		getID("detail").style.opacity = 1;
-	//	},1000);
-		if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
-			getID("searchHistoryCollect").style.display = "block";
-		}
-		scrollTo(0,scrollTops);
-	}else if( indexArea == "zhiBo"){
-		if( isZhiBo ){	//先退出播放窗口
-			isZhiBo = false;
-			window.androidJs.JsSetPageArea("zhiBo");
-		}else{	//再退出直播界面
-		//	getID("zhiBo"+zhiBoPos).pause();
-			getID("zhiBo").style.display = "none";
-			indexArea = "home";
-			showTabList1(0);
-			scrollTo(0,0);
-		}
-	}else if( indexArea == "me" || indexArea == "login"){
-		scrollEnable();
-		indexArea = "home";
-		getID("me").style.opacity = 0;
-		setTimeout(function(){
-			getID("me").style.display = "none";			
-			getID("me").style.opacity = 1;	
-		},1000);
-	}
-//	alert("from_"+from+"_indexArea2_"+indexArea+"_isZhiBo_"+isZhiBo);
-}
-
-function updateCookie() {
-	if (typeof(window.androidJs) != "undefined") {
-		window.androidJs.JsSetCookie("groupId", groupId, '12h');
-		window.androidJs.JsSetCookie("channelPos", channelPos, '12h');
-		//	window.androidJs.JsSetCookie("videoUrlCookie",channelTempArr[channelPos].videoUrl,'12h');
-	}
-}
-
-var preLoadImageArr = ["直播0.png","電影1.png","劇集1.png","動漫1.png","短视频1.png","體育1.png","綜藝1.png","search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif"];
+var preLoadImageArr = ["直播0.png","電影1.png","劇集1.png","動漫1.png","短视频1.png","體育1.png","綜藝1.png","search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif",""];
 
 function preLoadImages(){
 	for(i=0;i<preLoadImageArr.length;i++){
 		getID("preLoadImg").innerHTML += '<img src=img/'+preLoadImageArr[i]+'>';
 	}
+	getID("preLoadImg").innerHTML += '<img src=./splash/750x1334.png >';
+	getID("preLoadImg").innerHTML += '<img src=./splash/828x1792.png >';
+	getID("preLoadImg").innerHTML += '<img src=./splash/1242x2208.png >';
+	getID("preLoadImg").innerHTML += '<img src=./splash/1125x2436.png >';
+	getID("preLoadImg").innerHTML += '<img src=./splash/1242x2688.png >';
 }
 
 //	var total = 0;
@@ -258,55 +200,3 @@ function startCircle(){
 //    set(1000*total);
 	circle.classList.add("run-anim");
 }
-
-function splashJump(){
-	if( getID('splash') ){	//加这个是为了兼容浏览器访问	
-		getID('splash').style.display='none';
-		if( typeof(window.androidJs)=="undefined" && (!getCookie("username") || getCookie("username").length<1) ){
-			showMe();
-		}else{			
-			scrollEnable();
-		}
-		sendAjax("./ajax.php", "checkLicenseSN=" + sn);	//检查到期日期
-		if( indexArea=="lock"){	//如果设置了启动默认锁定
-			scrollDisable();	
-			getID('lock').style.display='block';
-			getID("lock").style.height = clientHeight + "px"; //解锁页面的高，即全屏高度
-		}else{					//如果没设启动默认锁定，则启动后就进入首页
-		//	if( navPos==0){
-				getID("vod").style.opacity = 1;
-		//	}
-		}
-	}
-//	requestFullScreen(document.documentElement);
-//	getID("bodys").className = "full";
-}
-
-function requestFullScreen(element){
-	var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
-	if(	requestMethod){
-		requestMethod.call(element);
-	}else if(typeof window.ActiveXObject !== "undefined"){
-		var wscript = new ActiveXObject("WScript.Shell");
-		if(wscript !== null){
-			wscript.SendKeys("{F11}");
-		}
-	}
-}
-
-function changeDefaultSpeed(){
-    if( typeof(window.androidJs) == "undefined" ){
-        if( speed<2.5 ){
-            speed = parseFloat(speed)+0.25;
-        }else{
-            speed = 0.5;
-        }
-        setCookie("speed",speed,"30d");
-        getID("defaultSpeed").innerHTML = speed;
-    }
-}
-
-
-
-
-	
