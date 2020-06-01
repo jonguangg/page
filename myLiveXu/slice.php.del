@@ -1,0 +1,83 @@
+<?php
+	header("Content-Type:text/html;charset=utf-8");
+	error_reporting(E_ALL^E_NOTICE^E_WARNING);
+	date_default_timezone_set('PRC'); // 切换到中国的时间
+	ignore_user_abort(true);	//允许PHP后台运行
+	include_once "connectMysql.php";
+
+	echo "<pre>";	
+//	遍历当前文件夹展示所有的文件和目录
+	function list_file($dir){
+        $temp = scandir($dir); //首先读取文件夹，得到该文件夹下文件和目录的数组
+		if( sizeof( $temp)==2 ){
+			rmdir( $dir );//删除空文件夹
+		}
+		$fileArr = array();
+        foreach( $temp as $v){ 				//遍历文件夹，得到该文件夹内一级文件夹和文件名称$v
+			$a = $dir.'/'.$v;				//补全文件路径
+			if( is_dir($a) ){				//如果是文件夹则扫描该文件夹          
+				if( $v=='.' || $v=='..'){	//判断是否为系统隐藏的文件.和..  如果是则跳过否则就继续往下走，防止无限循环在这里
+					continue;
+				}
+			//	echo "<font color='red'>$a</font></br>"; //把文件夹红名输出
+				$fileArr = array_merge($fileArr, list_file($a));//因为是文件夹所以再次调用自己这个函数，把这个文件夹下的文件遍历出来
+			}else{
+			//	echo $a."</br>";
+				$tmp = explode('.',$a);
+				$end = end($tmp);
+				if( preg_grep( "/$end/i",array('mp4','m4v','avi','flv','wmv','asf','ts','mpg','mpeg','vob','rmvb','rm','f4v','mkv','mov','qt','dat')) ){	//过滤非视频文件
+					array_push($fileArr,$a);	//将视频全路径写进数组
+				}
+			}			
+		}
+		return $fileArr;
+	}	
+	$fileArr = list_file("/usr/local/nginx/html/myLive/upload");	//扫描路径下所有视频文件，得到数组
+	print_r( $fileArr);
+
+//	遍历文件数组，进而切片	
+	for($i=0;$i<count($fileArr);$i++){		
+		$name = $fileArr[$i];
+	//	echo $name.'<br>';
+		$path_parts = array();   
+	//	$path_parts ['dirname'] = rtrim(substr($name, 0, strrpos($name, '/')),"/")."/";   //所在文件夹   
+	//	$path_parts ['extension'] = substr(strrchr($name, '.'), 1);   //扩展名
+		$path_parts ['basename'] = ltrim(substr($name, strrpos($name, '/')),"/");	//带扩展名的文件名
+		$path_parts ['filename'] = ltrim(substr($path_parts ['basename'], 0, strrpos($path_parts ['basename'], '.')),"/"); 		
+		$nameShort = $path_parts ['filename'];//pathinfo($name, PATHINFO_FILENAME);//这个不支持中文
+		echo $nameShort.'<br>';
+		$nameShort = str_replace(" ","",$nameShort);//删除空格
+
+		$sql = mysqli_query($connect,"select * from video where name='$name' ") or die(mysqli_error($connect));
+		if( mysqli_num_rows($sql)>0 ){	//有这个文件
+		//	切片
+			$time = date("Y-m-d_H:i:s_");
+			echo $time."<br>";
+			exec('mkdir ./vod/'.$nameShort.' && nohup /root/bin/ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/'.$nameShort.'/index.m3u8 ./vod/'.$nameShort.'/%03d.ts >> ./sliceLog/'.$time.$nameShort.'.log 2>&1 &'); 
+
+		//	移动视频文件到video文件夹
+			exec('chmod 777 '.$name);
+		//	exec('mv '.$name.' ./video/'.$path_parts["basename"] );
+			exec('mv ./upload/'.$nameShort.'* ./video/' );
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
