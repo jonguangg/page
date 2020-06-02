@@ -1,0 +1,9 @@
+1、连接mysql需用IP，改connectMysql.php文件
+2、login.php文件需改，否则无法保存cookie，貌似要把php段放在html前面
+3、执行php需用curl -i "php路径"，如curl -i "http://158.69.108.181:8080/myLive/readDirList.php"
+4、phpmyadmin/config.inc.php/$cfg['Servers'][$i]['host'] = '192.168.168.225:33306';
+4、myLive\connectMysql.php\$connect = mysqli_connect("128.1.160.114:33306"
+5、readDirList.php内ffmpeg路径
+define('FFMPEG_CMD', '/root/bin/ffmpeg -i "%s" 2>&1');
+改为
+define('FFMPEG_CMD', 'ffmpeg -i "%s" 2>&1');

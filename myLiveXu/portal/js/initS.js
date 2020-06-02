@@ -158,17 +158,17 @@ function orient(){	//旋转屏幕
 		//	alert(window.orientation);
 		//	$("h5video").attr("class", "landscape");
 		//	orientation = 'landscape';
+			scrollTo(0,0);
 			if( indexArea=="detail"){
 				getID('detailPoster').style.zIndex ="999";
 			//	getID('h5video').width = clientHeight;	//横屏宽高对换
-				getID('h5video').height = clientWidth-40;
+				getID('h5video').height = clientWidth-64;
 			}else if( indexArea=="live"){
-				getID('liveVideo').height = clientWidth-120;
-				getID("group").style.top = (clientWidth-120)+"px";
+				getID('liveVideo').height = clientWidth-64;
+				getID("group").style.top = (clientWidth-64)+"px";
 			}
 			getID('bodys').style.width = clientHeight + "px";
 			getID("bodys").style.transform = "scale(1)";
-			scrollTo(0,0);
 			return false;
 		}
 	}

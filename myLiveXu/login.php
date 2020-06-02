@@ -23,7 +23,7 @@ if( @$_POST['submitUser'] ){
 			setCookie("currUser",$user );		//设置cookie，会话结束时失效
 			setCookie("currUserMark",urlencode($resultMark["mark"]) );
 		//	echo "<script>alert('密码正确！');</script>";
-			echo "<script>location.href='http://192.168.168.225:8080/myLive/update.php'</script>";
+			echo "<script>location.href='./update.php'</script>";
 		}else{//密码不一致
 			echo "<script>alert('密码不正确！');</script>";
 		}
