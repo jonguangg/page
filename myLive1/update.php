@@ -16,7 +16,7 @@
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <link rel="shortcut icon" href="portal/ic_launcher.png" type="image/x-icon">	<!-- 网页收藏夹图标 -->
-<title>TenStar视频管理系统</title>
+<title>newOTT CMS</title>
 <style>
 	*{}
 	table{border-collapse:collapse;}
@@ -37,12 +37,11 @@
 </style>
 </head>
 
-<body background="bg.jpg" onload="init();" onunload="exit2();" >
-<div style="position:absolute;left:30px;top:5%;width:90%;text-align:left;font-size:25px;">TenStar 视频管理系统</div>
+<body bgcolor="#C7EDCC" onload="init();" onunload="exit2();" >
+<div style="position:absolute;left:30px;top:5%;width:90%;text-align:left;font-size:25px;">newOTT CMS</div>
 <div style="position:absolute;left:70px;top:15%;width:150px;height:80%;line-height:15px;text-align:left;">
 	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('stb');" class="stb">客户管理</div><br />
 	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('sold');" class="sold">销售记录</div><br />
-	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('vipCard');" class="vipCard">库存管理</div><br />
 	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('video');" class="video">媒资管理</div><br />
 	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('sale');" class="sale">上架管理</div>
 	<div id="sale" style="display:none;"><br/>
@@ -53,6 +52,7 @@
 		<div onclick="getTagData('tagNP',1,15);" id="tagNP" style="cursor:pointer;position:relative;top:20px;" >&emsp;&emsp;多人</div><br>
 		<div onclick="getTagData('tagRole',1,15);" id="tagRole" style="cursor:pointer;position:relative;top:20px;" >&emsp;&emsp;角色</div>
 	</div><br>
+	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('vipCard');" class="vipCard">库存管理</div><br />
 	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('upLoadCard');" class="upLoadCard">导入卡密</div><br />
 	<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('upLoad');" class="upLoad">导入直播</div><br />
 	<!--li style="cursor:pointer;" onclick="showArea('editGroup');" class="editGroup">修改分类</div><br />

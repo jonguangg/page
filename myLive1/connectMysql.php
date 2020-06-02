@@ -1,5 +1,5 @@
 <?php
-$connect = mysqli_connect("127.0.0.1","root","10Star.925");
+$connect = mysqli_connect("158.69.108.183:33306","root","10Star.925");
 
 if(!$connect){
 	die("mySQLerror".mysqli_error());

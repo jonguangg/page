@@ -42,7 +42,7 @@ if( @$_POST['submitUser'] ){
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <meta http-equiv="expires" content="0">
 <link rel="shortcut icon" href="portal/ic_launcher.png" type="image/x-icon">	<!-- 网页收藏夹图标 -->
-<title>VC直播管理系统</title>
+<title>newOTT CMS</title>
 <style>
 	*{background-size:100% 100% !important;color:yellow;}
 	table{border-collapse:collapse;}
@@ -55,7 +55,7 @@ if( @$_POST['submitUser'] ){
 
 <body onload="init();">
 <div style="position:absolute;left:0px;top:0px;width:100%;height:100%;background:url(bg.png);"></div>
-<div style="position:fixed;top:50px;left:50px;width:90%;text-align:left;font-size:25px;color:white;">VC直播管理系统</div>
+<div style="position:fixed;top:50px;left:50px;width:90%;text-align:left;font-size:25px;color:white;">newOTT CMS</div>
 
 <!-- 用户登陆 -->
 <div id="login" style="position:absolute;top:25%;left:35%;width:20%; font-size:22px; text-align:center;">

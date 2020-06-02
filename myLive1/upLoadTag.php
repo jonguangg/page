@@ -93,7 +93,7 @@ if( !in_array($kuoZhanMing, $allowtype)){
 }
 
 //step 4 将让传后的文件名改名 
-$fileimgweb= "./uploads/";    
+$fileimgweb= "./backup/";    
 $randname  = "videoTag_".date("Y").date("m").date("d")."_".date("H").date("i").date("s")."_".rand(100, 999).".".$kuoZhanMing;
 setCookie("randname", $randname, time()+3600);//	记录上传的excel文件名,给excelImpor.php读取
 //将临时位置的文件移动到指定的目录上即可      

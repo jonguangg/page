@@ -12,7 +12,7 @@ $fileName = $_COOKIE["randname"];	//	"./channelList.xlsx";
 require_once "./PHPExcel-1.8/Classes/PHPExcel/IOFactory.php";
 
 // 载入当前文件
-$phpExcel = PHPExcel_IOFactory::load("./uploads/".$fileName);
+$phpExcel = PHPExcel_IOFactory::load("./backup/".$fileName);
 
 // 设置为默认表
 $phpExcel->setActiveSheetIndex(0);
