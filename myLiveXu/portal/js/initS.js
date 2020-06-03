@@ -67,6 +67,7 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 		getID("h5video").src = "";
 		updateCurrentTime();
 		indexArea = from;
+		getID("vod").style.opacity = 1;
 		getID("vod").style.display = "block";
 		getID("detail").style.left = "-2000px";
 	//	getID("detail").style.opacity = 0
@@ -98,7 +99,6 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("me").style.opacity = 1;	
 		},1000);
 	}
-//	alert("from_"+from+"_indexArea2_"+indexArea+"_isZhiBo_"+isZhiBo);
 }
 
 function updateCookie(){
@@ -177,4 +177,24 @@ function orient(){	//旋转屏幕
 		orient();
 	//	alert(window.orientation);
 	}, false);
+
+	//改写H5返回键事件
+	window.addEventListener("popstate", function(e) { 
+	//	alert("我监听到了浏览器的返回按钮事件啦");
+		pushHistory(); 
+		updateCurrentTime();
+		getID("vod").style.display = "block";
+		getID("detail").style.left = "-2000px";
+		setTimeout(function(){androidBack();},1000);
+	}, false);
+
+	function pushHistory() { 
+		var state = { 
+			title: "title", 
+			url: "#"
+		}; 
+		window.history.pushState(state, "title", "#"); 
+	}
+
+	pushHistory(); 
 

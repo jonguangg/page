@@ -1,9 +1,14 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
-<script type=text/javascript src="js/initXu.js"></script>
-<script type=text/javascript src="js/registerXu.js"></script>
-<script type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
+
+<!--script type=text/javascript src="js/initXu.js"></!--script>
+<script type=text/javascript src="js/registerXu.js"></script>
+<script-- type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script-->
+
+<script>document.write("<script type='text/javascript' src='js/initXu.js?v=" + Date.now() + "'><\/script>");</script>
+<script>document.write("<script type='text/javascript' src='js/registerXu.js?v=" + Date.now() + "'><\/script>");</script>
+<script>document.write("<script type='text/javascript' src='js/getXuDataToJs.js?v=" + Date.now() + "'><\/script>");</script>
 
 <?php
 //	error_reporting(0);// 关闭所有PHP错误报告
@@ -245,9 +250,11 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		getID("channel" + channelPos).style.color = "#f7a333";
 		getID("channelId" + channelPos).style.color = "#f7a333";
 
-		getID("liveVideoDiv").style.height = (clientWidth * 9 / 16 - 1) + "px";	//视频窗口
-		getID("group").style.top = (clientWidth * 9 / 16 - 1) + "px"; 			//频道组
-		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px";		 //频道列表
+	//	getID("liveVideoDiv").style.height = (clientWidth * 9 / 16 - 1) + "px";	//视频窗口
+		getID('liveVideo').height = (window.orientation==0)?clientWidth*9/16:clientWidth-120;
+		getID("group").style.top = (window.orientation==0)?(clientWidth * 9 / 16 - 1)+"px":(clientWidth-120)+"px"; 			//频道组
+		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px";		 //频道列表		
+
 	//	if (parseInt(intLoginTime) < parseInt(intExpireTime)) { //授权没过期
 			if (typeof(window.androidJs) != "undefined") {
 				window.androidJs.JsPlayLive(channelTempArr[channelPos].videoUrl);
@@ -294,9 +301,10 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		channelTempArr = (groupId == -1) ? channelArr : channelTempArr.concat(channelDataArr[groupId].channel);
 		channelCount = channelTempArr.length;
 		channelPageAll = parseInt((channelCount - 1 + 10) / 10);
-		scrollTo(0, 0);
-		getID("channels").innerHTML = "";
+	//	scrollTo(0, 0);
 		getID("channel").style.left = "0px";
+		getID("channels").innerHTML = "";
+		getID("channels").scrollTop = 0;
 		for (i = 0; i < channelTempArr.length; i++) {
 			getID("channels").innerHTML += '<div id=channels' + i + ' class="channels" onClick=startLive(' + i + ');><div id=channelId' + i + ' class="channelID" ><img class="liveListImg" src=live/'+channelTempArr[i].channelLogo+' /><div class="liveLine" ></div></div><div id=channel' + i + ' class="channel"></div></div>';
 			getID('channel' + i).innerText = channelTempArr[i].name.slice(0, 50);
@@ -359,7 +367,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 					}
 					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
 				//	getID("h5video").muted = (isAndroid)?false:true;
-					getID("h5video").muted = false;
+				//	getID("h5video").muted = false;
 				}
 			},false);
 		}
@@ -433,7 +441,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			//	alert("当前页："+eval("pageNow"+tab1));
 				if( vodPageAll == 0 || pageNow == vodPageAll || pageNow > vodPageAll){	//打开这段就直接显示no more，否则需上拉一下			
 					getID("loadmore"+tab1).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-					getID("loading"+tab1).style.display = "none";
+				//	getID("loading"+tab1).style.display = "none";
 					eval("pageNow"+tab1+"="+vodPageAll);
 				}else{
 					getID("loadmore"+tab1).innerHTML = "";
@@ -680,10 +688,12 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		getID('bodys').style.width = clientWidth + "px"; //全局宽
 		getID("detailPoster").style.height = clientWidth*9/16+"px";
+		getID("channels").style.height = (clientHeight-clientWidth*9/16-90)+"px";
 
 		showTab1();				//显示一级分类
 		showHomeLiveGroup();	//显示首页直播分组入口
 		showHomeList();			//显示首页热播列表
+		scrollTo(0,0)
 		preLoadImages();
 	}
 
@@ -693,7 +703,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
 	<div id="test" style="position:fixed;top:100px;left:0px;width:100%;max-height:900px;overflow:auto;line-height:100px;z-index:9999;background-color:white;font-size:100px;color:red;display:none;"></div>
 	<!--非直播 -->
-	<div id="vod" style="position:absolute;left:0px;width:100%;opacity:0;">
+	<div id="vod" style="position:absolute;left:0px;width:100%;opacity:0;-webkit-transition:1s;">
 		<!-- 顶部黑底 -->
 		<div style="position:fixed;width:100%;height:315px;background-color:#000;z-index:1;"></div>
 		<!-- 右上角头像 -->
@@ -873,7 +883,8 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		</div>
 
 		<!-- 频道列表 -->
-		<div id="channels" class="channels" style="position:absolute;left:0px;top:100px;"></div>
+		<div id="channels" class="channels" style="position:absolute;left:0px;top:100px;overflow-y:scroll;    -webkit-overflow-scrolling:touch;"></div>
+		<img id="liveBack" style="position:fixed;left:50px;top:1400px;width:100px;height:100px;display:none;" src="img/back1.png" onclick="androidBack();"/>
 	</div><!-- 直播频道尾 -->
 
 	<!-- 详情页 -->
@@ -906,6 +917,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		</div>
 		<!--div class="detailText" style="top:-220px;left:84%;width:100px;height:100px;background:url(img/collect0.png);"  ></div-->
 		<div id="guess" class="detailText2" style="top:0px;">猜您喜欢
+			<img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="scrollTo(0,scrollTops);updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},1000);" />
 			<div style="position:relative;left:0%;top:0px;">
 				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
 				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
@@ -1037,8 +1049,15 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 <div id="preLoadImg" style="position: absolute;left:0px;top:0px;width:1px;height:1px;opacity:0;"></div>
 
 </body></html>
+<script>document.write("<script type='text/javascript' src='js/initS.js?v=" + Date.now() + "'><\/script>");</script>
+<script>document.write("<script type='text/javascript' src='js/touchMoveXu.js?v=" + Date.now() + "'><\/script>");</script>
+<script>document.write("<script type='text/javascript' src='js/detailXu.js?v=" + Date.now() + "'><\/script>");</script>
+<script>document.write("<script type='text/javascript' src='js/searchHistoryCollectXu.js?v=" + Date.now() + "'><\/script>");</script>
 
-<script type=text/javascript src="js/initS.js" charset=UTF-8></script>
+<!--script type=text/javascript src="js/initS.js" charset=UTF-8></!--script>
 <script type=text/javascript src="js/touchMoveXu.js" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js" charset=UTF-8></script>
-<script type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script>
+<script-- type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script-->
+<script>
+
+</script>

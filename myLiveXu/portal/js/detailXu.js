@@ -26,8 +26,7 @@ function showDetail( _id ){
     }    
     indexArea = "detail";
     id = _id;
-
-    getID("vod").style.display = "none";
+   
     if( from=="search" || from=="history" || from=="collect"){
         getID("searchHistoryCollect").style.display = "none";
     //    alert("隐藏搜索历史收藏");
@@ -44,7 +43,9 @@ function showDetail( _id ){
             //这里一般显示加载提示;
         },
         success: function(json) {
-            console.log(json);
+        //    console.log(json);
+            getID("vod").style.opacity = 0;
+            setTimeout(function(){getID("vod").style.display = "none";},1000); 
             currentTime = json["currentTime"];  //  视频上次播放的位置
             getID("detail").style.display = "block";
             setTimeout(function() {
@@ -264,16 +265,3 @@ function changeSpeedH5(){
         getID("speedNum").innerHTML = speed;
     }
 }
-
-function fullscreenH5(){
-    if( typeof(window.androidJs) == "undefined" ){
-        requestFullScreen(getID('h5video'));
-    }
-}
-
-
-
-
-
-
-
