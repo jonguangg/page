@@ -4,10 +4,11 @@
 #password=10Star.925
 
 time=` date +%Y%m%d_%H%M%S`
-backupDir=/usr/local/nginx/html/myLive/backup/
+backupDir=/usr/local/web/www/myLive2.1/backup/
 
-/usr/local/mysql/bin/mysqldump myLive | gzip > $backupDir"myLive"$time.sql.gz 
-find  $backupDir/ -name "myLive*.sql.gz" -type f -mtime +5 -exec rm {} \; > /dev/null 2>&1 
+#/usr/local/mysql/bin/mysqldump myLive | gzip > $backupDir"myLive"$time.sql.gz
+docker exec -i mMysql /usr/bin/mysqldump myLive2.1 | gzip > $backupDir"myLive2.1_docker"$time.sql.gz
+find  $backupDir/ -name "myLive2.1*.sql.gz" -type f -mtime +365 -exec rm {} \; > /dev/null 2>&1 
 
 #crontab -e
 #0 2 * * * /usr/local/nginx/html/myLive/backupMySQL5.7.sh

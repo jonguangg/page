@@ -4,10 +4,10 @@
 */
 	include "connectMysql.php";
 	set_time_limit(0); //	设置超时时间
-	echo "<pre>";
+//	echo "<pre>";
 //	从DBNAME中查询数据，返回数据库结果集
 	$from = ($_GET["from"])?$_GET["from"]:"vipCard";
-	echo $from."<br/>";
+//	echo $from."<br/>";
 	if( $from=="addVipCard"){
 		$startCardId = $_COOKIE["startCardId"]-1;
 		$query = "select * from vipCard where cardId>$startCardId";  

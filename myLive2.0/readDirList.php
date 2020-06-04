@@ -4,7 +4,8 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 date_default_timezone_set('PRC'); // 切换到中国的时间
 ignore_user_abort(true);	//允许PHP后台运行
 include_once "connectMysql.php";
-define('FFMPEG_CMD', '/root/bin/ffmpeg -i "%s" 2>&1');	// 定义ffmpeg路径及命令常量
+//define('FFMPEG_CMD', '/root/bin/ffmpeg -i "%s" 2>&1');	// 定义ffmpeg路径及命令常量
+define('FFMPEG_CMD', 'ffmpeg -i "%s" 2>&1');	// 定义ffmpeg路径及命令常量
 
 /*
 	先扫描文件内所有文件
@@ -17,8 +18,7 @@ define('FFMPEG_CMD', '/root/bin/ffmpeg -i "%s" 2>&1');	// 定义ffmpeg路径及�
 	*/
 echo "<pre>";
 //	遍历当前文件夹展示所有的文件和目录
-function list_file($dir)
-{
+function list_file($dir){
 	$temp = scandir($dir); //首先读取文件夹，得到该文件夹下文件和目录的数组
 	if (sizeof($temp) == 2 && strlen($dir) > 36) {
 		rmdir($dir); //删除空文件夹
@@ -43,11 +43,10 @@ function list_file($dir)
 	}
 	return $fileArr;
 }
-	$fileArr = list_file("/usr/local/nginx/html/myLive/upload");	//扫描路径下所有视频文件，得到数组
-//	print_r($fileArr);
+	$fileArr = list_file("/usr/local/nginx/html/myLive2.1/upload");	//扫描路径下所有视频文件，得到数组
+	print_r($fileArr);
 
-function isEmptyDir($fp)
-{
+function isEmptyDir($fp){
 	$H = @opendir($fp);
 	$i = 0;
 	while ($_file = readdir($H)) {
@@ -61,8 +60,7 @@ function isEmptyDir($fp)
 	}
 }
 
-function getVideoInfo($file)
-{	//获取视频参数
+function getVideoInfo($file){	//获取视频参数
 	ob_start(); //开启缓存
 	passthru(sprintf(FFMPEG_CMD, $file)); //将视频文件名放入ffmpeg命令串
 	$video_info = ob_get_contents(); //从缓存中获取ffmpeg命令串
@@ -117,7 +115,7 @@ while ($row = mysqli_fetch_array($sql)) {
 	//	echo "上次扫描时间".$lastScanTime."<br/>";
 }
 
-for ($i = 0; $i < count($fileArr); $i++) {
+for ($i = 0; $i < count($fileArr); $i++){
 	$name = $fileArr[$i];
 	$path_parts = array();
 	$path_parts['dirname'] = rtrim(substr($name, 0, strrpos($name, '/')), "/") . "/";   //所在文件夹   
@@ -126,7 +124,7 @@ for ($i = 0; $i < count($fileArr); $i++) {
 	$path_parts['filename'] = ltrim(substr($path_parts['basename'], 0, strrpos($path_parts['basename'], '.')), "/");
 	$nameShort = $path_parts['filename']; //pathinfo($name, PATHINFO_FILENAME);//这个不支持中文
 	$nameShort = str_replace(" ", "", $nameShort); //删除空格
-	$name2 = '/usr/local/nginx/html/myLive/vod/' . $nameShort . '/' . $path_parts['basename'];
+	$name2 = '/usr/local/nginx/html/myLive2.1/vod/' . $nameShort . '/' . $path_parts['basename'];
 
 //	echo '文件夹：' . $path_parts['dirname'] . '<br>' . '原路径：' . $name . '<br>' . '文件名：' . $nameShort . "<br/>" . '新路径：' . $name2 . '<br><br>';
 
@@ -134,7 +132,7 @@ for ($i = 0; $i < count($fileArr); $i++) {
 	//	$filectime = date("Y-m-d H:i:s",filectime($fileArr[$i]));//索引改变时间	改内容，索引时间一起变
 	//	$fileatime = date("Y-m-d H:i:s",fileatime($fileArr[$i]));//访问时间
 
-	if (strtotime($filemtime) + 2 * 60 > strtotime($lastScanTime)) {	//文件时间在上上次获取视频参数之后，说明是新文件，因为第一次只记录文件名和上传时间，第二次再对比时间，所以要比较上上次的扫描时间
+	if (strtotime($filemtime) + 29999 * 60 > strtotime($lastScanTime)) {	//文件时间在上上次获取视频参数之后，说明是新文件，因为第一次只记录文件名和上传时间，第二次再对比时间，所以要比较上上次的扫描时间
 		$sql = mysqli_query($connect, "select * from video where name='$name2' ") or die(mysqli_error($connect));
 		if (mysqli_num_rows($sql) > 0) {	//有这个文件
 			//	echo $filemtime."<br/>";
@@ -148,10 +146,10 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					//	切片 
 					$time = date("Y-m-d_H:i:s_");
 					//	exec('mkdir ./vod/'.$nameShort.' && nohup /root/bin/ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/'.$nameShort.'/index.m3u8 ./vod/'.$nameShort.'/%03d.ts >  /dev/null 2>&1 &');
-					exec('mkdir ./vod/' . $nameShort . ' && nohup /root/bin/ffmpeg -i ' . $name . ' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
+					exec('mkdir ./vod/' . $nameShort . ' && nohup ffmpeg -i ' . $name . ' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
 
 					//截取图片
-					exec('/root/bin/ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/poster.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
+					exec('ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/poster.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
 
 					$duration = $video_info[0]["duration"];
 				//	echo $duration;

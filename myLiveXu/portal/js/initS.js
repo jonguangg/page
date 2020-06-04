@@ -98,6 +98,8 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("me").style.display = "none";			
 			getID("me").style.opacity = 1;	
 		},1000);
+	}else if( indexArea=="home" || indexArea=="vod"){
+		alert("请按 home 键退出");
 	}
 }
 
@@ -181,11 +183,13 @@ function orient(){	//旋转屏幕
 	//改写H5返回键事件
 	window.addEventListener("popstate", function(e) { 
 	//	alert("我监听到了浏览器的返回按钮事件啦");
-		pushHistory(); 
-		updateCurrentTime();
-		getID("vod").style.display = "block";
-		getID("detail").style.left = "-2000px";
-		setTimeout(function(){androidBack();},1000);
+		if( indexArea=="detail" || indexArea=="live" || indexArea=="me" || indexArea=="login" ){
+			pushHistory(); 
+			updateCurrentTime();
+			getID("vod").style.display = "block";
+			getID("detail").style.left = "-2000px";
+			setTimeout(function(){androidBack();},1000);
+		}
 	}, false);
 
 	function pushHistory() { 
