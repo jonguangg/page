@@ -3,6 +3,8 @@
 header("Content-type: text/html; charset=UTF-8");
 error_reporting(0);// 关闭所有PHP错误报告
 include_once "../connectMysql.php";
+date_default_timezone_set("PRC");
+$lastTime2 = date("Y-m-d H:i:s");	//机顶盒上一次打开APP的时间
 
 	function getIP(){	//获取用户真实 IP
 		static $realip;
@@ -88,6 +90,11 @@ if( $_POST['cardId'] ){//用户提交了卡号和密码
 if( $_POST['imOnlineSN'] ){//机顶盒自动上报在线状态
 	$sn = $_POST['imOnlineSN'];
 	$sql = mysqli_query($connect,"update client set isonline='在线' where sn='$sn' ") or die(mysqli_error()) ;
+}
+
+if( $_POST['imBackSN'] ){	//从后台切回来上报在线状态（解决IOS不退出浏览器，切回前面不上报的bug）
+	$sn = $_POST['imBackSN'];
+	$sql = mysqli_query($connect, "UPDATE client set isOnLine='在线',ip='$ip',city='$city',lastTime='$lastTime2' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态
 }
 
 if( $_POST['checkLicenseSN'] ){

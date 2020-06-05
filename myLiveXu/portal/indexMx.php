@@ -76,7 +76,7 @@ $city = getCity();
 //	echo '<script>alert("php city_'.$city.'")</script>';
 setcookie("city", $city, time() + 24 * 3600); //cookie存24小时	echo $city;
 
-$sn = $_COOKIE["sn"];//$_POST['imOnLineSN'];
+$sn = $_POST['imOnLineSN'];	//$_COOKIE["sn"];//
 $mark = $_COOKIE["deviceInfo"];	//机顶盒备注
 $loginTime = date("Y-m-d"); 						//机顶盒打开APP的时间
 $intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
@@ -884,7 +884,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 
 		<!-- 频道列表 -->
 		<div id="channels" class="channels" style="position:absolute;left:0px;top:100px;overflow-y:scroll;    -webkit-overflow-scrolling:touch;"></div>
-		<img id="liveBack" style="position:fixed;left:50px;top:1400px;width:100px;height:100px;display:none;" src="img/back1.png" onclick="androidBack();"/>
+		<img id="liveBack" style="position:fixed;left:80px;top:1300px;width:150px;height:150px;display:none;" src="img/back1.png" onclick="androidBack();"/>
 	</div><!-- 直播频道尾 -->
 
 	<!-- 详情页 -->
@@ -1059,5 +1059,7 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 <script type=text/javascript src="js/detailXu.js" charset=UTF-8></script>
 <script-- type=text/javascript src="js/searchHistoryCollectXu.js" charset=UTF-8></script-->
 <script>
+
+
 
 </script>

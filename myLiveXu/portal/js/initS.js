@@ -98,7 +98,7 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("me").style.display = "none";			
 			getID("me").style.opacity = 1;	
 		},1000);
-	}else if( indexArea=="home" || indexArea=="vod"){
+	}else if( typeof(window.androidJs)=="undefined" && (indexArea=="home" || indexArea=="vod") ){
 		alert("请按 home 键退出");
 	}
 }
@@ -185,13 +185,19 @@ function orient(){	//旋转屏幕
 	//	alert("我监听到了浏览器的返回按钮事件啦");
 		if( indexArea=="detail" || indexArea=="live" || indexArea=="me" || indexArea=="login" ){
 			pushHistory(); 
-			updateCurrentTime();
 			getID("vod").style.display = "block";
-			getID("detail").style.left = "-2000px";
+			if( typeof(window.androidJs)!="undefined"){
+				window.androidJs.JsClosePlayer();
+			}
+			if( indexArea=="detail"){
+				updateCurrentTime();
+				getID("detail").style.left = "-2000px";
+			}else if( indexArea=="live"){
+				getID("channel").style.display = "none";
+			}
 			setTimeout(function(){androidBack();},1000);
 		}
 	}, false);
-
 	function pushHistory() { 
 		var state = { 
 			title: "title", 
@@ -199,6 +205,21 @@ function orient(){	//旋转屏幕
 		}; 
 		window.history.pushState(state, "title", "#"); 
 	}
-
 	pushHistory(); 
 
+	//	监听切换前后台
+	var hiddenTime = getTime();    
+    function getTime(){
+		return Date.now();
+	}	
+	document.addEventListener("visibilitychange", function() {	//IOS
+		if( document.visibilityState=='hidden'){
+            hiddenTime = getTime();
+		}else{
+			var leaveTime = (getTime()-hiddenTime)/1000;	//切到后台的秒数
+			if( isIOS && leaveTime > 10 ){
+				sendAjax("./ajax.php", "imBackSN=" + sn);
+			//	alert(leaveTime);
+			}
+		}
+	});

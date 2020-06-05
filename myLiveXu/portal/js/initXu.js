@@ -49,7 +49,7 @@ var backArea = "false";
 var expireTime = "";
 var intExpireTime = "";
 function sendAjax(_url, _content) {
-//	alert("sendAjax"+sn);
+//	alert("sendAjax"+"\n"+sn+"\n"+_content);
 	createXmlHttpRequestObject();
 	// 2.请求行
 	xmlHttp.open("POST", _url); //"./isOnLine.php");
