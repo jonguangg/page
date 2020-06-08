@@ -171,7 +171,7 @@
 			var cardIdPost = getID("card_id").value.replace(/-/g, "");//把每4位中间的横杠删掉
 			var cardKeyPost = getID("card_key").value.replace(/-/g, "");
 		//	getID("msg").innerHTML = sn;
-			sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost);
+			sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost)+"&ip="+$ip+"&city="+$city;
 		}
 	}
 
