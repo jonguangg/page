@@ -153,7 +153,7 @@ function stbInfo(){
 		}
 	}
 	setCookie("sn", sn, '1000d'); //供app从后台唤醒时使用
-	sendAjax("./indexMx.php", "imOnLineSN=" + sn); //传递当前SN给php页面去获取授权信息
+//	sendAjax("./indexMx.php", "imOnLineSN=" + sn); //传递当前SN给php页面去获取授权信息
 	return sn;
 }
 

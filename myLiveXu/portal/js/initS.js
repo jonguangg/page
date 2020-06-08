@@ -208,18 +208,19 @@ function orient(){	//旋转屏幕
 	pushHistory(); 
 
 	//	监听切换前后台
-	var hiddenTime = getTime();    
+	var hiddenTime = getCookie("hiddenTime")?getCookie("hiddenTime"):0;	// 切到后台的时间点 
     function getTime(){
-		return Date.now();
+		return parseInt(Date.now()/1000);
 	}	
-	document.addEventListener("visibilitychange", function() {	//IOS
+	document.addEventListener("visibilitychange", function() {	//IOS 
 		if( document.visibilityState=='hidden'){
-            hiddenTime = getTime();
+			hiddenTime = getTime();
+			setCookie("hiddenTime",hiddenTime,"30d");
 		}else{
-			var leaveTime = (getTime()-hiddenTime)/1000;	//切到后台的秒数
-			if( isIOS && leaveTime > 10 ){
+			var leaveTime = getTime()-hiddenTime;	//切到后台的秒数
+			if( leaveTime > 6 ){	//切到后台10分钟以上再切回来，才重新记录登陆时间，否则就当作用户切走马上又回来了，这种情况不算是真正离开，所以不重新记录登陆时间
 				sendAjax("./ajax.php", "imBackSN=" + sn);
-			//	alert(leaveTime);
+			//	alert( leaveTime+"_"+sn);
 			}
 		}
 	});

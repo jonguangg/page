@@ -1,113 +1,99 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-
 <!--script type=text/javascript src="js/initXu.js"></!--script>
 <script type=text/javascript src="js/registerXu.js"></script>
 <script-- type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script-->
-
 <script>document.write("<script type='text/javascript' src='js/initXu.js?v=" + Date.now() + "'><\/script>");</script>
 <script>document.write("<script type='text/javascript' src='js/registerXu.js?v=" + Date.now() + "'><\/script>");</script>
 <script>document.write("<script type='text/javascript' src='js/getXuDataToJs.js?v=" + Date.now() + "'><\/script>");</script>
-
 <?php
-//	error_reporting(0);// 关闭所有PHP错误报告
-//	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
-//	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);// 报告 E_NOTICE也挺好 (报告未初始化的变量或者捕获变量名的错误拼写)
-	error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-	set_time_limit(0); //限制页面执行时间,0为不限制
-	include_once "readSplash.php";
-	include_once "../connectMysql.php";
-	include_once "../readChannelArray.php";
-//	include_once "../readTagNav.php";	//获取分类标签
-//	include_once "getXuData.php";	//
-//	var_dump(  $dataTab1Arr);
+	//	error_reporting(0);// 关闭所有PHP错误报告
+	//	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
+	//	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);// 报告 E_NOTICE也挺好 (报告未初始化的变量或者捕获变量名的错误拼写)
+		error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+		set_time_limit(0); //限制页面执行时间,0为不限制
+		include_once "readSplash.php";
+		include_once "../connectMysql.php";
+		include_once "../readChannelArray.php";
+	//	include_once "../readTagNav.php";	//获取分类标签
+	//	include_once "getXuData.php";	//
+	//	var_dump(  $dataTab1Arr);
 
-function getIP(){	//获取用户真实 IP
-	static $realip;
-	if (isset($_SERVER)) {
-		if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-			$realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-		} else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
-			$realip = $_SERVER["HTTP_CLIENT_IP"];
-		} else {
-			$realip = $_SERVER["REMOTE_ADDR"];
+	function getIP(){	//获取用户真实 IP
+		static $realip;
+		if(isset($_SERVER)){
+			if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+				$realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+			} else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+				$realip = $_SERVER["HTTP_CLIENT_IP"];
+			} else {
+				$realip = $_SERVER["REMOTE_ADDR"];
+			}
+		}else{
+			if (getenv("HTTP_X_FORWARDED_FOR")) {
+				$realip = getenv("HTTP_X_FORWARDED_FOR");
+			} else if (getenv("HTTP_CLIENT_IP")) {
+				$realip = getenv("HTTP_CLIENT_IP");
+			} else {
+				$realip = getenv("REMOTE_ADDR");
+			}
 		}
-	} else {
-		if (getenv("HTTP_X_FORWARDED_FOR")) {
-			$realip = getenv("HTTP_X_FORWARDED_FOR");
-		} else if (getenv("HTTP_CLIENT_IP")) {
-			$realip = getenv("HTTP_CLIENT_IP");
-		} else {
-			$realip = getenv("REMOTE_ADDR");
+	//	echo '<script>alert("php ip_'.$realip.'")</script>';
+		if( strpos($realip,",")>0 ){//有两个IP
+			$douHaoPos = strpos($realip,",");
+			$realip = substr($realip,0,$douHaoPos);
 		}
+		setcookie("ip", $realip, time()+24*3600); //cookie存24小时
+		return $realip;
 	}
-	return $realip;
-}
-
-$ip = getIP();
-//	echo '<script>alert("php ip1_'.$ip."_".strpos($ip,",").'")</script>';
-
-if( strpos($ip,",")>0 ){//有两个IP
-	$douHaoPos = strpos($ip,",");
-	$ip = substr($ip,0,$douHaoPos);
-//	echo '<script>alert("php ip2_'.$ip.'")</script>';
-}
-
-setcookie("ip", $ip, time() + 24 * 3600); //cookie存24小时	echo $ip;
-
-function getCity(){			// 获取当前IP所在城市 
-	$getIp = getIP();
-	if( strpos($getIp,",")>0 ){//有两个IP
-		$douHaoPos = strpos($getIp,",");
-		$getIp = substr($getIp,0,$douHaoPos);
-	//	echo '<script>alert("php ipCity1_'.$getIp.'")</script>';
-	}
-//	echo '<script>alert("php ipCity2_'.$getIp.'")</script>';
-	$content = file_get_contents("http://api.map.baidu.com/location/ip?ak=2TGbi6zzFm5rjYKqPPomh9GBwcgLW5sS&ip={$getIp}&coor=bd09ll");
-	$json = json_decode($content);
-	$address = $json->{'content'}->{'address'}; //按层级关系提取address数据 
-	$data['address'] = $address;
-	$return['province'] = mb_substr($data['address'], 0, 3, 'utf-8');
-	$return['city'] = mb_substr($data['address'], 3, 3, 'utf-8');
-	return $return['province'] . $return['city'];
-}
-$city = getCity();
-//	echo '<script>alert("php city_'.$city.'")</script>';
-setcookie("city", $city, time() + 24 * 3600); //cookie存24小时	echo $city;
-
-$sn = $_POST['imOnLineSN'];	//$_COOKIE["sn"];//
-$mark = $_COOKIE["deviceInfo"];	//机顶盒备注
-$loginTime = date("Y-m-d"); 						//机顶盒打开APP的时间
-$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
-$expireTime = date("Y-m-d", strtotime("+1 day")); 	//初次安装的授权到期时间
-//	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉	
-$lastTime = date("Y-m-d H:i:s"); 					//机顶盒上一次打开APP的时间
-$isOnLine = "在线";									//每次进入应用都激活在线状态
-$sql = mysqli_query($connect, "select * from client where sn='$sn' ") or die(mysqli_error($connect));
-
-if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
-	while ($row = mysqli_fetch_array($sql)) {
-		//	$expireTime = $row["expireTime"];						//从数据库获取真实的到期时间
-		//	$intExpireTime = str_replace("-","",$expireTime);		//为了便于比大小将时间内的-删掉
-		//	setcookie("expireTime", $expireTime, time()+8*3600);	//cookie存8小时，供个人中心显示用
-	}
-	$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态
 	
-	$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn' ") or die(mysqli_error($connect)); 	//记录登陆时间
-} else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
-	$sql = mysqli_query($connect, "replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
-}
+	function getCity(){			// 获取当前IP所在城市 
+	/*	$getIp = getIP();
+		$content = file_get_contents("http://api.map.baidu.com/location/ip?ak=2TGbi6zzFm5rjYKqPPomh9GBwcgLW5sS&ip={$getIp}&coor=bd09ll");
+		$json = json_decode($content);
+		$address = $json->{'content'}->{'address'}; //按层级关系提取address数据 
+		$data['address'] = $address;
+		$return['province'] = mb_substr($data['address'], 0, 3, 'utf-8');
+		$return['city'] = mb_substr($data['address'], 3, 3, 'utf-8');
+		return $return['province'] . $return['city'];
+	*/
+		$tpyApi = "http://whois.pconline.com.cn/ip.jsp?ip=".getIP();
+		$city = file_get_contents($tpyApi);
+		$city = iconv('GBK', 'UTF-8', $city);
+		$city = trim($city);
+		return $city;
+	}
+//	$ip = getIP();
+//	$city = getCity();
+	$ip = ($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
+	$city = ($_COOKIE["city"])?$_COOKIE["city"]:getCity();
 
-//	session_start(); //启动会话，session_start()函数必须位于 <html> 标签之前
-//	$_SESSION["$sn"] = $sn;	//存储 session 变量
-//	echo "您存储的SN session是：". $_SESSION['sn'];	//读取session
-//	unset($_SESSION['sn']);	//释放指定的 session 变量
-//	session_destroy() 将重置 session，您将失去所有已存储的 session 数据
+//	echo '<script>alert("php_'.$ip.$city.'")</script>';
+	$sn = $_COOKIE["sn"];//$_POST['imOnLineSN'];	//$_COOKIE["sn"];//
+	$mark = $_COOKIE["deviceInfo"];	//机顶盒备注
+	$loginTime = date("Y-m-d"); 						//机顶盒打开APP的日期
+	$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
+	$expireTime = date("Y-m-d", strtotime("+1 day")); 	//初次安装的授权到期时间
+	//	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
+	$hiddenTime = ($_COOKIE["hiddenTime"])?$_COOKIE["hiddenTime"]:0;	// 切到后台的时间点
+	$visibilityTime = time();							//此次打开的时间戳，精确到秒
+	$lastTime = date("Y-m-d H:i:s"); 					//此次打开APP的时分秒
+	$isOnLine = "在线";									//每次进入应用都激活在线状态
+	$sql = mysqli_query($connect, "select * from client where sn='$sn' ") or die(mysqli_error($connect));
+
+	if( mysqli_num_rows($sql) > 0 ){ //如果数据库中有当前机顶盒
+	//	echo '<script>alert("'.((int)$visibilityTime-(int)$hiddenTime).'")</script>';
+		if( (int)$visibilityTime-(int)$hiddenTime > 600 ){
+			$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
+			$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn' ") or die(mysqli_error($connect)); 	//记录登陆时间
+		}
+	}else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
+		$sql = mysqli_query($connect, "replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
+	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
 	<title>MixTV</title>
 	<meta charset="utf-8">
@@ -1020,10 +1006,10 @@ if( mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>
-		<div>
+		<!--div>
 			<div class="PersonalCenter">Clear cache</div>
 			<div class="PersonalCenterR">></div>
-		</div>
+		</div-->
 		<div id="speedDiv" onclick="changeDefaultSpeed();">
 			<div class="PersonalCenter">Default speed</div>
 			<div class="PersonalCenterR" id="defaultSpeed">1.0</div>

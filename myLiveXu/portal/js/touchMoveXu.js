@@ -96,7 +96,7 @@ function touchEndFunc(evt){
 		
 		if( indexArea=="home" && tab1==0 ){ //首页向下或向右滑动 刷新页面	alert(moveX+"_"+moveY);
 			if(  moveY > 900  || moveX > 800 ){
-				alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
+			//	alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
 				location.href = "./indexMx.php?"+Math.random();
 			}
 		}
@@ -151,10 +151,12 @@ function touchEndFunc(evt){
 				}else if( moveX > 200 && Math.abs(moveX)>Math.abs(moveY) ){	//右滑
 					moveChangeGroup(-1);
 				}
-				if( moveY > 300 ){	//下滑
+				if( moveY > 600 ){	//下滑
 					androidBack();
 				}
 			}
+			getID("liveBack").style.display = "block";
+			setTimeout(function(){getID("liveBack").style.display = "none";},3000);
 		}
 /*
 		if( moveX > -200 ){	//移动距离不满足切换类型时，向右返回当前页面
@@ -174,7 +176,7 @@ function touchEndFunc(evt){
 		}*/
 		
 		if( moveY < -0 ){	//向上滑动	var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();	alert(loadMoreBottom);
-			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo"){
+			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo" && indexArea!="live"){
 				loadMore();
 			}
 			if( indexArea=="zhiBo" ){
