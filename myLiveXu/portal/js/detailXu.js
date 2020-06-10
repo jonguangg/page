@@ -15,7 +15,6 @@ function showDetail( _id ){
         updateCurrentTime();                //点击猜您喜欢时记录当前播放位置
     }
     scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去 
-    scrollTo(0, 0);                         //再滚到最顶
 	if (typeof(window.androidJs) != "undefined") {
 		window.androidJs.JsClosePlayer();
 	}else{        
@@ -43,14 +42,15 @@ function showDetail( _id ){
             //这里一般显示加载提示;
         },
         success: function(json) {
-        //    console.log(json);
+        //    console.log(json);                        //滚到最顶
             getID("vod").style.opacity = 0;
             setTimeout(function(){getID("vod").style.display = "none";},1000); 
             currentTime = json["currentTime"];  //  视频上次播放的位置
             getID("detail").style.display = "block";
             setTimeout(function() {
                 getID("detail").style.left = "0px";
-            }, 1000);
+                scrollTo(0, 0); 
+            }, 100);
             
 			var videoType = json["data"].videoType;
 			father = json["data"].videoName;

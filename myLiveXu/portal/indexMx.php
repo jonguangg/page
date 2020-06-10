@@ -86,7 +86,7 @@
 	//	echo '<script>alert("'.((int)$visibilityTime-(int)$hiddenTime).'")</script>';
 		if( (int)$visibilityTime-(int)$hiddenTime > 600 ){
 			$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
-			$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn' ") or die(mysqli_error($connect)); 	//记录登陆时间
+			$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn',ip='$ip',city='$city' ") or die(mysqli_error($connect)); 	//记录登陆时间
 		}
 	}else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
 		$sql = mysqli_query($connect, "replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
@@ -903,7 +903,7 @@
 		</div>
 		<!--div class="detailText" style="top:-220px;left:84%;width:100px;height:100px;background:url(img/collect0.png);"  ></div-->
 		<div id="guess" class="detailText2" style="top:0px;">猜您喜欢
-			<img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="scrollTo(0,scrollTops);updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},1000);" />
+			<img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="scrollTo(0,scrollTops);updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);" />
 			<div style="position:relative;left:0%;top:0px;">
 				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
 				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>

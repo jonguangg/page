@@ -65,11 +65,11 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 		scrollTo(0,0);
 	}else if( indexArea == "detail" ){
 		getID("h5video").src = "";
-		updateCurrentTime();
+	//	updateCurrentTime();
 		indexArea = from;
 		getID("vod").style.opacity = 1;
-		getID("vod").style.display = "block";
-		getID("detail").style.left = "-2000px";
+	//	getID("vod").style.display = "block";
+	//	getID("detail").style.left = "-2000px";
 	//	getID("detail").style.opacity = 0
 	//	setTimeout(function(){
 			getID("detail").style.display = "none";
@@ -218,7 +218,7 @@ function orient(){	//旋转屏幕
 			setCookie("hiddenTime",hiddenTime,"30d");
 		}else{
 			var leaveTime = getTime()-hiddenTime;	//切到后台的秒数
-			if( leaveTime > 6 ){	//切到后台10分钟以上再切回来，才重新记录登陆时间，否则就当作用户切走马上又回来了，这种情况不算是真正离开，所以不重新记录登陆时间
+			if( leaveTime > 600 ){	//切到后台600秒以上再切回来，才重新记录登陆时间，否则就当作用户切走马上又回来了，这种情况不算是真正离开，所以不重新记录登陆时间
 				sendAjax("./ajax.php", "imBackSN=" + sn);
 			//	alert( leaveTime+"_"+sn);
 			}

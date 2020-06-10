@@ -112,7 +112,7 @@ function touchEndFunc(evt){
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
 				scrollTo(0,scrollTops);
-				setTimeout(function(){androidBack();},1000);			
+				setTimeout(function(){androidBack();},300);			
 			}
 			if( startY < 900 && startY > (videoHeight+100)){	//视频下主演上这个区域左右滑返回
 				if( moveX < -200 || moveX > 200 ){
@@ -120,7 +120,7 @@ function touchEndFunc(evt){
 					getID("vod").style.display = "block";
 					getID("detail").style.left = "-2000px";
 					scrollTo(0,scrollTops);
-					setTimeout(function(){androidBack();},1000);
+					setTimeout(function(){androidBack();},300);
 				}
 			}
 			if( moveY > 500 ){	//详情页下滑返回
@@ -128,7 +128,7 @@ function touchEndFunc(evt){
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
 				scrollTo(0,scrollTops);
-				setTimeout(function(){androidBack();},1000);
+				setTimeout(function(){androidBack();},300);
 			}
 		}else if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 || moveY < -300)){
 			if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
