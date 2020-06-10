@@ -65,16 +65,9 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 		scrollTo(0,0);
 	}else if( indexArea == "detail" ){
 		getID("h5video").src = "";
-	//	updateCurrentTime();
 		indexArea = from;
 		getID("vod").style.opacity = 1;
-	//	getID("vod").style.display = "block";
-	//	getID("detail").style.left = "-2000px";
-	//	getID("detail").style.opacity = 0
-	//	setTimeout(function(){
-			getID("detail").style.display = "none";
-	//		getID("detail").style.opacity = 1;
-	//	},1000);
+		getID("detail").style.display = "none";
 		if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 			getID("searchHistoryCollect").style.display = "block";
 		}

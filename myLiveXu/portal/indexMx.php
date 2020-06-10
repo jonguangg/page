@@ -903,7 +903,7 @@
 		</div>
 		<!--div class="detailText" style="top:-220px;left:84%;width:100px;height:100px;background:url(img/collect0.png);"  ></div-->
 		<div id="guess" class="detailText2" style="top:0px;">猜您喜欢
-			<img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="scrollTo(0,scrollTops);updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);" />
+			<img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);" />
 			<div style="position:relative;left:0%;top:0px;">
 				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
 				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>

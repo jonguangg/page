@@ -111,7 +111,7 @@ function touchEndFunc(evt){
 				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
-				scrollTo(0,scrollTops);
+			//	scrollTo(0,scrollTops);
 				setTimeout(function(){androidBack();},300);			
 			}
 			if( startY < 900 && startY > (videoHeight+100)){	//视频下主演上这个区域左右滑返回
@@ -119,7 +119,7 @@ function touchEndFunc(evt){
 					updateCurrentTime();
 					getID("vod").style.display = "block";
 					getID("detail").style.left = "-2000px";
-					scrollTo(0,scrollTops);
+			//		scrollTo(0,scrollTops);
 					setTimeout(function(){androidBack();},300);
 				}
 			}
@@ -127,7 +127,7 @@ function touchEndFunc(evt){
 				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
-				scrollTo(0,scrollTops);
+			//	scrollTo(0,scrollTops);
 				setTimeout(function(){androidBack();},300);
 			}
 		}else if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 || moveY < -300)){
