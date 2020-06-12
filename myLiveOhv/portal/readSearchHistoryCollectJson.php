@@ -11,7 +11,7 @@
 	$area = (@$_POST['area'])?$_POST['area']:"history";
 	$pageNow = (@$_POST['pageNow'])?$_POST['pageNow']:1;
 	$key = (@$_POST['key'])?$_POST['key']:"null";
-	$pageSize = 12;			//每页显示数  				//从post取当前页
+	$pageSize = 5;			//每页显示数  				//从post取当前页
 	$startPage = ($pageNow-1)*$pageSize;			   //起始页
 
 	if( $area == "search"){	//搜索

@@ -1,8 +1,8 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type=text/javascript src="js/initXu.js?v=1"></script>
-<script type=text/javascript src="js/registerXu.js?v=1"></script>
+<script type=text/javascript src="js/init.js?v=1"></script>
+<script type=text/javascript src="js/register.js?v=2"></script>
 <?php
 //	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
@@ -13,6 +13,7 @@
 	include_once "../connectMysql.php";
 	include_once "../readChannelArray.php";
 	include_once "../readTabNav.php";	//获取分类标签
+	include_once "readCollectArray.php";	//获取收藏id
 
 	function getIP(){	//获取用户真实 IP
 		static $realip;
@@ -105,7 +106,7 @@
 
 	<!--meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" /><!--强制让文档的宽度与设备的宽度保持1:1，并且文档最大的宽度比例是1.0，且不允许用户点击屏幕放大浏览-->
 	<meta name="apple-mobile-web-app-capable" content="yes"><!--safari私有,允许全屏模式浏览，用户将网页添加到主屏后，再从主屏幕打开这个网页，可以隐藏浏览器的地址栏和下面的toolbar-->
-	<meta name="apple-mobile-web-app-title" content="Oh!V"><!-- 在发送到屏幕的时候默认的命名 -->	
+	<meta name="apple-mobile-web-app-title" content="Oh!V"><!-- 在发送到屏幕的时候默认的命名 -->
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" /><!-- iphone中safari顶端的状态条的样式，其值有三个：default、black、black-translucent -->
 	<meta name='full-screen' content='true' />
 	<meta name='x5-fullscreen' content='true' />
@@ -125,10 +126,10 @@
 	<!-- iPhone XsMax	Portrait -->
 	<link rel="apple-touch-startup-image" href="./splash/1242×2688.png" media="(device-width: 736px)and (device-height: 1344px)" >
 
-	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
-	<link rel="stylesheet" type="text/css" href="styleXu.css" >
+	<link rel="stylesheet" type="text/css" href="style.css?v=1" >
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
+	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
 </head>
 <style>
 	.full{
@@ -144,125 +145,11 @@
 </style>
 <script>
 	var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
-	var channelDataArr = <?php echo json_encode($channelArr); ?>;
 	var tabArr = <?php echo json_encode($tabArr); ?>;
-	console.log(tabArr[1]);
-	var userKey = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetCookie("userKey", 0) : "9527";
-	if (parseInt(userKey) == 0) { //没设置密码时获取到的密码为0，所以要改一下
-		userKey = "9527";
-	}
-	var groupId = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("groupId", 0)) : 0;
-	var channelPagePos = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("channelPagePos", 0)) : 0;
-	var channelPos = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("channelPos", 0)) : 0;
-	var channelCount = 0;
-	var channelPageAll = parseInt((channelCount - 1 + 10) / 10);
-//	var channelPagePosTemp = 0;
-//	var channelPosTemp = channelPos;
-	var channelArr = [];
-	var videoUrlCookie = 0; //( window.androidJs.JsGetCookie("videoUrlCookie",0)=='0' )?channelDataArr[0].channel[0].videoUrl:window.androidJs.JsGetCookie("videoUrlCookie",0);
+	var collectArr = <?php echo json_encode($collectArr); ?>;
+	var channelDataArr = <?php echo json_encode($channelArr); ?>;
+//	console.log(collectArr);
 
-	var scrollTops = 0;
-	var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-	var indexArea = "home";
-	var navPos = 0; //当前分类 0为home 1为movie -1为直播
-
-	for (i = 0; i < channelDataArr.length; i++) { //合并所有频道为一个数组，便于显示所有频道和跳转
-		channelArr = channelArr.concat(channelDataArr[i].channel);
-	}
-
-	var channelTempArr = []; //当前显示的频道组 
-	var groupSizeArr = []; //每个组的节目数  
-	for (i = 0; i < channelDataArr.length; i++) {
-		groupSizeArr.push(channelDataArr[i].channel.length);
-	}
-
-	var groupStartArr = [1]; //每个频道组第一个频道号 
-	for (i = 1; i < groupSizeArr.length; i++) {
-		var groupStart = 1;
-		for (j = 0; j < i; j++) {
-			groupStart += groupSizeArr[j];
-		}
-		groupStartArr.push(groupStart);
-	}
-
-	var groupScrollL = 0;
-	function showLiveList(_num) {	//显示直播列表
-		for (i = 0; i < channelDataArr.length; i++) { //显示频道组
-			getID("groups").innerHTML += '<li class=tab-live-item id=group' + i + ' style="font-weight:500" onClick=showChannel(' + i + ');></li>';
-			getID("group" + i).innerHTML = channelDataArr[i].group;
-		}
-		channelPos = (groupId == _num)?channelPos:0;	//如果回上次看的组，则不变频道，否则播放第1个
-		tab1 = -1;	//当前区域定为直播
-		groupId = _num;
-		showChannel(groupId); 
-		getID("vod").style.display = "none";
-		getID("channel").style.display = "block";
-		getID("channel" + channelPos).style.color = "#f7a333";
-		getID("channelId" + channelPos).style.color = "#f7a333";
-
-	//	getID("liveVideoDiv").style.height = (clientWidth * 9 / 16 - 1) + "px";	//视频窗口
-		getID('liveVideo').height = (window.orientation==0)?clientWidth*9/16:clientWidth-120;
-		getID("group").style.top = (window.orientation==0)?(clientWidth * 9 / 16 - 1)+"px":(clientWidth-120)+"px"; 			//频道组
-		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px";		 //频道列表		
-
-	//	if (parseInt(intLoginTime) < parseInt(intExpireTime)) { //授权没过期
-			if (typeof(window.androidJs) != "undefined") {
-				window.androidJs.JsPlayLive(channelTempArr[channelPos].videoUrl);
-				window.androidJs.JsSetPageArea("live");
-			//	window.androidJs.JsMovePlayerWindow(0);	//2.0版小窗口固定在上方，不需移动
-			}else{
-				getID("liveVideo").src = channelTempArr[channelPos].videoUrl;			
-				getID("liveVideo").addEventListener("play",function(){
-			//	getID("liveVideo").muted = (isAndroid)?false:true;
-				getID("liveVideo").muted = false;
-				},false);
-			}
-	//	}		
-		groupScrollL = (groupId - 1) * 150;//大概两个汉字150，4个汉字300
-		getID("groups").scrollLeft = groupScrollL;
-		indexArea = "live";
-	}
-
-	function startLive(_num) {	//播放直播频道
-		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
-			registedVipCard();
-			return;
-		}
-		getID("channel" + channelPos).style.color = "white";
-		getID("channelId" + channelPos).style.color = "white";
-		channelPos = _num;
-		getID("channel" + channelPos).style.color = "#f7a333";
-		getID("channelId" + channelPos).style.color = "#f7a333";
-		updateCookie();
-		if (typeof(window.androidJs) != "undefined") {
-			window.androidJs.JsPlayLive(channelTempArr[_num].videoUrl);
-		}else{
-			getID("liveVideo").src = channelTempArr[_num].videoUrl;
-		}
-	}
-
-	function showChannel(_num) { //切换频道组
-		groupScrollL += (_num - groupId) * 150; //移动分类的位置
-		getID("groups").scrollLeft = groupScrollL;
-		getID("group" + groupId).style.color = 'white'; //"#081925";
-		groupId = _num;
-		getID("group" + groupId).style.color = "#f7a333";
-		channelTempArr = [];
-		channelTempArr = (groupId == -1) ? channelArr : channelTempArr.concat(channelDataArr[groupId].channel);
-		channelCount = channelTempArr.length;
-		channelPageAll = parseInt((channelCount - 1 + 10) / 10);
-	//	scrollTo(0, 0);
-		getID("channel").style.left = "0px";
-		getID("channels").innerHTML = "";
-		getID("channels").scrollTop = 0;
-		for (i = 0; i < channelTempArr.length; i++) {
-			getID("channels").innerHTML += '<div id=channels' + i + ' class="channels" onClick=startLive(' + i + ');><div id=channelId' + i + ' class="channelID" ><img class="liveListImg" src=live/'+channelTempArr[i].channelLogo+' /><div class="liveLine" ></div></div><div id=channel' + i + ' class="channel"></div></div>';
-			getID('channel' + i).innerText = channelTempArr[i].name.slice(0, 50);
-		}
-	}
-
-//	var episodeTemp = 0;
-//	var playUrls = "";
 	var currentTime = 0;   //播放位置 单位秒
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
 	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime);
@@ -270,7 +157,7 @@
 			registedVipCard();
 			return;
 		}
-	//	var playUrl = _playUrl.replace("128.1.160.114","mixtvapi.mixtvapp.com");
+
 		if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsClosePlayer();
 			window.androidJs.JsSetPageArea("vod");
@@ -288,27 +175,12 @@
 			getID("speedNum").innerHTML = speed;
 			getID("fullscreens").style.opacity = (isAndroid)?1:0;
 			document.title = _father;
-	/*		//监听播放开始
-			getID("h5video").addEventListener('play',function(){
-				setTimeout(function() {
-				//	getID("h5video").currentTime = 600;
-				}, 1000);
-			});
-			//监听播放暂停
-			getID("h5video").addEventListener('pause',function(){
-				setTimeout(function() {
-				//	getID("h5video").currentTime = 600;
-				}, 1000);
-			}); */
 			//监听播放结束
 			getID("h5video").addEventListener('ended',function(){				
 				if( _episodePos<_episodes-1 ){//自动播放下一集
    					playVod( id,list[parseInt(episodePos)+1].videoPath,father,poster,(parseInt(episodePos)+1),episodes );
-				//	alert(list[parseInt(episodePos)+1].videoPath+"_"+(parseInt(episodePos)+1) );
-				//	getID( "chooseChapter"+(_episodePos+1) ).click();	//手机端不触发click事件
 				}
 			});
-			//使用事件监听方式捕捉事件， 此事件可作为实时监测video播放状态
 			getID("h5video").addEventListener("timeupdate",function(){
 				var timeDisplay = Math.floor(getID("h5video").currentTime);
 				if( timeDisplay == 1 ){
@@ -316,8 +188,6 @@
 						getID("h5video").currentTime = currentTime-5;	//从上次离开时前5秒开始播放
 					}
 					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
-				//	getID("h5video").muted = (isAndroid)?false:true;
-				//	getID("h5video").muted = false;
 				}
 			},false);
 		}
@@ -360,7 +230,7 @@
 		if( indexArea == "search" || indexArea == "history" ||indexArea == "collect" ){
 			showSHC(indexArea,pageNow,searchTemp);
 		}else{
-			getXuList(tab1,tab2,tab3,pageNow, 12);
+			getTabData(tab1,tab2,tab3,pageNow,5);
 		}
 	}
 
@@ -370,15 +240,10 @@
 	var tab3 = 0;	//三级分类，即爱情、动作、喜剧之类的分类标签
 	var pageNow = 1; //第一页是1
 	var pageNow0=0,pageNow1=0, pageNow2=0, pageNow3=0, pageNow4=0, pageNow5=0, pageNow6=0, pageNow7=0, pageNow8=0, pageNow9=0, pageNow10=0, pageNow11=0, pageNow12=0, vodPageAll = 1, vodPageAll0 = 1, vodPageAll1 = 1, vodPageAll2 = 1, vodPageAll3 = 1, vodPageAll4 = 1, vodPageAll5 = 1, vodPageAll6 = 1, vodPageAll7 = 1, vodPageAll8 = 1, vodPageAll9 = 1, vodPageAll10 = 1, vodPageAll11 = 1, vodPageAll12 = 1 ;
-	var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页	
+	var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
 
 	function getTabData(_tab1, _tab2,_tab3,_pageNow, _pageSize){				
 		pageNow = eval("pageNow"+tab1)+1; //当前请求页码为已显示页面+1，即下一页
-		if( eval("vodPageAll"+tab1)==eval("pageNow"+tab1) ){	//如果总页数 == 已显示的页码，则不再请求
-			pageNow = eval("vodPageAll"+tab1);
-			alert("没有了");
-			return;
-		}
 		$.ajax({
 			type: 'POST',
 			url: '../readTabJson.php',
@@ -395,10 +260,10 @@
 				//这里一般显示加载提示;
 			},
 			success: function(json) {
-				eval("pageNow"+tab1+"="+pageNow);	//请求成功才更新当前页码
-				eval("vodPageAll"+tab1+"="+json.pages);	//请求成功才更新总页数
+				eval("pageNow"+tab1+"="+pageNow);			//请求成功才更新当前页码
+				eval("vodPageAll"+tab1+"="+json.pageAll);	//请求成功才更新总页数
 				vodPageAll = json.pageAll;
-			//	alert("当前页："+eval("pageNow"+tab1));
+			//	alert("当前页："+eval("pageNow"+tab1));	
 				if( vodPageAll == 0 || pageNow == vodPageAll || pageNow > vodPageAll){	//打开这段就直接显示no more，否则需上拉一下			
 					getID("loadmore"+tab1).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
 					eval("pageNow"+tab1+"="+vodPageAll);
@@ -407,19 +272,31 @@
 					getID("loading"+tab1).style.display = "block";
 				}
 				var list = json.list;
-				console.log(list);
 				$.each(list,
 					function(index, array) { //遍历json数据列
 						var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
-						var father = array['father'];
+						var father2 = array['father'];
 						var id = array["id"];
 						name = name.slice(0,name.lastIndexOf('.') );
-						if( father.length > 6){
-							var	father2 = father;//'<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
+						var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/"+name+"/index.m3u8";
+					//	var playUrl = "http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
+					//	var playUrl = "http://183.207.249.15/PLTV/2/224/3221226037/index.m3u8";
+						if( collectArr.includes(id)){	//收藏表内包含当前id
+							if( typeof(window.androidJs) != "undefined"){
+								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=checkLicense("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+							}else{
+								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
+							}	
 						}else{
-							var father2 = father;
+						//	getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=createVideo('+id+',"'+name+'")></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+						//	getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListName">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
+							
+							if( typeof(window.androidJs) != "undefined"){
+								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=checkLicense("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+							}else{
+								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
+							}
 						}
-						getID("vodListContent"+_tab1).innerHTML += '<div class="vodListImg" style="background: url(../vod/'+name+'/poster.jpg)" onClick=showDetail('+id+')></div><div class="vodListName">'+father2+'</div>';
 					});	
 				setTimeout(function() {
 					changePageStatus = "t";
@@ -436,7 +313,7 @@
 		//	getID('vodTab1').innerHTML += '<li class="tab-tab1-item" id=nav'+i+' onClick="clickTab1('+i+')" style="background:url(img/'+tabArr[1][i].tagTable+'0.png) center no-repeat" >'+tabArr[1][i].tagName+'</li>';
 			getID('vodTab1').innerHTML += '<li class="tab-tab1-item" id=nav'+i+' onClick="clickTab1('+i+')" >'+tabArr[1][i].tagName+'</li>';
 
-			getID("vod").innerHTML += '<div id=vodList'+i+' class="vodList" style="top:230px;"><div id=vodListContent'+i+'></div><div id=loading'+i+' class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div><div id=loadmore'+i+' class="vodListName" style="height:100px;color:gray;"></div></div>';
+			getID("vod").innerHTML += '<div id=vodList'+i+' class="vodList" style="top:'+vodListTop+'"><div id=vodListContent'+i+'></div><div id=loading'+i+' class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div><div id=loadmore'+i+' class="vodListName" style="height:100px;color:gray;"></div></div>';
 		}
 	}
 
@@ -459,7 +336,7 @@
 	//	showTab2and3( _tab1 );	//动态显示二三级分类
 		clearTimeout(stLoad);	
 		stLoad = setTimeout(function() {	// 	防止用户快速点击栏目，所以延时1秒再请求数据
-			getTabData(_tab1,0,0,1,9);		//	请求数据，显示海报列表
+			getTabData(_tab1,0,0,1,5);		//	请求数据，显示海报列表
 		}, 1000);
 	}
 	
@@ -530,12 +407,14 @@
 
 		clientWidth = document.body.scrollWidth;
 		clientHeight = window.innerHeight;
+		imgHeight = clientWidth*9/16+"px";
 		getID('bodys').style.width = clientWidth + "px"; //全局宽
 
 		showTab1();				//显示一级分类
 		clickTab1(0);
 		scrollTo(0,0)
 		preLoadImages();
+		changeTop();
 	}
 
 </script>
@@ -546,24 +425,24 @@
 	<!--非直播 -->
 	<div id="vod" style="position:absolute;left:0px;width:100%;opacity:0;-webkit-transition:1s;">
 		<!-- 顶部黑底 -->
-		<div style="position:fixed;width:100%;height:230px;background-color:black;z-index:1;"></div>
-		<!-- 右上角头像 -->
-		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
+		<div id="topBlack" style="position:fixed;width:100%;height:230px;background-color:black;z-index:1;"></div>
+		<!-- 左上角头像 -->
+		<div id="meImg" style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Oh!V</div>
 
 		<!-- 搜索框 -->
 		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
+		<div id="searchImg" style="position:fixed;top:65px;left:680px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div id="historyImg" style="position:fixed;top:65px;left:820px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 收藏图标 --
 		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
 
 		<!-- 首页一级分类导航 -->
-		<div class="homeTop" style="top:150px;left:0px;width:95%;">
+		<div id="tab1" class="homeTop" style="top:150px;left:5%;width:95%;">
 			<ul id="vodTab1" class="tab-head">
 				<!--li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;background: url(img/null.png) center no-repeat;">首页</li-->
 			</ul>
@@ -589,6 +468,8 @@
 			<div id="loading0" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
 			<div id="loadmore0" class="vodListName" style="height:100px;color:gray;"></div>
 		</div-->
+		
+		<div id="promptCollect" class="promptCollect">已收藏</div>
 
 	</div><!-- 点播尾 -->
 
@@ -599,7 +480,7 @@
 	</div>
 
 	<!-- 搜索 历史 收藏 列表页 -->	
-	<div id="searchHistoryCollect" class="homeList" style="top:335px;display:none;">
+	<div id="searchHistoryCollect" class="homeList" style="top:200px;display:none;">
 		<span id="shcTitle" style="position:relative;left:15%;color:#f7a333;">搜索结果</span>
 		<div id="shcImg" style="background:url(img/null.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
 		<div style="position:absolute;left:0%;top:110px;width:100%;">
@@ -667,7 +548,7 @@
 	</div>
 
 	<!-- 个人中心 -->
-	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
+	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
 		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
 		<div id="usernameDiv">
 			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
@@ -684,15 +565,15 @@
 			<div class="PersonalCenter">VIP</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="share();">
+		<div onclick="share();" style="display:none;">
 			<div class="PersonalCenter">Share</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('h5video').muted=false;getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter">History</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('h5video').muted=false;getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>
@@ -726,7 +607,9 @@
 
 </body></html>
 <script type=text/javascript src="js/initS.js?v=1" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
+<script type=text/javascript src="js/live.js?v=1"></script>
+<script type=text/javascript src="js/touchMove.js?v=1" charset=UTF-8></script>
+<script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script>
 
 

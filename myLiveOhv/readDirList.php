@@ -43,7 +43,7 @@ function list_file($dir){
 	}
 	return $fileArr;
 }
-	$fileArr = list_file("/usr/local/nginx/html/myLiveOv/upload");	//扫描路径下所有视频文件，得到数组
+	$fileArr = list_file("/usr/local/nginx/html/myLiveOhv/upload");	//扫描路径下所有视频文件，得到数组
 	print_r($fileArr);
 
 function isEmptyDir($fp)
@@ -126,7 +126,7 @@ for ($i = 0; $i < count($fileArr); $i++) {
 	$path_parts['filename'] = ltrim(substr($path_parts['basename'], 0, strrpos($path_parts['basename'], '.')), "/");
 	$nameShort = $path_parts['filename']; //pathinfo($name, PATHINFO_FILENAME);//这个不支持中文
 	$nameShort = str_replace(" ", "", $nameShort); //删除空格
-	$name2 = '/usr/local/nginx/html/myLiveOv/vod/' . $nameShort . '/' . $path_parts['basename'];
+	$name2 = '/usr/local/nginx/html/myLiveOhv/vod/' . $nameShort . '/' . $path_parts['basename'];
 
 //	echo '文件夹：' . $path_parts['dirname'] . '<br>' . '原路径：' . $name . '<br>' . '文件名：' . $nameShort . "<br/>" . '新路径：' . $name2 . '<br><br>';
 
@@ -149,7 +149,9 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					$time = date("Y-m-d_H:i:s_");
 				//	exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/'.$nameShort.'/index.m3u8 ./vod/'.$nameShort.'/%03d.ts >  /dev/null 2>&1 &');
 
-					exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
+				//	exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
+				
+				exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
 
 					//截取图片
 					exec('ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/poster.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');

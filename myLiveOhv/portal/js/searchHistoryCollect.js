@@ -4,7 +4,7 @@ var searchTemp = "";
 function showSearchInput(){
     if( parseInt(getID('searchInput').style.top) < 0 ){
         indexArea = "search";
-        getID('searchInput').style.top='60px';
+        getID('searchInput').style.top=(typeof(window.androidJs)=="undefined")?"20px":'60px';
         getID('searchInput').focus();
         window.androidJs.JsShowImm();
     }else{
@@ -23,12 +23,13 @@ function showSearchInput(){
 
 //	显示搜索 历史 收藏列表
 function showSHC(_area,_pageNum,_key){
+    scrollEnable();
     indexArea = _area;
     pageNow = _pageNum;
     getID("nav" + navPos).style.color = "white"; 
-    getID("nav" + navPos).style.backgroundImage = "url(img/"+tagArr[1][navPos].tagTable+"0.png)"; 
-    getID("vodList"+tag1).style.display = "none";
-    getID("vodTab").style.display = "none";
+//    getID("nav" + navPos).style.backgroundImage = "url(img/"+tabArr[1][navPos].tagTable+"0.png)"; 
+    getID("vodList"+tab1).style.display = "none";
+//    getID("vodTab").style.display = "none";
     getID("searchHistoryCollect").style.display = "block";
     getID('shcImg').style.backgroundImage = 'url(img/'+_area+'1.png)';
     getID("loadmoreSHC").innerHTML = "";
@@ -65,15 +66,24 @@ function showSHC(_area,_pageNum,_key){
                 function(index, array) { //遍历json数据列
                     var id = array["id"];
                     var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
-                    var father = array['father'];
+                    var father2 = array['father'];
                     name = name.slice(0,name.lastIndexOf('.') );
-                //	alert(name);
-                    if( father.length > 6){
-                        var	father2 = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+father +'</marquee>';
-                    }else{
-                        var father2 = father;
+                    var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/"+name+"/index.m3u8";
+                    if( collectArr.includes(id)){	//收藏表内包含当前id
+                        if( typeof(window.androidJs) != "undefined"){
+                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=window.androidJs.JsPlayVod("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+                        }else{
+                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
+                        }	
+                    }else{                        
+                        if( typeof(window.androidJs) != "undefined"){
+                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=window.androidJs.JsPlayVod("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+                        }else{
+                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
+                        }
                     }
-                    getID("shcContent").innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="listName">'+father2+'</div></div>';
+                    
+            //    getID("shcContent").innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="listName">'+father2+'</div></div>';
                 });
             setTimeout(function() {
                 changePageStatus = "t";

@@ -20,7 +20,7 @@
 		include "readVipCardArray.php";
 		$fileInfo = "新生成VIP卡信息_";
 	}else if( $from=="sale"){
-		include "readTagArray.php";
+		include "readTabArray.php";
 		$tagNow = $_COOKIE['tagNow'];
 		$fileInfo = substr($tagNow,3)."节目分类信息_";
 	}

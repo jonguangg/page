@@ -9,7 +9,7 @@
 	$currUser = ($_COOKIE["currUser"]) ? $_COOKIE["currUser"] : "null";
 
 	//	定义需处理的excel文件
-	$fileName = $_COOKIE["randname"];	//	"videoTag_20200605_003609_617.xlsx";
+	$fileName = $_COOKIE["randname"];	//	"videoTag_20200612_124147_942.xlsx";//
 
 	// 引入PHPExcel
 	require_once "./PHPExcel-1.8/Classes/PHPExcel/IOFactory.php";
@@ -29,7 +29,7 @@
 	// 获取列数
 	$column = $phpExcel->getActiveSheet()->getHighestColumn();
 
-	//	echo "表格数目为：$sheetCount" . "<br>表格的行数：$row" . "<br>列数：$column";
+//	echo "表格数目为：$sheetCount" . "<br>表格的行数：$row" . "<br>列数：$column";
 
 // 遍历表格行列，将数据写入mysql
 if (stripos($fileName, "hannelList")) {
@@ -74,7 +74,6 @@ if (stripos($fileName, "hannelList")) {
 		echo "Error";
 	}
 } else if (stripos($fileName, "ideoTag")) {	//导入分类数据
-	echo "<script>alert('".$row."');'</script>";
 	//先将原表排序统一加上当前excel表格行数，即新数据插在前面
 	$sql = mysqli_query($connect, "UPDATE video set sort=sort+$row-1 ") or die(mysqli_error($connect));
 
@@ -85,13 +84,7 @@ if (stripos($fileName, "hannelList")) {
 		}
 		if ($i > 1) {	//如果没有表头就用0
 			$nameShort = str_replace(strrchr($excelData[4], "."), "", $excelData[4]); //去掉扩展名
-			$name = '/usr/local/nginx/html/myLiveOv/vod/' . $nameShort . '/' . $excelData[4];
-		/*	$tagCurr = "|" ; 	
-			for($m=14;$m<42;$m++){	//分类标签
-				if( strlen($excelData[$m]) > 0 ){	//如果当前单元格有标签信息则获取此标签
-					$tagCurr = $tagCurr.$excelData[$m]."|";
-				}				
-			}		*/	
+			$name = '/usr/local/nginx/html/myLiveOhv/vod/' . $nameShort . '/' . $excelData[4];
 
 			if ( strlen($excelData[1]) == 0 ) {	//没填是否上架，默认不上架
 				$excelData[1] = 0;
@@ -102,9 +95,8 @@ if (stripos($fileName, "hannelList")) {
 			}
 			// 更新video表内容
 			if($excelData[0]>0){	//外链
-				$sql = mysqli_query($connect, "replace into video (isOutsite,statuss,sort,types,name,father,episode,episodes,region,year,director,actor,score,details,tag,editor,duration) values ($excelData[0],$excelData[1],$excelData[2],'$excelData[3]','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]',$excelData[9],'$excelData[10]','$excelData[11]',$excelData[12],'$excelData[13]','$tagCurr','$currUser','$excelData[42]')") or die(mysqli_error($connect));
+				$sql = mysqli_query($connect, "replace into video (isOutsite,statuss,sort,types,name,father,episode,episodes,region,year,director,actor,score,details,tag,editor,duration) values ($excelData[0],$excelData[1],$excelData[2],'$excelData[3]','$excelData[4]','$excelData[5]','$excelData[6]','$excelData[7]','$excelData[8]',$excelData[9],'$excelData[10]','$excelData[11]',$excelData[12],'$excelData[13]','$excelData[14]','$currUser','$excelData[15]')") or die(mysqli_error($connect));
 			}else{
-			//	echo "<script>alert('".$excelData[1].$excelData[2].$excelData[3].$excelData[4].$excelData[5].$excelData[6]."');</script>";
 				$sql2 = mysqli_query($connect, "select name from video where name='$name' ") or die(mysqli_error($connect));
 				if (mysqli_num_rows($sql2) > 0) {	//判断video表是否有当前行的节目，否则更新失败，导致不继续更新下面的数据	
 					$sql3 = mysqli_query($connect, "UPDATE video SET isOutsite=0, statuss=$excelData[1],sort=$excelData[2],types='$excelData[3]',father='$excelData[5]',episode='$excelData[6]',episodes='$excelData[7]',region='$excelData[8]',year='$excelData[9]',director='$excelData[10]',actor='$excelData[11]',score='$excelData[12]',details='$excelData[13]',tag='$excelData[14]',editor='$currUser' WHERE name='$name' ") or die(mysqli_error($connect));
@@ -114,7 +106,6 @@ if (stripos($fileName, "hannelList")) {
 	}
 	//改写排序数字，否则不连贯
 	$sql = mysqli_query($connect, "UPDATE video set sort=sort+$row-1 ") or die(mysqli_error($connect));
-
 
 	if ($sql3) {
 		echo "<script>alert('已成功将节目信息写入数据库！');location.href='update.php?'</script>";

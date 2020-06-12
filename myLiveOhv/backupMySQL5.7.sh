@@ -4,7 +4,7 @@
 #password=10Star.925
 
 time=` date +%Y%m%d_%H%M%S`
-backupDir=/usr/local/web/www/myLiveOv/backup/
+backupDir=/usr/local/web/www/myLiveOhv/backup/
 
 #/usr/local/mysql/bin/mysqldump myLive | gzip > $backupDir"myLive"$time.sql.gz
 docker exec -i mMysql /usr/bin/mysqldump myLive2.1 | gzip > $backupDir"myLive2.1_docker"$time.sql.gz

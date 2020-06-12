@@ -124,7 +124,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	</style>
 </head>
 
-<body background="bg.jpg" onload="init();" >
+<body background="img/bg.jpg" onload="init();" >
 	<div style="position:absolute;left:30px;top:5%;width:90%;text-align:left;font-size:25px;">Oh!V CMS </div>
 	<div style="position:absolute;left:70px;top:15%;width:150px;height:80%;line-height:15px;text-align:left;">
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('stb');" class="stb">客户管理</div><br />
@@ -306,9 +306,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			<!-- name="excelCard" id="excelCard"-->
 			<input type="hidden" name="MAX_FILE_SIZE" value="104857600" /><!-- value单位是字节（Bytes），除以1024得到KB，再除以1024得到MB，10485760是10M -->
 			<input type="file" name="excelCard" accept=".xls,.xlsx" style="width:50%;font-size:30px;" />
-			<input type="submit" value="上传VIP卡密" style="width:150px;height:50px;background:transparent url(upLoad.png);border:0px; font-size:20px; font-weight:900;cursor:pointer;" />
+			<input type="submit" value="上传VIP卡密" style="width:150px;height:50px;background:transparent url(img/upLoad.png);border:0px; font-size:20px; font-weight:900;cursor:pointer;" />
 		</form>
-		<!-- br><br><button onclick="window.open('download.php');" style="width:120px;height:50px;background:transparent url(upLoad.png);background-size:100% 100%;border:0px; font-size:20px; font-weight:900;cursor:pointer;">下载样表</button><br><br -->
 		<span style="color:red;"><br /><br /><br />请仔细核对 excel 表格的格式，上传后将增量更新之前的数据！</span>
 	</div>
 
@@ -319,9 +318,8 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			<!--name="excel" id="excel"-->
 			<input type="hidden" name="MAX_FILE_SIZE" value="104857600" /><!-- value单位是字节（Bytes），除以1024得到KB，再除以1024得到MB，10485760是10M -->
 			<input type="file" name="excel" accept=".xls,.xlsx" style="width:50%;font-size:30px;" />
-			<input type="submit" value="上传频道列表" style="width:150px;height:50px;background:transparent url(upLoad.png);border:0px; font-size:20px; font-weight:900; " />
+			<input type="submit" value="上传频道列表" style="width:150px;height:50px;background:transparent url(img/upLoad.png);border:0px; font-size:20px; font-weight:900; " />
 		</form>
-		<!-- br><br><button onclick="window.open('download.php');" style="width:120px;height:50px;background:transparent url(upLoad.png);background-size:100% 100%;border:0px; font-size:20px; font-weight:900;cursor:pointer;">下载样表</button><br><br -->
 		<span style="color:red;"><br /><br /><br>请仔细核对 excel 表格的格式，上传后将增量更新之前的数据!</span>
 	</div>
 
@@ -600,7 +598,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		<form enctype="multipart/form-data" action="./upLoadTag.php?action=excel" method="post">
 			<input type="hidden" name="MAX_FILE_SIZE" value="104857600" /><!-- value单位是字节（Bytes），除以1024得到KB，再除以1024得到MB，10485760是10M -->
 			<input type="file" name="excelTag" accept=".xls,.xlsx" style="width:50%;font-size:30px;" />
-			<input type="submit" value="上传节目信息" style="width:150px;height:50px;background:transparent url(upLoad.png);border:0px; font-size:20px; font-weight:900;cursor:pointer;" />
+			<input type="submit" value="上传节目信息" style="width:150px;height:50px;background:transparent url(img/upLoad.png);border:0px; font-size:20px; font-weight:900;cursor:pointer;" />
 		</form>
 		<span style="color:red;"><br /><br /><br />请仔细核对 excel 表格的格式，上传后将更改之前的数据！<br><br>需先将视频文件上传至服务器upload文件夹，待显示出文件名才能导入</span>
 	</div>
@@ -679,7 +677,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var tabArr = <?php echo json_encode($tabArr); ?>;
 	console.log(tabArr);
 //	alert(tabArr.length);
-	var tagNow = 1;
+	var tagNow = 0;
 	function showTagName() {
 		for (i = 0; i < tabArr[1].length; i++) {
 		//	if( tabArr[1][i].tagLevel==1 ){
@@ -1251,7 +1249,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		getID(tabArr[1][tagNow].tagTable).style.color = "black";
 		tagNow = _tag1;
 		//	setCookie("pageNow", _pageNum, '1h');
-		//	setCookie("tagNow", tag, '1h');
+		setCookie("tagNow", tag, '1h'); //导出上架表要用
 		getID(tabArr[1][tagNow].tagTable).style.color = "blue";
 	//	alert(tabArr[1][tagNow].tagName);
 		$.ajax({
@@ -1335,7 +1333,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		} else {
 			$.ajax({
 				type: 'POST',
-				url: 'addTagTable.php',
+				url: 'addTabTable.php',
 				dataType: 'json',
 				data: {
 					"addTagSort": tbRowTagNav,

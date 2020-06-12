@@ -24,6 +24,7 @@ function showSearchInput(){
 
 //	显示搜索 历史 收藏列表
 function showSHC(_area,_pageNum,_key){
+    scrollEnable();
     indexArea = _area;
     pageNow = _pageNum;
     getID("nav" + tab1).style.color = "white"; 
