@@ -2,7 +2,7 @@ var clientWidth = 1080;
 var clientHeight = 1920;
 var scrollTops = 0;
 var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-var vodListTop = (typeof(window.androidJs)=="undefined")?"190px":"230px";
+var vodListTop = (typeof(window.androidJs)=="undefined")?"200px":"230px";
 var indexArea = "vod";
 var navPos = 0; //当前分类 0为home 1为movie -1为直播
 var userKey = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetCookie("userKey", 0) : "9527";
@@ -213,6 +213,7 @@ function changeTop(){
 		getID("searchImg").style.top = "25px";
 		getID("historyImg").style.top = "25px";
 		getID("tab1").style.top = "110px";
-		getID("topBlack").style.height = "190px";
+		getID("searchHistoryCollect").style.top = "200px";
+		getID("topBlack").style.height = "200px";
 	}
 }

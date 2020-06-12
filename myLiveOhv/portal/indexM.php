@@ -1,7 +1,7 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type=text/javascript src="js/init.js?v=1"></script>
+<script type=text/javascript src="js/init.js?v=2"></script>
 <script type=text/javascript src="js/register.js?v=2"></script>
 <?php
 //	error_reporting(0);// 关闭所有PHP错误报告
@@ -480,7 +480,7 @@
 	</div>
 
 	<!-- 搜索 历史 收藏 列表页 -->	
-	<div id="searchHistoryCollect" class="homeList" style="top:200px;display:none;">
+	<div id="searchHistoryCollect" class="homeList" style="top:230px;display:none;">
 		<span id="shcTitle" style="position:relative;left:15%;color:#f7a333;">搜索结果</span>
 		<div id="shcImg" style="background:url(img/null.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
 		<div style="position:absolute;left:0%;top:110px;width:100%;">
@@ -569,11 +569,11 @@
 			<div class="PersonalCenter">Share</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter">History</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>
