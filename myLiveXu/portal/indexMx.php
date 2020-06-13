@@ -249,8 +249,7 @@
 			}else{
 				getID("liveVideo").src = channelTempArr[channelPos].videoUrl;			
 				getID("liveVideo").addEventListener("play",function(){
-			//	getID("liveVideo").muted = (isAndroid)?false:true;
-				getID("liveVideo").muted = false;
+				//	getID("liveVideo").muted = false;
 				},false);
 			}
 	//	}		
@@ -352,7 +351,6 @@
 						getID("h5video").currentTime = currentTime-5;	//从上次离开时前5秒开始播放
 					}
 					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
-				//	getID("h5video").muted = (isAndroid)?false:true;
 				//	getID("h5video").muted = false;
 				}
 			},false);
@@ -699,13 +697,13 @@
 		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
+		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 收藏图标 --
-		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="getID('h5video').muted=false;showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
+		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:95%;">
@@ -950,7 +948,7 @@
 	</div>
 
 	<!-- 输入卡号及卡密 -->
-	<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
+	<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
 		<h1 id="title" style="position:absolute;left:0px;top:3%;width:100%;height:100px;text-align:center;font-size:90px;text-shadow:-5px 5px 5px #000;">Registered VIP Card</h1>
 
 		<div style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
@@ -965,9 +963,9 @@
 
 		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
-		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
+		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:white;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
 
-		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
+		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:white;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
 
 		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(img/vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 
@@ -977,7 +975,7 @@
 	</div>
 
 	<!-- 个人中心 -->
-	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
+	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
 		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
 		<div id="usernameDiv">
 			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
@@ -994,15 +992,15 @@
 			<div class="PersonalCenter">VIP</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="share();">
+		<div onclick="share();" style="display: none;">
 			<div class="PersonalCenter">Share</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('h5video').muted=false;getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter">History</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(getCookie('username')){getID('h5video').muted=false;getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
+		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>

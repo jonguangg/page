@@ -90,7 +90,7 @@ function sendAjax(_url, _content) {
 						getID("msg").innerHTML = xmlHttp.responseText.slice(xmlHttp.responseText.indexOf("error") + 5);
 					}
 				}
-				getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
+				getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 			}
 		}
 	}

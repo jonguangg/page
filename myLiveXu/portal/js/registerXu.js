@@ -117,11 +117,6 @@
 		getID('me').style.display = 'block';
 		getID("me").style.height = (clientHeight +0)+ "px";
 		indexArea = "me";
-	/*	if( typeof(window.androidJs)!="undefined"){
-			window.androidJs.JsSetPageArea("me");
-			getID("speedDiv").style.display = "none";
-			getID("usernameDiv").style.display = "none";
-		}*/
 	}
 
 	function registedVipCard(){
@@ -153,7 +148,7 @@
 		} else {
 			getID("msg").style.lineHeight = window.innerHeight * 0.35 + "px"; //只一行内容，行高=div height
 			getID("msg").innerHTML = "Register your VIP card !";
-			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
+			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 		}		
 		indexArea = "home";
 	}
@@ -162,16 +157,16 @@
 		var clientHeight  = window.innerHeight;
 		getID("msg").style.lineHeight = clientHeight*0.35+"px";
 		if( getID("card_id").value.length<8 ){
-			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";	
+			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";	
 			getID("msg").innerHTML = "Card number error !";
 		}else if( getID("card_key").value.length<8 ){
-			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
+			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 			getID("msg").innerHTML = "PIN code error !";
 		}else{
 			var cardIdPost = getID("card_id").value.replace(/-/g, "");//把每4位中间的横杠删掉
 			var cardKeyPost = getID("card_key").value.replace(/-/g, "");
 		//	getID("msg").innerHTML = sn;
-			sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost)+"&ip="+$ip+"&city="+$city;
+			sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost);
 		}
 	}
 
