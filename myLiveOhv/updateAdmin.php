@@ -20,11 +20,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	<link rel="shortcut icon" href="portal/img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
 	<title>Oh!V CMS</title>
 	<style>
-		* {}
-
-		table {
-			border-collapse: collapse;
-		}
+		table {border-collapse: collapse;}
 
 		td {
 			border: 1px #0066ff solid;
@@ -33,9 +29,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			word-wrap: break-word;
 		}
 
-		a {
-			text-decoration: none;
-		}
+		a {text-decoration: none;}
 
 		input {
 			width: 99%;
@@ -46,10 +40,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			cursor: pointer;
 		}
 
-		button {
-			cursor: pointer;
-			color: blue;
-		}
+		button {cursor: pointer;color: blue;}
 
 		.groupLeft {
 			position: relative;
@@ -110,10 +101,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 			color: white;
 		}
 
-		.pages {
-			float: left;
-			margin-left: 30px;
-		}
+		.pages {float: left;margin-left: 30px;}
 
 		.userText {
 			position: absolute;
@@ -129,13 +117,21 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	<div style="position:absolute;left:70px;top:15%;width:150px;height:80%;line-height:15px;text-align:left;">
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('stb');" class="stb">客户管理</div><br />
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('sold');" class="sold">销售记录</div><br />
+		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('vipCard');" class="vipCard">库存管理</div><br />
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('video');" class="video">媒资管理</div><br />
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('sale');" class="sale">上架管理</div>
 		<div id="sale" style="display:none;">
 			<!--div onclick="getTagData('tagChinese',1,15);" id="tagChinese" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;中文字幕</div><br /-->
 		</div><br>
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('tagNav');" class="tagNav">栏目分类</div><br>
-		<!--div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('upLoadCard');" class="upLoadCard">导入卡密</!--div><br /-->
+		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('upLoadCard');" class="upLoadCard">导入卡密</div><br />
+		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('upLoad');" class="upLoad">导入直播</div><br />
+		<!--li style="cursor:pointer;" onclick="showArea('editGroup');" class="editGroup">修改分类</div><br />
+	<div style="cursor:pointer;" onclick="showArea('addChannel');" class="addChannel">添加频道</div><br />
+	<div style="cursor:pointer;" onclick="showArea('editChannel');" class="editChannel">修改频道</div><br />
+	<div style="cursor:pointer;" onclick="showArea('editChannelList');" class="editChannelList">编辑列表</div><br /-->
+		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('preview');" class="preview">预览频道</div><br />
+
 		<div style="cursor:pointer;position:relative;top:20px;" onclick="showArea('user');" class="user">用户管理</div>
 		<div id="user" style="display:none;"><br />
 			<div onclick="showArea('editUser');" class="editUser" style="cursor:pointer;position:relative;top:20px;">&emsp;&emsp;修改用户</div><br />
@@ -147,7 +143,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 频道组管理 -->
 	<div id="editGroup" style="position:absolute;top:50px;left:20%;width:75%;display:none;">
-		<form action="update.php" method="post" id="editGroupForm">
+		<form action="updateAdmin.php" method="post" id="editGroupForm">
 			<!--        <div id="groupRow"> -->
 			<table id="editGroupTb" width=100% border="1" cellpadding="0" cellspacing="0">
 				<caption style="margin-bottom:20px;font-size:25px;">频道组管理</caption>
@@ -175,7 +171,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 新增频道 -->
 	<div id="addChannel" style="position:absolute;top:50px;left:20%;width:75%;display:none;">
-		<form action="update.php" method="post" id="addChannelForm">
+		<form action="updateAdmin.php" method="post" id="addChannelForm">
 			<table width=100% border="1" cellpadding="0" cellspacing="0">
 				<caption style="margin-bottom:20px;font-size:25px;">添加频道</caption>
 
@@ -217,7 +213,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!--修改频道参数-->
 	<div id="editChannel" style="position:absolute;top:50px;left:20%;width:75%;display:none;">
-		<form action="update.php" method="post" id="editChannelForm">
+		<form action="updateAdmin.php" method="post" id="editChannelForm">
 			<table width=100% border="1" cellpadding="0" cellspacing="0">
 				<caption style="margin-bottom:20px;font-size:25px;">修改频道参数</caption>
 
@@ -271,7 +267,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 编辑频道列表 -->
 	<div id="editChannelList" style="position:absolute;top:50px;left:20%;width:75%;display:none;">
-		<form action="update.php" method="post" id="editChannelListForm">
+		<form action="updateAdmin.php" method="post" id="editChannelListForm">
 			<table id="editChannelListTb" width=100% border="1" cellpadding="0" cellspacing="0">
 				<caption style="margin-bottom:20px;font-size:25px;">编辑频道列表</caption>
 				<tr>
@@ -546,7 +542,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 分类管理 -->
 	<div id="tagNav" style="position:absolute;top:115px;left:20%;width:70%; text-align:center;display:none;">
-		<form action="update.php" method="post" id="editTagNavForm-can_delete-">
+		<form action="updateAdmin.php" method="post" id="editTagNavForm-can_delete-">
 			<table id="tagNavTb" style="table-layout: fixed" width="100%" border="1" cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
@@ -568,7 +564,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 添加分类 -->
 	<div id="addTag" class="addTag" style="position:absolute;top:120px;left:40%;width:20%;font-size:20px;display:none;">
-		<form action="update.php" method="post" id="addtagForm">
+		<form action="updateAdmin.php" method="post" id="addtagForm">
 			<a style="font-size:25px;">&emsp;&emsp;&emsp;新增栏目</a></br></br>
 			栏目名：
 			<input type="text" id="addTagName" name="addTagName" required="required" placeholder="" class="userText"></br></br>
@@ -597,7 +593,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 编辑用户 -->
 	<div id="editUser" style="position:absolute;top:120px;left:40%;width:20%;font-size:20px;display:none;">
-		<form action="update.php" method="post" id="editUserForm">
+		<form action="updateAdmin.php" method="post" id="editUserForm">
 			<a style="font-size:25px;">&emsp;&emsp;&emsp;修改用户</a></br></br>
 			用户名：
 			<input type="text" id="editUserInput" name="editUserInput" required="required" disabled="disabled" class="userText"></br></br>
@@ -618,7 +614,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 
 	<!-- 新增用户 -->
 	<div id="addUser" style="position:absolute;top:120px;left:40%;width:20%;font-size:20px;display:none;">
-		<form action="update.php" method="post" id="addUserForm">
+		<form action="updateAdmin.php" method="post" id="addUserForm">
 			<a style="font-size:25px;">&emsp;&emsp;&emsp;新增用户</a></br></br>
 			用户名：
 			<input type="text" id="addUserInput" name="addUserInput" required="required" placeholder="请输入用户名" class="userText"></br></br>
@@ -659,7 +655,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 	var currUser = getCookie("currUser") ? getCookie("currUser") : 'null';
 	var currUserMark = getCookie("currUserMark") ? decodeURI(getCookie("currUserMark")) : '';
 	if (getCookie("currUser") == null) { //没有用户即为非正常登陆，则立即退出
-		location.href = "login.php";
+	//	location.href = "login.php";
 	}
 
 	var currArea = getCookie("currArea") ? getCookie("currArea") : 'stb';
@@ -1340,7 +1336,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 					console.log("success:" + data.status);
 					if (data.status == "succeed") {
 						alert("\n提交成功");
-						location.href = "update.php?" + Math.random();
+						location.href = "updateAdmin.php?" + Math.random();
 						//	showTagList();
 					}
 				},
@@ -1371,7 +1367,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				console.log("success:" + data.status);
 				if (data.status == "succeed") {
 				//	alert("\n提交成功");
-					location.href = "update.php?" + Math.random();
+					location.href = "updateAdmin.php?" + Math.random();
 					//	showTagList();
 				}
 			},
@@ -1827,7 +1823,7 @@ if (@$_POST['subEditGroup']) {	//编辑频道组
 
 			$sql = mysqli_query($connect, "update tag set tagSort=$tagSortTemp, tagName='$tagNameTemp' ,tagFather='$tagFatherTemp' where tagTable='$tagTableTemp' ") or die(mysqli_error());		
 		}
-		echo "<script>location.href = 'update.php?'+Math.random();</script>";
+		echo "<script>location.href = 'updateAdmin.php?'+Math.random();</script>";
 	}
 } else if (@$_POST['subEditChannelList']) {	//编辑频道列表	这里不成功八成是因为post内容太大，需改php.ini的max_input_vars = 100000 
 	$tbRowChannelList = ($_COOKIE["tbRowChannelList"]) ? $_COOKIE["tbRowChannelList"] : 0;

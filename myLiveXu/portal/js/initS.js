@@ -64,14 +64,23 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 		tab1 = 0;
 		scrollTo(0,0);
 	}else if( indexArea == "detail" ){
-		getID("h5video").src = "";
-		indexArea = from;
-		getID("vod").style.opacity = 1;
-		getID("detail").style.display = "none";
-		if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
-			getID("searchHistoryCollect").style.display = "block";
+		if( typeof(window.androidJs)!="undefined"){
+			window.androidJs.JsClosePlayer();
+			getID("vod").style.display = "block";
+			updateCurrentTime();
+			getID("detail").style.left = "-2000px";
 		}
-		scrollTo(0,scrollTops);
+		setTimeout(function(){
+			getID("h5video").src = "";
+			getID("vod").style.opacity = 1;
+			getID("detail").style.display = "none";
+			if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
+				getID("searchHistoryCollect").style.display = "block";
+			}
+			scrollTo(0,scrollTops);
+		},300);
+		indexArea = from;
+		setTimeout(function(){getID("vod").style.display = "block";},1000); //不加这个，用户进入详情后马上按返回，会黑屏
 	}else if( indexArea == "zhiBo"){
 		if( isZhiBo ){	//先退出播放窗口
 			isZhiBo = false;
@@ -174,8 +183,7 @@ function orient(){	//旋转屏幕
 	}, false);
 
 	//改写H5返回键事件
-	window.addEventListener("popstate", function(e) { 
-	//	alert("我监听到了浏览器的返回按钮事件啦");
+	window.addEventListener("popstate", function(e) { //	alert("我监听到了浏览器的返回按钮事件啦");
 		if( indexArea=="detail" || indexArea=="live" || indexArea=="me" || indexArea=="login" ){
 			pushHistory(); 
 			getID("vod").style.display = "block";
@@ -188,7 +196,8 @@ function orient(){	//旋转屏幕
 			}else if( indexArea=="live"){
 				getID("channel").style.display = "none";
 			}
-			setTimeout(function(){androidBack();},1000);
+		//	setTimeout(function(){androidBack();},300);
+			androidBack();
 		}
 	}, false);
 	function pushHistory() { 
@@ -198,7 +207,9 @@ function orient(){	//旋转屏幕
 		}; 
 		window.history.pushState(state, "title", "#"); 
 	}
-	pushHistory(); 
+	if( typeof(window.androidJs)=="undefined"){
+		pushHistory(); 
+	}
 
 	//	监听切换前后台
 	var hiddenTime = getCookie("hiddenTime")?getCookie("hiddenTime"):0;	// 切到后台的时间点 

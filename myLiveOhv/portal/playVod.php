@@ -2,7 +2,7 @@
 /*
 	获取播放串给AP，写播放历史进数据库
 */
-	header('Content-type:text/html;charset=utf-8');
+//	header('Content-type:text/html;charset=utf-8');
 
 	//	连接数据库	
 	include "../connectMysql.php";
@@ -31,9 +31,7 @@
 		}else{
 			$playJson['playUrl'] = $name;
 		}		
-	} 
-//	$playJson['id'] = $id;
-	
+	}	
 
 	//	写播放历史
 	$sql2 = mysqli_query($connect, "replace into history(sn,id,name,father,episode) values ('$sn',$id,'$name','$father',$episodePos) ") or die(mysqli_error($connect));
