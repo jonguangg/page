@@ -134,11 +134,11 @@
 		} else {
 			getID("msg").style.lineHeight = window.innerHeight * 0.35 + "px"; //只一行内容，行高=div height
 			getID("msg").innerHTML = "Register your VIP card !";
-			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
+			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 		}		
 		indexArea = "vod";
 	}
-
+/*
 	function checkLicense(_playUrl){
 		if( parseInt(intLoginTime) > parseInt(intExpireTime) ){	//授权过期了
 			alert("过期了");
@@ -152,7 +152,7 @@
 			}
 		}
 	}
-
+*/
 	function checkInput(){
 		var clientHeight  = window.innerHeight;
 		getID("msg").style.lineHeight = clientHeight*0.35+"px";

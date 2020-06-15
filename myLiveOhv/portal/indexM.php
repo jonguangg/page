@@ -55,7 +55,7 @@
 	$mark = $_COOKIE["deviceInfo"];	//机顶盒备注
 	$loginTime = date("Y-m-d"); 						//机顶盒打开APP的日期
 	$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
-	$expireTime = date("Y-m-d", strtotime("+1 day")); 	//初次安装的授权到期时间
+	$expireTime = date("Y-m-d", strtotime("+0 day")); 	//初次安装的授权到期时间
 	//	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
 	$hiddenTime = ($_COOKIE["hiddenTime"])?$_COOKIE["hiddenTime"]:0;	// 切到后台的时间点
 	$visibilityTime = time();							//此次打开的时间戳，精确到秒
@@ -151,56 +151,27 @@
 //	console.log(collectArr);
 
 	var currentTime = 0;   //播放位置 单位秒
-	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
+	function playVod(_id,_playUrl) {
 	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime);
-		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
+		if( parseInt(intLoginTime) > parseInt(intExpireTime) ){	//授权过期了
+			alert("过期了");
 			registedVipCard();
+		//	if (typeof(window.androidJs) != "undefined") {
+		//		window.androidJs.JsClosePlayer();
+		//	}
 			return;
+		}else{
+			if (typeof(window.androidJs) != "undefined") {
+				window.androidJs.JsPlayVod(_playUrl);
+			}
 		}
 
-		if (typeof(window.androidJs) != "undefined") {
-			window.androidJs.JsClosePlayer();
-			window.androidJs.JsSetPageArea("vod");
-			if( episodePos==_episodePos ){	//播上次那集，就从上次位置继续播，否则换集了，就从头播
-				window.androidJs.JsLastPosition(parseInt(currentTime));
-			}else{
-				window.androidJs.JsLastPosition(0);
-			}
-			window.androidJs.JsPlayVod(_playUrl);
-			getID("speeds").style.opacity = 0;
-			getID("fullscreens").style.opacity = 0;
-		}else{
-			getID("h5video").src = _playUrl; //"http://live.nbs.cn/channels/njtv/sepd/m3u8:500k/live.m3u8";//_playUrl; //"http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
-			getID("speeds").style.opacity = 1;
-			getID("speedNum").innerHTML = speed;
-			getID("fullscreens").style.opacity = (isAndroid)?1:0;
-			document.title = _father;
-			//监听播放结束
-			getID("h5video").addEventListener('ended',function(){				
-				if( _episodePos<_episodes-1 ){//自动播放下一集
-   					playVod( id,list[parseInt(episodePos)+1].videoPath,father,poster,(parseInt(episodePos)+1),episodes );
-				}
-			});
-			getID("h5video").addEventListener("timeupdate",function(){
-				var timeDisplay = Math.floor(getID("h5video").currentTime);
-				if( timeDisplay == 1 ){
-					if( currentTime>5 ){ 
-						getID("h5video").currentTime = currentTime-5;	//从上次离开时前5秒开始播放
-					}
-					getID("h5video").playbackRate = speed;				//用上次使用的速度播放
-				}
-			},false);
-		}
 		$.ajax({
 			type: 'POST',
-			url: './playVodXu.php',	//写当前的播放记录
+			url: './playVod.php',	//写当前的播放记录
 			data: {
 				'sn':sn,
-				'id':_id,
-				'father':_father,
-				'poster':_poster,
-				'episodePos':_episodePos,
-				'currentTime':currentTime
+				'id':_id
 			},
 			dataType: 'json',
 			beforeSend: function() {
@@ -213,13 +184,6 @@
 			//	alert("something error!");
 			}
 		});
-		if( _episodes>1 ){	//多集的才需定位当前集
-			getID('chooseChapter'+episodePos).style.backgroundColor = "snow";
-			episodePos = _episodePos;
-			getID('chooseChapter'+episodePos).style.backgroundColor = "#ff9933";			
-			getID("chooseChapterNum").scrollLeft = ( (episodePos-3)>0 )?(episodePos-3)*126:0;	
-			document.title = _father+"(第"+(parseInt(episodePos)+1)+"集)";
-		}
 	}
 
 	function changePage(_num) { //VOD列表换页
@@ -278,12 +242,17 @@
 						var father2 = array['father'];
 						var id = array["id"];
 						name = name.slice(0,name.lastIndexOf('.') );
+					
+						var playUrl = "http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
+						var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/fsyy.ts";
+						var playUrl = "http://mixtvapi.mixtvapp.com:8080/rmt/0fc71333f8f349f79b4ce7125b302dcf.mp4";
+						var playUrl = "http://183.207.249.15/PLTV/2/224/3221226037/index.m3u8";
+						var playUrl = "http://tenstar.synology.me:10025/myLive/vod/"+name+"/index.m3u8";
 						var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/"+name+"/index.m3u8";
-					//	var playUrl = "http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
-					//	var playUrl = "http://183.207.249.15/PLTV/2/224/3221226037/index.m3u8";
+					
 						if( collectArr.includes(id)){	//收藏表内包含当前id
 							if( typeof(window.androidJs) != "undefined"){
-								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=checkLicense("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=playVod('+id+',"'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
 							}else{
 								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
 							}	
@@ -292,7 +261,7 @@
 						//	getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListName">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
 							
 							if( typeof(window.androidJs) != "undefined"){
-								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=checkLicense("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=playVod('+id+',"'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
 							}else{
 								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
 							}
@@ -521,7 +490,7 @@
 	</div>
 
 	<!-- 输入卡号及卡密 -->
-	<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,red,deeppink,orange,yellow,green,blue,indigo,violet);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
+	<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
 		<h1 id="title" style="position:absolute;left:0px;top:3%;width:100%;height:100px;text-align:center;font-size:90px;text-shadow:-5px 5px 5px #000;">Registered VIP Card</h1>
 
 		<div style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
@@ -536,9 +505,9 @@
 
 		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
-		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
+		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;border:red 1px solid;" ><b onclick="back()">back</b></div>
 
-		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,yellow,green);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
+		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
 
 		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(img/vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 

@@ -15,7 +15,7 @@
 	$startPage = ($pageNow-1)*$pageSize;			   //起始页
 
 	if( $area == "search"){	//搜索
-		$query = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND father LIKE '%$key%' order by sort ASC,editTime DESC limit $startPage,$pageSize") or die(mysqli_error($connect));
+		$query = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND father LIKE '%$key%' OR actor LIKE '%$key%' order by sort ASC,editTime DESC limit $startPage,$pageSize") or die(mysqli_error($connect));
 
 		$sql = mysqli_query($connect,"SELECT * from video WHERE statuss=1 AND father LIKE '%$key%' order by sort ASC,editTime DESC ") or die(mysqli_error($connect));
 		$total = mysqli_num_rows($sql);		//总记录数 

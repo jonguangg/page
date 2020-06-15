@@ -199,7 +199,10 @@ function pushHistory() {
 	}; 
 	window.history.pushState(state, "title", "#"); 
 }
-pushHistory(); 
+
+if( typeof(window.androidJs)=="undefined"){
+	pushHistory(); 
+}	
 
 //	监听切换前后台
 var hiddenTime = getCookie("hiddenTime")?getCookie("hiddenTime"):0;	// 切到后台的时间点 
