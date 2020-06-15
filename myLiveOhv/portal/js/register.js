@@ -157,10 +157,10 @@
 		var clientHeight  = window.innerHeight;
 		getID("msg").style.lineHeight = clientHeight*0.35+"px";
 		if( getID("card_id").value.length<8 ){
-			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";	
+			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";	
 			getID("msg").innerHTML = "Card number error !";
 		}else if( getID("card_key").value.length<8 ){
-			getID("msg").style.background = "linear-gradient(to bottom,green,blue,indigo,violet)";
+			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 			getID("msg").innerHTML = "PIN code error !";
 		}else{
 			var cardIdPost = getID("card_id").value.replace(/-/g, "");//把每4位中间的横杠删掉
