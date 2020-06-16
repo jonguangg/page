@@ -145,7 +145,7 @@
 </style>
 <script>
 	var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
-	var tabArr = <?php echo json_encode($tabArr); ?>;
+	var tabArr = <?php echo json_encode($tabArr); ?>;	
 	var collectArr = <?php echo json_encode($collectArr); ?>;
 	var channelDataArr = <?php echo json_encode($channelArr); ?>;
 //	console.log(collectArr);
@@ -206,7 +206,7 @@
 	var pageNow0=0,pageNow1=0, pageNow2=0, pageNow3=0, pageNow4=0, pageNow5=0, pageNow6=0, pageNow7=0, pageNow8=0, pageNow9=0, pageNow10=0, pageNow11=0, pageNow12=0, vodPageAll = 1, vodPageAll0 = 1, vodPageAll1 = 1, vodPageAll2 = 1, vodPageAll3 = 1, vodPageAll4 = 1, vodPageAll5 = 1, vodPageAll6 = 1, vodPageAll7 = 1, vodPageAll8 = 1, vodPageAll9 = 1, vodPageAll10 = 1, vodPageAll11 = 1, vodPageAll12 = 1 ;
 	var changePageStatus = "f"; //；加载状态，f为未完成，此时不加载下一页
 
-	function getTabData(_tab1, _tab2,_tab3,_pageNow, _pageSize){				
+	function getTabData(_tab1, _tab2,_tab3,_pageNow, _pageSize){
 		pageNow = eval("pageNow"+tab1)+1; //当前请求页码为已显示页面+1，即下一页
 		$.ajax({
 			type: 'POST',
@@ -241,30 +241,22 @@
 						var name = array['name'].slice(array['name'].lastIndexOf('/') + 1);
 						var father2 = array['father'];
 						var id = array["id"];
+						var poster = array['poster'];
+					//	console.log(poster);
 						name = name.slice(0,name.lastIndexOf('.') );
 					
-						var playUrl = "http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
-						var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/fsyy.ts";
-						var playUrl = "http://mixtvapi.mixtvapp.com:8080/rmt/0fc71333f8f349f79b4ce7125b302dcf.mp4";
-						var playUrl = "http://183.207.249.15/PLTV/2/224/3221226037/index.m3u8";
-						var playUrl = "http://tenstar.synology.me:10025/myLive/vod/"+name+"/index.m3u8";
+				//		var playUrl = "http://videofile1.cutv.com/originfileg/010002_t/2017/02/14/G15/G15fgfffhgjnmfnhnhkkjk_cug.mp4";
+				//		var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/fsyy.ts";
+				//		var playUrl = "http://mixtvapi.mixtvapp.com:8080/rmt/0fc71333f8f349f79b4ce7125b302dcf.mp4";
+				//		var playUrl = "http://183.207.249.15/PLTV/2/224/3221226037/index.m3u8";
+				//		var playUrl = "http://tenstar.synology.me:10025/myLive/vod/"+name+"/index.m3u8";
 						var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/"+name+"/index.m3u8";
-					
-						if( collectArr.includes(id)){	//收藏表内包含当前id
-							if( typeof(window.androidJs) != "undefined"){
-								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=playVod('+id+',"'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
-							}else{
-								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
-							}	
+
+						var collectImg = (collectArr.includes(id))?"img/collect1.png":"img/collect0.png";
+						if( typeof(window.androidJs) != "undefined"){
+							getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/'+poster+')" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=playVod('+id+',"'+playUrl+'");></div><img id=collectImg'+id+' src='+collectImg+' style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
 						}else{
-						//	getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=createVideo('+id+',"'+name+'")></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
-						//	getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListName">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
-							
-							if( typeof(window.androidJs) != "undefined"){
-								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=playVod('+id+',"'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
-							}else{
-								getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
-							}
+							getID("vodListContent"+_tab1).innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/'+poster+'" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src='+collectImg+' style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
 						}
 					});	
 				setTimeout(function() {
@@ -399,7 +391,7 @@
 		<div id="meImg" style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Oh!V</div>
 
 		<!-- 搜索框 -->
-		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
+		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();window.androidJs.JsShowImm();" />
 
 		<!-- 搜索图标 -->
 		<div id="searchImg" style="position:fixed;top:65px;left:680px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
@@ -505,7 +497,7 @@
 
 		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
-		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;border:red 1px solid;" ><b onclick="back()">back</b></div>
+		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back();"><b>back</b></div>
 
 		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
 

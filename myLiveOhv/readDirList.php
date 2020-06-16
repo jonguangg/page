@@ -17,6 +17,7 @@ define('FFMPEG_CMD', 'ffmpeg -i "%s" 2>&1');	// 定义ffmpeg路径及命令常�
 		如果数据库没有，就记录该文件名和修改时间	
 	*/
 
+	exec('chmod -R 777 ./upload/');
 //	遍历当前文件夹展示所有的文件和目录
 function list_file($dir){
 	$temp = scandir($dir); //首先读取文件夹，得到该文件夹下文件和目录的数组
@@ -44,7 +45,7 @@ function list_file($dir){
 	return $fileArr;
 }
 	$fileArr = list_file("/usr/local/nginx/html/myLiveOhv/upload");	//扫描路径下所有视频文件，得到数组
-	print_r($fileArr);
+//	print_r($fileArr);
 
 function isEmptyDir($fp)
 {
@@ -127,12 +128,23 @@ for ($i = 0; $i < count($fileArr); $i++) {
 	$nameShort = $path_parts['filename']; //pathinfo($name, PATHINFO_FILENAME);//这个不支持中文
 	$nameShort = str_replace(" ", "", $nameShort); //删除空格
 	$name2 = '/usr/local/nginx/html/myLiveOhv/vod/' . $nameShort . '/' . $path_parts['basename'];
+	$poster1 = $path_parts['dirname'].$nameShort.'.gif';
+	$poster2 = $path_parts['dirname'].$nameShort.'.png';
+	$poster3 = $path_parts['dirname'].$nameShort.'.jpg';
+	$poster = "";
+	if(	file_exists($poster1)){
+		$poster = $nameShort.'.gif';
+	//	echo '<script>alert("'.$poster.'")</script>';
+	}else if(	file_exists($poster2)){
+		$poster = $nameShort.'.png';
+	}else if(	file_exists($poster3)){
+		$poster = $nameShort.'.jpg';
+	}
 
-//	echo '文件夹：' . $path_parts['dirname'] . '<br>' . '原路径：' . $name . '<br>' . '文件名：' . $nameShort . "<br/>" . '新路径：' . $name2 . '<br><br>';
-
+//	echo '<br>文件夹：' . $path_parts['dirname'] . '<br>' . '原路径：' . $name . '<br>' . '文件名：' . $nameShort . "<br/>" . '新路径：' . $name2 . '<br><br>';
 	$filemtime = date("Y-m-d H:i:s", filemtime($fileArr[$i])); //内容改变时间	改名称，内容时间不变
-	//	$filectime = date("Y-m-d H:i:s",filectime($fileArr[$i]));//索引改变时间	改内容，索引时间一起变
-	//	$fileatime = date("Y-m-d H:i:s",fileatime($fileArr[$i]));//访问时间
+//	$filectime = date("Y-m-d H:i:s",filectime($fileArr[$i]));//索引改变时间	改内容，索引时间一起变
+//	$fileatime = date("Y-m-d H:i:s",fileatime($fileArr[$i]));//访问时间
 
 	if (strtotime($filemtime) + 29999999 * 60 > strtotime($lastScanTime)) {	//文件时间在上上次获取视频参数之后，说明是新文件，因为第一次只记录文件名和上传时间，第二次再对比时间，所以要比较上上次的扫描时间
 		$sql = mysqli_query($connect, "select * from video where name='$name2' ") or die(mysqli_error($connect));
@@ -148,13 +160,14 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					//	切片 
 					$time = date("Y-m-d_H:i:s_");
 				//	exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/'.$nameShort.'/index.m3u8 ./vod/'.$nameShort.'/%03d.ts >  /dev/null 2>&1 &');
-
-				//	exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
 				
-				exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
+					exec('mkdir ./vod/'.$nameShort.' && nohup ffmpeg -i '.$name.' -c copy -map 0 -f segment -segment_list ./vod/' . $nameShort . '/index.m3u8 ./vod/' . $nameShort . '/%03d.ts >> ./sliceLog/' . $time . $nameShort . '.log 2>&1 &');
 
 					//截取图片
-					exec('ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/poster.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
+					if( strlen($poster)<4 ){
+						exec('ffmpeg -ss 00:00:08  -i ' . $name . ' ./vod/' . $nameShort . '/'.$nameShort.'.jpg -r 1 -vframes 1 -an -f mjpeg 1>/dev/null');
+						$poster = $nameShort.'.jpg';
+					}
 
 					$duration = $video_info[0]["duration"];
 				//	echo $duration;
@@ -175,11 +188,11 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					}
 
 					//	将视频参数写进数据库	
-					$sql = mysqli_query($connect, "replace into video(name,uploadTime,duration,second,bitrate,vcodec,vformat,acodec,asamplerate,resolution,size) values ('$name2','$filemtime','$duration','$second','$bitrate','$vcodec','$vformat','$acodec','$asamplerate','$resolution','$size')") or die(mysqli_error($connect));
+					$sql = mysqli_query($connect, "replace into video(name,uploadTime,duration,second,bitrate,vcodec,vformat,acodec,asamplerate,resolution,size,poster) values ('$name2','$filemtime','$duration','$second','$bitrate','$vcodec','$vformat','$acodec','$asamplerate','$resolution','$size','$poster')") or die(mysqli_error($connect));
 					$fileInfoArrTemp["name"] = $name;
-					//	$fileInfoArrTemp["filectime"] = $filectime;
+				//	$fileInfoArrTemp["filectime"] = $filectime;
 					$fileInfoArrTemp["filemtime"] = $filemtime;
-					//	$fileInfoArrTemp["fileatime"] = $fileatime;
+				//	$fileInfoArrTemp["fileatime"] = $fileatime;
 					$fileInfoArrTemp["duration"] = $duration;
 					$fileInfoArrTemp["second"] = $second;
 					$fileInfoArrTemp["bitrate"] = $bitrate;
@@ -191,11 +204,12 @@ for ($i = 0; $i < count($fileArr); $i++) {
 					$fileInfoArrTemp["size"] = $size;
 					array_push($fileInfoArr, $fileInfoArrTemp);
 
-					//	移动视频文件到vod文件夹 并更新数据库内的文件路径
-					//	exec('mv ' . $path_parts['dirname'] . $nameShort . '* ./vod/' . $nameShort . '/');
-						exec('chmod -R 777 ./vod/' . $nameShort);
-					//	或者删除
-					exec('rm -f ' . $path_parts['dirname'] . $nameShort . '*' );
+				//	移动视频文件到vod文件夹 并更新数据库内的文件路径
+					exec('mv ' . $path_parts['dirname'] . $nameShort . '* ./vod/' . $nameShort . '/');
+					exec('chmod -R 777 ./vod/' . $nameShort);
+				//	或者删除
+				//	exec('rm -f ' . $path_parts['dirname'] . $nameShort . '*' );
+
 					$sql = mysqli_query($connect, "UPDATE video set name='$name2' where name='$name' ") or die(mysqli_error($connect));
 
 					if (strlen($path_parts['dirname']) > 36 && isEmptyDir($path_parts['dirname']) == "空") { //删除空文件夹
