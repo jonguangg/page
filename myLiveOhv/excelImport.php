@@ -88,6 +88,8 @@ if (stripos($fileName, "hannelList")) {
 
 			if ( strlen($excelData[1]) == 0 ) {	//没填是否上架，默认不上架
 				$excelData[1] = 0;
+			}else{
+				$excelData[1] = 1;
 			}
 
 			if ((int) $excelData[2] < 1) {	//没填排序的默认按表中从上到下递增
