@@ -10,7 +10,7 @@
 
 	$query = mysqli_query($connect,"SELECT * from collect WHERE sn='$sn' AND  statuss=1 order by id ASC") or die(mysqli_error($connect));
 
-	$collectArr[] = null;	//先定义一个值，否则收藏为空会出错
+	$collectArr[] = "null";	//先定义一个值，否则收藏为空会出错
 
 	while($row=mysqli_fetch_array($query)){//遍历查询结果，将每条结果写入数组
 		$collectArr[] = $row['id'];  

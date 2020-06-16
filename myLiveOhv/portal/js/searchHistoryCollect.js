@@ -22,7 +22,8 @@ function showSearchInput(){
 }
 
 //	显示搜索 历史 收藏列表
-function showSHC(_area,_pageNum,_key){
+function showSHC(_area,_pageNum,_key){    
+	console.log(collectArr);
     scrollEnable();
     indexArea = _area;
     pageNow = _pageNum;
@@ -69,21 +70,12 @@ function showSHC(_area,_pageNum,_key){
                     var father2 = array['father'];
                     name = name.slice(0,name.lastIndexOf('.') );
                     var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/"+name+"/index.m3u8";
-                    if( collectArr.includes(id)){	//收藏表内包含当前id
-                        if( typeof(window.androidJs) != "undefined"){
-                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=window.androidJs.JsPlayVod("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
-                        }else{
-                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect1.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
-                        }	
-                    }else{                        
-                        if( typeof(window.androidJs) != "undefined"){
-                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=window.androidJs.JsPlayVod("'+playUrl+'");></div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
-                        }else{
-                            getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImg'+id+' src="img/collect0.png" style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
-                        }
+                    var collectImg = (collectArr.includes(id))?"img/collect1.png":"img/collect0.png";
+                    if( typeof(window.androidJs) != "undefined"){
+                        getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';background:url(../vod/'+name+'/poster.jpg)" ><div style="float:left;left:0px;top:0px;width:80%;height:100%;" onClick=window.androidJs.JsPlayVod("'+playUrl+'");></div><img id=collectImgs'+id+' src='+collectImg+' style="float:left;margin-left:20px;margin-top:20px;width:100px;height:100px;" onClick=changeCollect('+id+') /></div><div class="vodListName">'+father2+'</div>';
+                    }else{
+                        getID("shcContent").innerHTML += '<div id=videoImg'+id+' class="vodListImg" style="height:'+imgHeight+';" ><video id=h5Video'+id+' style="object-fit:fill;" width="100%" height="100%" controls preload="auto" type="application/x-mpegURL" poster="../vod/'+name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video></div><div class="vodListNameBrowser">'+father2+'</div><img id=collectImgs'+id+' src='+collectImg+' style="float:left;width:100px;height:100px;" onClick=changeCollect('+id+') />';
                     }
-                    
-            //    getID("shcContent").innerHTML += '<div class="listImg" style="background: url(../vod/'+name+'/'+name+'.jpg)" onClick=showDetail('+id+')><div class="listName">'+father2+'</div></div>';
                 });
             setTimeout(function() {
                 changePageStatus = "t";

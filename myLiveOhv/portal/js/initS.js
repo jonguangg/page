@@ -235,8 +235,14 @@ function changeCollect(_id ){
 			//这里一般显示加载提示;
 		},
 		success: function(json) {
-			var isCollect = json.isCollect;	//这是点击收藏之后的值  
-			getID("collectImg"+_id).src = ( isCollect==0 )?'img/collect0.png':'img/collect1.png'; 
+			var isCollect = json.isCollect;	//这是点击收藏之后的值
+			getID("collectImg"+_id).src = ( isCollect==0 )?'img/collect0.png':'img/collect1.png';
+			if(isCollect){
+				collectArr.push(_id.toString());
+			}
+			if( getID("collectImgs"+_id)){
+				getID("collectImgs"+_id).src = ( isCollect==0 )?'img/collect0.png':'img/collect1.png'; 
+			}
 			getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</b>":"<b>已取消收藏</b>";  
 			getID("promptCollect").style.opacity = 1; 
 			setTimeout(function() {
@@ -246,7 +252,7 @@ function changeCollect(_id ){
 		error: function() {
 		//   alert("error");
 		}
-	});
+	});	
 }
 
 var idTemp = 0;
