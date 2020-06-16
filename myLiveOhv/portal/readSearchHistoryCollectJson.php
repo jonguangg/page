@@ -35,6 +35,7 @@
 			'id' => $row['id'],
 			'name' => $row['name'],
 			'father' => $row['father'],
+			'poster' => $row['poster'],
 		);  
 	} 
 

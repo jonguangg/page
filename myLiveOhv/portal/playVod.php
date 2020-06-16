@@ -22,6 +22,7 @@
 	while($row=mysqli_fetch_array($sql1)){ //遍历查询结果，将每条结果写入数组        
 		$name = $row['name'];    
 		$father = $row['father'];
+		$poster = $row['poster'];
 		$episodePos = $row['episode'];
 		if( $row['isOutsite'] ==0 ){	//非外链
 			$fileName = substr($name,strripos($name,"/")+1);	//带扩展名的文件名
@@ -34,7 +35,7 @@
 	}	
 
 	//	写播放历史
-	$sql2 = mysqli_query($connect, "replace into history(sn,id,name,father,episode) values ('$sn',$id,'$name','$father',$episodePos) ") or die(mysqli_error($connect));
+	$sql2 = mysqli_query($connect, "replace into history(sn,id,name,father,episode,poster) values ('$sn',$id,'$name','$father',$episodePos,'$poster') ") or die(mysqli_error($connect));
 
 	//	写播放次数
 	$sq3 = mysqli_query($connect, "UPDATE video set playNum=playNum+1 WHERE id='$id' ") or die(mysqli_error($connect));
