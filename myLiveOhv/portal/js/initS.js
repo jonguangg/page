@@ -21,9 +21,11 @@ function eventHandler(e,type){	//按键
 					setCookie("deviceInfo",username,"1000d"); //供php页面记录备注
 					setCookie("sn",sn,"1000d");
 					getID("promptMe").innerHTML = "Success";
+					getID("promptMe").style.display = "block";
 					getID("promptMe").style.opacity = 1;
 					setTimeout(function() {
 						getID("promptMe").style.opacity = 0;
+						setTimeout(function(){getID("promptMe").style.display = "none";},1500);	
 						location.href = "./indexM.php";
 					}, 1500);
 				}
@@ -244,9 +246,11 @@ function changeCollect(_id ){
 				getID("collectImgs"+_id).src = ( isCollect==0 )?'img/collect0.png':'img/collect1.png'; 
 			}
 			getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</b>":"<b>已取消收藏</b>";  
-			getID("promptCollect").style.opacity = 1; 
-			setTimeout(function() {
-				getID("promptCollect").style.opacity = 0;
+			getID("promptCollect").style.zIndex = 1;
+			getID("promptCollect").style.opacity = 1;
+			setTimeout(function(){
+				getID("promptCollect").style.opacity = 0;				
+				setTimeout(function(){getID("promptCollect").style.zIndex = 0;},1000);				
 			}, 1500);
 		},
 		error: function() {

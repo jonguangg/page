@@ -460,7 +460,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		<div>
 			<table id="videoTb" style="table-layout: fixed" width="100%" border="1" cellpadding="0" cellspacing="0">
 				<tr>
-					<td style="width:5%;"><b>ID</b></td>
+					<td style="width:5%;"><b>序号</b></td>
 					<td style="width:10%;"><b>类型</b></td>
 					<td style="width:15%;"><b>节目名</b></td>
 					<td style="width:18%;"><b>视频名</b></td>
@@ -554,7 +554,7 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 						<td style="width:10%;"><b>分类名</b></td>
 						<td style="width:15%;"><b>分类表</b></td>
 						<td style="width:5%;"><b>级别</b></td>
-						<td style="width:60%;"><b>归属</b></td>
+						<td style="width:60%;"><b>归属 ql(该分类所属的上一级)</b></td>
 						<td style="width:5%;"><b>删除</b></td>
 					</tr>
 				</thead>
@@ -1090,10 +1090,15 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 				var list = json.list;
 				$.each(list,
 					function(index, array) { //遍历json数据列
-						if (array['isOnLine'] == "在线") {
+					/*	if (array['isOnLine'] == "在线") {
 							tr += "<tr><td>" + array['sn'] + "</td><td><input style='BACKGROUND-COLOR:transparent;' value=\"" + array['mark'] + "\" ></input></td><td>" + array['ip'] + "</td><td>" + array['city'] + "</td><td>" + array['loginTime'] + "</td><td><input style='BACKGROUND-COLOR:transparent;' type='text' value=" + array['expireTime'] + "></input></td><td>" + array['lastTime'] + "</td><td style='color:red;background-color:yellow;'>" + array['isOnLine'] + "</td><td><button onClick='updateStb(this)'>提交</button></td></tr>";
 						} else {
 							tr += "<tr><td>" + array['sn'] + "</td><td><input style='BACKGROUND-COLOR:transparent;' value=\"" + array['mark'] + " \"></input></td><td>" + array['ip'] + "</td><td>" + array['city'] + "</td><td>" + array['loginTime'] + "</td><td><input style='BACKGROUND-COLOR:transparent;' type='text' value=" + array['expireTime'] + "></input></td><td>" + array['lastTime'] + "</td><td>" + array['isOnLine'] + "</td><td><button onClick='updateStb(this)'>提交</button></td></tr>";
+						}*/
+						if (array['isOnLine'] == "在线") {
+							tr += "<tr><td>" + array['sn'] + "</td><td><input style='BACKGROUND-COLOR:transparent;' value=\"" + array['mark'] + "\" ></input></td><td>" + array['ip'] + "</td><td>" + array['city'] + "</td><td>" + array['loginTime'] + "</td><td>" + array['expireTime'] + "</td><td>" + array['lastTime'] + "</td><td style='color:red;background-color:yellow;'>" + array['isOnLine'] + "</td><td><button onClick='updateStb(this)'>提交</button></td></tr>";
+						} else {
+							tr += "<tr><td>" + array['sn'] + "</td><td><input style='BACKGROUND-COLOR:transparent;' value=\"" + array['mark'] + " \"></input></td><td>" + array['ip'] + "</td><td>" + array['city'] + "</td><td>" + array['loginTime'] + "</td><td>" + array['expireTime'] + "</td><td>" + array['lastTime'] + "</td><td>" + array['isOnLine'] + "</td><td><button onClick='updateStb(this)'>提交</button></td></tr>";
 						}
 					});
 				$("#stbTb tr").eq(0).after(tr);

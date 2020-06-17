@@ -90,9 +90,11 @@
 				getID("defaultSpeed").innerHTML = speed;
 			}else{
 				getID("promptMe").innerHTML = "Please login";
+				getID("promptMe").style.zIndex = 1;
 				getID("promptMe").style.opacity = 1;
 				setTimeout(function() {
 					getID("promptMe").style.opacity = 0;
+					setTimeout(function(){getID("promptMe").style.zIndex = -1;},1000);			
 				}, 1500);
 			}
 		}else{	//非浏览器访问，不显示username和默认速度（因为还不能设置app的默认速度）
