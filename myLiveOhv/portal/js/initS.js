@@ -259,6 +259,37 @@ function changeCollect(_id ){
 	});	
 }
 
+function deleteHistoryCollect(){
+	getID("shcContent").innerHTML = "";
+	$.ajax({
+        type: 'POST',
+        url: './delHistoryCollect.php',
+        data: {
+            'area': indexArea,
+            'sn':sn,
+        },
+        dataType: 'json',
+        beforeSend: function() {
+            //这里一般显示加载提示;
+        },
+        success: function(json) {
+		//	alert(json.status);
+        },
+        error: function() {
+        //	alert("error");
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+/*
 var idTemp = 0;
 var innerHTMLTemp = "";
 function createVideo(_id,_name){
@@ -270,3 +301,4 @@ function createVideo(_id,_name){
 	var playUrl = "http://158.69.108.183:8080/myLiveOhv/vod/"+_name+"/index.m3u8";
 	getID("videoImg"+_id).innerHTML = '<video id="h5Video" style="object-fit:fill;" width="100%" height="100%" autoplay controls  preload="auto" type="application/x-mpegURL" poster="../vod/'+_name+'/poster.jpg" src='+playUrl+' playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape"></video>';
 }
+*/

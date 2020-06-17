@@ -441,6 +441,7 @@
 	<div id="searchHistoryCollect" class="homeList" style="top:230px;display:none;">
 		<span id="shcTitle" style="position:relative;left:15%;color:#f7a333;">搜索结果</span>
 		<div id="shcImg" style="background:url(img/null.png) no-repeat;background-size:100% 100% !important;" class="homeListLogo"></div>
+		<div id="delHistoryCollect" style="left:85%;top:-190px;background:url(img/delete.png) no-repeat;background-size:80% 80% !important;display:block;" class="homeListLogo" onClick="deleteHistoryCollect();"></div>
 		<div style="position:absolute;left:0%;top:110px;width:100%;">
 			<div id="shcContent" ></div>
 			<div id="loadingSHC" class="vodListName" style="width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;">loading</div>
@@ -494,9 +495,9 @@
 
 		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
-		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;height:120px;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;cursor:pointer;" onClick="back();"><b>back</b></div>
+		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onClick="back();"><b>back</b></div>
 
-		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;cursor:pointer;" onClick="checkInput()"><b>submit</b></div>
+		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onClick="checkInput()"><b>submit</b></div>
 
 		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(img/vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 

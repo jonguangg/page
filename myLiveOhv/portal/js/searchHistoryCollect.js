@@ -33,13 +33,17 @@ function showSHC(_area,_pageNum,_key){
 //    getID("vodTab").style.display = "none";
     getID("searchHistoryCollect").style.display = "block";
     getID('shcImg').style.backgroundImage = 'url(img/'+_area+'1.png)';
-    getID("loadmoreSHC").innerHTML = "";
+    getID("loadmoreSHC").innerHTML = "";    
+    getID("loadingSHC").style.display = "block";
     if( _area=="search" ){
         getID('shcTitle').innerHTML = "搜索结果";
+        getID('delHistoryCollect').style.display = 'none';
     }else if( _area=="history" ){
         getID('shcTitle').innerHTML = "播放历史";
+        getID('delHistoryCollect').style.display = 'block';
     }else if( _area=="collect" ){
         getID('shcTitle').innerHTML = "我的收藏";
+        getID('delHistoryCollect').style.display = 'block';
     }
     if(_key=="0"){
         return ;
@@ -59,8 +63,9 @@ function showSHC(_area,_pageNum,_key){
         },
         success: function(json) {
             vodPageAll = json.pageAll;
-            if( vodPageAll == 0 && indexArea == "search"){						
+            if( vodPageAll == 0 ){						
                 getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+                getID("loadingSHC").style.display = "none";
             }
             var list = json.list;
             $.each(list,
