@@ -37,6 +37,9 @@
 	//	写播放历史
 	$sql2 = mysqli_query($connect, "replace into history(sn,id,name,father,episode,poster) values ('$sn',$id,'$name','$father',$episodePos,'$poster') ") or die(mysqli_error($connect));
 
+	//	只保留20条历史
+	$sql22 = mysqli_query($connect, "delete a from history a ,(select historyID from history WHERE sn='$sn' ORDER BY historyID desc limit 19,1) b WHERE a.historyID<b.historyID AND a.sn='$sn' ") or die(mysqli_error($connect));
+
 	//	写播放次数
 	$sq3 = mysqli_query($connect, "UPDATE video set playNum=playNum+1 WHERE id='$id' ") or die(mysqli_error($connect));
 
