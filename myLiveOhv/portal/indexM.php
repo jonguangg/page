@@ -1,8 +1,8 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type=text/javascript src="js/init.js?v=2"></script>
-<script type=text/javascript src="js/register.js?v=2"></script>
+<script type=text/javascript src="js/init.js?v=3"></script>
+<script type=text/javascript src="js/register.js?v=3"></script>
 <?php
 //	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
@@ -154,11 +154,8 @@
 	function playVod(_id,_playUrl) {
 	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime);
 		if( parseInt(intLoginTime) > parseInt(intExpireTime) ){	//授权过期了
-			alert("过期了");
+	//		alert("过期了");
 			registedVipCard();
-		//	if (typeof(window.androidJs) != "undefined") {
-		//		window.androidJs.JsClosePlayer();
-		//	}
 			return;
 		}else{
 			if (typeof(window.androidJs) != "undefined") {
@@ -497,19 +494,19 @@
 
 		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
-		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onclick="back();"><b>back</b></div>
+		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;height:120px;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;cursor:pointer;" onClick="back();"><b>back</b></div>
 
-		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>submit</b></div>
+		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:gold;text-shadow:-5px 5px 5px #000;cursor:pointer;" onClick="checkInput()"><b>submit</b></div>
 
 		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(img/vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 
 		<div id="exp" style="position:absolute;left:13%;top:63%;width:77%;height:100px;color:gold;font-size:60px;text-align:left;text-shadow:0px 3px 3px gold;"></div>
 
-		<div id="msg" style="position:absolute;left:5%;top:58%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;"></div>
+		<div id="msg" style="position:absolute;left:5%;top:58%;width:90%;height:35%;text-align:center;font-size:70px;font-weight:900;border-radius:55px 55px 55px 55px;color:red;cursor:pointer;"></div>
 	</div>
 
 	<!-- 个人中心 -->
-	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
+	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:1;-webkit-transition:1s;">
 		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
 		<div id="usernameDiv">
 			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
@@ -530,11 +527,11 @@
 			<div class="PersonalCenter">Share</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';}">
+		<div onclick="getID('me').style.display='none';showSHC('history',1,'h');getID('shcContent').innerHTML = '';">
 			<div class="PersonalCenter">History</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';}">
+		<div onclick="getID('me').style.display='none';showSHC('collect',1,'c');getID('shcContent').innerHTML = '';">
 			<div class="PersonalCenter" >Collection</div>
 			<div class="PersonalCenterR" >></div>
 		</div>
@@ -567,9 +564,9 @@
 <div id="preLoadImg" style="position: absolute;left:0px;top:0px;width:1px;height:1px;opacity:0;"></div>
 
 </body></html>
-<script type=text/javascript src="js/initS.js?v=1" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=3" charset=UTF-8></script>
 <script type=text/javascript src="js/live.js?v=1"></script>
-<script type=text/javascript src="js/touchMove.js?v=1" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMove.js?v=3" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollect.js" charset=UTF-8></script>
 <script>
 
