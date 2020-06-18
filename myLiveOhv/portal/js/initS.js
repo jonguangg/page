@@ -177,8 +177,7 @@ window.addEventListener("orientationchange", function() {
 }, false);
 
 //改写H5返回键事件
-window.addEventListener("popstate", function(e) { 
-//	alert("我监听到了浏览器的返回按钮事件啦");
+window.addEventListener("popstate", function(e) { 	//	alert("我监听到了浏览器的返回按钮事件啦");
 	if( indexArea=="detail" || indexArea=="live" || indexArea=="me" || indexArea=="login" ){
 		pushHistory(); 
 		getID("vod").style.display = "block";
@@ -197,13 +196,12 @@ window.addEventListener("popstate", function(e) {
 function pushHistory() { 
 	var state = { 
 		title: "title", 
-		url: "#"
+		url: "#forward"
 	}; 
-	window.history.pushState(state, "title", "#"); 
+	window.history.pushState(state, "title", "#forward"); 
 }
-
 if( typeof(window.androidJs)=="undefined"){
-	pushHistory(); 
+	pushHistory(); // 在需要监听返回的页面执行该方法
 }	
 
 //	监听切换前后台
