@@ -1,12 +1,13 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<!--script type=text/javascript src="js/initXu.js"></!--script>
-<script type=text/javascript src="js/registerXu.js"></script>
-<script-- type=text/javascript src="js/getXuDataToJs.js" charset=UTF-8></script-->
-<script>document.write("<script type='text/javascript' src='js/initXu.js?v=" + Date.now() + "'><\/script>");</script>
+<script type=text/javascript src="js/initXu.js?v=1"></script>
+<script type=text/javascript src="js/registerXu.js?v=1"></script>
+<script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
+
+<!--script>document.write("<script type='text/javascript' src='js/initXu.js?v=" + Date.now() + "'><\/script>");</script>
 <script>document.write("<script type='text/javascript' src='js/registerXu.js?v=" + Date.now() + "'><\/script>");</script>
-<script>document.write("<script type='text/javascript' src='js/getXuDataToJs.js?v=" + Date.now() + "'><\/script>");</script>
+<script>document.write("<script type='text/javascript' src='js/getXuDataToJs.js?v=" + Date.now() + "'><\/script>");</script-->
 <?php
 	//	error_reporting(0);// 关闭所有PHP错误报告
 	//	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
@@ -17,7 +18,7 @@
 		include_once "../connectMysql.php";
 		include_once "../readChannelArray.php";
 	//	include_once "../readTagNav.php";	//获取分类标签
-	//	include_once "getXuData.php";	//
+		include_once "getXuDataHome.php";	//获取许首页数据
 	//	var_dump(  $dataTab1Arr);
 
 	function getIP(){	//获取用户真实 IP
@@ -183,6 +184,18 @@
 <script>
 	var intLoginTime = <?php echo $intLloginTime ?>; //应用登陆时间，其实这个没必要去后台获取，只要取当前时间即可
 	var channelDataArr = <?php echo json_encode($channelArr); ?>;
+	
+	var homeLoopArr = <?php echo json_encode($homeLoopArr); ?>;
+	var homeZoneArr = <?php echo json_encode($homeZoneArr); ?>;
+	var homeRecommendArr = <?php echo json_encode($homeRecommendArr); ?>;
+	var hotArr = <?php echo json_encode($hotArr); ?>;
+	var newArr = <?php echo json_encode($newArr); ?>;
+	var highScoreArr = <?php echo json_encode($highScoreArr); ?>;
+	var homeBottomZoneArr = <?php echo json_encode($homeBottomZoneArr); ?>;
+
+	console.log(homeLoopArr);
+//	console.log(newArr[1]["records"]);
+
 	var userKey = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetCookie("userKey", 0) : "9527";
 	if (parseInt(userKey) == 0) { //没设置密码时获取到的密码为0，所以要改一下
 		userKey = "9527";
@@ -465,13 +478,76 @@
 		}
 	}
 
-	function showHomeLiveGroup(){	//显示首页直播分组入口
-		for(i=0;i<channelDataArr.length;i++){
-			getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id="homeLiveGroup"'+i+' onClick=getID("liveVideo").muted=false;showLiveList('+i+'); style="background:url(live/'+channelDataArr[i]["groupLogo"]+')"><div class="tab-homeLive-groupName">'+channelDataArr[i]["group"]+'</div></div>'
+	var homeLoopIndex = 0;
+	var	homeLoopLength = homeLoopArr.length;
+	function showHomeLoop(){	//循环显示首页轮图
+		homeLoopIndex ++;
+		if( homeLoopIndex > homeLoopLength-2 ){
+			homeLoopIndex = 0;
+		}
+		getID("homeLoopImg").style.backgroundImage = 'url('+homeLoopArr[homeLoopIndex%homeLoopLength].imgUrl+')';
+		setTimeout(showHomeLoop,8000);
+		getID("homeLoopName").innerText = homeLoopArr[homeLoopIndex%homeLoopLength].title;
+	}
+	function showHomeLoopDetail(){
+		showDetail(homeLoopArr[homeLoopIndex%homeLoopLength].videoId);
+	}
+
+	function showHomeZoneTop(){	//显示首页专栏入口
+		for(i=0;i<homeZoneArr.length;i++){
+			getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id="homeLiveGroup"'+i+' onClick=getID("liveVideo").muted=false;showLiveList('+i+'); style="background:url('+homeZoneArr[i].imgUrl+') no-repeat center"><div class="tab-homeLive-groupName">'+homeZoneArr[i].title+'</div></div>'
 		}
 	}
 
-//	console.log(homeListArr);
+	function showHomeRecommend(){	//显示首页Mix推荐
+		for(i=0;i<4;i++){
+			getID("homeRecommendImg"+i).style.backgroundImage = 'url('+homeRecommendArr[i].imgUrl+')';
+			getID("homeRecommendName"+i).innerText = homeRecommendArr[i].title;
+			getID("homeRecommendNames"+i).innerText = homeRecommendArr[i].remark;
+		}
+	}
+	function showRecommendDetail(_recommendIndex){
+		showDetail(homeRecommendArr[_recommendIndex].videoId);
+	}
+
+	var hotTemp = 0;
+	function showHomeHot(_channelId){	//显示首页Hot榜
+		getID("hot"+hotTemp).style.color = "white";
+		hotTemp = _channelId;
+		getID("hot"+hotTemp).style.color = "#ff9933";
+		getID("hotContent").innerHTML = "";
+		for(i=0;i<hotArr[hotTemp]["records"].length;i++){
+			getID("hotContent").innerHTML += '<div class="tab-hot-item" onClick=showDetail("'+hotArr[hotTemp]["records"][i].id+'"); style="background:url('+hotArr[hotTemp]["records"][i].imgUrl+')"><div class="tab-hotName">'+hotArr[hotTemp]["records"][i].videoName+'</div></div>';
+		}
+	}
+
+	var newTemp = 0;
+	function showHomeNew(_channelId){	//显示首页New榜
+		getID("new"+newTemp).style.color = "white";
+		newTemp = _channelId;
+		getID("new"+newTemp).style.color = "#ff9933";
+		getID("newContent").innerHTML = "";
+		for(i=0;i<newArr[newTemp]["records"].length;i++){
+			getID("newContent").innerHTML += '<div class="tab-hot-item" onClick=showDetail("'+newArr[newTemp]["records"][i].id+'"); style="background:url('+newArr[newTemp]["records"][i].imgUrl+')" ><div class="tab-hotName">'+newArr[newTemp]["records"][i].videoName+'</div></div>';
+		}
+	}
+
+	function showHighScore(){	//显示首页近期高分口碑剧
+		getID("highScoreContent").innerHTML = "";
+		for(i=0;i<highScoreArr.length;i++){
+			getID("highScoreContent").innerHTML += '<div class="tab-highScore-item" onClick=showDetail("'+highScoreArr[i].videoId+'"); style="background:url('+highScoreArr[i].imgUrl+') no-repeat;"></div><div class="tab-highScore-item2" onClick=showDetail("'+highScoreArr[i].videoId+'");><div class="tab-highScoreName" style="font-size:40px;line-height:80px;" >'+highScoreArr[i].videoName+'</div><div class="tab-highScoreName"><span style="color:#f7a333;">'+highScoreArr[i].imdbScore+'</span>&ensp;<span>'+highScoreArr[i].showRegion+'</span></div><div class="tab-highScoreName" >'+highScoreArr[i].videoTopic+'</div><div class="tab-highScoreName" >'+highScoreArr[i].remark+'</div>	</div>';
+		}
+	}
+
+	function showHomeBottomZone(){
+		for(i=0;i<homeBottomZoneArr.length;i++){
+			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:-200px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;">'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick="showHomeNew(0);"> > </span></div>	<div style="position:relative;left:4%;top:-100px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
+			for(j=0;j<homeBottomZoneArr[i].videoList.length;j++){
+				getID("bottomZontContent"+i).innerHTML += '<div class="tab-hot-item" onClick=showDetail("'+homeBottomZoneArr[i].videoList[j].videoId+'"); style="background:url('+homeBottomZoneArr[i].videoList[j].imgUrl+')"><div class="tab-hotName">'+homeBottomZoneArr[i].videoList[j].videoName+'</div></div>';
+			}
+		}
+	}
+
 	function showHomeList(){
 		for(i=0;i<homeListArr["data"].length-1;i++){	//循环电影电视综艺等类型
 			getID("homeListName"+i).innerHTML = "热播"+homeListArr["data"][i+1].channelName;
@@ -491,9 +567,11 @@
 //		console.log(tab1Arr);
 	function showTab1(){	//显示一级影视类型		
 		for(i=1;i<tab1Arr["data"].length;i++){
-			getID('vodTab1').innerHTML += '<li class="tab-tab1-item" id=nav'+i+' onClick="clickTab1('+i+')" style="background:url(img/'+tab1Arr["data"][i].channelName+'0.png) center no-repeat" >'+tab1Arr["data"][i].channelName+'</li>';
+			var channelNameTemp = tab1Arr["data"][i].channelName.replace("/","<br>");
+			getID('vodTab1').innerHTML += '<li class="tab-tab1-item" id=nav'+i+' onClick="clickTab1('+i+')" >'+channelNameTemp+'</li>';
 		}
-		getID("nav0").style.backgroundImage = "url(img/直播1.png)";	//这里写的是直播，实际是首页，因许的后台第一个是直播，而我的页面一级栏目没有直播
+		getID("nav0").style.color = "#ff9933";
+	//	getID("nav0").style.backgroundImage = "url(img/直播1.png)";	//这里写的是直播，实际是首页，因许的后台第一个是直播，而我的页面一级栏目没有直播
 	}
 
 //	console.log(tab2Arr); console.log(tab3Arr);
@@ -539,11 +617,11 @@
 		indexArea = "vod";
 		getID("vodList"+tab1).style.display = "none";			//	隐藏当前栏目 海报列表
 		getID("nav" + tab1).style.color = "white"; 
-		getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"0.png)"; 
+	//	getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"0.png)"; 
 		navPos = _tab1;	//注释掉看看有没有影响，之前很多地方是用navPos来定位的，后来统一改为tab1了
 		tab1 = _tab1;
 		getID("nav" + tab1).style.color = "f7a333";
-		getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"1.png)"; 
+	//	getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"1.png)"; 
 		getID("vodTab1").scrollLeft = ( (tab1-2)>0 )?(tab1-2)*200:0;
 		getID("searchHistoryCollect").style.display = "none";	//..隐藏搜索 历史 收藏 海报列表
 
@@ -674,9 +752,15 @@
 		getID("detailPoster").style.height = clientWidth*9/16+"px";
 		getID("channels").style.height = (clientHeight-clientWidth*9/16-90)+"px";
 
+		showHomeLoop();
 		showTab1();				//显示一级分类
-		showHomeLiveGroup();	//显示首页直播分组入口
-		showHomeList();			//显示首页热播列表
+		showHomeZoneTop();		//显示首页直播分组入口
+	//	showHomeList();			//显示首页热播列表
+		showHomeRecommend();
+		showHomeHot(0);
+		showHomeNew(0);
+		showHighScore();
+		showHomeBottomZone();
 		scrollTo(0,0)
 		preLoadImages();
 	}
@@ -697,86 +781,119 @@
 		<input type="text" id="searchInput" class="homeTop" style="left:290px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:670px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
+		<div style="position:fixed;top:65px;left:720px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:800px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div style="position:fixed;top:65px;left:850px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'h');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 收藏图标 --
 		<div-- style="position:fixed;top:65px;left:870px;width:80px;height:80px;z-index:1;" onclick="showSHC('collect',1,'c');getID('shcContent').innerHTML = '';"><img src="img/collect0.png" /></div-->
 
 		<!-- 首页一级分类导航 -->
-		<div class="homeTop" style="top:180px;left:0px;width:95%;">
+		<div class="homeTop" style="top:180px;left:0px;width:100%;">
 			<ul id="vodTab1" class="tab-head">
-				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;background: url(img/null.png) center no-repeat;">首页</li>
+				<li class="tab-tab1-item" id="nav-1" onClick="showLiveList(0);" style="margin-left:15px;">Live<br>直播</li>
+				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;">Major<br>精选</li>
 			</ul>
 		<div style="position:fixed;top:300px;left:5%;width:90%;height:0px;background-color:#333333;"></div>
 		</div>
 
 		<!-- 首页列表 -->
 		<div id="vodList0" style="position: absolute;left:0%;top:285px;width:100%;display:block;">
-			<!-- 首页 直播入口 -->
-			<div class="homeList" style="top:50px;">
-				<span style="position:relative;left:15%;">直播频道</span>
-				<div style="background:url(img/typeLive0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="historyCollect.del" style="position:absolute;left:0%;top:110px;width:100%;">			
-					<ul id="homeNavLive" class="tab-head">
-						<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div-->
+			<!-- 首页 轮图 -->
+			<div id="homeLoopImg" class="homeList" style="left:4%;width:92%;height:500px;background:url(img/null.png);background-size:100% 100% !important;-webkit-transition:1s;" onclick="showHomeLoopDetail();"></div>
+			<div id="homeLoopName" class="homeList" style="left:6%;width:90%;height:100px;top:-150px;font-size:40px;overflow:hidden;"></div>
+
+			<!-- 首页 专栏入口 -->
+			<div class="homeList" style="height:230px;top:-200px;width:96%;">			
+				<ul id="homeNavLive" class="tab-head">
+					<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div-->
+				</ul>
+			</div>
+
+			<!-- 首页 Mix推荐 -->
+			<div class="homeList" style="width:96%;height:750px;top:-200px;" >
+				<div><span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span><span style="position:relative;left:6%;">Mix推荐</span></div>
+				<div id="homeRecommendImg0" class="homeRecommendImg" style="background: url(img/null.png) no-repeat" onclick="showRecommendDetail(0);">
+					<div id="homeRecommendName0" class="homeRecommendName">影片名称0</div>
+					<div id="homeRecommendNames0" class="homeRecommendName" style="color:gray;">影片名称0</div>
+				</div>
+				<div id="homeRecommendImg1" class="homeRecommendImg" style="background: url(img/null.png) no-repeat" onclick="showRecommendDetail(1);"> 
+					<div id="homeRecommendName1" class="homeRecommendName">影片名称2</div>
+					<div id="homeRecommendNames1" class="homeRecommendName" style="color:gray;">影片名称2</div>
+				</div>
+				<div id="homeRecommendImg2" class="homeRecommendImg" style="margin-top:110px;background: url(img/null.png) no-repeat" onclick="showRecommendDetail(2);">
+					<div id="homeRecommendName2" class="homeRecommendName">影片名称2</div>
+					<div id="homeRecommendNames2" class="homeRecommendName" style="color:gray;">影片名称2</div>
+				</div>
+				<div id="homeRecommendImg3" class="homeRecommendImg" style="margin-top:110px;background: url(img/null.png) no-repeat" onclick="showRecommendDetail(3);">
+					<div id="homeRecommendName3" class="homeRecommendName">影片名称3</div>
+					<div id="homeRecommendNames3" class="homeRecommendName" style="color:gray;">影片名称3</div>
+				</div>
+			</div>
+
+			<!-- 首页 Hot榜 -->
+			<div class="homeList" style="width:96%;height:450px;top:-200px;">
+				<div>
+					<span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span>
+					<span style="position:relative;left:6%;">Hot</span>
+					<span style="position:relative;margin-left:10%;font-size:35px;" id="hot0" onClick="showHomeHot(0);">电影榜</span>
+					<span style="position:relative;margin-left:4%;font-size:35px;" id="hot1" onClick="showHomeHot(1);">剧集榜</span>
+					<span style="position:relative;margin-left:4%;font-size:35px;" id="hot2" onClick="showHomeHot(2);">短视频榜</span>
+					<span style="position:relative;margin-left:4%;font-size:35px;" id="hot3" onClick="showHomeHot(3);">综艺榜</span>
+				</div>		
+				<div style="position:relative;left:4%;">
+					<ul id="hotContent" class="tab-head" >
+						<!--div class="tab-hot-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-hotName">热播榜</div></div-->
 					</ul>
 				</div>
-			</div>	
+			</div>
 
-			<!-- 首页 电影入口 -->
-			<div id="homeList0" class="homeList" style="top:300px;">
-				<span style="position:relative;left:15%;" id="homeListName0">热播电影</span>
-				<span style="position:relative;left:60%;" onclick="clickTab1(1);">更多</span>
-				<div style="background:url(img/typeMovie0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="homeListContent0" style="position:absolute;left:0%;top:110px;width:100%;">
-					<!--div id="homeListImg0" class="listImg" style="background: url(img/poster.jpg)">
-						<div id="homeListName0" class="listName">影片名称</div>
-					</div-->
+			<!-- 首页 New榜 -->
+			<div class="homeList" style="width:96%;height:450px;top:-200px;">
+				<div>
+					<span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span>
+					<span style="position:relative;left:6%;">New</span>
+					<span style="position:relative;margin-left:10%;font-size:35px;" id="new0" onClick="showHomeNew(0);">电影榜</span>
+					<span style="position:relative;margin-left:4%;font-size:35px;" id="new1" onClick="showHomeNew(1);">剧集榜</span>
+					<span style="position:relative;margin-left:4%;font-size:35px;" id="new2" onClick="showHomeNew(2);">短视频榜</span>
+					<span style="position:relative;margin-left:4%;font-size:35px;" id="new3" onClick="showHomeNew(3);">综艺榜</span>
+				</div>				
+				<div style="position:relative;left:4%;">
+					<ul id="newContent" class="tab-head"></ul>
 				</div>
 			</div>
 
-			<!-- 首页 电视剧入口 -->
-			<div id="homeList1" class="homeList" style="top:840px;">
-				<span style="position:relative;left:15%;" id="homeListName1">热播剧集</span>
-				<span style="position:relative;left:60%;" onclick="clickTab1(2);">更多</span>
-				<div style="background:url(img/劇集0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="homeListContent1" style="position:absolute;left:0%;top:110px;width:100%;"></div>
+			<!-- 首页 近期高分口碑剧 -->
+			<div class="homeList" style="width:96%;height:400px;top:-200px;">
+				<div>
+					<span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span>
+					<span style="position:relative;left:6%;">近期高分口碑剧</span>
+				</div>				
+				<div style="position:relative;left:0%;">
+					<ul id="highScoreContent" class="tab-head">
+						<div class="tab-highScore-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg) no-repeat;"></div>
+						<div class="tab-highScore-item2" >
+							<div class="tab-highScoreName" style="font-size:40px;line-height:80px;" id="highScoreName0"></div>
+							<div class="tab-highScoreName"><span id="highScores0" style="color:#f7a333;"></span>&ensp;<span></span></div>
+							<div class="tab-highScoreName" id="highScoreType0"></div>
+							<div class="tab-highScoreName" id="highScoreMarks0"></div>						
+						</div>
+					</ul>
+				</div>
 			</div>
 
-			<!-- 首页 综艺入口 -->
-			<div id="homeList2" class="homeList" style="top:1380px;">
-				<span style="position:relative;left:15%;" id="homeListName2">热播短视频</span>
-				<span style="position:relative;left:60%;" onclick="clickTab1(3);">更多</span>
-				<div style="background:url(img/短视频0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="homeListContent2" style="position:absolute;left:0%;top:110px;width:100%;"></div>
-			</div>
-
-			<!-- 首页 动漫入口 -->
-			<div id="homeList3" class="homeList" style="top:1920px;">
-				<span style="position:relative;left:15%;" id="homeListName3">热播综艺</span>
-				<span style="position:relative;left:60%;" onclick="clickTab1(4);">更多</span>
-				<div style="background:url(img/綜藝0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="homeListContent3" style="position:absolute;left:0%;top:110px;width:100%;"></div>
-			</div>
-
-			<!-- 首页 动漫入口 -->
-			<div id="homeList4" class="homeList" style="top:2460px;">
-				<span style="position:relative;left:15%;" id="homeListName4">热播动漫</span>
-				<span style="position:relative;left:60%;" onclick="clickTab1(5);">更多</span>
-				<div style="background:url(img/動漫0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="homeListContent4" style="position:absolute;left:0%;top:110px;width:100%;"></div>
-			</div>
-
-			<!-- 首页 动漫入口 -->
-			<div id="homeList5" class="homeList" style="top:3000px;">
-				<span style="position:relative;left:15%;" id="homeListName5">热播体育</span>
-				<span style="position:relative;left:60%;" onclick="clickTab1(6);">更多</span>
-				<div style="background:url(img/體育0.png) no-repeat;" class="homeListLogo"></div>
-				<div id="homeListContent5" style="position:absolute;left:0%;top:110px;width:100%;"></div>
-			</div>
+			<!-- 首页 下方专题 --
+			<div-- class="homeList" style="height:450px;">
+				<div>
+					<span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span>
+					<span style="position:relative;overflow:hidden;left:6%;">好像青春故事总发生在夏天</span>
+					<span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick="showHomeNew(0);"> > </span>
+				</div>				
+				<div style="position:relative;left:4%;">
+					<ul id="bottomZoneContent0" class="tab-head"></ul>
+				</div>
+			</div-->			
 		
 		</div>
 

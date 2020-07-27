@@ -1,5 +1,4 @@
 <?php
-
 /*
 	为了提高前端显示速度 ，先将不大改变的数据（一级栏目和二三级分类标签）获取到，写进数组，并不每次都去许的后台获取
 	然后再用定时任务，隔一定时间再更新一个这个数组
@@ -14,9 +13,7 @@
 	$tab1JsonStr = file_get_contents($urlTab1);	//从许的后台获取数据
 	sleep(5);
 	$tab1Arr = json_decode($tab1JsonStr,true);		//将从后台获取的json数据转为PHP数组
-//	将json追加写入文件
 	file_put_contents('/usr/local/nginx/html/myLive/portal/js/getXuDataToJs.js', 'var tab1Arr = '.print_r($tab1JsonStr, true)."\r\n" , FILE_APPEND);
-
 
 //	二、三级分类标签
 	for( $i=0;$i<sizeof($tab1Arr["data"]);$i++ ){
@@ -34,17 +31,8 @@
 	$tab3Arr = json_encode($tab3Arr,TRUE|JSON_UNESCAPED_UNICODE);	//将数组格式化为json
 //	$tab2Arr = json_encode($tab2Arr,TRUE|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);	//将数组格式化为json，显示中文
 
-//	将json追加写入文件
 	file_put_contents('/usr/local/nginx/html/myLive/portal/js/getXuDataToJs.js', 'var tab2Arr = '.print_r($tab2Arr, true)."\r\n" , FILE_APPEND);
 	file_put_contents('/usr/local/nginx/html/myLive/portal/js/getXuDataToJs.js', 'var tab3Arr = '.print_r($tab3Arr, true)."\r\n" , FILE_APPEND);
-
-
-//	首页推荐
-	$urlHomeList = "http://mixtvapi.mixtvapp.com/ott/ottchannel/getHomeChannelShow";
-	$homeListJsonStr = file_get_contents($urlHomeList);	//从许的后台获取数据
-	sleep(5);
-//	将json追加写入文件
-	file_put_contents('/usr/local/nginx/html/myLive/portal/js/getXuDataToJs.js', 'var homeListArr = '.print_r($homeListJsonStr, true)."\r\n" , FILE_APPEND);
 
 
 

@@ -571,10 +571,10 @@ $insertexpireTime = date("Y-m-d", strtotime("+1 day")); //新机顶盒默认授�
 		<form action="update.php" method="post" id="addtagForm">
 			<a style="font-size:25px;">&emsp;&emsp;&emsp;新增栏目</a></br></br>
 			栏目名：
-			<input type="text" id="addTagName" name="addTagName" required="required" placeholder="" class="userText"></br></br>
+			<input type="text" id="addTagName" name="addTagName" required="required" placeholder="显示在手机上的分类" class="userText"></br></br>
 			<br />
 			栏目表：
-			<input type="text" id="addTagTable" name="addTagTable" required="required" placeholder="" class="userText"></br></br><br>
+			<input type="text" id="addTagTable" name="addTagTable" required="required" placeholder="不重复的英文名" class="userText"></br></br><br>
 			栏目级别：
 			<input type="text" id="addTagLevel" name="addTagLevel" placeholder="默认为1" class="userText"></br></br><br>
 
