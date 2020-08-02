@@ -9,7 +9,6 @@ function changeZhiBo(){
 	zhiBoTemp = zhiBoPos;
 }
 
-
 function moveChangeGroup(_num) { //滑动切换直播分类
 	var groupIdTemp = groupId;
 	groupIdTemp += _num;
@@ -72,35 +71,31 @@ function touchMoveFunc(evt){
 		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && tab1<tab1Arr["data"].length-1 && (indexArea=="home" || indexArea == "vod" || indexArea=="live") ){	//只能向左移
 			if( tab1==-1){
 			//	document.getElementById("channel").style.left = moveX+"px";
-			}else{
+			}else if(tab1 > 0){
 			//	document.getElementById("vodList"+tab1).style.left = moveX+"px";
 			}			
 		}
-
 		if( moveY != 0 && indexArea=="zhiBo"){	//上下滑
 			changeZhiBo();
 		}
-	}
-	catch(e){
+	}catch(e){
 		alert('touchMoveFunc：' + e.message);
 	}
 }
 
 function touchEndFunc(evt){
-	try{
-	//	evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+	try{	//	evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
 		var moveX = endX-startX;
 		var moveY = endY-startY;
-		var text = 'TouchEnd事件触发:<br>' +'startX:'+startX+'<br>'+'startY:'+startY;
-		text += '<br>'+'moveX:'+moveX+'<br>'+'moveY:'+moveY+'<br>scrollTop:'+document.body.scrollTop;		
+	//	var text = 'TouchEnd事件触发:<br>' +'startX:'+startX+'<br>'+'startY:'+startY;
+	//	text += '<br>'+'moveX:'+moveX+'<br>'+'moveY:'+moveY+'<br>scrollTop:'+document.body.scrollTop;		
 		
 		if( indexArea=="home" && tab1==0 ){ //首页向下或向右滑动 刷新页面	alert(moveX+"_"+moveY);
-			if(  moveY > 900  || moveX > 800 ){
-			//	alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
+			if( moveY >900  || moveX >800 ){//alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
 				location.href = "./indexMx.php?"+Math.random();
 			}
 		}
-		if( indexArea=="home" || indexArea == "vod" ){
+		if( tab1>0 && (indexArea=="home" || indexArea == "vod") ){//首页非Major
 			if( moveX < -100 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
 				moveChangeTag(1);
 			}else if(moveX > 100 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
@@ -166,24 +161,10 @@ function touchEndFunc(evt){
 				document.getElementById("vodList"+tab1).style.left = "0px";
 			}			
 		}*/
-
-/*
-		if( indexArea=="zhiBo" && moveY > 0 ){	//这段是老版本主播有的，可以删掉
-			if(zhiBoTemp!=zhiBoPos){
-		//		getID("zhiBo"+zhiBoTemp ).pause();
-			}
-			changeZhiBo();
-		}*/
 		
 		if( moveY < -0 ){	//向上滑动	var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();	alert(loadMoreBottom);
 			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo" && indexArea!="live"){
 				loadMore();
-			}
-			if( indexArea=="zhiBo" ){
-				if(zhiBoTemp!=zhiBoPos){
-			//		getID("zhiBo"+zhiBoTemp ).pause();
-				}
-				changeZhiBo();
 			}
 		}
 

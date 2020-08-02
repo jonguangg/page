@@ -140,8 +140,8 @@
 		if (parseInt(intLoginTime) < parseInt(intExpireTime) || backArea == "true") { //授权没过期
 			getID("cardKey").style.display = 'none';
 			scrollEnable();
-			if (navPos == -1) {
-				showLiveList();
+			if (tab1 == -1) {
+				showLiveList(0);
 			}
 			getID("msg").innerHTML = "";
 			getID("msg").style.background = "";

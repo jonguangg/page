@@ -325,7 +325,6 @@ function showTime(){
 	st = window.setTimeout("showTime()", 60000);   
 }
 
-
 //Cookie
 function setCookie(name, value,time){
 	var msec = getMsec(time); //获取毫秒

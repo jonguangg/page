@@ -77,6 +77,27 @@
 	$tempArr = json_decode($jsonStr,true);
 	$homeBottomZoneArr = $tempArr["data"];
 
+	// 电影下方专题
+	$url="http://mixtvapi.mixtvapp.com/ott/channelcolumn/getDetailList?display=3&channelId=7";
+	$jsonStr= file_get_contents($url);
+	$tempArr = json_decode($jsonStr,true);
+	$movieBottomZoneArr = $tempArr["data"];
+
+	for($i=0;$i<sizeof($homeBottomZoneArr);$i++){	//将首页下方专题名称放入数组
+		$homeZoneName[$i] = $homeBottomZoneArr[$i]["title"];
+	}
+	for($j=0;$j<sizeof($movieBottomZoneArr);$j++){	//循环电影下方专题
+		if( !in_array($movieBottomZoneArr[$j]["title"],$homeZoneName) ){
+			$homeBottomZoneArr[sizeof($homeBottomZoneArr)] = $movieBottomZoneArr[$j];
+		}
+	}
+
+	// 电视剧下方专题
+	$url="http://mixtvapi.mixtvapp.com/ott/channelcolumn/getDetailList?display=3&channelId=8";
+	$jsonStr= file_get_contents($url);
+	$tempArr = json_decode($jsonStr,true);
+	$seriesBottomZoneArr = $tempArr["data"];
+
 
 
 

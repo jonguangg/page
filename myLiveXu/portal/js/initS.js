@@ -1,3 +1,4 @@
+//	init Second
 document.onsystemevent = eventHandler;
 //document.onkeypress    = eventHandler;
 document.onirkeypress  = eventHandler; 
@@ -50,29 +51,46 @@ function splashJump(){
 	}
 }
 
-function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+indexArea+"_isZhiBo_"+isZhiBo);
+function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+indexArea);
 	if( typeof(window.androidJs)!="undefined"){
 		window.androidJs.JsClosePlayer();
 	}
 	if( indexArea =="live" ){
 		getID("vod").style.display = "block";
+		if( from=="history" || from=="search" ||from=="collect" ){
+			getID("searchHistoryCollect").style.display = "block";	//	隐藏搜索 历史 收藏 海报列表
+		}
 		getID("group" + groupId).style.color = 'white';
 		getID("channel").style.display = "none";
 		getID("liveVideo").src = "";
-		indexArea = "home";
-		navPos = 0;
-		tab1 = 0;
+		indexArea = from;
+	//	navPos = 0;
+		tab1 = tempTab1;
 		scrollTo(0,0);
-	}else if( indexArea == "detail" ){
+	}else if( indexArea == "detail"){
 		if( typeof(window.androidJs)!="undefined"){
 			window.androidJs.JsClosePlayer();
-			getID("vod").style.display = "block";
+			if(from=="zoneC"){
+				getID("zoneC").style.display = "block";
+			}else if(from=="zone"){
+				getID("zone").style.display = "block";
+			}else{
+				getID("vod").style.display = "block";
+			}
 			updateCurrentTime();
 			getID("detail").style.left = "-2000px";
 		}
 		setTimeout(function(){
 			getID("h5video").src = "";
-			getID("vod").style.opacity = 1;
+			if( from=="zoneC"){
+				getID("zoneC").style.display = "block";
+			}else if( from=="zone"){
+			//	getID("zoneC").style.display = "none";
+				getID("zone").style.display = "block";
+			}else{				
+				getID("vod").style.opacity = 1;
+				setTimeout(function(){getID("vod").style.display = "block";},1000); //否则进入详情后马上按返回，会黑屏
+			}
 			getID("detail").style.display = "none";
 			if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 				getID("searchHistoryCollect").style.display = "block";
@@ -80,7 +98,19 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			scrollTo(0,scrollTops);
 		},300);
 		indexArea = from;
-		setTimeout(function(){getID("vod").style.display = "block";},1000); //不加这个，用户进入详情后马上按返回，会黑屏
+	}else if( indexArea=="zoneC"){
+		getID("zoneC").style.display = "none";
+		getID("zone").style.display = "block";
+		setTimeout(function(){scrollTo(0,scrollTops);},300);
+		indexArea = "zone";
+	}else if( indexArea=="zone"){		
+		getID("vod").style.opacity = 1;
+		getID("vod").style.display = "block";
+		setTimeout(function(){
+			scrollTo(0,scrollTops);
+			getID("zone").style.display = "none";
+		},300); //否则进入详情后马上按返回，会黑屏
+		indexArea = "home";
 	}else if( indexArea == "zhiBo"){
 		if( isZhiBo ){	//先退出播放窗口
 			isZhiBo = false;
@@ -184,7 +214,7 @@ function orient(){	//旋转屏幕
 
 	//改写H5返回键事件
 	window.addEventListener("popstate", function(e) { //	alert("我监听到了浏览器的返回按钮事件啦");
-		if( indexArea=="detail" || indexArea=="live" || indexArea=="me" || indexArea=="login" ){
+		if( indexArea=="detail" || indexArea=="live" || indexArea=="me" || indexArea=="login" || indexArea=="zoneC" || indexArea=="zone"){
 			pushHistory(); 
 			getID("vod").style.display = "block";
 			if( typeof(window.androidJs)!="undefined"){

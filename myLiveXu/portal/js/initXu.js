@@ -175,7 +175,7 @@ function scrollEnable() {
 	});
 }
 
-var preLoadImageArr = ["直播0.png","電影1.png","劇集1.png","動漫1.png","短视频1.png","體育1.png","綜藝1.png","search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif",""];
+var preLoadImageArr = ["直播0.png","電影1.png","劇集1.png","動漫1.png","短视频1.png","體育1.png","綜藝1.png","search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif"];
 
 function preLoadImages(){
 	for(i=0;i<preLoadImageArr.length;i++){

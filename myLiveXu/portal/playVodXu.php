@@ -19,6 +19,9 @@
 	//	写播放历史
 	$sql = mysqli_query($connect, "replace into history(sn,id,father,poster,episode,currentTime) values ('$sn','$id','$father','$poster',$episodePos,$currentTime) ") or die(mysqli_error($connect));
 
+	//	只保留20条历史
+	$sql22 = mysqli_query($connect, "delete a from history a ,(select historyID from history WHERE sn='$sn' ORDER BY historyID desc limit 29,1) b WHERE a.historyID<b.historyID AND a.sn='$sn' ") or die(mysqli_error($connect));
+
 	if( $sql ){
 		$playJson['status'] = "success";
 		echo json_encode($playJson,true);
