@@ -26,7 +26,7 @@ if(in_array($type, $allow_type)){//如果不被允许，则直接停止程序运
 }
 */
 
-header("Content-Type:text/html;charset=utf-8");
+//header("Content-Type:text/html;charset=utf-8");
 date_default_timezone_set('Asia/Shanghai'); 
 
 /* 解析获取php.ini 的upload_max_filesize（单位：byte）

@@ -196,8 +196,8 @@
 		from = indexArea;
 		tempTab1 = tab1;
 		for (i = 0; i < channelDataArr.length; i++) { //显示频道组
-			getID("groups").innerHTML += '<li class=tab-live-item id=group' + i + ' style="font-weight:500" onClick=showChannel(' + i + ');></li>';
-			getID("group" + i).innerHTML = channelDataArr[i].group;
+			getID("groups").innerHTML += '<li class=tab-live-item id=group' + i + ' onClick=showChannel(' + i + ');>'+channelDataArr[i].group+'</li>';
+		//	getID("group" + i).innerHTML = channelDataArr[i].group;
 		}
 		channelPos = (groupId == _num)?channelPos:0;	//如果回上次看的组，则不变频道，否则播放第1个
 		tab1 = -1;	//当前区域定为直播
@@ -260,7 +260,7 @@
 		getID("channels").innerHTML = "";
 		getID("channels").scrollTop = 0;
 		for (i = 0; i < channelTempArr.length; i++) {
-			getID("channels").innerHTML += '<div id=channels' + i + ' class="channels" onClick=startLive(' + i + ');><div id=channelId' + i + ' class="channelID" ><img class="liveListImg" src=live/'+channelTempArr[i].channelLogo+' /><div class="liveLine" ></div></div><div id=channel' + i + ' class="channel"></div></div>';
+			getID("channels").innerHTML += '<div id=channels' + i + ' class="channels" ><div id=channelId' + i + ' class="channelID" ><img class="liveListImg" src=live/'+channelTempArr[i].channelLogo+' /><div class="liveLine" ></div></div><div id=channel' + i + ' class="channel" onClick=startLive(' + i + ')></div></div>';
 			getID('channel' + i).innerText = channelTempArr[i].name.slice(0, 50);
 		}
 	}

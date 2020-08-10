@@ -24,7 +24,7 @@ function eventHandler(e,type){	//按键
 					getID("promptMe").style.opacity = 1;
 					setTimeout(function() {
 						getID("promptMe").style.opacity = 0;
-						location.href = "./indexMx.php";
+						location.href = "./indexMx.php?username="+username;
 					}, 1500);
 				}
 			}

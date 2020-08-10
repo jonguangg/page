@@ -17,8 +17,7 @@ define('FFMPEG_CMD', '/root/bin/ffmpeg -i "%s" 2>&1');	// 定义ffmpeg路径及�
 	*/
 echo "<pre>";
 //	遍历当前文件夹展示所有的文件和目录
-function list_file($dir)
-{
+function list_file($dir){
 	$temp = scandir($dir); //首先读取文件夹，得到该文件夹下文件和目录的数组
 	if (sizeof($temp) == 2 && strlen($dir) > 36) {
 		rmdir($dir); //删除空文件夹

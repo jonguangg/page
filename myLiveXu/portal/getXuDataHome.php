@@ -98,17 +98,15 @@
 	$tempArr = json_decode($jsonStr,true);
 	$seriesBottomZoneArr = $tempArr["data"];
 
+	// 热搜
+	$url="http://mixtvapi.mixtvapp.com/ott/hotsearch/getList";
+	$jsonStr= file_get_contents($url);
+	$tempArr = json_decode($jsonStr,true);
+	$hotSearchArr = $tempArr["data"];
 
 
 
-
-
-
-
-
-
-
-//	var_dump($hotMovieArr);
+//	var_dump($hotSearchArr);
 //	echo json_encode($hotMovieArr ,true);
 
 ?>
