@@ -418,7 +418,7 @@
 
 	var homeLoopIndex = 0;
 	var	homeLoopLength = homeLoopArr.length;
-	function showHomeLoop(){	//循环显示首页轮图
+/*	function showHomeLoop0(){	//循环显示首页轮图
 		homeLoopIndex ++;
 		if( homeLoopIndex > homeLoopLength-2 ){
 			homeLoopIndex = 0;
@@ -426,6 +426,13 @@
 		getID("homeLoopImg").style.backgroundImage = 'url('+homeLoopArr[homeLoopIndex%homeLoopLength].imgUrl+')';
 		setTimeout(showHomeLoop,8000);
 		getID("homeLoopName").innerText = homeLoopArr[homeLoopIndex%homeLoopLength].title;
+	}*/
+	function showHomeLoop(){
+		for(i=0;i<homeLoopLength-1;i++){
+			getID("homeLoopDiv").innerHTML += '<div class="homeLoopImg" style="background:url('+homeLoopArr[i].imgUrl+');"><div class="homeLoopTitle" >'+homeLoopArr[i].title+'</div></div>';
+			getID("homeLoopCircle").innerHTML += '<div id=homeLoopCircle'+i+' class="homeLoopCircle"></div>';
+		}
+		getID("homeLoopCircle0").style.backgroundColor = "#ff9933";
 	}
 	function showHomeLoopDetail(){
 		if( homeLoopArr[homeLoopIndex%homeLoopLength].type==0){
@@ -433,6 +440,20 @@
 		}else{
 			showZoneList(homeLoopArr[homeLoopIndex%homeLoopLength].columnId);
 		}
+	}	
+
+	var homeLoopDivLeft = 0 ;
+	function moveHomeLoop(_num){
+		getID("homeLoopCircle"+homeLoopIndex).style.backgroundColor = "white";
+		homeLoopIndex += _num;
+		if( homeLoopIndex < 0){
+			homeLoopIndex = homeLoopLength-2;
+		}else if( homeLoopIndex > homeLoopLength-2 ){
+			homeLoopIndex = 0;
+		}
+		getID("homeLoopDiv").style.left = "-"+homeLoopIndex*100+"%";
+		getID("homeLoopCircle"+homeLoopIndex).style.backgroundColor = "#ff9933";
+		setTimeout(function(){moveHomeLoop(1);},5000);
 	}
 
 	function showHomeZoneTop(){	//显示首页专栏入口
@@ -499,7 +520,7 @@
 
 	function showHomeBottomZone(){
 		for(i=0;i<homeBottomZoneArr.length;i++){
-			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:-200px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")>'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")> > </span></div>	<div style="position:relative;left:4%;top:-100px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
+			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:0px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")>'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")> > </span></div>	<div style="position:relative;left:4%;top:-100px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
 			for(j=0;j<homeBottomZoneArr[i].videoList.length;j++){			
 				var score = (homeBottomZoneArr[i].videoList[j].imdbScore==undefined)?"":homeBottomZoneArr[i].videoList[j].imdbScore;
 				var scoreBg = (homeBottomZoneArr[i].videoList[j].imdbScore==undefined)?"img/null.png":"img/scoreBg.png";
@@ -542,7 +563,7 @@
 				getID("zoneBg").style.backgroundImage = (json.backgroundImgUrl==null)?"url(img/null.png)":"url("+json.backgroundImgUrl+")";
 				getID("zoneName").innerHTML = json.title;
 				getID("zoneRemark").innerHTML = (json.remark==null)?"":json.remark;
-				getID("zoneContent").style.height = (clientHeight-250-getID("zoneRemark").clientHeight)+"px";
+				getID("zoneContent").style.height = (clientHeight-200-getID("zoneRemark").clientHeight)+"px";
 				for(i=0;i<json.list.length;i++){
 					if(json.list[i].videoName==undefined){	//有子专栏的，点击后显示子专栏
 						getID("zoneContent").innerHTML += '<div style="margin-bottom:30px;width:100%;height:360px;float:left;" onclick=showZoneListC("'+json.list[i].columnCid+'")><div id=zoneContentImg'+i+' class="zoneImg" style="background:url('+json.list[i].columnImgUrl+');"></div><div id=zoneContentName'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].childColumnName+'</div><div id=zoneContentRegion'+i+' class="zoneText2">'+json.list[i].remark+'</div></div>';
@@ -580,7 +601,7 @@
 				getID("zoneBgC").style.backgroundImage = (json.backgroundImgUrl==null)?"url(img/null.png)":"url("+json.backgroundImgUrl+")";
 				getID("zoneNameC").innerHTML = json.title;
 				getID("zoneRemarkC").innerHTML = (json.remark==null)?"":json.remark;
-				getID("zoneContentC").style.height = (clientHeight-250-getID("zoneRemark").clientHeight)+"px";
+				getID("zoneContentC").style.height = (clientHeight-190-getID("zoneRemarkC").clientHeight)+"px";
 				for(i=0;i<json.list.length;i++){
 					if(json.list[i].videoName==undefined){	//有子专栏的，点击后显示子专栏
 						getID("zoneContentC").innerHTML += '<div style="margin-bottom:30px;width:100%;height:360px;float:left;" onclick=getID("zone").style.display="none";showZoneListC("'+json.list[i].columnCid+'")><div id=zoneContentImgC'+i+' class="zoneImg" style="background:url('+json.list[i].columnImgUrl+');"></div><div id=zoneContentNameC'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].childColumnName+'</div><div id=zoneContentRegionC'+i+' class="zoneText2">'+json.list[i].remark+'</div></div>';
@@ -796,7 +817,7 @@
 		showHomeBottomZone();
 		scrollTo(0,0)
 		preLoadImages();		
-	//	showZoneList("521a004b29e16a8ba452956afe70a416");
+		setTimeout(function(){moveHomeLoop(1);},10000);
 	}
 
 </script>
@@ -834,12 +855,23 @@
 
 		<!-- 首页列表 -->
 		<div id="vodList0" style="position: absolute;left:0%;top:285px;width:100%;display:block;">
-			<!-- 首页 轮图 -->
+			<!-- 首页 轮图 
 			<div id="homeLoopImg" class="homeList" style="left:4%;width:92%;height:500px;background:url(img/null.png);background-size:100% 100% !important;-webkit-transition:1s;" onclick="getID('h5video').muted=false;showHomeLoopDetail();"></div>
-			<div id="homeLoopName" class="homeList" style="left:6%;width:90%;height:100px;top:-150px;font-size:40px;overflow:hidden;"></div>
+			<div id="homeLoopName" class="homeList" style="left:6%;width:90%;height:100px;top:-150px;font-size:40px;overflow:hidden;"></div>-->
+
+			<div style="position:relative;top:0px;left:4%;width:92%;height:500px;overflow:hidden;">
+				<div id="homeLoopDiv" style="position:absolute;left:0%;width:2000%;-webkit-transition:1s;" onclick="showHomeLoopDetail()"><!--
+					<div-- class="homeLoopImg" style="background:url(img/poster.jpg);">
+						<div class="homeLoopTitle" >轮播名称轮播名称轮播名称轮播名称轮播名称轮播名称轮播名称轮播名称</div>
+					</div-->
+				</div>
+				<div id="homeLoopCircle" style="position:absolute;left:60%;top:460px;width:40%;height:50px;text-align:center;"><!--
+					<div-- id="homeLootCirle0" class="homeLoopCircle"></div-->
+				</div>
+			</div>
 
 			<!-- 首页 专栏入口 -->
-			<div class="homeList" style="width:96%;height:230px;top:-200px;">
+			<div class="homeList" style="width:96%;height:230px;top:0px;">
 				<div style="position: relative;left:4%;">	
 					<ul id="homeNavLive" class="tab-head">
 						<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div-->
@@ -848,7 +880,7 @@
 			</div>
 
 			<!-- 首页 Mix推荐 -->
-			<div class="homeList" style="width:96%;height:750px;top:-200px;" >
+			<div class="homeList" style="width:96%;height:750px;top:0px;" >
 				<div><span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span><span style="position:relative;left:6%;">Mix推荐</span></div>
 				<div id="homeRecommendImg0" class="homeRecommendImg" style="background: url(img/null.png) no-repeat" onclick="getID('h5video').muted=false;showRecommendDetail(0);">
 					<div id="homeRecommendEpisode0" class="homeRecommendEpisode"></div>
@@ -873,7 +905,7 @@
 			</div>
 
 			<!-- 首页 Hot榜 -->
-			<div class="homeList" style="width:96%;height:450px;top:-200px;">
+			<div class="homeList" style="width:96%;height:450px;top:0px;">
 				<div>
 					<span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span>
 					<span style="position:relative;left:6%;">Hot</span>
@@ -893,7 +925,7 @@
 			</div>
 
 			<!-- 首页 New榜 -->
-			<div class="homeList" style="width:96%;height:450px;top:-200px;">
+			<div class="homeList" style="width:96%;height:450px;top:0px;">
 				<div>
 					<span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span>
 					<span style="position:relative;left:6%;">New</span>
@@ -908,7 +940,7 @@
 			</div>
 
 			<!-- 首页 近期高分口碑剧 -->
-			<div class="homeList" style="width:96%;height:400px;top:-200px;">
+			<div class="homeList" style="width:96%;height:400px;top:0px;">
 				<div>
 					<span style="position:relative;left:5%;width:10px;background-color:#ff9933;" >&ensp;</span>
 					<span style="position:relative;left:6%;">近期高分口碑剧</span>
@@ -1020,7 +1052,7 @@
 	<div id="zoneC" style="position: absolute; left:0px;top:0px;width:100%;background-color:black;display:none;z-index:999;-webkit-transition:1s;">
 		<div id="zoneBgC" style="position: fixed;left:0px;top:0px;width:100%;height:1920px;background:url(img/null.png); background-size:100% 100%;"></div>
 		<div style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
-		<div id="zoneNameC" style="position:relative;top:0px;width:90%;height:100px;line-height:100px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
+		<div id="zoneNameC" style="position:relative;top:0px;width:90%;max-height:100px;line-height:70px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
 		<div id="zoneRemarkC" style="position:relative;top:0px;width:90%;max-height:5000px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;"></div>
 		<div id="zoneContentC" style="position:relative;top:20px;width:100%;overflow:scroll;font-size:60px;color:white;">
 			<div style="margin-bottom:30px;height:360px;float:left;" onclick="alert(0)">
