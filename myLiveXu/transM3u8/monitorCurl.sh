@@ -11,6 +11,9 @@ elif [ $( ps -ef | grep -v grep | grep -c "transM3u8.php" ) -lt 2 ]; then
     echo $cTime "php脚本异常结束，重新启动transM3u8.php" >> /home/admin/web/www/transM3u8/error ;
     nohup curl -i "http://128.1.160.114:925/transM3u8/transM3u8.php" >/dev/null 2>&1 ;
 else
-    echo $(ps -ef | grep -v grep | grep "transM3u8.php" ) >> /home/admin/web/www/transM3u8/log ;
-    echo $cTime "nginx响应码:" $(curl -I -m 10 -o /dev/null -s -w %{http_code}  http://128.1.160.114:925/transM3u8/index.php ) >> /home/admin/web/www/transM3u8/log ;
+#    echo $(ps -ef | grep -v grep | grep "transM3u8.php" ) >> /home/admin/web/www/transM3u8/log ;
+#    echo $cTime "nginx响应码:" $(curl -I -m 10 -o /dev/null -s -w %{http_code}  http://128.1.160.114:925/transM3u8/index.php ) >> /home/admin/web/www/transM3u8/log ;
+#    nohup curl -i "http://128.1.160.114:925/transM3u8/test.php" >/dev/null 2>&1 ;
 fi
+
+#   sudo mount --bind /dev/shm/transM3u8 /home/admin/web/www/transM3u8

@@ -70,7 +70,9 @@ function sendAjax(_url, _content) {
 					//	registedVipCard();	//改在playvod()内弹出授权界面，让用户可以浏览，不能播放
 					}, 10000); //10秒后弹出注册页面
 				} else {
-					backArea = "true";						
+					if( typeof(window.androidJs)=="undefined" && username.length > 5 ){
+						backArea = "true";
+					}					
 				}
 			} else if (_content.indexOf('card') > -1) { //注册卡号
 				var clientHeight = window.innerHeight;
@@ -109,7 +111,6 @@ var fingerprintReport = function(){		//获取浏览器指纹
         //    console.log("time", time);
         //    console.log("fingerprint hash", murmur);
             fingers += murmur;
-        //    setCookie("fingers",fingers,"1d");;
     //    }
         for (var index in components) {
             var obj = components[index];

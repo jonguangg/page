@@ -17,15 +17,44 @@ function eventHandler(e,type){	//按键
 			}else if( indexArea=="login"){
 				if( getID('usernameInput').value.length>0 ){
 					username = getID('usernameInput').value;
-					sn = getID('usernameInput').value+fingers;
-					setCookie("username",username,"1000d");
-					setCookie("sn",sn,"1000d");
-					getID("promptMe").innerHTML = "Success";
-					getID("promptMe").style.opacity = 1;
-					setTimeout(function() {
-						getID("promptMe").style.opacity = 0;
-						location.href = "./indexMx.php?username="+username;
-					}, 1500);
+					var password = getID('passwordInput').value;
+					if( username.length < 6 ){
+						alert("用户名至少6位");
+					}else if(password.length < 6 ){
+						alert("密码至少6位");
+					}else{
+						$.ajax({
+							type: 'POST',
+							url: './login.php',	//写当前的播放记录
+							data: {
+								'username':username,
+								'password':password,
+							},
+							dataType: 'json',
+							beforeSend: function() {
+								//这里一般显示加载提示;
+							},
+							success: function(json) {
+							//	alert(json.status);
+								if( json.status=="密码错误"){
+									alert("密码错误或用户名已被使用");
+								}else if( json.status=="注册成功" || json.status=="密码正确"){
+									setCookie("username",username,"1000d");
+									setCookie("sn",username,"1000d");
+									getID("promptMe").innerHTML = "Success"; 
+									getID("promptMe").style.opacity = 1;
+									setTimeout(function() {
+										getID("promptMe").style.opacity = 0;
+										location.href = "./indexMx.php?username="+username;
+									}, 1500);
+								}
+							},
+							error: function() {
+								alert("something error!");
+							}
+						});
+					}
+
 				}
 			}
 			return 0;
@@ -131,7 +160,7 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("me").style.opacity = 1;	
 		},1000);
 	}else if( typeof(window.androidJs)=="undefined" && (indexArea=="home" || indexArea=="vod") ){
-		alert("请按 home 键退出");
+	//	alert("请按 home 键退出");
 	}
 }
 

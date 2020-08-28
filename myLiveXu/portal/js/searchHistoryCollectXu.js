@@ -5,6 +5,8 @@ var searchHistoryArr = [];
 var searchTemp = "";
 
 function showSearchInput(){
+    getID('shcImg').style.backgroundImage = 'url(img/null.png)';
+    getID('shcTitle').innerHTML = "";
     if( parseInt(getID('searchInput').style.top) < 0 ){
         indexArea = "search";
         getID('searchInput').style.top='60px';

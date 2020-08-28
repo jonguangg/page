@@ -36,16 +36,17 @@
 				$realip = getenv("REMOTE_ADDR");
 			}
 		}
-	//	echo '<script>alert("php ip_'.$realip.'")</script>';
+		echo '<script>alert("没处理过的IP_'.$realip.'")</script>';
 		if( strpos($realip,",")>0 ){//有两个IP
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
 		}
+		echo '<script>alert("逗号前的IP_'.$realip.'")</script>';	
 		setcookie("ip", $realip, time()+24*3600); //cookie存24小时
 		return $realip;
 	}
-	
-	function getCity(){			// 获取当前IP所在城市 
+
+	function getCity(){		// 获取当前IP所在城市
 		$tpyApi = "http://whois.pconline.com.cn/ip.jsp?ip=".getIP();
 		$city = file_get_contents($tpyApi);
 		$city = iconv('GBK', 'UTF-8', $city);
@@ -61,7 +62,7 @@
 	$loginTime = date("Y-m-d"); 						//机顶盒打开APP的日期
 	$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
 	$expireTime = date("Y-m-d", strtotime("+1 day")); 	//初次安装的授权到期时间
-	//	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
+//	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
 	$hiddenTime = ($_COOKIE["hiddenTime"])?$_COOKIE["hiddenTime"]:0;	// 切到后台的时间点
 	$visibilityTime = time();							//此次打开的时间戳，精确到秒
 	$lastTime = date("Y-m-d H:i:s"); 					//此次打开APP的时分秒
@@ -416,17 +417,25 @@
 		}
 	}
 
+	function loadMore() { //加载下一页
+		var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
+		if (loadMoreBottom < 3000 && pageNow < vodPageAll && tab1 > -20 && changePageStatus == "t") { //loadMoreBottom数字越大，就越早加载下一页
+			changePage(1);
+			changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
+		}			
+		if( vodPageAll == 0 || pageNow == vodPageAll ){		
+			if( indexArea=="vod" ){
+				getID("loadmore"+tab1).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+				getID("loading"+tab1).style.display = "none";
+			}else{
+				getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
+				getID("loadingSHC").style.display = "none";
+			}
+		}
+	}	
+
 	var homeLoopIndex = 0;
 	var	homeLoopLength = homeLoopArr.length;
-/*	function showHomeLoop0(){	//循环显示首页轮图
-		homeLoopIndex ++;
-		if( homeLoopIndex > homeLoopLength-2 ){
-			homeLoopIndex = 0;
-		}
-		getID("homeLoopImg").style.backgroundImage = 'url('+homeLoopArr[homeLoopIndex%homeLoopLength].imgUrl+')';
-		setTimeout(showHomeLoop,8000);
-		getID("homeLoopName").innerText = homeLoopArr[homeLoopIndex%homeLoopLength].title;
-	}*/
 	function showHomeLoop(){
 		for(i=0;i<homeLoopLength-1;i++){
 			getID("homeLoopDiv").innerHTML += '<div class="homeLoopImg" style="background:url('+homeLoopArr[i].imgUrl+');"><div class="homeLoopTitle" >'+homeLoopArr[i].title+'</div></div>';
@@ -443,17 +452,26 @@
 	}	
 
 	var homeLoopDivLeft = 0 ;
+	var homeLoopMove = 1;	//1向左移，-1向右移
 	function moveHomeLoop(_num){
 		getID("homeLoopCircle"+homeLoopIndex).style.backgroundColor = "white";
-		homeLoopIndex += _num;
-		if( homeLoopIndex < 0){
-			homeLoopIndex = homeLoopLength-2;
-		}else if( homeLoopIndex > homeLoopLength-2 ){
-			homeLoopIndex = 0;
+		homeLoopIndex += _num;	//第几个图片
+		homeLoopMove = _num;	//向左或向右，默认1左，-1向右
+		if( homeLoopIndex < 0 ){	//如果当前在第1个图片，则转为向左滑
+			homeLoopMove = 1;
+			homeLoopIndex ++;
+		}else if( homeLoopIndex > homeLoopLength-2 ){	//如果当前在最后一个图片，则转为向右滑
+			homeLoopMove = -1;
+			homeLoopIndex --;
 		}
 		getID("homeLoopDiv").style.left = "-"+homeLoopIndex*100+"%";
 		getID("homeLoopCircle"+homeLoopIndex).style.backgroundColor = "#ff9933";
-		setTimeout(function(){moveHomeLoop(1);},5000);
+		if( homeLoopMove==1){
+			setTimeout(function(){moveHomeLoop(1);},5000);
+		}else{
+			setTimeout(function(){moveHomeLoop(-1);},5000);
+		}
+		
 	}
 
 	function showHomeZoneTop(){	//显示首页专栏入口
@@ -730,38 +748,7 @@
 		getXuList(tab1,tab2,_num,1,12);
 		getID("loadmore"+tab1).innerHTML = "";
 		getID("loading"+tab1).style.display = "block";
-	}
-	
-	st2 = setTimeout(function(){ }, 1000);	//防止scrollWindow第一次执行找不到st2
-	function scrollWindow(){
-		if( indexArea=="zhiBo"){
-			clearTimeout(st2);
-			changeZhiBo();		
-			st2 = setTimeout(function() {
-				scrollTo(0,zhiBoPos*clientHeight);
-				if( zhiBoPos%10 >7 && changePageStatus == "t" ){
-					showZhiBoList(1);
-				}
-			}, 1000);	//1秒后将当前窗口的top放到屏幕顶端
-		}
-	}
-
-	function loadMore() { //加载下一页
-		var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();
-		if (loadMoreBottom < 3000 && pageNow < vodPageAll && tab1 > -20 && changePageStatus == "t") { //loadMoreBottom数字越大，就越早加载下一页
-			changePage(1);
-			changePageStatus = "f"; //运行一次加载后马上将状态置为假，不允许继续加载，防止滑动屏幕时多次运行changePage(1);
-		}			
-		if( vodPageAll == 0 || pageNow == vodPageAll ){		
-			if( indexArea=="vod" ){
-				getID("loadmore"+tab1).innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;no more&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-				getID("loading"+tab1).style.display = "none";
-			}else{
-				getID("loadmoreSHC").innerHTML = "•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;no more&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•&nbsp;•";
-				getID("loadingSHC").style.display = "none";
-			}
-		}
-	}		
+	}	
 
 	var isShowSplash = 0;	//0为不显示启动图片，其它数字都代表显示启动图片 
 	function showSplash(){
@@ -788,6 +775,20 @@
 			scrollEnable();
 			imOnLine();
 			splashJump();
+		}
+	}
+	
+	st2 = setTimeout(function(){ }, 1000);	//防止scrollWindow第一次执行找不到st2
+	function scrollWindow(){
+		if( indexArea=="zhiBo"){
+			clearTimeout(st2);
+			changeZhiBo();		
+			st2 = setTimeout(function() {
+				scrollTo(0,zhiBoPos*clientHeight);
+				if( zhiBoPos%10 >7 && changePageStatus == "t" ){
+					showZhiBoList(1);
+				}
+			}, 1000);	//1秒后将当前窗口的top放到屏幕顶端
 		}
 	}
 
@@ -1222,8 +1223,14 @@
 		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
 		<div id="usernameDiv">
 			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
-			<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" onclick="indexArea='login'">
+			<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" >
 				<input id="usernameInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+			</div>
+		</div>
+		<div id="passwordDiv" style="display: none;">		
+			<div class="PersonalCenter" >Password</div>
+			<div class="PersonalCenterR" id="passwordH5" onclick="indexArea='login'">
+				<input id="passwordInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
 			</div>
 		</div>
 		<div class="PersonalCenter">Expire time</div>
