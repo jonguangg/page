@@ -87,36 +87,75 @@
 		getID("expireTimeH5").innerHTML = expireTime;
 		if( typeof(window.androidJs)=="undefined"){	//浏览器访问才检查username
 			if( getCookie("username") && getCookie("username").length>0  ){
+				getID("login").style.display = "none";
 				getID("usernameH5").innerHTML = getCookie("username");
 				getID("defaultSpeed").innerHTML = speed;
 			}else{
-				getID("promptMe").innerHTML = "Please login";
-				getID("promptMe").style.opacity = 1;
-				setTimeout(function() {
-					getID("promptMe").style.opacity = 0;
-				}, 1500);
+				getID("login").style.display = "block";
+				getID("login").style.height = clientHeight+"px";
 			}
 		}else{	//非浏览器访问，不显示username和默认速度（因为还不能设置app的默认速度）
 			window.androidJs.JsSetPageArea("me");
 			getID("speedDiv").style.display = "none";
 			getID("usernameDiv").style.display = "none";
 		}
-/*
-		if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){
-			getID("usernameH5").innerHTML = getCookie("username");
-			getID("defaultSpeed").innerHTML = speed;
-		}else{
-			if( typeof(window.androidJs)=="undefined"){
-				getID("promptMe").innerHTML = "Please login";
-				getID("promptMe").style.opacity = 1;
-				setTimeout(function() {
-					getID("promptMe").style.opacity = 0;
-				}, 1500);
-			}
-		}*/
 		getID('me').style.display = 'block';
 		getID("me").style.height = (clientHeight +0)+ "px";
 		indexArea = "me";
+	}
+
+	function login(){
+	//	if( getID('usernameInput').value.length>0 ){
+			username = getID('usernameInput').value;
+			var password = getID('passwordInput').value;
+			if( username.length < 6 ){
+				alert("用户名至少6位");
+			}else if(password.length < 6 ){
+				alert("密码至少6位");
+			}else{
+				alert("正在提交，请稍候！");
+				getID("loading").style.display = "block";
+				$.ajax({
+					type: 'POST',
+					url: './login.php',	//写当前的播放记录
+					data: {
+						'username':username,
+						'password':password,
+					},
+					dataType: 'json',
+					beforeSend: function() {
+						//这里一般显示加载提示;
+					},
+					success: function(json) {
+					//	alert(json.status);
+						if( json.status=="密码错误"){
+							alert("密码错误或用户名已被使用");
+						}else if( json.status=="注册成功" || json.status=="密码正确"){
+							setCookie("username",username,"1000d");
+							setCookie("sn",username,"1000d");
+							alert("注册成功，\n请牢记您的用户名和密码!\n稍后转至首页");
+							location.href = "./indexMx.php?username="+username;
+						/*	getID("promptMe").innerHTML = "Success"; 
+							getID("promptMe").style.opacity = 1;
+							setTimeout(function() {
+								getID("promptMe").style.opacity = 0;
+								location.href = "./indexMx.php?username="+username;
+							}, 1500);*/
+						}
+					},
+					error: function() {
+						alert("something error!");
+					}
+				});
+			}
+	//	}
+	}
+
+	var loginType = 0;
+	function changeLoginType(){
+		loginType = (loginType==0)?1:0;
+		getID("loginType").style.backgroundImage = (loginType==0)?'url(img/login_register.png)':'url(img/login_login.png)';
+		getID("loginSubmit").innerHTML = (loginType==0)?"注 册(Register)":"登 陆(Log in)";
 	}
 
 	function registedVipCard(){
@@ -149,21 +188,22 @@
 			getID("msg").style.lineHeight = window.innerHeight * 0.35 + "px"; //只一行内容，行高=div height
 			getID("msg").innerHTML = "Register your VIP card !";
 			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
-		}		
+		}
 		indexArea = "home";
 	}
 
-	function checkInput(){
+	function checkInput(){	//提交授权码
 		var clientHeight  = window.innerHeight;
 		getID("msg").style.lineHeight = clientHeight*0.35+"px";
-		if( getID("card_id").value.length<8 ){
+		/*if( getID("card_id").value.length<8 ){
 			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";	
 			getID("msg").innerHTML = "Card number error !";
-		}else if( getID("card_key").value.length<8 ){
+		}else */if( getID("card_key").value.length<8 ){
 			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 			getID("msg").innerHTML = "PIN code error !";
 		}else{
-			var cardIdPost = getID("card_id").value.replace(/-/g, "");//把每4位中间的横杠删掉
+		//	var cardIdPost = getID("card_id").value.replace(/-/g, "");	//把每4位中间的横杠删掉
+			var cardIdPost = getID("card_key").value.replace(/-/g, "");	//卡号和卡密一样
 			var cardKeyPost = getID("card_key").value.replace(/-/g, "");
 		//	getID("msg").innerHTML = sn;
 			sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost);
@@ -181,10 +221,10 @@
 			}
 		}
 		lastLength = event.target.value.length;	//存储当前字数
-		if( event.target.value.length >7  && event.target.value.indexOf("-")<0){//16位没有横杠，说明是直接复制过来的
+		if( event.target.value.length >11  && event.target.value.indexOf("-")<0){//16位没有横杠，说明是直接复制过来的
 			var temp = event.target.value;
 		//	temp = temp.slice(0, 4) + "-" + temp.slice(4);
-			event.target.value = temp.slice(0,8);
+			event.target.value = temp.slice(0,12);
 		}
 	}
 	

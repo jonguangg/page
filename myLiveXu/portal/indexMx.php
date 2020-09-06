@@ -2,7 +2,7 @@
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type=text/javascript src="js/initXu.js?v=1"></script>
-<script type=text/javascript src="js/registerXu.js?v=1"></script>
+<script type=text/javascript src="js/registerXu.js?v=2"></script>
 <script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <?php
@@ -36,12 +36,12 @@
 				$realip = getenv("REMOTE_ADDR");
 			}
 		}
-		echo '<script>alert("没处理过的IP_'.$realip.'")</script>';
+	//	echo '<script>alert("没处理过的IP_'.$realip.'")</script>';
 		if( strpos($realip,",")>0 ){//有两个IP
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
 		}
-		echo '<script>alert("逗号前的IP_'.$realip.'")</script>';	
+	//	echo '<script>alert("逗号前的IP_'.$realip.'")</script>';	
 		setcookie("ip", $realip, time()+24*3600); //cookie存24小时
 		return $realip;
 	}
@@ -103,7 +103,7 @@
 	<meta name='x5-fullscreen' content='true' />
 	<meta name='360-fullscreen' content='true' /-->
 
-	<link rel="apple-touch-icon"  sizes="72x72"  href="./img/ic_launcher.png">
+	<link rel="apple-touch-icon"  sizes="72x72"  href="./img/ic_launcher2.png">
 	<!--link rel="apple-touch-icon-precomposed"  sizes="72x72"  href="apple-touch-icon-precomposed.png">添加到主屏后的图标，以上只能选其一，区别在于如果使用apple-touch-icon，iOS会给icon加上一些效果，包括圆角，阴影，反光。如果使用apple-touch-icon-precomposed则iOS不会加这个效果。如果你的网站也要可以在Ipad上访问，那么你还要针对不同的设备准备不同尺寸的icon，你可以通过sizes属性来指定icon的尺寸，如果你不指定size属性，那么默认为57x57 -->
 
 	<!-- ios使用一个初始化图片来替代白色的浏览器屏幕-->
@@ -118,7 +118,7 @@
 	<!-- iPhone XsMax	Portrait -->
 	<link rel="apple-touch-startup-image" href="./splash/1242×2688.png" media="(device-width: 736px)and (device-height: 1344px)" >
 
-	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
+	<link rel="shortcut icon" href="./img/ic_launcher2.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
 	<link rel="stylesheet" type="text/css" href="styleXu.css" >
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
@@ -231,6 +231,7 @@
 
 	function startLive(_num) {	//播放直播频道
 		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
+			scrollTo(0, 0);
 			registedVipCard();
 			return;
 		}
@@ -270,6 +271,7 @@
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
 	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime);
 		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
+			scrollTo(0, 0);
 			registedVipCard();
 			return;
 		}
@@ -532,7 +534,7 @@
 	function showHighScore(){	//显示首页近期高分口碑剧
 		getID("highScoreContent").innerHTML = "";
 		for(i=0;i<highScoreArr.length;i++){
-			getID("highScoreContent").innerHTML += '<div class="tab-highScore-item" onClick=getID("h5video").muted=false;showDetail("'+highScoreArr[i].videoId+'"); style="background:url('+highScoreArr[i].imgUrl+') no-repeat;"></div><div class="tab-highScore-item2" onClick=getID("h5video").muted=false;showDetail("'+highScoreArr[i].videoId+'");><div class="tab-highScoreName" style="font-size:40px;line-height:80px;" >'+highScoreArr[i].videoName+'</div><div class="tab-highScoreName"><span style="color:#f7a333;">'+highScoreArr[i].imdbScore+'</span>&ensp;<span>'+highScoreArr[i].showRegion+'</span></div><div class="tab-highScoreName" >'+highScoreArr[i].videoTopic+'</div><div class="tab-highScoreName" >'+highScoreArr[i].remark+'</div>	</div>';
+			getID("highScoreContent").innerHTML += '<div class="tab-highScore-item" onClick=getID("h5video").muted=false;showDetail("'+highScoreArr[i].videoId+'"); style="background:url('+highScoreArr[i].imgUrl+') no-repeat;"></div><div class="tab-highScore-item2" onClick=getID("h5video").muted=false;showDetail("'+highScoreArr[i].videoId+'");><div class="tab-highScoreName" style="font-size:40px;line-height:80px;" >'+highScoreArr[i].videoName+'</div><div class="tab-highScoreName"><span style="color:#f7a333;">'+highScoreArr[i].imdbScore+'</span>&ensp;<span>'+highScoreArr[i].showRegion+'</span></div><div class="tab-highScoreName" >'+highScoreArr[i].videoTopic+'</div><div class="tab-highScoreName" style="color:gray" >'+highScoreArr[i].remark+'</div>	</div>';
 		}
 	}
 
@@ -561,6 +563,7 @@
 	}
 
 	function showZoneList(_columnId){	//显示专栏
+		getID("loading").style.display = "block";
 		scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去
 		indexArea = "zone";
 		getID("zoneContent").innerHTML = "";
@@ -575,6 +578,7 @@
 				//这里一般显示加载提示;
 			},
 			success: function(json) {
+				getID("loading").style.display = "none";
 			//	console.log(json);
 				getID("vod").style.display = "none";
 				getID("zone").style.display = "block";
@@ -584,11 +588,11 @@
 				getID("zoneContent").style.height = (clientHeight-200-getID("zoneRemark").clientHeight)+"px";
 				for(i=0;i<json.list.length;i++){
 					if(json.list[i].videoName==undefined){	//有子专栏的，点击后显示子专栏
-						getID("zoneContent").innerHTML += '<div style="margin-bottom:30px;width:100%;height:360px;float:left;" onclick=showZoneListC("'+json.list[i].columnCid+'")><div id=zoneContentImg'+i+' class="zoneImg" style="background:url('+json.list[i].columnImgUrl+');"></div><div id=zoneContentName'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].childColumnName+'</div><div id=zoneContentRegion'+i+' class="zoneText2">'+json.list[i].remark+'</div></div>';
+						getID("zoneContent").innerHTML += '<div style="margin-bottom:50px;width:100%;height:360px;float:left;" onclick=showZoneListC("'+json.list[i].columnCid+'")><div id=zoneContentImg'+i+' class="zoneImg" style="background:url('+json.list[i].columnImgUrl+');"></div><div id=zoneContentName'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].childColumnName+'</div><div id=zoneContentRegion'+i+' class="zoneText2">'+json.list[i].remark+'</div></div>';
 
 					}else{	//没子专栏的，点击后显示详情页
 						var tempDuration = (json.list[i].videoType==2)?"时长："+json.list[i].videoLength+"分钟":"状态:"+json.list[i].videoState;
-						getID("zoneContent").innerHTML += '<div style="margin-bottom:30px;width:100%;height:360px;float:left;" onclick=indexArea="zone";getID("zone").style.display="none";showDetail("'+json.list[i].videoId+'")><div id=zoneContentImg'+i+' class="zoneImg" style="background:url('+json.list[i].imgUrl+');"></div><div id=zoneContentName'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].videoName+'</div><div id=zoneContentRegion'+i+' class="zoneText">'+json.list[i].showRegion+'</div><div id=zoneContentType'+i+' class="zoneText">'+json.list[i].videoTopic+'</div><div id=zoneContentDuration'+i+' class="zoneText">'+tempDuration+'</div></div>';
+						getID("zoneContent").innerHTML += '<div style="margin-bottom:50px;width:100%;height:360px;float:left;" onclick=indexArea="zone";getID("zone").style.display="none";getID("h5video").muted=false;showDetail("'+json.list[i].videoId+'")><div id=zoneContentImg'+i+' class="zoneImg" style="background:url('+json.list[i].imgUrl+');"></div><div id=zoneContentName'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].videoName+'</div><div id=zoneContentRegion'+i+' class="zoneText">'+json.list[i].showRegion+'</div><div id=zoneContentType'+i+' class="zoneText">'+json.list[i].videoTopic+'</div><div id=zoneContentDuration'+i+' class="zoneText">'+tempDuration+'</div></div>';
 					}
 				}				
 			},
@@ -599,6 +603,7 @@
 	}
 
 	function showZoneListC(_columnId){	//显示子专栏
+		getID("loading").style.display = "block";
 		scrollTops = document.body.scrollTop;   //先记录滚动了多少，回到上一级页面再滚回去
 		indexArea = "zoneC";
 		getID("zoneContentC").innerHTML = "";
@@ -614,6 +619,7 @@
 			},
 			success: function(json){
 			//	console.log(json);
+				getID("loading").style.display = "none";
 				getID("zone").style.display = "none";
 				getID("zoneC").style.display = "block";
 				getID("zoneBgC").style.backgroundImage = (json.backgroundImgUrl==null)?"url(img/null.png)":"url("+json.backgroundImgUrl+")";
@@ -622,11 +628,11 @@
 				getID("zoneContentC").style.height = (clientHeight-190-getID("zoneRemarkC").clientHeight)+"px";
 				for(i=0;i<json.list.length;i++){
 					if(json.list[i].videoName==undefined){	//有子专栏的，点击后显示子专栏
-						getID("zoneContentC").innerHTML += '<div style="margin-bottom:30px;width:100%;height:360px;float:left;" onclick=getID("zone").style.display="none";showZoneListC("'+json.list[i].columnCid+'")><div id=zoneContentImgC'+i+' class="zoneImg" style="background:url('+json.list[i].columnImgUrl+');"></div><div id=zoneContentNameC'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].childColumnName+'</div><div id=zoneContentRegionC'+i+' class="zoneText2">'+json.list[i].remark+'</div></div>';
+						getID("zoneContentC").innerHTML += '<div style="margin-bottom:50px;width:100%;height:360px;float:left;" onclick=getID("zone").style.display="none";showZoneListC("'+json.list[i].columnCid+'")><div id=zoneContentImgC'+i+' class="zoneImg" style="background:url('+json.list[i].columnImgUrl+');"></div><div id=zoneContentNameC'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].childColumnName+'</div><div id=zoneContentRegionC'+i+' class="zoneText2">'+json.list[i].remark+'</div></div>';
 
 					}else{	//没子专栏的，点击后显示详情页
 						var tempDuration = (json.list[i].videoType==2)?"时长："+json.list[i].videoLength+"分钟":"状态:"+json.list[i].videoState;
-						getID("zoneContentC").innerHTML += '<div style="margin-bottom:30px;width:100%;height:360px;float:left;" onclick=getID("zoneC").style.display="none";showDetail("'+json.list[i].videoId+'")><div id=zoneContentImgC'+i+' class="zoneImg" style="background:url('+json.list[i].imgUrl+');"></div><div id=zoneContentNameC'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].videoName+'</div><div id=zoneContentRegionC'+i+' class="zoneText">'+json.list[i].showRegion+'</div><div id=zoneContentTypeC'+i+' class="zoneText">'+json.list[i].videoTopic+'</div><div id=zoneContentDurationC'+i+' class="zoneText">'+tempDuration+'</div></div>';
+						getID("zoneContentC").innerHTML += '<div style="margin-bottom:50px;width:100%;height:360px;float:left;" onclick=getID("zoneC").style.display="none";getID("h5video").muted=false;showDetail("'+json.list[i].videoId+'")><div id=zoneContentImgC'+i+' class="zoneImg" style="background:url('+json.list[i].imgUrl+');"></div><div id=zoneContentNameC'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].videoName+'</div><div id=zoneContentRegionC'+i+' class="zoneText">'+json.list[i].showRegion+'</div><div id=zoneContentTypeC'+i+' class="zoneText">'+json.list[i].videoTopic+'</div><div id=zoneContentDurationC'+i+' class="zoneText">'+tempDuration+'</div></div>';
 					}
 				}				
 			},
@@ -807,6 +813,9 @@
 		getID("channels").style.height = (clientHeight-clientWidth*9/16-90)+"px";
 		getID("zone").style.height = clientHeight+"px";
 		getID("zone").style.height = (clientHeight-350)+"px";
+	//	getID("me").style.height = (clientHeight +0)+ "px";
+	//	getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
+	//	getID("login").style.height = clientHeight+"px";
 
 		showTab1();				//显示一级分类
 		showHomeLoop();
@@ -861,7 +870,7 @@
 			<div id="homeLoopName" class="homeList" style="left:6%;width:90%;height:100px;top:-150px;font-size:40px;overflow:hidden;"></div>-->
 
 			<div style="position:relative;top:0px;left:4%;width:92%;height:500px;overflow:hidden;">
-				<div id="homeLoopDiv" style="position:absolute;left:0%;width:2000%;-webkit-transition:1s;" onclick="showHomeLoopDetail()"><!--
+				<div id="homeLoopDiv" style="position:absolute;left:0%;width:2000%;-webkit-transition:1s;" onclick="getID('h5video').muted=false;showHomeLoopDetail()"><!--
 					<div-- class="homeLoopImg" style="background:url(img/poster.jpg);">
 						<div class="homeLoopTitle" >轮播名称轮播名称轮播名称轮播名称轮播名称轮播名称轮播名称轮播名称</div>
 					</div-->
@@ -953,7 +962,7 @@
 							<div class="tab-highScoreName" style="font-size:40px;line-height:80px;" id="highScoreName0"></div>
 							<div class="tab-highScoreName"><span id="highScores0" style="color:#f7a333;"></span>&ensp;<span></span></div>
 							<div class="tab-highScoreName" id="highScoreType0"></div>
-							<div class="tab-highScoreName" id="highScoreMarks0"></div>						
+							<div class="tab-highScoreName" id="highScoreMarks0" style="color:gray;"></div>				
 						</div>
 					</ul>
 				</div>
@@ -1033,13 +1042,13 @@
 	</div><!-- 点播尾 -->
 
 	<!-- 专栏 -->
-	<div id="zone" style="position: absolute; left:0px;top:0px;width:100%;background-color:black;display:none;z-index:999;-webkit-transition:1s;">
+	<div id="zone" style="position: absolute; left:0px;top:50px;width:100%;background-color:black;display:none;z-index:99;-webkit-transition:1s;">
 		<div id="zoneBg" style="position: fixed;left:0px;top:0px;width:100%;height:1920px;background:url(img/null.png); background-size:100% 100%;"></div>
 		<div style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
 		<div id="zoneName" style="position:relative;top:0px;width:90%;max-height:140px;line-height:70px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
-		<div id="zoneRemark" style="position:relative;top:0px;width:90%;max-height:5000px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;"></div>
-		<div id="zoneContent" style="position:relative;top:20px;width:100%;overflow:scroll;font-size:60px;color:white;">
-			<div style="margin-bottom:30px;height:360px;float:left;" onclick="alert(0)">
+		<div id="zoneRemark" style="position:relative;top:20px;width:90%;max-height:5000px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;"></div>
+		<div id="zoneContent" style="position:relative;top:50px;width:100%;overflow:scroll;font-size:60px;color:white;">
+			<div style="margin-bottom:50px;height:360px;float:left;" onclick="alert(0)">
 				<div id="zoneContentImg" class="zoneImg" style="background:url(img/null.png);"></div>
 				<div id="zoneContentName" class="zoneText" style="color:#ff9933"></div>
 				<div id="zoneContentRegion" class="zoneText"></div>
@@ -1050,13 +1059,13 @@
 	</div><!-- 专栏尾 -->
 
 	<!-- 子专栏 -->
-	<div id="zoneC" style="position: absolute; left:0px;top:0px;width:100%;background-color:black;display:none;z-index:999;-webkit-transition:1s;">
+	<div id="zoneC" style="position: absolute; left:0px;top:0px;width:100%;background-color:black;display:none;z-index:99;-webkit-transition:1s;">
 		<div id="zoneBgC" style="position: fixed;left:0px;top:0px;width:100%;height:1920px;background:url(img/null.png); background-size:100% 100%;"></div>
 		<div style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
 		<div id="zoneNameC" style="position:relative;top:0px;width:90%;max-height:100px;line-height:70px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
-		<div id="zoneRemarkC" style="position:relative;top:0px;width:90%;max-height:5000px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;"></div>
-		<div id="zoneContentC" style="position:relative;top:20px;width:100%;overflow:scroll;font-size:60px;color:white;">
-			<div style="margin-bottom:30px;height:360px;float:left;" onclick="alert(0)">
+		<div id="zoneRemarkC" style="position:relative;top:20px;width:90%;max-height:5000px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;"></div>
+		<div id="zoneContentC" style="position:relative;top:50px;width:100%;overflow:scroll;font-size:60px;color:white;">
+			<div style="margin-bottom:50px;height:360px;float:left;" onclick="alert(0)">
 				<div id="zoneContentImgC" class="zoneImg" style="background:url(img/null.png);"></div>
 				<div id="zoneContentNameC" class="zoneText2" style="color:#ff9933"></div>
 				<div id="zoneContentRegionC" class="zoneText"></div>
@@ -1120,7 +1129,7 @@
 
 	<!-- 详情页 -->
 	<div id="detail" style="position:absolute;left:-2000px;top:0px;width:100%;z-index:2;background-color:black;display:none;-webkit-transition:1s;">
-		<div id="detailPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background-color:black; background:url(../loading.gif);background-size:100% 100% !important;" >
+		<div id="detailPoster" style="position:relative;left:0%;top:0px;width:100%;height:0px;background-color:black; background:url(img/null.png);background-size:100% 100% !important;" >
 			<video id="h5video" style="object-fit:fill" width="100%" height="100%" autoplay controls muted preload="auto" src="" playsinline x5-playsinline webkit-playsinline x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="landscape" ></video>
 		</div>
 
@@ -1132,7 +1141,7 @@
 			</tr></table>
 		</div>
 
-		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="FullScreen();"></div>
+		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);"></div>
 		<div class="detailText" style="top:0px;" id="tab"><b>类型：</b><span id="detailTab"></span></div>
 		<div class="detailText" style="top:0px;" id="region"><b>地区：</b><span id="detailRegion"></span></div>
 		<div class="detailText" style="top:0px;" id="actor"><b>主演：</b><span id="detailActor" ></span></div>
@@ -1148,7 +1157,7 @@
 		</div>
 		<!--div class="detailText" style="top:-220px;left:84%;width:100px;height:100px;background:url(img/collect0.png);"  ></div-->
 		<div id="guess" class="detailText2" style="top:0px;">猜您喜欢
-			<img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);" />
+			<!--img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);" /-->
 			<div style="position:relative;left:0%;top:0px;">
 				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
 				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
@@ -1192,20 +1201,20 @@
 	</div>
 
 	<!-- 输入卡号及卡密 -->
-	<div id="cardKey" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
+	<div id="cardKey" style="position:fixed;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,black);display:none;text-align:center;font-size:80px;color:white; z-index:10;">
 		<h1 id="title" style="position:absolute;left:0px;top:3%;width:100%;height:100px;text-align:center;font-size:90px;text-shadow:-5px 5px 5px #000;">Registered VIP Card</h1>
-
+<!--
 		<div style="position:absolute;left:5%;top:16%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">Card Number</div>
-		<!-- 卡号输入框 -->
-		<input type="number" id="card_id" style="position:absolute;left:5%;top:21%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:black;" maxlength="8" oninput="onInputHandler(event,'card_id')" autofocus="autofocus" onkeyup="value=value.replace(/[^-\d]/g,'')" />
+		 卡号输入框 
+		<input type="number" id="card_id" style="position:absolute;left:5%;top:21%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:white;" maxlength="8" oninput="onInputHandler(event,'card_id')" autofocus="autofocus" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
-		<div style="position:absolute;left:40%;top:21%;width:50%;height:100px;" onClick="getID('card_id').focus();window.androidJs.JsShowImm();"></div>
+		<div style="position:absolute;left:40%;top:21%;width:50%;height:100px;" onClick="getID('card_id').focus();window.androidJs.JsShowImm();"></div>-->
 
-		<div style="position:absolute;left:5%;top:30%;width:90%;height:70px;font-size:60px;text-align:left;text-shadow:-5px 5px 5px #000;">PIN Code</div>
+		<div style="position:absolute;left:5%;top:20%;width:90%;height:70px;font-size:60px;text-align:center;text-shadow:-5px 5px 5px #000;">License Code</div>
 		<!-- 卡密输入框 -->
-		<input type="number" id="card_key" style="position:absolute;left:5%;top:35%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:black;" maxlength="8" oninput="onInputHandler(event,'card_key')" onkeyup="value=value.replace(/[^-\d]/g,'')" />
+		<input type="number" id="card_key" style="position:absolute;left:5%;top:30%;width:90%;height:100px;font-size:60px;text-align:center;border-radius:10px 10px 10px 10px;background:transparent;color:white;" maxlength="12" oninput="onInputHandler(event,'card_key')" onkeyup="value=value.replace(/[^-\d]/g,'')" />
 
-		<div style="position:absolute;left:40%;top:35%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
+		<div style="position:absolute;left:40%;top:30%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
 		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:white;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>back</b></div>
 
@@ -1219,24 +1228,18 @@
 	</div>
 
 	<!-- 个人中心 -->
-	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,white);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
-		<h1 class="PersonalCenter" style="margin-top:15%;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
+	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,black);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
+		<div style="position:absolute;top:50px;left:0%;width:90%;height:150px;line-height:150px;text-align:left; font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:10%;" onclick="androidBack()"> < </div>
+		<h1 class="PersonalCenter" style="margin-top:250px;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
 		<div id="usernameDiv">
 			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
-			<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" >
-				<input id="usernameInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
-			</div>
-		</div>
-		<div id="passwordDiv" style="display: none;">		
-			<div class="PersonalCenter" >Password</div>
-			<div class="PersonalCenterR" id="passwordH5" onclick="indexArea='login'">
-				<input id="passwordInput" type="text" style="width:80%;text-align:center;border-radius:50px;background:transparent;outline:none;color:white;" maxlength="11" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+			<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" >	
 			</div>
 		</div>
 		<div class="PersonalCenter">Expire time</div>
 		<div class="PersonalCenterR" id="expireTimeH5"></div>
 		<div onclick="registedVipCard();">
-			<div class="PersonalCenter">VIP</div>
+			<div class="PersonalCenter">License</div>
 			<div class="PersonalCenterR">></div>
 		</div>
 		<div onclick="share();" style="display: none;">
@@ -1258,8 +1261,21 @@
 		<div id="speedDiv" onclick="changeDefaultSpeed();">
 			<div class="PersonalCenter">Default speed</div>
 			<div class="PersonalCenterR" id="defaultSpeed">1.0</div>
-		</div>		
-		<div id="promptMe" class="promptCollect" style="top:45%;">Success</div>
+		</div>
+	</div>
+
+	<!-- 登陆 注册 -->
+	<div id="login" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:10;display:none;">
+		<div id="loginType" class="login" style="top:30%;height:120px;background:url(img/login_register.png);background-size:100% 100%;" onclick="changeLoginType();"></div>
+		<div class="login" style="top:37%;background:url(img/login_username.png) no-repeat right;background-size:6% 70%;">
+			<input id="usernameInput" type="text" class="login-input" placeholder="请输入至少6位用户名(ID)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
+		</div>
+		<div class="login" style="top:40%;background:url(img/login_password.png) no-repeat right;background-size:6% 70%;" onclick="indexArea='login'">
+			<input id="passwordInput" type="text" class="login-input" placeholder="至少6位密码(Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		</div>
+		<div class="login-submit" onclick="login();" id="loginSubmit">提 交(submit)</div>
+		<div class="login-prompt" >温馨提示<br>添加到主屏幕，下次访问更便捷！</div>
+		<!--div id="promptMe" class="promptCollect" style="top:45%;">Success</!--div-->
 	</div>
 
 	<!-- 启动图片 -->
@@ -1274,6 +1290,8 @@
 		</div>
 	</div>
 
+	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9999;display:none;">loading</div>
+
 </div><!-- bodys尾 -->
 
 <!-- 预加载图片 -->
@@ -1283,7 +1301,7 @@
 
 <script type=text/javascript src="js/initS.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
-<script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>
+<script type=text/javascript src="js/detailXu.js?v=2" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>
 
 <script>

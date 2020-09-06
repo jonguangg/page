@@ -9,6 +9,7 @@ var poster = "";
 var isCollect = 0;  //默认0未收藏
 var list = [];
 function showDetail( _id ){
+    getID("loading").style.display = "block";
 //  getID("detail").style.display = "none"; //这是为了点击猜您喜欢后详情马上消失
     getID("detail").style.left = "-2000px"; //这是为了获取到数据后从左边进入的效果
     if( indexArea=="detail"){
@@ -43,10 +44,11 @@ function showDetail( _id ){
         },
         success: function(json) {
         //    console.log(json);                        //滚到最顶
-            getID("vod").style.opacity = 0;
-            setTimeout(function(){getID("vod").style.display = "none";},1000); 
+		    getID("loading").style.display = "none";
             currentTime = json["currentTime"];  //  视频上次播放的位置
+            getID("vod").style.opacity = 0;
             getID("detail").style.display = "block";
+            setTimeout(function(){getID("vod").style.display = "none";},1000); 
             setTimeout(function() {
                 getID("detail").style.left = "0px";
                 scrollTo(0, 0); 
@@ -55,7 +57,7 @@ function showDetail( _id ){
 			var videoType = json["data"].videoType;
 			father = json["data"].videoName;
 			poster = json["data"].imgUrl;      
-			getID("detailName").innerHTML = father;
+			getID("detailName").innerHTML = "<&ensp;"+father;
 			getID("detailDescription").innerHTML = json["data"].videoBriefing;	
 			
 			if( json["data"].showRegion==null ){
