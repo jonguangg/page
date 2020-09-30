@@ -34,11 +34,11 @@ function exportExcel($title=array(), $data=array(), $fileName='', $savePath='./'
     $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');        
 
     $obj->getActiveSheet(0)->setTitle('sheet名称');   //设置sheet名称  
-    $_row = 1;   //设置纵向单元格标识  
+    $_row = 0;   //设置纵向单元格标识  
     if($title){  
-        $_cnt = count($title);  
-        $obj->getActiveSheet(0)->mergeCells('A'.$_row.':'.$cellName[$_cnt-1].$_row);   //合并单元格  
-        $obj->setActiveSheetIndex(0)->setCellValue('A'.$_row, $fileName.'导出时间：'.date('Y-m-d H:i:s'));  //设置合并后的单元格内容  
+    //    $_cnt = count($title);  
+    //    $obj->getActiveSheet(0)->mergeCells('A'.$_row.':'.$cellName[$_cnt-1].$_row);   //合并单元格  
+    //    $obj->setActiveSheetIndex(0)->setCellValue('A'.$_row, $fileName.'导出时间：'.date('Y-m-d H:i:s'));  //设置合并后的单元格内容  
 		$obj->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 		$obj->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 		$obj->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -115,8 +115,6 @@ function exportExcel($title=array(), $data=array(), $fileName='', $savePath='./'
 	  
 	
 ?>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
