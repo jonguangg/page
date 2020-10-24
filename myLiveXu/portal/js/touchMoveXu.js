@@ -83,6 +83,7 @@ function touchMoveFunc(evt){
 	}
 }
 
+var ifMoveLoop = false;
 function touchEndFunc(evt){
 	try{	//	evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
 		var moveX = endX-startX;
@@ -93,6 +94,14 @@ function touchEndFunc(evt){
 		if( indexArea=="home" && tab1==0 ){ //首页向下或向右滑动 刷新页面	alert(moveX+"_"+moveY);
 			if( moveY >900  || moveX >800 ){//alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
 				location.href = "./indexMx.php?"+Math.random();
+			}else if(startY > 300 && startY < 700 ){
+				ifMoveLoop = true;
+				if( moveX > 100 ){
+					moveHomeLoop(-1);
+				}else if(moveX < -100 ){
+					moveHomeLoop(1);
+				}
+				setTimeout( ifMoveLoop = false,5000);	
 			}
 		}
 		if( tab1>0 && (indexArea=="home" || indexArea == "vod") ){//首页非Major

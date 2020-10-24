@@ -1,7 +1,7 @@
 <script type=text/javascript src="js/global.js" charset=UTF-8></script>
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type=text/javascript src="js/initXu.js?v=1"></script>
+<script type=text/javascript src="js/initXu.js?v=2"></script>
 <script type=text/javascript src="js/registerXu.js?v=2"></script>
 <script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
@@ -468,12 +468,13 @@
 		}
 		getID("homeLoopDiv").style.left = "-"+homeLoopIndex*100+"%";
 		getID("homeLoopCircle"+homeLoopIndex).style.backgroundColor = "#ff9933";
-		if( homeLoopMove==1){
-			setTimeout(function(){moveHomeLoop(1);},5000);
-		}else{
-			setTimeout(function(){moveHomeLoop(-1);},5000);
-		}
-		
+		if( ifMoveLoop == false){			
+			if( homeLoopMove==1){
+				setTimeout(function(){moveHomeLoop(1);},5000);
+			}else{
+				setTimeout(function(){moveHomeLoop(-1);},5000);
+			}
+		}		
 	}
 
 	function showHomeZoneTop(){	//显示首页专栏入口
