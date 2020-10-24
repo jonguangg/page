@@ -53,7 +53,8 @@ if( $_POST['cardId'] ){//用户提交了卡号和密码
 	$sql = mysqli_query($connect,"select * from client where sn='$sn' ") or die(mysqli_error($connect));//查找当前机顶盒
 
 	if( mysqli_num_rows($sql)>0 ){//如果数据库中有当前机顶盒
-		$sql = mysqli_query($connect,"select * from vipCard where cardId='$cardId' ") or die(mysqli_error($connect));//查找当前卡号
+	//	$sql = mysqli_query($connect,"select * from vipCard where cardId='$cardId' ") or die(mysqli_error($connect));//查找当前卡号
+		$sql = mysqli_query($connect,"select * from vipCard where cardKey='$cardKey' ") or die(mysqli_error($connect));//查找当前卡密
 		if( mysqli_num_rows($sql)>0 ){//如果数据库中有当前卡号
 			$row = mysqli_fetch_array($sql);//sql查询数据集
 			if( $cardKey == $row["cardKey"] ){//用户输入的key等于数据库中的key
