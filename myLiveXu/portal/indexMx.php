@@ -858,7 +858,7 @@
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:100%;">
 			<ul id="vodTab1" class="tab-head">
-				<li class="tab-tab1-item" id="nav-1" onClick="getID('liveVideo').muted=false;showLiveList(0);" style="margin-left:15px;">Live<br>直播</li>
+				<!--li class="tab-tab1-item" id="nav-1" onClick="getID('liveVideo').muted=false;showLiveList(0);" style="margin-left:15px;">Live<br>直播</li-->
 				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;">Major<br>精选</li>
 			</ul>
 		<div style="position:fixed;top:300px;left:5%;width:90%;height:0px;background-color:#333333;"></div>
@@ -866,10 +866,7 @@
 
 		<!-- 首页列表 -->
 		<div id="vodList0" style="position: absolute;left:0%;top:285px;width:100%;display:block;">
-			<!-- 首页 轮图 
-			<div id="homeLoopImg" class="homeList" style="left:4%;width:92%;height:500px;background:url(img/null.png);background-size:100% 100% !important;-webkit-transition:1s;" onclick="getID('h5video').muted=false;showHomeLoopDetail();"></div>
-			<div id="homeLoopName" class="homeList" style="left:6%;width:90%;height:100px;top:-150px;font-size:40px;overflow:hidden;"></div>-->
-
+			<!-- 首页 轮图 -->
 			<div style="position:relative;top:0px;left:4%;width:92%;height:500px;overflow:hidden;">
 				<div id="homeLoopDiv" style="position:absolute;left:0%;width:2000%;-webkit-transition:1s;" onclick="getID('h5video').muted=false;showHomeLoopDetail()"><!--
 					<div-- class="homeLoopImg" style="background:url(img/poster.jpg);">
