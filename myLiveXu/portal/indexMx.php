@@ -2,7 +2,7 @@
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type=text/javascript src="js/initXu.js?v=2"></script>
-<script type=text/javascript src="js/registerXu.js?v=2"></script>
+<script type=text/javascript src="js/registerXu.js?v=11"></script>
 <script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <?php
@@ -61,7 +61,7 @@
 	$mark = $_COOKIE["deviceInfo"];						//机顶盒备注
 	$loginTime = date("Y-m-d"); 						//机顶盒打开APP的日期
 	$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
-	$expireTime = date("Y-m-d", strtotime("+1 day")); 	//初次安装的授权到期时间
+	$expireTime = date("Y-m-d", strtotime("+6 day")); 	//初次安装的授权到期时间
 //	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
 	$hiddenTime = ($_COOKIE["hiddenTime"])?$_COOKIE["hiddenTime"]:0;	// 切到后台的时间点
 	$visibilityTime = time();							//此次打开的时间戳，精确到秒
@@ -103,7 +103,7 @@
 	<meta name='x5-fullscreen' content='true' />
 	<meta name='360-fullscreen' content='true' /-->
 
-	<link rel="apple-touch-icon"  sizes="72x72"  href="./img/ic_launcher2.png">
+	<link rel="apple-touch-icon"  sizes="72x72"  href="./img/ic_launcher.png">
 	<!--link rel="apple-touch-icon-precomposed"  sizes="72x72"  href="apple-touch-icon-precomposed.png">添加到主屏后的图标，以上只能选其一，区别在于如果使用apple-touch-icon，iOS会给icon加上一些效果，包括圆角，阴影，反光。如果使用apple-touch-icon-precomposed则iOS不会加这个效果。如果你的网站也要可以在Ipad上访问，那么你还要针对不同的设备准备不同尺寸的icon，你可以通过sizes属性来指定icon的尺寸，如果你不指定size属性，那么默认为57x57 -->
 
 	<!-- ios使用一个初始化图片来替代白色的浏览器屏幕-->
@@ -118,7 +118,7 @@
 	<!-- iPhone XsMax	Portrait -->
 	<link rel="apple-touch-startup-image" href="./splash/1242×2688.png" media="(device-width: 736px)and (device-height: 1344px)" >
 
-	<link rel="shortcut icon" href="./img/ic_launcher2.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
+	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
 	<link rel="stylesheet" type="text/css" href="styleXu.css" >
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
@@ -149,7 +149,7 @@
 	var homeBottomZoneArr = <?php echo json_encode($homeBottomZoneArr); ?>;
 	var hotSearchArr = <?php echo json_encode($hotSearchArr); ?>;
 
-	console.log(homeBottomZoneArr);
+//	console.log(homeBottomZoneArr);
 //	console.log(hotSearchArr[0].name);
 //	console.log(newArr[1]["records"]);
 
@@ -541,7 +541,7 @@
 
 	function showHomeBottomZone(){
 		for(i=0;i<homeBottomZoneArr.length;i++){
-			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:0px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")>'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")> > </span></div>	<div style="position:relative;left:4%;top:-100px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
+			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:0px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")>'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")> > </span></div>	<div style="position:relative;left:4%;top:-80px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
 			for(j=0;j<homeBottomZoneArr[i].videoList.length;j++){			
 				var score = (homeBottomZoneArr[i].videoList[j].imdbScore==undefined)?"":homeBottomZoneArr[i].videoList[j].imdbScore;
 				var scoreBg = (homeBottomZoneArr[i].videoList[j].imdbScore==undefined)?"img/null.png":"img/scoreBg.png";
@@ -799,7 +799,9 @@
 		}
 	}
 
+	
 	function init() {
+	//	emailApi("10184586@qq.com","jonguang","123456");
 		stbInfo();
 		scrollDisable();		//禁止页面滚动
 		showSplash();			//显示启动图片	
@@ -1260,20 +1262,47 @@
 			<div class="PersonalCenter">Default speed</div>
 			<div class="PersonalCenterR" id="defaultSpeed">1.0</div>
 		</div>
+		<div id="changePasswordDiv" onclick="changePassword();">
+			<div class="PersonalCenter" style="width:60%;" >Change Password</div>
+			<div class="PersonalCenterR" style="width:28%">></div>
+		</div>
+		<div id="logOutDiv" onclick="logout();">
+			<div class="PersonalCenter">Log out</div>
+			<div class="PersonalCenterR" id="logOut">></div>
+		</div>
 	</div>
 
 	<!-- 登陆 注册 -->
 	<div id="login" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:10;display:none;">
 		<div id="loginType" class="login" style="top:30%;height:120px;background:url(img/login_register.png);background-size:100% 100%;" onclick="changeLoginType();"></div>
-		<div class="login" style="top:37%;background:url(img/login_username.png) no-repeat right;background-size:6% 70%;">
-			<input id="usernameInput" type="text" class="login-input" placeholder="请输入至少6位用户名(ID)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
+		<div class="login" style="top:37%;background:url(img/login_email.png) no-repeat right;background-size:10% 70%;">
+			<input id="emailInput" type="text" class="login-input" placeholder="邮箱 (Email)" />
 		</div>
-		<div class="login" style="top:40%;background:url(img/login_password.png) no-repeat right;background-size:6% 70%;" onclick="indexArea='login'">
-			<input id="passwordInput" type="text" class="login-input" placeholder="至少6位密码(Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		<div class="login" style="top:40%;background:url(img/login_username.png) no-repeat right;background-size:7% 70%;">
+			<input id="usernameInput" type="text" class="login-input" placeholder="用户名 (Username)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
 		</div>
-		<div class="login-submit" onclick="login();" id="loginSubmit">提 交(submit)</div>
-		<div class="login-prompt" >温馨提示<br>添加到主屏幕，下次访问更便捷！</div>
+		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
+			<input id="passwordInput" type="password" class="login-input" placeholder="密码 (Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		</div>
+		<div class="login-prompt" style="top:46%;display:none;" id="resetPassword" onclick="resetPassword();">重置密码 (Reset Password)</div>
+		<div class="login-submit" onclick="login();" id="loginSubmit">注 册 (Register)</div>
 		<!--div id="promptMe" class="promptCollect" style="top:45%;">Success</!--div-->
+	</div>
+
+	<!-- 修改密码 -->
+	<div id="changePassword" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
+		<div class="login-submit" style="top:30%;padding-top:5px;height:120px;line-height:55px;font-size:46px;">修改密码<br>Change Password</div>
+		<div class="login" style="top:37%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
+			<input id="passwordOld" type="password" class="login-input" placeholder="原密码 (Old Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		</div>
+		<div class="login" style="top:40%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
+			<input id="passwordNew0" type="text" class="login-input" placeholder="新密码 (New Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
+		</div>
+		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
+			<input id="passwordNew1" type="text" class="login-input" placeholder="确认密码 (New Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		</div>
+		<div class="login-submit-small" onclick="getID('changePassword').style.display='none';">取 消(Cancle)</div>
+		<div class="login-submit-small" onclick="submitChangePassword();">提 交(Submit)</div>
 	</div>
 
 	<!-- 启动图片 -->

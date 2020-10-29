@@ -69,10 +69,13 @@ function sendAjax(_url, _content) {
 					setTimeout(function() {
 					//	registedVipCard();	//改在playvod()内弹出授权界面，让用户可以浏览，不能播放
 					}, 10000); //10秒后弹出注册页面
-				} else {
+				} else {/*
 					if( typeof(window.androidJs)=="undefined" && username.length > 5 ){
 						backArea = "true";
-					}					
+					}else{
+						backArea = "true";
+					}	*/
+					backArea = "true";		
 				}
 			} else if (_content.indexOf('card') > -1) { //注册卡号
 				var clientHeight = window.innerHeight;
@@ -148,7 +151,7 @@ function stbInfo(){
 		setCookie("deviceInfo", deviceInfo, '1000d'); //供php页面记录备注
 	}else{	//浏览器
 		sn = getCookie("sn");
-		setCookie("deviceInfo", getCookie("username"), '1000d'); //供php页面记录备注
+	//	setCookie("deviceInfo", getCookie("username"), '1000d'); //供php页面记录备注
 		if( getCookie("sn")==null && getCookie("username")!= null ){	//	防止有username却没有sn
 			sn = getCookie("username")+fingers;	
 		}

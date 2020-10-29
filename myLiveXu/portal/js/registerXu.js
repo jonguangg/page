@@ -86,7 +86,7 @@
 		scrollDisable();
 		getID("expireTimeH5").innerHTML = expireTime;
 		if( typeof(window.androidJs)=="undefined"){	//浏览器访问才检查username
-			if( getCookie("username") && getCookie("username").length>0  ){
+			if( getCookie("username") && getCookie("username").length>5  ){
 				getID("login").style.display = "none";
 				getID("usernameH5").innerHTML = getCookie("username");
 				getID("defaultSpeed").innerHTML = speed;
@@ -104,58 +104,128 @@
 		indexArea = "me";
 	}
 
-	function login(){
-	//	if( getID('usernameInput').value.length>0 ){
-			username = getID('usernameInput').value;
-			var password = getID('passwordInput').value;
-			if( username.length < 6 ){
-				alert("用户名至少6位");
-			}else if(password.length < 6 ){
-				alert("密码至少6位");
-			}else{
-				alert("正在提交，请稍候！");
-				getID("loading").style.display = "block";
-				$.ajax({
-					type: 'POST',
-					url: './login.php',	//写当前的播放记录
-					data: {
-						'username':username,
-						'password':password,
-					},
-					dataType: 'json',
-					beforeSend: function() {
-						//这里一般显示加载提示;
-					},
-					success: function(json) {
-					//	alert(json.status);
-						if( json.status=="密码错误"){
-							alert("密码错误或用户名已被使用");
-						}else if( json.status=="注册成功" || json.status=="密码正确"){
-							setCookie("username",username,"1000d");
-							setCookie("sn",username,"1000d");
-							alert("注册成功，\n请牢记您的用户名和密码!\n稍后转至首页");
-							location.href = "./indexMx.php?username="+username;
-						/*	getID("promptMe").innerHTML = "Success"; 
-							getID("promptMe").style.opacity = 1;
-							setTimeout(function() {
-								getID("promptMe").style.opacity = 0;
-								location.href = "./indexMx.php?username="+username;
-							}, 1500);*/
-						}
-					},
-					error: function() {
-						alert("something error!");
-					}
-				});
-			}
-	//	}
-	}
-
 	var loginType = 0;
-	function changeLoginType(){
+	function changeLoginType(){//0注册，1登陆，2重置密码，3修改密码
 		loginType = (loginType==0)?1:0;
 		getID("loginType").style.backgroundImage = (loginType==0)?'url(img/login_register.png)':'url(img/login_login.png)';
-		getID("loginSubmit").innerHTML = (loginType==0)?"注 册(Register)":"登 陆(Log in)";
+		getID("loginSubmit").innerHTML = (loginType==0)?"注 册 (Register)":"登 陆 (Log in)";
+		getID("resetPassword").style.display = (loginType==0)?"none":"block";
+	}
+
+	var userId = 0;
+	function emailApi(_email,_username,_password){
+		$.ajax({
+			type: 'POST',
+			url: 'email.php',
+			data: {
+				'loginType': loginType,
+				'email': _email,
+				'username': _username,
+				'password': _password,
+			},
+			dataType: 'json',
+			beforeSend: function() {
+				//这里一般显示加载提示;
+			},
+			success: function(json){
+			//	console.log(json);
+			//	alert(json.msg);
+				getID("loading").style.display = "none";
+				if(json.msg=="success"){
+					if( loginType==3){	//重置密码
+						alert("提交成功，\n请查看您的邮箱");
+					}else if(loginType==4){
+						getID("changePassword").style.display = "none";
+					}else{	//0注册 1登陆
+						setCookie("sn",_email,"1000d");
+						setCookie("email",_email,"1000d");
+						setCookie("username",_username,"1000d");
+						setCookie("deviceInfo", _username, '1000d'); //供php页面记录备注
+						if(loginType==1){//登陆
+							userId = json.data["userId"];
+							setCookie("userId",userId,"1000d");
+						}
+						alert("提交成功，\n请牢记您的用户名和密码!\n稍后转至首页");
+						location.href = "./indexMx.php?username="+_username;
+					}
+				}else{
+					alert(json.msg);
+				}
+			},
+			error: function(json) {
+			//	alert("something error");
+		/*	//	console.log(json);
+				var strJson = json.responseText;
+				console.log(strJson);
+				var start = strJson.indexOf("msg")+6 ;
+				var stop = strJson.indexOf("data")-3 ;
+				var apiMsg = strJson.slice(start,stop) ;
+				if( apiMsg == "success"){
+					setCookie("username",_username,"1000d");
+					setCookie("sn",_email,"1000d");
+					alert("提交成功，\n请牢记您的用户名和密码!\n稍后转至首页");
+					location.href = "./indexMx.php?username="+_username;
+				}else{
+				//	alert(apiMsg);
+				}*/
+			}
+		});
+	}
+
+	function login(){
+		username = getID('usernameInput').value;
+		var emailTemp = getID('emailInput').value;
+		var passwordTemp = getID('passwordInput').value;
+		var sReg = /[_a-zA-Z\d\-\.]+@[_a-zA-Z\d\-]+(\.[_a-zA-Z\d\-]+)+$/;
+		if( !sReg.test(emailTemp) ){
+			alert("Email地址错误,请重新输入");
+		}else if( username.length < 6 ){
+			alert("用户名至少6位");
+		}else if(passwordTemp.length < 6 ){
+			alert("密码至少6位");
+		}else{
+		//	alert("正在提交，请稍候！");
+			getID("loading").style.display = "block";
+			emailApi(emailTemp,username,passwordTemp);
+		}
+	}
+
+	function logout(){
+		setCookie("username","null","2s");
+		getID("login").style.display = "block";
+		getID("login").style.height = clientHeight+"px";
+	}
+
+	function resetPassword(){
+		var emailTemp = getID('emailInput').value;
+		var sReg = /[_a-zA-Z\d\-\.]+@[_a-zA-Z\d\-]+(\.[_a-zA-Z\d\-]+)+$/;
+		if( !sReg.test(emailTemp) ){
+			alert("Email地址错误,请重新输入");
+		}else{
+			getID("loading").style.display = "block";
+			loginType = 3;
+			var emailTemp = getID('emailInput').value;
+			emailApi(emailTemp,"resetPassword","password");
+		}
+	}
+
+	function changePassword(){
+		loginType = 4;
+		userId = (getCookie("userId"))?getCookie("userId"):userId;
+		getID("changePassword").style.display = "block";
+		getID("changePassword").style.height = clientHeight+"px";		
+	}
+
+	function submitChangePassword(){
+		var passwordOldTemp = getID('passwordOld').value;
+		var passwordNewTemp0 = getID('passwordNew0').value;
+		var passwordNewTemp1 = getID('passwordNew1').value;
+		if( passwordNewTemp0!=passwordNewTemp1 ){
+			alert("两次输入的密码不一致");
+		}else{
+			alert(userId+"_"+passwordOldTemp+"_"+passwordNewTemp0);
+			emailApi(userId,passwordNewTemp0,passwordOldTemp);	//对应email username password
+		}
 	}
 
 	function registedVipCard(){
