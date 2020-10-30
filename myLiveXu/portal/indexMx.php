@@ -268,7 +268,9 @@
 	}
 
 	var currentTime = 0;   //播放位置 单位秒
+	var isNext = true;		//是否可以播放下一集
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
+	//	alert(episodePos);
 	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime);
 		if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
 			scrollTo(0, 0);
@@ -295,8 +297,10 @@
 			document.title = _father;
 			//监听播放结束
 			getID("h5video").addEventListener('ended',function(){				
-				if( _episodePos<_episodes-1 ){//自动播放下一集
-   					playVod( id,list[parseInt(episodePos)+1].videoPath,father,poster,(parseInt(episodePos)+1),episodes );
+				if( _episodePos<_episodes-1 && isNext){//自动播放下一集
+					playVod( id,list[parseInt(episodePos)+1].videoPath,father,poster,(parseInt(episodePos)+1),episodes );
+					isNext = false;
+					setTimeout(function(){isNext = true;},60000);	//防止连续播放下一集
 				}
 			});
 			//使用事件监听方式捕捉事件， 此事件可作为实时监测video播放状态
