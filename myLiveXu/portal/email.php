@@ -6,10 +6,8 @@
     $header = array("content-Type:application/json", "token:test", "client:h5");
 
     $email = $_POST['email'];
-    $userId = $email;                   //用户ID是第1位参数
     $username = $_POST['username'];
-    $newPassword = $_POST['username'];  //新密码是第2位参数
-    $password = ($_POST['password'])?$_POST['password']:0;
+    $password = ($_POST['password'])?$_POST['password']:0;  //旧密码是 修改密码时提交的 第3位参数
     $loginType = $_POST['loginType'];
     $ip = $_COOKIE['ip'];
     $city = $_COOKIE['city'];
@@ -32,6 +30,10 @@
     }else if( $loginType==3 ){  //重置密码
         $url="http://mixtvapi.mixtvapp.com/ott/user/resetPassword";
     }else if( $loginType==4 ){  //修改密码
+        $postData = array( "userId"=>$email, "newPassword"=>$username,"password"=>$password );
+        //用户ID是 修改密码时提交的 第1位参数 即email,实际提交的是userId
+        //新密码是 修改密码时提交的 第2位参数 即username,实际提交的是oldPassword
+        //旧密码是 修改密码时提交的 第3位参数 即password
         $url="http://mixtvapi.mixtvapp.com/ott/user/editPassword";
     }
 //  $url="http://mixtvapi.mixtvapp.com/ott/user/register";

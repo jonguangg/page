@@ -2,7 +2,7 @@
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type=text/javascript src="js/initXu.js?v=2"></script>
-<script type=text/javascript src="js/registerXu.js?v=11"></script>
+<script type=text/javascript src="js/registerXu.js?v=2"></script>
 <script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <?php
@@ -72,7 +72,7 @@
 	if( mysqli_num_rows($sql) > 0 ){ //如果数据库中有当前机顶盒
 	//	echo '<script>alert("'.((int)$visibilityTime-(int)$hiddenTime).'")</script>';
 		if( (int)$visibilityTime-(int)$hiddenTime > 600 ){
-			$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
+			$sql = mysqli_query($connect, "UPDATE client set mark='$mark',isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
 			$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn',ip='$ip',city='$city' ") or die(mysqli_error($connect)); 	//记录登陆时间
 		}
 	}else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
@@ -1292,16 +1292,16 @@
 	<!-- 修改密码 -->
 	<div id="changePassword" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
 		<div class="login-submit" style="top:30%;padding-top:5px;height:120px;line-height:55px;font-size:46px;">修改密码<br>Change Password</div>
-		<div class="login" style="top:37%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
-			<input id="passwordOld" type="password" class="login-input" placeholder="原密码 (Old Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		<div class="login" style="top:37%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
+			<input id="passwordOld" type="password" class="login-input" placeholder="原密码 (Old Password)" onkeyup="value=value.replace(/[\W]/g,'')" />		
 		</div>
 		<div class="login" style="top:40%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
-			<input id="passwordNew0" type="text" class="login-input" placeholder="新密码 (New Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
+			<input id="passwordNew0" type="text" class="login-input" placeholder="新密码 (New Password)" onkeyup="value=value.replace(/[\W]/g,'')" />
 		</div>
-		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
-			<input id="passwordNew1" type="text" class="login-input" placeholder="确认密码 (New Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
+		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
+			<input id="passwordNew1" type="text" class="login-input" placeholder="确认密码 (New Password)" onkeyup="value=value.replace(/[\W]/g,'')" />		
 		</div>
-		<div class="login-submit-small" onclick="getID('changePassword').style.display='none';">取 消(Cancle)</div>
+		<div class="login-submit-small" onclick="getID('changePassword').style.display='none';showMe();">取 消(Cancle)</div>
 		<div class="login-submit-small" onclick="submitChangePassword();">提 交(Submit)</div>
 	</div>
 

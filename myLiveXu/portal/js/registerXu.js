@@ -135,7 +135,9 @@
 					if( loginType==3){	//重置密码
 						alert("提交成功，\n请查看您的邮箱");
 					}else if(loginType==4){
+						alert(json.msg);
 						getID("changePassword").style.display = "none";
+						showMe();
 					}else{	//0注册 1登陆
 						setCookie("sn",_email,"1000d");
 						setCookie("email",_email,"1000d");
@@ -223,7 +225,8 @@
 		if( passwordNewTemp0!=passwordNewTemp1 ){
 			alert("两次输入的密码不一致");
 		}else{
-			alert(userId+"_"+passwordOldTemp+"_"+passwordNewTemp0);
+			getID("loading").style.display = "block";
+		//	alert(userId+"_"+passwordOldTemp+"_"+passwordNewTemp0);
 			emailApi(userId,passwordNewTemp0,passwordOldTemp);	//对应email username password
 		}
 	}
