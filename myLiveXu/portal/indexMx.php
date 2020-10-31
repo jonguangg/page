@@ -2,7 +2,7 @@
 <script type=text/javascript src="js/fingerprint2.js"></script>
 <script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type=text/javascript src="js/initXu.js?v=2"></script>
-<script type=text/javascript src="js/registerXu.js?v=2"></script>
+<script type=text/javascript src="js/registerXu.js?v=22"></script>
 <script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <?php
@@ -1295,7 +1295,7 @@
 
 	<!-- 修改密码 -->
 	<div id="changePassword" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
-		<div class="login-submit" style="top:30%;padding-top:5px;height:120px;line-height:55px;font-size:46px;">修改密码<br>Change Password</div>
+		<div class="login-submit" style="top:30%;padding-top:6px;height:120px;line-height:54px;font-size:45px;">修改密码<br>Change Password</div>
 		<div class="login" style="top:37%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
 			<input id="passwordOld" type="password" class="login-input" placeholder="原密码 (Old Password)" onkeyup="value=value.replace(/[\W]/g,'')" />		
 		</div>

@@ -9,20 +9,20 @@
     $username = $_POST['username'];
     $password = ($_POST['password'])?$_POST['password']:0;  //旧密码是 修改密码时提交的 第3位参数
     $loginType = $_POST['loginType'];
-    $ip = $_COOKIE['ip'];
+
+/*    $ip = $_COOKIE['ip'];
     $city = $_COOKIE['city'];
     $loginTime =  date("Y-m-d");
     $expireTime = date("Y-m-d", strtotime("+6 day"));
     $lastTime = date("Y-m-d H:i:s"); 
+*/
 
-//    echo '<scrip>alert('+$email+')</scrip>';
-    
     $postData = array( "email"=>$email, "username"=>$username,"password"=>$password );
-//    $postData = array( "email"=>"10184586@qq.com", "username"=>"333","password"=>"333" );
+//    $postData = array( "email"=>"10184586@qq.com", "username"=>"666666","password"=>"666666" );
 
     if( $loginType==0 ){    //注册
         $url="http://mixtvapi.mixtvapp.com/ott/user/register";
-		$sql = mysqli_query($connect, "replace into client(sn,mark,password,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$email','$password','$ip','$city','$loginTime','$expireTime','$lastTime','在线')") or die(mysqli_error($connect));
+	//	$sql = mysqli_query($connect, "replace into client(sn,mark,password,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$email','$password','$ip','$city','$loginTime','$expireTime','$lastTime','在线')") or die(mysqli_error($connect));
     }else if( $loginType==1 ){  //登陆
         $url="http://mixtvapi.mixtvapp.com/ott/user/login";
     }else if( $loginType==2 ){  //退出登陆
@@ -36,12 +36,10 @@
         //旧密码是 修改密码时提交的 第3位参数 即password
         $url="http://mixtvapi.mixtvapp.com/ott/user/editPassword";
     }
-//  $url="http://mixtvapi.mixtvapp.com/ott/user/register";
 
     // 传入数组进行HTTP POST请求
     function curlPost($url, $post_data = array(), $timeout = 15, $header = "", $data_type = "") {
         $header = empty($header) ? '' : $header;
-        //支持json数据数据提交
         if($data_type == 'json'){
             $post_string = json_encode($post_data);
         }elseif($data_type == 'array') {

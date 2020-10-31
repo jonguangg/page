@@ -133,7 +133,8 @@
 				getID("loading").style.display = "none";
 				if(json.msg=="success"){
 					if( loginType==3){	//重置密码
-						alert("提交成功，\n请查看您的邮箱");
+						loginType = 1;
+						alert("提交成功，请查看您的邮箱");
 					}else if(loginType==4){
 						alert(json.msg);
 						getID("changePassword").style.display = "none";
@@ -143,33 +144,23 @@
 						setCookie("email",_email,"1000d");
 						setCookie("username",_username,"1000d");
 						setCookie("deviceInfo", _username, '1000d'); //供php页面记录备注
-						if(loginType==1){//登陆
+						if( loginType==0 ){	//注册
+							changeLoginType();
+							getID("loading").style.display = "none";
+							alert("注册成功，\n请前往邮箱激活账号");
+						}else if( loginType==1){	//登陆
 							userId = json.data["userId"];
 							setCookie("userId",userId,"1000d");
+							alert("登陆成功，\n请牢记您的用户名和密码!\n稍后转至首页");
+							location.href = "./indexMx.php?username="+_username;
 						}
-						alert("提交成功，\n请牢记您的用户名和密码!\n稍后转至首页");
-						location.href = "./indexMx.php?username="+_username;
 					}
 				}else{
 					alert(json.msg);
 				}
 			},
 			error: function(json) {
-			//	alert("something error");
-		/*	//	console.log(json);
-				var strJson = json.responseText;
-				console.log(strJson);
-				var start = strJson.indexOf("msg")+6 ;
-				var stop = strJson.indexOf("data")-3 ;
-				var apiMsg = strJson.slice(start,stop) ;
-				if( apiMsg == "success"){
-					setCookie("username",_username,"1000d");
-					setCookie("sn",_email,"1000d");
-					alert("提交成功，\n请牢记您的用户名和密码!\n稍后转至首页");
-					location.href = "./indexMx.php?username="+_username;
-				}else{
-				//	alert(apiMsg);
-				}*/
+			//	console.log(json.responseText);
 			}
 		});
 	}
