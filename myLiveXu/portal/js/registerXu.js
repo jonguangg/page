@@ -97,7 +97,9 @@
 		}else{	//非浏览器访问，不显示username和默认速度（因为还不能设置app的默认速度）
 			window.androidJs.JsSetPageArea("me");
 			getID("speedDiv").style.display = "none";
+			getID("logOutDiv").style.display = "none";
 			getID("usernameDiv").style.display = "none";
+			getID("changePasswordDiv").style.display = "none";
 		}
 		getID('me').style.display = 'block';
 		getID("me").style.height = (clientHeight +0)+ "px";
@@ -134,7 +136,7 @@
 				if(json.msg=="success"){
 					if( loginType==3){	//重置密码
 						loginType = 1;
-						alert("提交成功，请查看您的邮箱");
+						alert("提交成功！请查看您的邮箱");
 					}else if(loginType==4){
 						alert(json.msg);
 						getID("changePassword").style.display = "none";
@@ -147,11 +149,11 @@
 						if( loginType==0 ){	//注册
 							changeLoginType();
 							getID("loading").style.display = "none";
-							alert("注册成功，\n请前往邮箱激活账号");
+							alert("注册成功！\n请前往邮箱激活账号");
 						}else if( loginType==1){	//登陆
 							userId = json.data["userId"];
 							setCookie("userId",userId,"1000d");
-							alert("登陆成功，\n请牢记您的用户名和密码!\n稍后转至首页");
+							alert("登陆成功！\n请牢记您的用户名和密码!\n稍后自动转至首页");
 							location.href = "./indexMx.php?username="+_username;
 						}
 					}

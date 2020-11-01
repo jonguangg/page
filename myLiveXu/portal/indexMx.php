@@ -1,9 +1,11 @@
-<script type=text/javascript src="js/global.js" charset=UTF-8></script>
-<script type=text/javascript src="js/fingerprint2.js"></script>
-<script type=text/javascript src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type=text/javascript src="js/initXu.js?v=2"></script>
-<script type=text/javascript src="js/registerXu.js?v=22"></script>
-<script type=text/javascript src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
+<script type="text/javascript" src="js/global.js" charset=UTF-8></script>
+<script type="text/javascript" src="js/fingerprint2.js"></script>
+<script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
+<script type="text/javascript" src="js/initXu.js?v=1"></script>
+<script type="text/javascript" src="js/registerXu.js?v=1"></script>
+<script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
+
 
 <?php
 	//	error_reporting(0);// 关闭所有PHP错误报告
@@ -119,7 +121,7 @@
 	<link rel="apple-touch-startup-image" href="./splash/1242×2688.png" media="(device-width: 736px)and (device-height: 1344px)" >
 
 	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->
-	<link rel="stylesheet" type="text/css" href="styleXu.css" >
+	<link rel="stylesheet" type="text/css" href="styleXu.css?v=4" >
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
 
@@ -802,10 +804,8 @@
 			}, 1000);	//1秒后将当前窗口的top放到屏幕顶端
 		}
 	}
-
 	
 	function init() {
-	//	emailApi("10184586@qq.com","jonguang","123456");
 		stbInfo();
 		scrollDisable();		//禁止页面滚动
 		showSplash();			//显示启动图片	
@@ -837,6 +837,10 @@
 		setTimeout(function(){moveHomeLoop(1);},10000);
 	}
 
+
+
+
+	
 </script>
 
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();"  onScroll="scrollWindow();">
@@ -1246,7 +1250,7 @@
 			<div class="PersonalCenter">License</div>
 			<div class="PersonalCenterR">></div>
 		</div>
-		<div onclick="share();" style="display: none;">
+		<div onclick="showShare();" style="display: block;">
 			<div class="PersonalCenter">Share</div>
 			<div class="PersonalCenterR">></div>
 		</div>
@@ -1273,6 +1277,12 @@
 		<div id="logOutDiv" onclick="logout();">
 			<div class="PersonalCenter">Log out</div>
 			<div class="PersonalCenterR" id="logOut">></div>
+		</div>
+		<div id="share" style="position:absolute;left:0px;top:250px;width:100%;height:2500px;background-color:#000;display:none;">
+			<div id="shareImg" class="shareImg" ><img src="http://128.1.160.114:925/myLive/portal/img/shareIOS.png"/></div>			
+			<div id="shareShare" class="shareButton" onclick="shareDownload2()" >Share</div>
+			<div id="shareDownload" class="shareButton" onclick="shareDownload();" ><div id="shareDownloads">Download</div></div>	
+			<div id="shareCancle" class="shareButton" onclick="indexArea='me';getID('share').style.display='none';" >Cancle</div>
 		</div>
 	</div>
 
@@ -1330,9 +1340,9 @@
 
 </body></html>
 
-<script type=text/javascript src="js/initS.js?v=1" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
-<script type=text/javascript src="js/detailXu.js?v=2" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=15" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMoveXu.js?v=3" charset=UTF-8></script>
+<script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>
 
 <script>

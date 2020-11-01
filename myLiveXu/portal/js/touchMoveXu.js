@@ -134,7 +134,12 @@ function touchEndFunc(evt){
 			//	scrollTo(0,scrollTops);
 				setTimeout(function(){androidBack();},300);
 			}
-		}else if( (indexArea == "me" || indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 || moveY < -300)){
+		}else if( (indexArea == "me" || indexArea=="share"|| indexArea == "login") && ( moveX < -300 || moveX > 300 || moveY > 300 || moveY < -300)){
+			if( indexArea=="share" ){	
+				indexArea = "me";			
+				getID("share").style.display = "none";
+				return;
+			}
 			if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
 				scrollEnable();
 				indexArea = "home";

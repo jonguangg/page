@@ -54,7 +54,6 @@ function eventHandler(e,type){	//按键
 							}
 						});
 					}
-
 				}
 			}
 			return 0;
@@ -67,7 +66,8 @@ function splashJump(){
 	if( typeof(window.androidJs)=="undefined" && (!getCookie("username") || getCookie("username").length<1) ){
 		showMe();
 	}else{			
-		scrollEnable();
+		scrollEnable();		
+		getID("loading").style.display = "none";
 	}
 	sendAjax("./ajax.php", "checkLicenseSN=" + sn);	//检查到期日期
 	if( indexArea=="lock"){	//如果设置了启动默认锁定
@@ -159,6 +159,9 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("me").style.display = "none";			
 			getID("me").style.opacity = 1;	
 		},1000);
+	}else if( indexArea == "share"){
+		indexArea = "me";
+		getID("share").style.display = "none";
 	}else if( typeof(window.androidJs)=="undefined" && (indexArea=="home" || indexArea=="vod") ){
 	//	alert("请按 home 键退出");
 	}
@@ -287,3 +290,58 @@ function orient(){	//旋转屏幕
 			}
 		}
 	});
+
+	function showShare(){
+		indexArea = "share";
+		getID('share').style.display = 'block';
+		getID('share').style.height = clientHeight+'px';
+		getID('shareImg').style.height = clientWidth*0.8+'px';
+		getID('shareShare').style.display = "none";
+	//	getID('shareShare').style.top = (clientWidth*0.8+100)+'px';
+		if( typeof(window.androidJs) == "undefined" ){	//浏览器		
+			getID('shareDownload').style.top = (clientWidth*0.8+100)+'px';
+			getID('shareCancle').style.top = (clientWidth*0.8+300)+'px';
+
+			if( !isIOS ){	//安卓
+			//	getID("shareDownloads").innerHTML = "Download";
+			}else{
+			//	getID("shareDownloads").innerHTML = "<a style='text-decoration:none;color:white;' href='http://128.1.160.114:925/myLive/portal/img/shareIOS.png' download='MixTV.png'>Download</a>";
+			}
+		}else{	//apk
+			getID('shareDownload').style.display = "none";
+			getID('shareCancle').style.top = (clientWidth*0.8+200)+'px';
+		}
+	}
+
+	function shareShare(){
+		
+	}
+
+	function shareDownload(){
+		if( isIOS ){
+			alert("Please long press the QR code \nto download the image");
+		}else{
+			var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');		
+			if( typeof(window.androidJs) == "undefined" ){	//浏览器
+				save_link.href = "http://128.1.160.114:925/myLive/portal/img/shareIOS.png";
+			}
+			save_link.download = "MixTV.png";
+			var event=document.createEvent('MouseEvents');
+			event.initMouseEvent('click',true,false,window,0,0,0,0,0,false,false,false,false,0,null);
+			save_link.dispatchEvent(event);
+		}
+	};
+
+	function shareDownload2(){	//这个IOS没用，放在做备份
+		var x=new XMLHttpRequest();
+		x.open("GET", "http://128.1.160.114:925/myLive/portal/img/shareIOS.png", true);
+		x.responseType = 'blob';
+		x.onload=function(e){
+			var url = window.URL.createObjectURL(x.response)
+			var a = document.createElement('a');
+			a.href = url
+			a.download = 'MixTV'
+			a.click()
+		}
+		x.send();
+	}
