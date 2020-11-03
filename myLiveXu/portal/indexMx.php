@@ -2,7 +2,7 @@
 <script type="text/javascript" src="js/fingerprint2.js"></script>
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type="text/javascript" src="js/initXu.js?v=1"></script>
-<script type="text/javascript" src="js/registerXu.js?v=1"></script>
+<script type="text/javascript" src="js/registerXu.js?v=2"></script>
 <script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
 
@@ -1238,28 +1238,28 @@
 	<!-- 个人中心 -->
 	<div id="me" style="position:absolute;top:0px;left:0px;width:100%;height:0px;background:linear-gradient(to bottom,black,black);display:none;text-align:center;font-size:80px;color:white; z-index:10;-webkit-transition:1s;">
 		<div style="position:absolute;top:50px;left:0%;width:90%;height:150px;line-height:150px;text-align:left; font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:10%;" onclick="androidBack()"> < </div>
-		<h1 class="PersonalCenter" style="margin-top:250px;width:80%;text-align:center;font-size:90px;" id="titleMe" >Personal center</h1>
+		<h1 class="PersonalCenter" style="margin-top:200px;width:80%;text-align:center;font-size:90px;" id="meTitle" >個人中心</h1>
 		<div id="usernameDiv">
-			<div class="PersonalCenter" style="margin-top: 100px;">Username</div>
-			<div class="PersonalCenterR" style="margin-top: 100px;" id="usernameH5" >	
+			<div class="PersonalCenter" style="margin-top:0px;" id="meUser">用戶名</div>
+			<div class="PersonalCenterR" style="margin-top:0px;" id="usernameH5" >	
 			</div>
 		</div>
-		<div class="PersonalCenter">Expire time</div>
+		<div class="PersonalCenter" id="meExpire">有效期</div>
 		<div class="PersonalCenterR" id="expireTimeH5"></div>
 		<div onclick="registedVipCard();">
-			<div class="PersonalCenter">License</div>
+			<div class="PersonalCenter" id="meLicense">授权</div>
 			<div class="PersonalCenterR">></div>
 		</div>
 		<div onclick="showShare();" style="display: block;">
-			<div class="PersonalCenter">Share</div>
+			<div class="PersonalCenter" id="meShare">分享</div>
 			<div class="PersonalCenterR">></div>
 		</div>
 		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('history',1,'');getID('shcContent').innerHTML = '';}">
-			<div class="PersonalCenter">History</div>
+			<div class="PersonalCenter" id="meHistory">播放歷史</div>
 			<div class="PersonalCenterR">></div>
 		</div>
 		<div onclick="if(backArea=='true'){getID('me').style.display='none';showSHC('collect',1,'');getID('shcContent').innerHTML = '';}">
-			<div class="PersonalCenter" >Collection</div>
+			<div class="PersonalCenter" id="meCollect">收藏</div>
 			<div class="PersonalCenterR" >></div>
 		</div>
 		<!--div>
@@ -1267,15 +1267,19 @@
 			<div class="PersonalCenterR">></div>
 		</div-->
 		<div id="speedDiv" onclick="changeDefaultSpeed();">
-			<div class="PersonalCenter">Default speed</div>
+			<div class="PersonalCenter" id="meSpeed">播放速度</div>
 			<div class="PersonalCenterR" id="defaultSpeed">1.0</div>
 		</div>
+		<div id="languageDiv" onclick="changeLanguage();">
+			<div class="PersonalCenter" style="width:60%;" id="meLanguage">系统语言</div>
+			<div class="PersonalCenterR" style="width:28%" id="defaultLanguage">中文</div>
+		</div>
 		<div id="changePasswordDiv" onclick="changePassword();">
-			<div class="PersonalCenter" style="width:60%;" >Change Password</div>
+			<div class="PersonalCenter" style="width:60%;" id="mePassword">修改密码</div>
 			<div class="PersonalCenterR" style="width:28%">></div>
 		</div>
 		<div id="logOutDiv" onclick="logout();">
-			<div class="PersonalCenter">Log out</div>
+			<div class="PersonalCenter" id="meLogout">退出登陸</div>
 			<div class="PersonalCenterR" id="logOut">></div>
 		</div>
 		<div id="share" style="position:absolute;left:0px;top:250px;width:100%;height:2500px;background-color:#000;display:none;">
@@ -1288,13 +1292,19 @@
 
 	<!-- 登陆 注册 -->
 	<div id="login" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:10;display:none;">
-		<div id="loginType" class="login" style="top:30%;height:120px;background:url(img/login_register.png);background-size:100% 100%;" onclick="changeLoginType();"></div>
+		<div class="login-top" style="width:80%;background-color:white;border:gray 1px solid;"></div>
+		<div id="loginType" class="login" style="top:30%;left:35%;width:45%;background:linear-gradient(to right,#6633cc,#000066);border-radius:5em;-webkit-transition:1s;"></div>
+		<div class="login-top" style="left:10%;color:black;" onclick="changeLoginType();" id="login-login"><b>登 陆<br>Log in</b></div>
+		<div class="login-top" style="left:45%;color:white;" onclick="changeLoginType();" id="login-register"><b>注 册<br>Register</b></div>
+
 		<div class="login" style="top:37%;background:url(img/login_email.png) no-repeat right;background-size:10% 70%;">
 			<input id="emailInput" type="text" class="login-input" placeholder="邮箱 (Email)" />
 		</div>
+		<!--
 		<div class="login" style="top:40%;background:url(img/login_username.png) no-repeat right;background-size:7% 70%;">
 			<input id="usernameInput" type="text" class="login-input" placeholder="用户名 (Username)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />
 		</div>
+		-->
 		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
 			<input id="passwordInput" type="password" class="login-input" placeholder="密码 (Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
 		</div>
@@ -1317,6 +1327,14 @@
 		</div>
 		<div class="login-submit-small" onclick="getID('changePassword').style.display='none';showMe();">取 消(Cancle)</div>
 		<div class="login-submit-small" onclick="submitChangePassword();">提 交(Submit)</div>
+	</div>
+
+	<!-- 默认语言 -->
+	<div id="language" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
+		<div style="position: absolute;top:40%;width:100%;text-align:center;font-size:55px;">選擇語言<br>Language choice</div>
+		<div class="login-submit" style="top:55%;" onclick="setCookie('language','c','1000d');getID('language').style.display='none';">中&emsp;文</div>
+		<div class="login-submit" style="top:60%;" onclick="setCookie('language','e','1000d');getID('language').style.display='none';alert('comming soon!')">English</div>
+		<div style="position:absolute;top:80%;width:100%;text-align:center;font-size:50px;color:gray;">可在個人中心切換語言</div>
 	</div>
 
 	<!-- 启动图片 -->

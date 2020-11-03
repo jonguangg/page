@@ -86,7 +86,7 @@
 		scrollDisable();
 		getID("expireTimeH5").innerHTML = expireTime;
 		if( typeof(window.androidJs)=="undefined"){	//浏览器访问才检查username
-			if( getCookie("username") && getCookie("username").length>5  ){
+			if( getCookie("username") && getCookie("username").length>1  ){
 				getID("login").style.display = "none";
 				getID("usernameH5").innerHTML = getCookie("username");
 				getID("defaultSpeed").innerHTML = speed;
@@ -104,13 +104,28 @@
 		getID('me').style.display = 'block';
 		getID("me").style.height = (clientHeight +0)+ "px";
 		indexArea = "me";
+
+		getID("meTitle").innerHTML = (language=="c")?"<span style='font-size:70px;'>個人中心</span>":"<span style='font-size:90px;'>Personal center</span>";
+		getID("meUser").innerHTML = (language=="c")?"用戶名":"User name";
+		getID("meExpire").innerHTML = (language=="c")?"有效期":"Expire time";
+		getID("meLicense").innerHTML = (language=="c")?"延期授權":"License";
+		getID("meShare").innerHTML = (language=="c")?"分享":"Share";
+		getID("meHistory").innerHTML = (language=="c")?"播放歷史":"History";
+		getID("meCollect").innerHTML = (language=="c")?"收藏":"Collect";
+		getID("meSpeed").innerHTML = (language=="c")?"播放速度":"Default speed";
+		getID("meLanguage").innerHTML = (language=="c")?"系統語言":"Default language";
+		getID("mePassword").innerHTML = (language=="c")?"修改密碼":"Change password";
+		getID("meLogout").innerHTML = (language=="c")?"退出登陸":"Log out";
 	}
 
 	var loginType = 0;
 	function changeLoginType(){//0注册，1登陆，2重置密码，3修改密码
 		loginType = (loginType==0)?1:0;
-		getID("loginType").style.backgroundImage = (loginType==0)?'url(img/login_register.png)':'url(img/login_login.png)';
+	//	getID("loginType").style.backgroundImage = (loginType==0)?'url(img/login_register.png)':'url(img/login_login.png)';
 		getID("loginSubmit").innerHTML = (loginType==0)?"注 册 (Register)":"登 陆 (Log in)";
+		getID("loginType").style.left = (loginType==0)?"35%":"0%";
+		getID("login-login").style.color = (loginType==1)?"white":"black";
+		getID("login-register").style.color = (loginType==0)?"white":"black";
 		getID("resetPassword").style.display = (loginType==0)?"none":"block";
 	}
 
@@ -168,14 +183,15 @@
 	}
 
 	function login(){
-		username = getID('usernameInput').value;
+	//	username = getID('usernameInput').value;
 		var emailTemp = getID('emailInput').value;
+		username = emailTemp.slice(0,emailTemp.indexOf("@"));
 		var passwordTemp = getID('passwordInput').value;
 		var sReg = /[_a-zA-Z\d\-\.]+@[_a-zA-Z\d\-]+(\.[_a-zA-Z\d\-]+)+$/;
 		if( !sReg.test(emailTemp) ){
 			alert("Email地址错误,请重新输入");
-		}else if( username.length < 6 ){
-			alert("用户名至少6位");
+		}else if( username.length < 1 ){
+			alert("用户名至少1位");
 		}else if(passwordTemp.length < 6 ){
 			alert("密码至少6位");
 		}else{
@@ -189,6 +205,7 @@
 		setCookie("username","null","2s");
 		getID("login").style.display = "block";
 		getID("login").style.height = clientHeight+"px";
+		changeLoginType();
 	}
 
 	function resetPassword(){

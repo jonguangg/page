@@ -63,6 +63,10 @@ function eventHandler(e,type){	//按键
 
 function splashJump(){
 	getID('splash').style.display='none';
+	if( !getCookie("language")){
+		getID("language").style.display = "block";
+		getID("language").style.height = clientHeight+"px";
+	}
 	if( typeof(window.androidJs)=="undefined" && (!getCookie("username") || getCookie("username").length<1) ){
 		showMe();
 	}else{			
@@ -203,6 +207,14 @@ function changeDefaultSpeed(){	//设置默认播放速度
         setCookie("speed",speed,"30d");
         getID("defaultSpeed").innerHTML = speed;
     }
+}
+
+var language = getCookie("language");
+function changeLanguage(){
+	language = ( language=="c" )?"e":"c";
+	setCookie("language",language,"1000d");
+	getID("defaultLanguage").innerHTML = (language=="c")?"中文":"English";
+	showMe();
 }
 
 function orient(){	//旋转屏幕
