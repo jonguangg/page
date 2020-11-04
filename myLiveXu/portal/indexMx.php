@@ -1282,10 +1282,10 @@
 			<div class="PersonalCenter" id="meLogout">退出登陸</div>
 			<div class="PersonalCenterR" id="logOut">></div>
 		</div>
-		<div id="share" style="position:absolute;left:0px;top:250px;width:100%;height:2500px;background-color:#000;display:none;">
-			<div id="shareImg" class="shareImg" ><img src="http://128.1.160.114:925/myLive/portal/img/shareIOS.png"/></div>			
+		<div id="share" style="position:absolute;left:0px;top:350px;width:100%;height:2500px;background-color:#000;display:none;">
+			<div id="shareImg" class="shareImg" ><img src="http://128.1.160.114:925/myLive/portal/img/shareIOS.png"/></div>
 			<div id="shareShare" class="shareButton" onclick="shareDownload2()" >Share</div>
-			<div id="shareDownload" class="shareButton" onclick="shareDownload();" ><div id="shareDownloads">Download</div></div>	
+			<div id="shareDownload" class="shareButton" onclick="shareDownload();" ><div id="shareDownloads">Download</div></div>
 			<div id="shareCancle" class="shareButton" onclick="indexArea='me';getID('share').style.display='none';" >Cancle</div>
 		</div>
 	</div>
@@ -1308,8 +1308,9 @@
 		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;" onclick="indexArea='login'">
 			<input id="passwordInput" type="password" class="login-input" placeholder="密码 (Password)" maxlength="20" onkeyup="value=value.replace(/[\W]/g,'')" onkeydown="fncKeyStop(event)" onpaste="return false" oncontextmenu="return false" />		
 		</div>
-		<div class="login-prompt" style="top:46%;display:none;" id="resetPassword" onclick="resetPassword();">重置密码 (Reset Password)</div>
-		<div class="login-submit" onclick="login();" id="loginSubmit">注 册 (Register)</div>
+		<div class="login-prompt" style="top:46%;display:none;" id="resetPassword" onclick="resetPassword();">重置密码</div>
+		<div class="login-submit" onclick="login();" id="loginSubmit">注&emsp;册</div>
+		<div class="login-prompt" style="top:55%;" id="login_type" onclick="changeLoginType()">已有账号，立即登陆</div>
 		<!--div id="promptMe" class="promptCollect" style="top:45%;">Success</!--div-->
 	</div>
 
@@ -1333,8 +1334,8 @@
 	<div id="language" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
 		<div style="position: absolute;top:40%;width:100%;text-align:center;font-size:55px;">選擇語言<br>Language choice</div>
 		<div class="login-submit" style="top:55%;" onclick="setCookie('language','c','1000d');getID('language').style.display='none';">中&emsp;文</div>
-		<div class="login-submit" style="top:60%;" onclick="setCookie('language','e','1000d');getID('language').style.display='none';alert('comming soon!')">English</div>
-		<div style="position:absolute;top:80%;width:100%;text-align:center;font-size:50px;color:gray;">可在個人中心切換語言</div>
+		<div class="login-submit" style="top:60%;" onclick="alert('comming soon!')">English</div>
+		<div style="position:absolute;top:75%;width:100%;text-align:center;font-size:50px;color:gray;">可以在個人中心切換語言<br>Switch language in the personal center</div>
 	</div>
 
 	<!-- 启动图片 -->
@@ -1358,8 +1359,8 @@
 
 </body></html>
 
-<script type=text/javascript src="js/initS.js?v=15" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js?v=3" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=8" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>
 

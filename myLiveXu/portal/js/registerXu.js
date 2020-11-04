@@ -80,7 +80,7 @@
 	}		
 
 	var speed = (getCookie('speed'))?getCookie('speed'):1;
-	function showMe() { //进入个人中心		
+	function showMe() { //进入个人中心
 	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime+"\r\n"+expireTime);
 		scrollTo(0, 0);
 		scrollDisable();
@@ -114,6 +114,7 @@
 		getID("meCollect").innerHTML = (language=="c")?"收藏":"Collect";
 		getID("meSpeed").innerHTML = (language=="c")?"播放速度":"Default speed";
 		getID("meLanguage").innerHTML = (language=="c")?"系統語言":"Default language";
+		getID("defaultLanguage").innerHTML = (language=="c")?"中文":"English";
 		getID("mePassword").innerHTML = (language=="c")?"修改密碼":"Change password";
 		getID("meLogout").innerHTML = (language=="c")?"退出登陸":"Log out";
 	}
@@ -122,11 +123,13 @@
 	function changeLoginType(){//0注册，1登陆，2重置密码，3修改密码
 		loginType = (loginType==0)?1:0;
 	//	getID("loginType").style.backgroundImage = (loginType==0)?'url(img/login_register.png)':'url(img/login_login.png)';
-		getID("loginSubmit").innerHTML = (loginType==0)?"注 册 (Register)":"登 陆 (Log in)";
 		getID("loginType").style.left = (loginType==0)?"35%":"0%";
 		getID("login-login").style.color = (loginType==1)?"white":"black";
 		getID("login-register").style.color = (loginType==0)?"white":"black";
 		getID("resetPassword").style.display = (loginType==0)?"none":"block";
+		getID("resetPassword").innerHTML = (language=="c")?"重置密码":"Reset password";
+		getID("loginSubmit").innerHTML = (loginType==0)?(language=="c")?"注&emsp;册":"Register":(language=="c")?"登&emsp;陆":"Log in";
+		getID("login_type").innerHTML = (loginType==1)?(language=="c")?"注册新账号":"Register a new account":(language=="c")?"已有账号，立即登陆":"Log in existing account immediately";
 	}
 
 	var userId = 0;

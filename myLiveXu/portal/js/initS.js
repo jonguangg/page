@@ -310,9 +310,11 @@ function orient(){	//旋转屏幕
 		getID('shareImg').style.height = clientWidth*0.8+'px';
 		getID('shareShare').style.display = "none";
 	//	getID('shareShare').style.top = (clientWidth*0.8+100)+'px';
-		if( typeof(window.androidJs) == "undefined" ){	//浏览器		
+		if( typeof(window.androidJs) == "undefined" ){	//浏览器	
+			getID('shareCancle').style.top = (clientWidth*0.8+300)+'px';	
 			getID('shareDownload').style.top = (clientWidth*0.8+100)+'px';
-			getID('shareCancle').style.top = (clientWidth*0.8+300)+'px';
+			getID("shareDownloads").innerHTML = (language=="c")?"保存二维码":"Download QR code";
+			getID("shareCancle").innerHTML = (language=="c")?"取&emsp;消":"Cancle";
 
 			if( !isIOS ){	//安卓
 			//	getID("shareDownloads").innerHTML = "Download";
@@ -335,7 +337,8 @@ function orient(){	//旋转屏幕
 		}else{
 			var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');		
 			if( typeof(window.androidJs) == "undefined" ){	//浏览器
-				save_link.href = "http://128.1.160.114:925/myLive/portal/img/shareIOS.png";
+			//	save_link.href = "http://128.1.160.114:925/myLive/portal/img/shareIOS.png";
+				save_link.href = "http://mixip.mixtvapp.com/myLive/portal/img/shareIOS.png";
 			}
 			save_link.download = "MixTV.png";
 			var event=document.createEvent('MouseEvents');
@@ -344,7 +347,7 @@ function orient(){	//旋转屏幕
 		}
 	};
 
-	function shareDownload2(){	//这个IOS没用，放在做备份
+	function shareDownload2(){	//这个IOS没用，放这做备份
 		var x=new XMLHttpRequest();
 		x.open("GET", "http://128.1.160.114:925/myLive/portal/img/shareIOS.png", true);
 		x.responseType = 'blob';
