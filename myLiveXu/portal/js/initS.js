@@ -217,6 +217,14 @@ function changeLanguage(){
 	showMe();
 }
 
+function changeLanguages(_language){
+	language = _language;
+	setCookie('language',_language,'1000d');
+	getID('language').style.display='none';
+	getID('emailInput').placeholder = (language=="c")?"請輸入已註冊的郵箱":"Email";
+	getID('passwordInput').placeholder = (language=="c")?"請輸入密碼":"Password";
+}
+
 function orient(){	//旋转屏幕
 		if( window.orientation == 0 || window.orientation == 180) {	//竖屏
 		//	alert(window.orientation);

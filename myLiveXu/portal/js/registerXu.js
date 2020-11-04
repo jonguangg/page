@@ -93,6 +93,8 @@
 			}else{
 				getID("login").style.display = "block";
 				getID("login").style.height = clientHeight+"px";
+				getID('emailInput').placeholder = (language=="c")?"請輸入已註冊的郵箱":"Email";
+				getID('passwordInput').placeholder = (language=="c")?"請輸入密碼":"Password";
 			}
 		}else{	//非浏览器访问，不显示username和默认速度（因为还不能设置app的默认速度）
 			window.androidJs.JsSetPageArea("me");
@@ -129,7 +131,7 @@
 		getID("resetPassword").style.display = (loginType==0)?"none":"block";
 		getID("resetPassword").innerHTML = (language=="c")?"重置密码":"Reset password";
 		getID("loginSubmit").innerHTML = (loginType==0)?(language=="c")?"注&emsp;册":"Register":(language=="c")?"登&emsp;陆":"Log in";
-		getID("login_type").innerHTML = (loginType==1)?(language=="c")?"注册新账号":"Register a new account":(language=="c")?"已有账号，立即登陆":"Log in existing account immediately";
+		getID("login_type").innerHTML = (loginType==1)?(language=="c")?"点击这注册一个新账号":"Click here register a new account":(language=="c")?"已有账号，点击这立即登陆":"Click here to log in immediately";
 	}
 
 	var userId = 0;
@@ -154,7 +156,11 @@
 				if(json.msg=="success"){
 					if( loginType==3){	//重置密码
 						loginType = 1;
-						alert("提交成功！请查看您的邮箱");
+						if( language=="c"){
+							alert("提交成功！请查看您的邮箱");
+						}else{
+							alert("Success ! Please check your email");
+						}						
 					}else if(loginType==4){
 						alert(json.msg);
 						getID("changePassword").style.display = "none";
@@ -167,11 +173,19 @@
 						if( loginType==0 ){	//注册
 							changeLoginType();
 							getID("loading").style.display = "none";
-							alert("注册成功！\n请前往邮箱激活账号");
+							if( language=="c"){
+								alert("注册成功！\n请前往邮箱激活账号");
+							}else{
+								alert("Success !\nPlease enter the email to activate your account");
+							}							
 						}else if( loginType==1){	//登陆
 							userId = json.data["userId"];
 							setCookie("userId",userId,"1000d");
-							alert("登陆成功！\n请牢记您的用户名和密码!\n稍后自动转至首页");
+							if( language=="c"){
+								alert("登陆成功！\n请牢记您的用户名和密码!\n稍后自动转至首页");
+							}else{
+								alert("Success !\nPlease remember your username and password !\nLater transferred to the home page automatically");
+							}							
 							location.href = "./indexMx.php?username="+_username;
 						}
 					}
@@ -192,11 +206,19 @@
 		var passwordTemp = getID('passwordInput').value;
 		var sReg = /[_a-zA-Z\d\-\.]+@[_a-zA-Z\d\-]+(\.[_a-zA-Z\d\-]+)+$/;
 		if( !sReg.test(emailTemp) ){
-			alert("Email地址错误,请重新输入");
+			if( language=="c"){
+				alert("Email地址错误,请重新输入");
+			}else{
+				alert("Email address error, please enter again");
+			}			
 		}else if( username.length < 1 ){
 			alert("用户名至少1位");
 		}else if(passwordTemp.length < 6 ){
-			alert("密码至少6位");
+			if( language=="c"){
+				alert("密码至少6位");
+			}else{
+				alert("Password must be at least 6 characters");
+			}			
 		}else{
 		//	alert("正在提交，请稍候！");
 			getID("loading").style.display = "block";
@@ -208,14 +230,20 @@
 		setCookie("username","null","2s");
 		getID("login").style.display = "block";
 		getID("login").style.height = clientHeight+"px";
+		getID('emailInput').placeholder = (language=="c")?"請輸入已註冊的郵箱":"Email";
+		getID('passwordInput').placeholder = (language=="c")?"請輸入密碼":"Password";
 		changeLoginType();
 	}
 
 	function resetPassword(){
 		var emailTemp = getID('emailInput').value;
 		var sReg = /[_a-zA-Z\d\-\.]+@[_a-zA-Z\d\-]+(\.[_a-zA-Z\d\-]+)+$/;
-		if( !sReg.test(emailTemp) ){
-			alert("Email地址错误,请重新输入");
+		if( !sReg.test(emailTemp) ){			
+			if( language=="c"){
+				alert("Email 地址错误,请重新输入");
+			}else{
+				alert("Email address error, please enter again");
+			}
 		}else{
 			getID("loading").style.display = "block";
 			loginType = 3;
@@ -228,7 +256,13 @@
 		loginType = 4;
 		userId = (getCookie("userId"))?getCookie("userId"):userId;
 		getID("changePassword").style.display = "block";
-		getID("changePassword").style.height = clientHeight+"px";		
+		getID("changePassword").style.height = clientHeight+"px";	
+		getID("changePasswordTitle").innerHTML = (language=="c")?"修改密碼":"Change password";
+		getID("changePasswordCancle").innerHTML = (language=="c")?"取&emsp;消":"Cancle";
+		getID("changePasswordSubmit").innerHTML = (language=="c")?"提&emsp;交":"Submit";
+		getID('passwordOld').placeholder = (language=="c")?"原密碼":"Old password";
+		getID('passwordNew0').placeholder = (language=="c")?"新密碼":"New password";
+		getID('passwordNew1').placeholder = (language=="c")?"确认新密碼":"Confirm new password";
 	}
 
 	function submitChangePassword(){
@@ -236,7 +270,11 @@
 		var passwordNewTemp0 = getID('passwordNew0').value;
 		var passwordNewTemp1 = getID('passwordNew1').value;
 		if( passwordNewTemp0!=passwordNewTemp1 ){
-			alert("两次输入的密码不一致");
+			if( language=="c"){
+				alert("两次输入的密码不一致");
+			}else{
+				alert("Two input password is not consistent");
+			}
 		}else{
 			getID("loading").style.display = "block";
 		//	alert(userId+"_"+passwordOldTemp+"_"+passwordNewTemp0);

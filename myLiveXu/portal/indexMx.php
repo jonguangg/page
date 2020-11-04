@@ -1316,7 +1316,7 @@
 
 	<!-- 修改密码 -->
 	<div id="changePassword" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
-		<div class="login-submit" style="top:30%;padding-top:6px;height:120px;line-height:54px;font-size:45px;">修改密码<br>Change Password</div>
+		<div class="login-submit" style="top:30%;height:120px;line-height:120px;" id="changePasswordTitle">修改密碼</div>
 		<div class="login" style="top:37%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
 			<input id="passwordOld" type="password" class="login-input" placeholder="原密码 (Old Password)" onkeyup="value=value.replace(/[\W]/g,'')" />		
 		</div>
@@ -1326,14 +1326,14 @@
 		<div class="login" style="top:43%;background:url(img/login_password.png) no-repeat right;background-size:7% 70%;">
 			<input id="passwordNew1" type="text" class="login-input" placeholder="确认密码 (New Password)" onkeyup="value=value.replace(/[\W]/g,'')" />		
 		</div>
-		<div class="login-submit-small" onclick="getID('changePassword').style.display='none';showMe();">取 消(Cancle)</div>
-		<div class="login-submit-small" onclick="submitChangePassword();">提 交(Submit)</div>
+		<div class="login-submit-small" onclick="getID('changePassword').style.display='none';showMe();" id="changePasswordCancle">取 消(</div>
+		<div class="login-submit-small" onclick="submitChangePassword();" id="changePasswordSubmit">提 交</div>
 	</div>
 
 	<!-- 默认语言 -->
 	<div id="language" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
 		<div style="position: absolute;top:40%;width:100%;text-align:center;font-size:55px;">選擇語言<br>Language choice</div>
-		<div class="login-submit" style="top:55%;" onclick="setCookie('language','c','1000d');getID('language').style.display='none';">中&emsp;文</div>
+		<div class="login-submit" style="top:55%;" onclick="changeLanguages('c')">中&emsp;文</div>
 		<div class="login-submit" style="top:60%;" onclick="alert('comming soon!')">English</div>
 		<div style="position:absolute;top:75%;width:100%;text-align:center;font-size:50px;color:gray;">可以在個人中心切換語言<br>Switch language in the personal center</div>
 	</div>
