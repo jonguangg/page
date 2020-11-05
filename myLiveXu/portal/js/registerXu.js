@@ -115,7 +115,7 @@
 		getID("meHistory").innerHTML = (language=="c")?"播放歷史":"History";
 		getID("meCollect").innerHTML = (language=="c")?"收藏":"Collect";
 		getID("meSpeed").innerHTML = (language=="c")?"播放速度":"Default speed";
-		getID("meLanguage").innerHTML = (language=="c")?"系統語言":"Default language";
+		getID("meLanguage").innerHTML = (language=="c")?"Language":"系統語言";
 		getID("defaultLanguage").innerHTML = (language=="c")?"中文":"English";
 		getID("mePassword").innerHTML = (language=="c")?"修改密碼":"Change password";
 		getID("meLogout").innerHTML = (language=="c")?"退出登陸":"Log out";
