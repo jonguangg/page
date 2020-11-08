@@ -1,0 +1,21 @@
+CACHE MANIFEST
+#上面一句必须
+#v1.0.0
+#需要缓存的文件
+CACHE:
+../jquery-1.11.0.min.js
+js/fingerprint2.js
+js/global.js?v=1
+js/initXu.js?v=1
+js/registerXu.js?v=1
+js/getXuDataToJs.js?v=1
+js/searchHistoryCollectXu.js?v=1
+js/touchMoveXu.js?v=1
+js/detailXu.js?v=1
+js/initS.js?v=1
+#不需要缓存的文件
+NETWORK:
+*
+#无法访问页面
+FALLBACK:
+404.html

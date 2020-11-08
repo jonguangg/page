@@ -15,5 +15,3 @@ elif [ $( ps -ef | grep -v grep | grep -c "transM3u8.php" ) -lt 2 ]; then
 #    echo $cTime "nginx响应码:" $(curl -I -m 10 -o /dev/null -s -w %{http_code}  http://128.1.160.114:925/transM3u8/index.php ) >> /home/admin/web/www/transM3u8/log ;
 #    nohup curl -i "http://128.1.160.114:925/transM3u8/test.php" >/dev/null 2>&1 ;
 fi
-
-#   sudo mount --bind /dev/shm/transM3u8 /home/admin/web/www/transM3u8
