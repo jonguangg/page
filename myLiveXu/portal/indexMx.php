@@ -83,7 +83,7 @@
 <head>
 	<title>MixTV</title>
 	<meta http-equiv="content-Type" content="text/html; charset=UTF-8">
-
+	<meta name="apple-mobile-web-app-capable" content="yes"><!--iphone设备中的safari私有meta标签：全屏模式浏览 -->
 	<meta name="apple-mobile-web-app-title" content="MixTV"><!-- 添加到主屏后默认的命名 -->
 	<link rel="apple-touch-icon"  sizes="72x72"  href="./img/ic_launcher.png"><!-- 添加到主屏后的图标 -->
 	<link rel="shortcut icon" href="./img/ic_launcher.png" type="image/x-icon"> <!-- 网页收藏夹图标 -->

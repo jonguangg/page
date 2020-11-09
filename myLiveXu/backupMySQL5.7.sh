@@ -4,7 +4,7 @@
 #password=123456
 
 time=` date +%Y%m%d_%H%M%S`
-backupDir=/usr/local/web/www/myLive/backup/
+backupDir=/home/admin/web/www/myLive/backup/
 
 #如果mysql不是安装在docker
 #mysql5.7
