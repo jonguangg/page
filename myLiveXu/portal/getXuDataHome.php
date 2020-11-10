@@ -17,6 +17,10 @@
 	$tempArr = json_decode($jsonStr,true);
 	$homeZoneArr = $tempArr["data"];
 
+	for($l=0;$l<sizeof($homeZoneArr);$l++){	//将首页上方专栏名称放入数组，供拼接首页下方专题使用，因为要排除重复的
+		$homeZoneName[$l] = $homeZoneArr[$l]["columnName"];
+	}	
+
 // Mix推荐
 	$url="http://mixtvapi.mixtvapp.com/ott/homerecommend/getList";
 	$jsonStr= file_get_contents($url);
@@ -83,11 +87,11 @@
 	$tempArr = json_decode($jsonStr,true);
 	$movieBottomZoneArr = $tempArr["data"];
 
-	for($i=0;$i<sizeof($homeBottomZoneArr);$i++){	//将首页下方专题名称放入数组
-		$homeZoneName[$i] = $homeBottomZoneArr[$i]["title"];
+	for($i=0;$i<sizeof($homeBottomZoneArr);$i++){	//将首页下方专题名称放入数组，供拼接首页下方专题使用，排除重复的
+		$homeZoneName[sizeof($homeZoneName)] = $homeBottomZoneArr[$i]["title"];
 	}
 	for($j=0;$j<sizeof($movieBottomZoneArr);$j++){	//循环电影下方专题
-		if( !in_array($movieBottomZoneArr[$j]["title"],$homeZoneName) ){
+		if( !in_array($movieBottomZoneArr[$j]["title"],$homeZoneName) ){//屏蔽已有的
 			$homeBottomZoneArr[sizeof($homeBottomZoneArr)] = $movieBottomZoneArr[$j];
 		}
 	}
@@ -97,6 +101,12 @@
 	$jsonStr= file_get_contents($url);
 	$tempArr = json_decode($jsonStr,true);
 	$seriesBottomZoneArr = $tempArr["data"];
+
+	for($k=0;$k<sizeof($seriesBottomZoneArr);$k++){	//循环电视剧下方专题，K不从0开始 ，是因为前面几个在上方圆图专题入口已有
+		if( !in_array($seriesBottomZoneArr[$k]["title"],$homeZoneName) ){//屏蔽已有的
+			$homeBottomZoneArr[sizeof($homeBottomZoneArr)] = $seriesBottomZoneArr[$k];
+		}
+	}
 
 	// 热搜
 	$url="http://mixtvapi.mixtvapp.com/ott/hotsearch/getList";

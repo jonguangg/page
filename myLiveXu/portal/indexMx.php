@@ -9,12 +9,12 @@
 	error_reporting(0);// 关闭所有PHP错误报告
 //	error_reporting(-1);// 报告所有 PHP 错误=error_reporting(E_ALL);
 //	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);// 报告 E_NOTICE也挺好 (报告未初始化的变量或者捕获变量名的错误拼写)
-		error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-		set_time_limit(0); //限制页面执行时间,0为不限制
-		include_once "../connectMysql.php";
-		include_once "../readChannelArray.php";
-		include_once "readSplash.php";
-		include_once "getXuDataHome.php";	//获取许首页数据
+//	error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+	set_time_limit(0); //限制页面执行时间,0为不限制
+	include_once "../connectMysql.php";
+	include_once "../readChannelArray.php";
+	include_once "readSplash.php";
+	include_once "getXuDataHome.php";	//获取许首页数据
 
 	function getIP(){	//获取用户真实 IP
 		static $realip;

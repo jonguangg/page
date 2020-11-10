@@ -30,7 +30,7 @@ function getIP(){	//获取用户真实 IP
 		$douHaoPos = strpos($realip,",");
 		$realip = substr($realip,0,$douHaoPos);
 	}
-	setcookie("ip",$realip,time()+1*60*6);
+//	setcookie("ip",$realip,time()+1*60*60);//3600秒即1小时
 	return $realip;
 }
 	
@@ -39,12 +39,12 @@ function getCity(){			// 获取当前IP所在城市
 	$city = file_get_contents($tpyApi);
 	$city = iconv('GBK', 'UTF-8', $city);
 	$city = trim($city);
-	setcookie("city",$city,time()+1*60*6);
+//	setcookie("city",$city,time()+1*60*60);
 	return $city;
 }
 
-$ip = ($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
-$city = ($_COOKIE["city"])?$_COOKIE["city"]:getCity();
+$ip = $_COOKIE["ip"];//($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
+$city = $_COOKIE["city"];//($_COOKIE["city"])?$_COOKIE["city"]:getCity();
 
 if( $_POST['cardId'] ){//用户提交了卡号和密码
 	$cardId = $_POST['cardId'];
