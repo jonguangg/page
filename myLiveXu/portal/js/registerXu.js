@@ -329,6 +329,7 @@
 			var cardIdPost = getID("card_key").value.replace(/-/g, "");	//卡号和卡密一样
 			var cardKeyPost = getID("card_key").value.replace(/-/g, "");
 		//	getID("msg").innerHTML = sn;
+			getID("loading").style.display = "block";
 			sendAjax("./ajax.php","sn="+sn+"&cardId="+cardIdPost+"&cardKey="+cardKeyPost);
 		}
 	}

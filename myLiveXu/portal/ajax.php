@@ -30,7 +30,6 @@ function getIP(){	//获取用户真实 IP
 		$douHaoPos = strpos($realip,",");
 		$realip = substr($realip,0,$douHaoPos);
 	}
-//	setcookie("ip",$realip,time()+1*60*60);//3600秒即1小时
 	return $realip;
 }
 	
@@ -39,12 +38,11 @@ function getCity(){			// 获取当前IP所在城市
 	$city = file_get_contents($tpyApi);
 	$city = iconv('GBK', 'UTF-8', $city);
 	$city = trim($city);
-//	setcookie("city",$city,time()+1*60*60);
 	return $city;
 }
-
-$ip = $_COOKIE["ip"];//($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
-$city = $_COOKIE["city"];//($_COOKIE["city"])?$_COOKIE["city"]:getCity();
+$ip = getIP();//($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
+$city = getCity();//($_COOKIE["city"])?$_COOKIE["city"]:getCity();
+sleep(10);
 
 if( $_POST['cardId'] ){//用户提交了卡号和密码
 	$cardId = $_POST['cardId'];
@@ -69,14 +67,11 @@ if( $_POST['cardId'] ){//用户提交了卡号和密码
 				
 				$sql = mysqli_query($connect,"UPDATE client set expireTime='$expireTime' where sn='$sn' ") or die(mysqli_error($connect));
 				if( $sql ){//成功更新了授权信息，返回信息给前端，并迁移当前卡号到已售表sold
-					
-					echo "Succeed".$intExpireTime."expireTime".$expireTime;				//授权成功后给机顶盒显示用
+					echo "Succeed".$intExpireTime."expireTime".$expireTime;		//授权成功后给机顶盒显示用
 					$intExpireTime = str_replace("-","",$expireTime);			//为了便于比大小将时间内的-删掉
-				//	setcookie("expireTime", $expireTime, time()+8*3600);		//cookie存8小时，供个人中心显示用
-				//	setcookie("intExpireTime", $intExpireTime, time()+8*3600);	//cookie存8小时，供比大小用
 					$sql = mysqli_query($connect,"insert ignore sold(soldTime,sn,ip,city,cardId,licenseDays) values ('$soldTime','$sn','$ip','$city','$cardId','$licenseDays')") or die(mysqli_error($connect));
-					if( $sql ){	//成功写入售出表
-						$sql = mysqli_query($connect,"DELETE FROM vipCard WHERE cardId='$cardId' ") or die( mysqli_error() );
+					if( $sql ){	//假如成功写入售出表
+						$sql = mysqli_query($connect,"DELETE FROM vipCard WHERE cardId='$cardId' ") or die( mysqli_error($connect) );
 					}
 				}
 			}else{

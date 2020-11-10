@@ -87,6 +87,7 @@ function sendAjax(_url, _content) {
 					setCookie("expireTime", expireTime, "8h");
 					setCookie("intExpireTime", intExpireTime, "8h");
 					backArea = "true";
+					getID("loading").style.display = "none";
 				} else { //失败
 					getID("msg").style.lineHeight = clientHeight * 0.35 + "px"; //只一行内容，行高=div height
 					if (xmlHttp.responseText.indexOf("Card") > -1) { //卡号输错了	
