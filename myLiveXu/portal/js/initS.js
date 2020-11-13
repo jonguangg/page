@@ -118,8 +118,10 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("h5video").src = "";
 			if( from=="zoneC"){
 				getID("zoneC").style.display = "block";
+				getID("loading").style.display = "none";
 			}else if( from=="zone"){
 				getID("zone").style.display = "block";
+				getID("loading").style.display = "none";
 			}else{				
 				getID("vod").style.opacity = 1;
 				setTimeout(function(){
