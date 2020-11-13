@@ -12,6 +12,7 @@ function showDetail( _id ){
     getID("loading").style.display = "block";
 //  getID("detail").style.display = "none"; //这是为了点击猜您喜欢后详情马上消失
     getID("detail").style.left = "-2000px"; //这是为了获取到数据后从左边进入的效果
+    getID("detailPoster").style.height = clientWidth*9/16+"px";
     if( indexArea=="detail"){
         updateCurrentTime();                //点击猜您喜欢时记录当前播放位置
     }

@@ -81,7 +81,6 @@
 
 	var speed = (getCookie('speed'))?getCookie('speed'):1;
 	function showMe() { //进入个人中心
-	//	alert(sn+"\r\n"+intLoginTime+"-"+intExpireTime+"\r\n"+expireTime);
 		scrollTo(0, 0);
 		scrollDisable();
 		getID("expireTimeH5").innerHTML = expireTime;
@@ -124,7 +123,6 @@
 	var loginType = 0;
 	function changeLoginType(){//0注册，1登陆，2重置密码，3修改密码
 		loginType = (loginType==0)?1:0;
-	//	getID("loginType").style.backgroundImage = (loginType==0)?'url(img/login_register.png)':'url(img/login_login.png)';
 		getID("loginType").style.left = (loginType==0)?"35%":"0%";
 		getID("login-login").style.color = (loginType==1)?"white":"black";
 		getID("login-register").style.color = (loginType==0)?"white":"black";
@@ -150,8 +148,6 @@
 				//这里一般显示加载提示;
 			},
 			success: function(json){
-			//	console.log(json);
-			//	alert(json.msg);
 				getID("loading").style.display = "none";
 				if(json.msg=="success"){
 					if( loginType==3){	//重置密码
@@ -186,7 +182,7 @@
 							}else{
 								alert("Success !\nPlease remember your username and password !\nLater transferred to the home page automatically");
 							}							
-							location.href = "./indexMx.php?username="+_username;
+							location.href = "./indexMx.php";
 						}
 					}
 				}else{
@@ -298,7 +294,7 @@
 		indexArea = "register";
 	}
 
-	function back() { //从个人中心返回
+	function back() { //从授权页面返回
 		if (parseInt(intLoginTime) < parseInt(intExpireTime) || backArea == "true") { //授权没过期
 			getID("cardKey").style.display = 'none';
 			scrollEnable();
@@ -312,7 +308,10 @@
 			getID("msg").innerHTML = "Register your VIP card !";
 			getID("msg").style.background = "linear-gradient(to bottom,gray,white)";
 		}
-		indexArea = "home";
+		if( indexArea=="detail"){			
+			getID("h5video").src = "";
+		}
+		indexArea = (indexArea=="register")?"home":"detail";
 	}
 
 	function checkInput(){	//提交授权码

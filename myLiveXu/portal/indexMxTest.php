@@ -3,7 +3,7 @@
 	set_time_limit(0); //限制页面执行时间,0为不限制
 	date_default_timezone_set('PRC');
 	include_once "../connectMysql.php";
-	include_once "../readChannelArray.php";
+//	include_once "../readChannelArray.php";
 //	include_once "readSplash.php";
 	include_once "getXuDataHome.php";	//获取许首页数据
 
@@ -29,8 +29,8 @@
 		if( strpos($realip,",")>0 ){//有两个IP
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
-		}	
-		setcookie("ip", $realip, time()+24*3600); //cookie存24小时
+		}
+		setcookie("ip", $realip, time()+24*3600,"/"); //cookie存24小时
 		return $realip;
 	}
 
@@ -39,14 +39,15 @@
 		$city = file_get_contents($tpyApi);
 		$city = iconv('GBK', 'UTF-8', $city);
 		$city = trim($city);
-		setcookie("city",$city,time()+24*3600,"/");//cookie存24小时
+		setcookie("city",$city,time()+1*3600,"/");//cookie存24小时
+		echo '<script>alert("City_'.$city.'")</script>';	
 		return $city;
 	}
 	$ip = ($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
 	$city = ($_COOKIE["city"])?$_COOKIE["city"]:getCity();
 
 //	echo '<script>alert("'.$ip.'\n'.$city.'")</script>';
-	$sn = $_COOKIE["sn"];//$_POST['imOnLineSN'];	//$_COOKIE["sn"];//
+	$sn = $_COOKIE["sn"];//$_POST['imOnLineSN'];		//$_COOKIE["sn"];
 	$mark = $_COOKIE["deviceInfo"];						//机顶盒备注
 	$loginTime = date("Y-m-d"); 						//机顶盒打开APP的日期
 	$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
@@ -68,6 +69,7 @@
 		$sql = mysqli_query($connect, "replace into client(sn,mark,ip,city,loginTime,expireTime,lastTime,isOnLine) values ('$sn','$mark','$ip','$city','$loginTime','$expireTime','$lastTime','$isOnLine')") or die(mysqli_error($connect));
 	}
 ?>
+<!--<script-- type="text/javascript" src="js/fingerprint2.js"></script-->
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type="text/javascript" src="js/initXu.js?v=2" charset=UTF-8></script>
 <script type="text/javascript" src="js/registerXu.js?v=2" charset=UTF-8></script>
@@ -76,7 +78,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>MixTV</title>
+	<title>MixTVTest</title>
 	<meta http-equiv="content-Type" content="text/html; charset=UTF-8">
 	<meta name="apple-mobile-web-app-capable" content="yes"><!--iphone设备中的safari私有meta标签：全屏模式浏览 -->
 	<meta name="apple-mobile-web-app-title" content="MixTV"><!-- 添加到主屏后默认的命名 -->
@@ -112,24 +114,17 @@
 	var homeBottomZoneArr = <?php echo json_encode($homeBottomZoneArr); ?>;
 	var hotSearchArr = <?php echo json_encode($hotSearchArr); ?>;
 
-//	console.log(homeBottomZoneArr);
+//	console.log(homeZoneArr);
 
 	var userKey = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsGetCookie("userKey", 0) : "9527";
 	if (parseInt(userKey) == 0) { //没设置密码时获取到的密码为0，所以要改一下
 		userKey = "9527";
 	}
-	var scrollTops = 0;
-	var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-	var indexArea = "home";
-//	var navPos = 0; //当前分类 0为home 1为movie -1为直播
-/*
-	var groupId = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("groupId", 0)) : 0;
+/*	var groupId = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("groupId", 0)) : 0;
 	var channelPagePos = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("channelPagePos", 0)) : 0;
 	var channelPos = (typeof(window.androidJs) != "undefined") ? parseInt(window.androidJs.JsGetCookie("channelPos", 0)) : 0;
 	var channelCount = 0;
 	var channelPageAll = parseInt((channelCount - 1 + 10) / 10);
-//	var channelPagePosTemp = 0;
-//	var channelPosTemp = channelPos;
 	var channelArr = [];
 	var videoUrlCookie = 0;
 
@@ -174,7 +169,8 @@
 	//	getID("liveVideoDiv").style.height = (clientWidth * 9 / 16 - 1) + "px";	//视频窗口
 		getID('liveVideo').height = (window.orientation==0)?clientWidth*9/16:clientWidth-120;
 		getID("group").style.top = (window.orientation==0)?(clientWidth * 9 / 16 - 1)+"px":(clientWidth-120)+"px";//频道组
-		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px";		 //频道列表		
+		getID("channels").style.top = (clientWidth * 9 / 16 + 90) + "px";		 //频道列表	
+		getID("channels").style.height = (clientHeight-clientWidth*9/16-90)+"px";	
 
 		if (typeof(window.androidJs) != "undefined") {
 			window.androidJs.JsPlayLive(channelTempArr[channelPos].videoUrl);
@@ -228,6 +224,10 @@
 		}
 	}
 */
+	var scrollTops = 0;
+	var imgHeight = "280px"; //图片高度，会根据屏幕宽按16:9重新计算
+	var indexArea = "home";
+//	var navPos = 0; //当前分类 0为home 1为movie -1为直播
 	var currentTime = 0;   //播放位置 单位秒
 	var isNext = true;		//是否可以播放下一集
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
@@ -347,7 +347,6 @@
 					getID("loading"+tab1).style.display = "block";
 				}
 				var list = json.records;
-				console.log(list);
 				$.each(list,
 					function(index, array) { //遍历json数据列
 						var id = array["id"];
@@ -749,19 +748,16 @@
 			splashJump();
 		}
 	}
-	
+		
 	function init() {
 		stbInfo();
 		scrollDisable();		//禁止页面滚动
 		showSplash();			//显示启动图片	
-		bindEvent();			//绑定滑动事件
-
+        bindEvent();			//绑定滑动事件
+        
 		clientWidth = document.body.scrollWidth;
 		clientHeight = window.innerHeight;
-
 		getID('bodys').style.width = clientWidth + "px"; //全局宽
-	//	getID("detailPoster").style.height = clientWidth*9/16+"px";
-	//	getID("channels").style.height = (clientHeight-clientWidth*9/16-90)+"px";
 
 		showTab1();				//显示一级分类
 		showHomeLoop();
@@ -771,11 +767,11 @@
 		showHomeNew(0);
 		showHighScore();
 		showHomeBottomZone();
-		scrollTo(0,0)
-		preLoadImages();		
-		setTimeout(function(){moveHomeLoop(1);},10000);
+		scrollTo(0,0);		
+		setTimeout(function(){moveHomeLoop(1);preLoadImages();getID("loading").style.display = "none";},10000);		
 	}	
 </script>
+
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" >
 <div id="bodys" style="position:absolute;top:0px;left:0px;width:100%;display:block;">
 	<!--非直播 -->
@@ -808,7 +804,7 @@
 			<!-- 首页 轮图 -->
 			<div style="position:relative;top:0px;left:4%;width:92%;height:500px;overflow:hidden;">
 				<div id="homeLoopDiv" style="position:absolute;left:0%;width:2000%;-webkit-transition:1s;" onclick="getID('h5video').muted=false;showHomeLoopDetail()"><!--
-					<div-- class="homeLoopImg" style="background:url(img/poster.jpg);">
+					<div-- class="homeLoopImg" style="background:url(img/null.png);">
 						<div class="homeLoopTitle" ></div>
 					</div-->
 				</div>
@@ -821,7 +817,7 @@
 			<div class="homeList" style="width:96%;height:230px;top:0px;">
 				<div style="position: relative;left:4%;">	
 					<ul id="homeNavLive" class="tab-head">
-						<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-homeLive-groupName">央视</div></div-->
+						<!--div class="tab-homeLive-item" id="homeLiveGroup0" onClick="showLiveList(0);" style="background:url(img/null.png)"><div class="tab-homeLive-groupName">央视</div></div-->
 					</ul>
 				</div>	
 			</div>
@@ -863,7 +859,7 @@
 				</div>		
 				<div style="position:relative;left:4%;">
 					<ul id="hotContent" class="tab-head" >
-						<div class="tab-hot-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)">
+						<div class="tab-hot-item" onClick="showLiveList(0);" style="background:url(img/null.png)">
 							<div id="hotScore0" class="tab-score" >9.9</div>
 							<div class="tab-hotName">热播名称</div>
 						</div>
@@ -894,7 +890,7 @@
 				</div>				
 				<div style="position:relative;left:0%;">
 					<ul id="highScoreContent" class="tab-head">
-						<div class="tab-highScore-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg) no-repeat;"></div>
+						<div class="tab-highScore-item" onClick="showLiveList(0);" style="background:url(img/null.png) no-repeat;"></div>
 						<div class="tab-highScore-item2" >
 							<div class="tab-highScoreName" style="font-size:40px;line-height:80px;" id="highScoreName0"></div>
 							<div class="tab-highScoreName"><span id="highScores0" style="color:#f7a333;"></span>&ensp;<span></span></div>
@@ -932,7 +928,7 @@
 		<!-- 电影 列表 -->
 		<div id="vodList1" class="vodList" style="top:455px;">
 			<div id="vodListContent1">
-				<!--div id="vodListImgTest" class="listImg" style="background: url(img/poster.jpg);" onClick="playVod(0);" >
+				<!--div id="vodListImgTest" class="listImg" style="background: url(img/null.png);" onClick="playVod(0);" >
 					<div class="tab-score" >9.9</div>
 					<div id="vodListNameTest" class="listName">测试电影名称</div>
 				</div-->				
@@ -1072,7 +1068,7 @@
 			</tr></table>
 		</div>
 
-		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);"></div>
+		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="updateCurrentTime();getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);"></div>
 		<div class="detailText" style="top:0px;" id="tab"><b>类型：</b><span id="detailTab"></span></div>
 		<div class="detailText" style="top:0px;" id="region"><b>地区：</b><span id="detailRegion"></span></div>
 		<div class="detailText1" style="top:0px;" id="actor"><b>主演：</b><span id="detailActor" ></span></div>
@@ -1090,11 +1086,11 @@
 		<div id="guess" class="detailText2" style="top:0px;">猜您喜欢
 			<!--img style="position:relative;left:65%;top:10px;width:70px;height:70px;" src="img/back0.png" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);" /-->
 			<div style="position:relative;left:0%;top:0px;">
-				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/poster.jpg);"></div>
-				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/poster.jpg);"></div>
-				<div id="guess2" class="guess" style="margin-right:0%;margin-bottom:30px;background:url(img/poster.jpg);"></div-->
+				<!--div id="guess0" class="guess" style="margin-right:3%;background:url(img/null.png);"></div>
+				<div id="guess1" class="guess" style="margin-right:3%;float:left;background-size:100% 100% !important;background:url(img/null.png);"></div>
+				<div id="guess2" class="guess" style="margin-right:0%;margin-bottom:30px;background:url(img/null.png);"></div-->
 				<ul id="guesses" class="tab-head" >
-					<!--div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/poster.jpg)"><div class="tab-guessName">猜您喜欢之一</div></div-->
+					<!--div class="tab-guess-item" onClick="showLiveList(0);" style="background:url(img/null.png)"><div class="tab-guessName">猜您喜欢之一</div></div-->
 				</ul>
 			</div>
 		</div>
@@ -1281,7 +1277,7 @@
 
 </body></html>
 
-<script type=text/javascript src="js/initS.js?v=2" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=5" charset=UTF-8></script>
 <script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
-<script type=text/javascript src="js/detailXu.js?v=2" charset=UTF-8></script>
+<script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>

@@ -101,7 +101,8 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 		tab1 = tempTab1;
 		scrollTo(0,0);
 	}else if( indexArea == "detail"){
-		if( typeof(window.androidJs)!="undefined"){
+		getID("loading").style.display = "block";
+		if( typeof(window.androidJs)!="undefined"){	//apk
 			window.androidJs.JsClosePlayer();
 			if(from=="zoneC"){
 				getID("zoneC").style.display = "block";
@@ -118,13 +119,15 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			if( from=="zoneC"){
 				getID("zoneC").style.display = "block";
 			}else if( from=="zone"){
-			//	getID("zoneC").style.display = "none";
 				getID("zone").style.display = "block";
 			}else{				
 				getID("vod").style.opacity = 1;
-				setTimeout(function(){getID("vod").style.display = "block";},1000); //否则进入详情后马上按返回，会黑屏
+				setTimeout(function(){
+					getID("vod").style.display = "block";
+					getID("loading").style.display = "none";
+				},1000); //否则进入详情后马上按返回，会黑屏
 			}
-			getID("detail").style.display = "none";
+			getID("detail").style.display = "none";	
 			if( from=="search" || from=="history" ||from=="collect" || from=="detail"){
 				getID("searchHistoryCollect").style.display = "block";
 			}
@@ -144,17 +147,6 @@ function androidBack(){	//供返回键调用	alert("from_"+from+"_indexArea1_"+i
 			getID("zone").style.display = "none";
 		},300); //否则进入详情后马上按返回，会黑屏
 		indexArea = "home";
-	}else if( indexArea == "zhiBo"){
-		if( isZhiBo ){	//先退出播放窗口
-			isZhiBo = false;
-			window.androidJs.JsSetPageArea("zhiBo");
-		}else{	//再退出直播界面
-		//	getID("zhiBo"+zhiBoPos).pause();
-			getID("zhiBo").style.display = "none";
-			indexArea = "home";
-			showTabList1(0);
-			scrollTo(0,0);
-		}
 	}else if( indexArea == "me" || indexArea == "login"){
 		scrollEnable();
 		indexArea = "home";

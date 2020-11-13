@@ -209,7 +209,6 @@ var SiHua_Event = {
 	}
 };
 
-
 document.onkeydown=function (__event) {
 	__event=__event||window.event;	
 	try

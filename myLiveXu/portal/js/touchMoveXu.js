@@ -1,14 +1,3 @@
-var zhiBoTemp = 0;
-var zhiBoPos = 0;
-function changeZhiBo(){
-	zhiBoPos = parseInt( (document.body.scrollTop+clientHeight/2)/clientHeight );
-//	getID("test").style.display = "block";
-//	getID("test").innerHTML = $(document).height() +"<br>scrollTop_"+ document.body.scrollTop+"<br>clientHeight_"+clientHeight+"<br>zhiBoPos_"+zhiBoPos;				
-//	getID("zhiBo"+zhiBoTemp ).pause();
-//	getID("zhiBo"+zhiBoPos).play();
-	zhiBoTemp = zhiBoPos;
-}
-
 function moveChangeGroup(_num) { //滑动切换直播分类
 	var groupIdTemp = groupId;
 	groupIdTemp += _num;
@@ -74,9 +63,6 @@ function touchMoveFunc(evt){
 			}else if(tab1 > 0){
 			//	document.getElementById("vodList"+tab1).style.left = moveX+"px";
 			}			
-		}
-		if( moveY != 0 && indexArea=="zhiBo"){	//上下滑
-			changeZhiBo();
 		}
 	}catch(e){
 		alert('touchMoveFunc：' + e.message);
@@ -177,7 +163,7 @@ function touchEndFunc(evt){
 		}*/
 		
 		if( moveY < -0 ){	//向上滑动	var loadMoreBottom = $(document).height() - document.body.scrollTop - $(window).height();	alert(loadMoreBottom);
-			if( indexArea!="home"  && indexArea!="detail" && indexArea!="zhiBo" && indexArea!="live"){
+			if( indexArea!="home"  && indexArea!="detail" && indexArea!="live"){
 				loadMore();
 			}
 		}

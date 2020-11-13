@@ -1,3 +1,52 @@
+function getID(id){
+	return document.getElementById(id);
+}
+
+//Cookie
+function setCookie(name, value,time){
+	var msec = getMsec(time); //获取毫秒
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + msec*1);//小时*分钟*秒*毫秒
+    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
+}
+function getMsec(DateStr){//将字符串时间转换为毫秒,1秒=1000毫秒
+    var timeNum = DateStr.substring(0,DateStr.length-1)*1; //时间数量
+    var timeStr = DateStr.substring(DateStr.length-1,DateStr.length); //时间单位后缀，如h表示小时   
+	if (timeStr=="s"){ //20s表示20秒
+         return timeNum*1000;
+    }else if (timeStr=="m"){//10m表示10分钟
+        return timeNum*60*1000;
+    }else if (timeStr=="h"){//12h表示12小时
+        return timeNum*60*60*1000;
+    } else if (timeStr=="d"){//30d表示30天
+        return timeNum*24*60*60*1000; 
+    }
+}
+function getCookie(sName){
+  var aCookie = document.cookie.split("; ");
+  for (var i=0; i < aCookie.length; i++)
+  {
+    var aCrumb = aCookie[i].split("=");
+    if (sName == aCrumb[0]){
+      return unescape(aCrumb[1]);
+    }
+  }
+  return null;
+}
+function delCookie(name){ 
+  var exp = new Date(); 
+  exp.setTime(exp.getTime() -1000);
+  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
+}
+
+window.alert = function(name){
+	var iframe = document.createElement("IFRAME");
+	iframe.style.display="none";
+	document.documentElement.appendChild(iframe);
+	window.frames[0].window.alert(name);
+	iframe.parentNode.removeChild(iframe);
+}
+
 var clientWidth = 1080;
 var videoHeight = clientWidth*9/16;
 var clientHeight = 1920;
@@ -5,17 +54,14 @@ var u = navigator.userAgent, app = navigator.appVersion;
 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; 	//android终端或者uc浏览器 
 var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 				//ios终端
 var username = ( getCookie("username") )?getCookie("username"):"";
-//	alert(isAndroid+"-"+isIOS)
-function imOnLine() { //上报在线状态
-	var now = new Date(); //此时此刻
+
+function imOnLine() { 			//上报在线状态
+	var now = new Date(); 		//此时此刻
 	var sec = now.getSeconds(); //此时的秒
-	//因为后台是每个被5整除的分钟时下线所有机顶盒，所以机顶盒要在下线后（延时1分钟）上报在线状态
+	//后台每个被5整除的分钟时下线所有机顶盒，机顶盒要在下线后（延时1分钟）上报在线状态
 	//如果当前分钟正好被5整除，则说明此时后台刚刚下线所有机顶盒，前端延时1分钟上线当前机顶盒 60-sec是为了精确到秒
 	//如果当前分钟离整5有1、2、3、4分钟，则分别延时1、2、3、4分钟。用6减模5余几的数，就是要延时的时间
 	var ms = (now.getMinutes() % 5 == 0) ? 60 - sec : (6 - now.getMinutes() % 5) * 60 - sec;
-	//	var ms = ( (6-now.getMinutes()%5)*60>300 )?60-sec:(6-now.getMinutes()%5)*60-sec;
-	//	var ms = ( (6-now.getMinutes()%5)*60000>300000 )?60000-sec*1000:(6-now.getMinutes()%5)*60000-sec*1000;
-	//	sn = ( sn )?sn:window.androidJs.JsGetCookie("sn",0);
 	st = setTimeout(function() {
 		sendAjax("./ajax.php", "imOnlineSN=" + sn);
 		imOnLine();
@@ -23,7 +69,6 @@ function imOnLine() { //上报在线状态
 }
 
 var xmlHttp; //1.创建XMLHttpRequest对象
-//var xmlHttp = new XMLHttpRequest();// 1.创建XMLHttpRequest对象(不兼容浏览器)
 function createXmlHttpRequestObject() {
 	if (window.ActiveXObject) { //如果在internet Explorer下运行
 		try {
@@ -45,11 +90,10 @@ function createXmlHttpRequestObject() {
 	}
 }
 
-var backArea = "false";
+var backArea = "true";
 var expireTime = "";
 var intExpireTime = "";
 function sendAjax(_url, _content) {
-//	alert("sendAjax"+"\n"+sn+"\n"+_content);
 	createXmlHttpRequestObject();
 	// 2.请求行
 	xmlHttp.open("POST", _url); //"./isOnLine.php");
@@ -69,12 +113,7 @@ function sendAjax(_url, _content) {
 					setTimeout(function() {
 					//	registedVipCard();	//改在playvod()内弹出授权界面，让用户可以浏览，不能播放
 					}, 10000); //10秒后弹出注册页面
-				} else {/*
-					if( typeof(window.androidJs)=="undefined" && username.length > 5 ){
-						backArea = "true";
-					}else{
-						backArea = "true";
-					}	*/
+				} else {
 					backArea = "true";		
 				}
 			} else if (_content.indexOf('card') > -1) { //注册卡号
@@ -101,7 +140,7 @@ function sendAjax(_url, _content) {
 		}
 	}
 }
-
+/*
 var fingers = "";
 //	var hasConsole = typeof console !== "undefined";
 var fingerprintReport = function(){		//获取浏览器指纹
@@ -136,7 +175,7 @@ if (window.requestIdleCallback){	//获取浏览器指纹
     cancelId = setTimeout(fingerprintReport, 500);
     cancelFunction = clearTimeout;
 }
-
+*/
 var sn = '';
 var deviceBrand = '';
 var systemModel = '';
@@ -147,18 +186,16 @@ function stbInfo(){
 		systemModel = (typeof(window.androidJs) != "undefined") ? window.androidJs.JsSystemModel() : "";
 		deviceBrand = deviceBrand.replace(/\s*/g, ""); //删除空格
 		systemModel = systemModel.replace(/\s*/g, ""); //删除空格
-		sn = sn + deviceBrand + systemModel; //用厂家型号和MAC拼接成一个新的SN
+		sn = sn + deviceBrand + systemModel; 			//用厂家型号和MAC拼接成一个新的SN
 		var deviceInfo = deviceBrand + "_" + systemModel;
-		setCookie("deviceInfo", deviceInfo, '1000d'); //供php页面记录备注
+		setCookie("deviceInfo", deviceInfo, '1000d'); 	//供php页面记录备注
 	}else{	//浏览器
 		sn = getCookie("sn");
-	//	setCookie("deviceInfo", getCookie("username"), '1000d'); //供php页面记录备注
 		if( getCookie("sn")==null && getCookie("username")!= null ){	//	防止有username却没有sn
-			sn = getCookie("username")+fingers;	
+			sn = getCookie("username");	
 		}
 	}
-	setCookie("sn", sn, '1000d'); //供app从后台唤醒时使用
-//	sendAjax("./indexMx.php", "imOnLineSN=" + sn); //传递当前SN给php页面去获取授权信息
+	setCookie("sn", sn, '1000d');
 	return sn;
 }
 
@@ -166,11 +203,11 @@ var mo = function(e) {
 	e.preventDefault();
 };
 
-function scrollDisable() {
+function scrollDisable() {//禁止页面滑动
 	document.body.style.overflow = 'hidden';
 	document.addEventListener("touchmove", mo, {
 		passive: false
-	}); //禁止页面滑动
+	}); 
 }
 
 function scrollEnable() {
@@ -193,7 +230,6 @@ function preLoadImages(){
 	getID("preLoadImg").innerHTML += '<img src=./splash/1242x2688.png >';
 }
 
-//	var total = 0;
 function startCircle(){
 	var minute = 0;
 	var second = 10;
@@ -202,6 +238,5 @@ function startCircle(){
 //    circle.style.strokeDashoffset = "800";
 	circle.style.animationDuration = total+"s";
 	circle.style.animationPlayState = "running";
-//    set(1000*total);
 	circle.classList.add("run-anim");
 }
