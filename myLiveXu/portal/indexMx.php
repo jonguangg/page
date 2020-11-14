@@ -504,7 +504,7 @@
 
 	function showHomeBottomZone(){
 		for(i=0;i<homeBottomZoneArr.length;i++){
-			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:0px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")>'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")> > </span></div>	<div style="position:relative;left:4%;top:-80px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
+			getID("vodList0").innerHTML += '<div class="homeList" style="width:96%;height:450px;top:0px;"><div><span style="position:relative;left:5%;background-color:#ff9933;" >&emsp;</span><span style="position:relative;overflow:hidden;left:6%;font-size:40px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")>'+homeBottomZoneArr[i].title+'</span><span style="position:relative;top:-100px;margin-left:95%;font-size:80px;" onClick=showZoneList("'+homeBottomZoneArr[i].id+'")> > </span></div>	<div style="position:relative;left:4%;top:-80px;"><ul id=bottomZontContent'+i+' class="tab-head"></ul></div></div>';
 			for(j=0;j<homeBottomZoneArr[i].videoList.length;j++){			
 				var score = (homeBottomZoneArr[i].videoList[j].imdbScore==undefined)?"":homeBottomZoneArr[i].videoList[j].imdbScore;
 				var scoreBg = (homeBottomZoneArr[i].videoList[j].imdbScore==undefined)?"img/null.png":"img/scoreBg.png";
@@ -1072,7 +1072,7 @@
 			</tr></table>
 		</div>
 
-		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="updateCurrentTime();getID('vod').style.display = 'block';getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);"></div>
+		<div class="detailText" style="top:-20px;width:80%;font-size:50px;color:#f7a333;" id="detailName" onclick="updateCurrentTime();getID('detail').style.left = '-2000px';setTimeout(function(){androidBack();},300);"></div>
 		<div class="detailText" style="top:0px;" id="tab"><b>类型：</b><span id="detailTab"></span></div>
 		<div class="detailText" style="top:0px;" id="region"><b>地区：</b><span id="detailRegion"></span></div>
 		<div class="detailText1" style="top:0px;" id="actor"><b>主演：</b><span id="detailActor" ></span></div>
@@ -1233,7 +1233,7 @@
 		</div>
 		<div class="login-prompt" style="top:46%;display:none;" id="resetPassword" onclick="resetPassword();">重置密码</div>
 		<div class="login-submit" onclick="login();" id="loginSubmit">注&emsp;册</div>
-		<div class="login-prompt" style="top:55%;" id="login_type" onclick="changeLoginType()">已有账号，立即登陆</div>
+		<div class="login-prompt" style="top:55%;" id="login_type" onclick="changeLoginType()">已有账号，点击这立即登陆</div>
 	</div>
 
 	<!-- 修改密码 -->
