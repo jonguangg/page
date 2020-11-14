@@ -30,7 +30,7 @@
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
 		}
-		setcookie("ip", $realip, time()+24*3600,"/"); //cookie存24小时
+		setcookie("ip", $realip, time()+1*3600,"/"); //cookie存24小时
 		return $realip;
 	}
 
@@ -1143,9 +1143,9 @@
 
 		<div style="position:absolute;left:40%;top:30%;width:50%;height:100px;" onClick="getID('card_key').focus();window.androidJs.JsShowImm();"></div>
 
-		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:white;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>返&emsp;回</b></div>
+		<div id="back" style="position:absolute;left:5%;top:45%;width:40%;line-height:110px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to right,#6633cc,#000066);color:white;text-shadow:-5px 5px 5px #000;" onclick="back()"><b>返&emsp;回</b></div>
 
-		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:120px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to bottom,gray,white);color:white;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>提&emsp;交</b></div>
+		<div id="ok" style="position:absolute;left:55%;top:45%;width:40%;line-height:110px;font-size:80px;text-align:center; border-radius:60px 60px 60px 60px;background:linear-gradient(to right,#6633cc,#000066);color:white;text-shadow:-5px 5px 5px #000;" onclick="checkInput()"><b>提&emsp;交</b></div>
 
 		<div id="img" style="position:absolute;left:5%;top:58%;width:90%;height:35%;background:url(img/vipCard.png) no-repeat;background-size:100% 100% !important;"></div>
 
@@ -1229,7 +1229,7 @@
 		</div>
 		<div class="login-prompt" style="top:46%;display:none;" id="resetPassword" onclick="resetPassword();">重置密码</div>
 		<div class="login-submit" onclick="login();" id="loginSubmit">注&emsp;册</div>
-		<div class="login-prompt" style="top:55%;" id="login_type" onclick="changeLoginType()">已有账号，立即登陆</div>
+		<div class="login-prompt" style="top:55%;" id="login_type" onclick="changeLoginType()">已有账号，点击这立即登陆</div>
 	</div>
 
 	<!-- 修改密码 -->
@@ -1277,7 +1277,7 @@
 
 </body></html>
 
-<script type=text/javascript src="js/initS.js?v=5" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=6" charset=UTF-8></script>
 <script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>
