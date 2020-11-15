@@ -335,7 +335,11 @@ function orient(){	//旋转屏幕
 
 	function shareDownload(){
 		if( isIOS ){
-			alert("Please long press the QR code \nto download the image");
+			if( language=="c"){
+				alert("请长按二维码，存储图像");
+			}else{
+				alert("Please long press the QR code \nto download the image");
+			}			
 		}else{
 			var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');		
 			if( typeof(window.androidJs) == "undefined" ){	//浏览器
