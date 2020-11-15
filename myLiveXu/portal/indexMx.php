@@ -61,7 +61,7 @@
 	if( mysqli_num_rows($sql) > 0 ){ //如果数据库中有当前机顶盒
 	//	echo '<script>alert("'.((int)$visibilityTime-(int)$hiddenTime).'")</script>';
 		if( (int)$visibilityTime-(int)$hiddenTime > 60 ){
-			$sql = mysqli_query($connect, "UPDATE client set mark='$mark',isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
+			$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
 			$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn',ip='$ip',city='$city' ") or die(mysqli_error($connect)); 	//记录登陆时间
 		}
 	}else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
