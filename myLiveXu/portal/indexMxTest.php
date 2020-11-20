@@ -72,7 +72,7 @@
 <!--<script-- type="text/javascript" src="js/fingerprint2.js"></script-->
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type="text/javascript" src="js/initXu.js?v=2" charset=UTF-8></script>
-<script type="text/javascript" src="js/registerXu.js?v=2" charset=UTF-8></script>
+<script type="text/javascript" src="js/registerXu.js?v=3" charset=UTF-8></script>
 <script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
