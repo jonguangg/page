@@ -26,11 +26,11 @@
 				$realip = getenv("REMOTE_ADDR");
 			}
 		}
-		if( strpos($realip,",")>0 ){//有两个IP
+	/*	if( strpos($realip,",")>0 ){//有两个IP
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
-		}
-		setcookie("ip", $realip, time()+1*3600,"/"); //cookie存24小时
+		}*/
+		setcookie("ip", $realip, time()+1*3600,"/"); //cookie存1小时
 		return $realip;
 	}
 
@@ -39,7 +39,7 @@
 		$city = file_get_contents($tpyApi);
 		$city = iconv('GBK', 'UTF-8', $city);
 		$city = trim($city);
-		setcookie("city",$city,time()+1*3600,"/");//cookie存24小时
+		setcookie("city",$city,time()+1*3600,"/");//cookie存1小时
 		echo '<script>alert("City_'.$city.'")</script>';	
 		return $city;
 	}
@@ -62,7 +62,7 @@
 	if( mysqli_num_rows($sql) > 0 ){ //如果数据库中有当前机顶盒
 	//	echo '<script>alert("'.((int)$visibilityTime-(int)$hiddenTime).'")</script>';
 		if( (int)$visibilityTime-(int)$hiddenTime > 60 ){
-			$sql = mysqli_query($connect, "UPDATE client set mark='$mark',isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
+			$sql = mysqli_query($connect, "UPDATE client set isOnLine='$isOnLine',ip='$ip',city='$city',lastTime='$lastTime' where sn='$sn' ") or die(mysqli_error($connect));	 //更新在线状态		
 			$sql2 = mysqli_query($connect, "INSERT INTO login SET sn='$sn',ip='$ip',city='$city' ") or die(mysqli_error($connect)); 	//记录登陆时间
 		}
 	}else if( $sn!= "null" && $sn!= null && strlen($sn)>0 ) { //如果数据库中没有当前机顶盒，且当前机顶盒有SN
@@ -244,9 +244,13 @@
 			getID("speeds").style.opacity = 0;
 			getID("fullscreens").style.opacity = 0;
 		}else{
-			getID("h5video").src = _playUrl; 
-			getID("speeds").style.opacity = 1;
-			getID("speedNum").innerHTML = speed;
+			getID("h5video").src = _playUrl;			
+			if(isAndroid){
+				getID("speeds").style.opacity =0;
+			}else{
+				getID("speeds").style.opacity = 1;
+				getID("speedNum").innerHTML = speed;
+			}
 			getID("fullscreens").style.opacity = (isAndroid)?1:0;
 			document.title = _father;
 			//监听播放结束
@@ -749,15 +753,15 @@
 		}
 	}
 		
-	function init() {
+	function init() {        
+		clientWidth = document.body.scrollWidth;
+		clientHeight = window.innerHeight;//screen.availHeight * window.devicePixelRatio;   //手机的物理分辨率高（乘以像素比）
+		getID('bodys').style.width = clientWidth + "px"; //全局宽
+
 		stbInfo();
 		scrollDisable();		//禁止页面滚动
 		showSplash();			//显示启动图片	
         bindEvent();			//绑定滑动事件
-        
-		clientWidth = document.body.scrollWidth;
-		clientHeight = window.innerHeight;
-		getID('bodys').style.width = clientWidth + "px"; //全局宽
 
 		showTab1();				//显示一级分类
 		showHomeLoop();
@@ -1212,7 +1216,7 @@
 	<!-- 登陆 注册 -->
 	<div id="login" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:10;display:none;">
 		<div class="login-top" style="width:80%;background-color:white;border:gray 1px solid;"></div>
-		<div id="loginType" class="login" style="top:30%;left:35%;width:45%;background:linear-gradient(to right,#6633cc,#000066);border-radius:5em;-webkit-transition:1s;"></div>
+		<div id="loginType" class="login" style="top:30.5%;left:35%;width:45%;background:linear-gradient(to right,#6633cc,#000066);border-radius:5em;-webkit-transition:1s;"></div>
 		<div class="login-top" style="left:10%;color:black;" onclick="changeLoginType();" id="login-login"><b>登 陆<br>Log in</b></div>
 		<div class="login-top" style="left:45%;color:white;" onclick="changeLoginType();" id="login-register"><b>注 册<br>Register</b></div>
 
@@ -1277,6 +1281,7 @@
 
 </body></html>
 
+<script type=text/javascript src="js/global.js?v=14" charset=UTF-8></script>
 <script type=text/javascript src="js/initS.js?v=6" charset=UTF-8></script>
 <script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>

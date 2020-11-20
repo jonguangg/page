@@ -30,7 +30,7 @@
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
 		}	
-		setcookie("ip", $realip, time()+24*3600); //cookie存24小时
+		setcookie("ip", $realip, time()+2*3600); //cookie存2小时
 		return $realip;
 	}
 
@@ -39,7 +39,7 @@
 		$city = file_get_contents($tpyApi);
 		$city = iconv('GBK', 'UTF-8', $city);
 		$city = trim($city);
-		setcookie("city",$city,time()+24*3600,"/");//cookie存24小时
+		setcookie("city",$city,time()+2*3600,"/");//cookie存2小时
 		return $city;
 	}
 	$ip = ($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
@@ -95,7 +95,7 @@
 	<!-- iPhone XsMax	Portrait -->
 	<link rel="apple-touch-startup-image" href="./splash/1242×2688.png" media="(device-width: 736px) and (device-height: 1344px)" >
 
-	<link rel="stylesheet" type="text/css" href="styleXu.css?v=5" >
+	<link rel="stylesheet" type="text/css" href="styleXu.css?v=6" >
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
 </head>
@@ -232,7 +232,7 @@
 	var isNext = true;		//是否可以播放下一集
 	function playVod(_id,_playUrl,_father,_poster,_episodePos,_episodes) {
 	//	var playUrl = _playUrl.replace("128.1.160.114","mixtvapi.mixtvapp.com");
-		if (typeof(window.androidJs) != "undefined") {
+		if (typeof(window.androidJs) != "undefined") {//apk
 			window.androidJs.JsClosePlayer();
 			window.androidJs.JsSetPageArea("vod");
 			if( episodePos==_episodePos ){	//播上次那集，就从上次位置继续播，否则换集了，就从头播
@@ -244,9 +244,13 @@
 			getID("speeds").style.opacity = 0;
 			getID("fullscreens").style.opacity = 0;
 		}else{
-			getID("h5video").src = _playUrl; 
-			getID("speeds").style.opacity = 1;
-			getID("speedNum").innerHTML = speed;
+			getID("h5video").src = _playUrl;
+			if(isAndroid){
+				getID("speeds").style.opacity =0;
+			}else{
+				getID("speeds").style.opacity = 1;
+				getID("speedNum").innerHTML = speed;
+			}
 			getID("fullscreens").style.opacity = (isAndroid)?1:0;
 			document.title = _father;
 			//监听播放结束
@@ -751,17 +755,14 @@
 	}
 	
 	function init() {
+		clientWidth = document.body.scrollWidth;
+		clientHeight = window.innerHeight;
+		getID('bodys').style.width = clientWidth + "px"; //全局宽
+
 		stbInfo();
 		scrollDisable();		//禁止页面滚动
 		showSplash();			//显示启动图片	
 		bindEvent();			//绑定滑动事件
-
-		clientWidth = document.body.scrollWidth;
-		clientHeight = window.innerHeight;
-
-		getID('bodys').style.width = clientWidth + "px"; //全局宽
-	//	getID("detailPoster").style.height = clientWidth*9/16+"px";
-	//	getID("channels").style.height = (clientHeight-clientWidth*9/16-90)+"px";
 
 		showTab1();				//显示一级分类
 		showHomeLoop();
@@ -1216,7 +1217,7 @@
 	<!-- 登陆 注册 -->
 	<div id="login" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:10;display:none;">
 		<div class="login-top" style="width:80%;background-color:white;border:gray 1px solid;"></div>
-		<div id="loginType" class="login" style="top:30%;left:35%;width:45%;background:linear-gradient(to right,#6633cc,#000066);border-radius:5em;-webkit-transition:1s;"></div>
+		<div id="loginType" class="login" style="top:30.5%;left:35%;width:45%;background:linear-gradient(to right,#6633cc,#000066);border-radius:5em;-webkit-transition:1s;"></div>
 		<div class="login-top" style="left:10%;color:black;" onclick="changeLoginType();" id="login-login"><b>登 陆<br>Log in</b></div>
 		<div class="login-top" style="left:45%;color:white;" onclick="changeLoginType();" id="login-register"><b>注 册<br>Register</b></div>
 
@@ -1281,6 +1282,7 @@
 
 </body></html>
 
+<script type=text/javascript src="js/global.js?v=14" charset=UTF-8></script>
 <script type=text/javascript src="js/initS.js?v=2" charset=UTF-8></script>
 <script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js?v=2" charset=UTF-8></script>
