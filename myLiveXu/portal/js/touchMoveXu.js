@@ -97,7 +97,7 @@ function touchEndFunc(evt){
 				moveChangeTag(-1);
 			}
 		}else if( indexArea=="detail" ){//详情页左、右、下滑返回首页	alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
-			if( startY < (videoHeight-200) && ( moveX < -100 || moveX > 100 || moveY < -100 || moveY > 100 ) ){
+			if( startY < (videoHeight-200) && ( moveX < -200 || moveX > 200 || moveY < -200 || moveY > 200 ) ){
 				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
@@ -113,7 +113,7 @@ function touchEndFunc(evt){
 					setTimeout(function(){androidBack();},300);
 				}
 			}
-			if( moveY > 500 ){	//详情页下滑返回
+			if( moveY > 700 ){	//详情页下滑返回
 				updateCurrentTime();
 				getID("vod").style.display = "block";
 				getID("detail").style.left = "-2000px";
