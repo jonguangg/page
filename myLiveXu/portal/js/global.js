@@ -1,7 +1,3 @@
-function getID(id){
-	return document.getElementById(id);
-}
-
 var SiHua_Event = {
 	mapping: function(__event){
 		var	keycode = __event.which|| __event.keyCode;
@@ -322,64 +318,4 @@ function showTime(){
 //    getID("week").innerHTML = showWeek(today);  
 	getID("localtime").innerHTML = showLocale(today);  
 	st = window.setTimeout("showTime()", 60000);   
-}
-
-//Cookie
-function setCookie(name, value,time){
-	var msec = getMsec(time); //获取毫秒
-    var exp = new Date(); 
-    exp.setTime(exp.getTime() + msec*1);//小时*分钟*秒*毫秒
-    window.document.cookie = name + "=" + escape (value) + "; expires=" + exp.toGMTString();
-}
-
-function getMsec(DateStr){//将字符串时间转换为毫秒,1秒=1000毫秒
-    var timeNum = DateStr.substring(0,DateStr.length-1)*1; //时间数量
-    var timeStr = DateStr.substring(DateStr.length-1,DateStr.length); //时间单位后缀，如h表示小时
-    
-	if (timeStr=="s"){ //20s表示20秒
-         return timeNum*1000;
-    }else if (timeStr=="m"){//10m表示10分钟
-        return timeNum*60*1000;
-    }else if (timeStr=="h"){//12h表示12小时
-        return timeNum*60*60*1000;
-    } else if (timeStr=="d"){//30d表示30天
-        return timeNum*24*60*60*1000; 
-    }
-}
-
-function getCookie(sName){
-  var aCookie = document.cookie.split("; ");
-  for (var i=0; i < aCookie.length; i++)
-  {
-    var aCrumb = aCookie[i].split("=");
-    if (sName == aCrumb[0]){
-      return unescape(aCrumb[1]);
-    }
-  }
-  return null;
-}
-
-function delCookie(name){ 
-  var exp = new Date(); 
-  exp.setTime(exp.getTime() -1000);
-  window.document.cookie = name + "= null; expires=" + exp.toGMTString();
-}
-
-window.alert = function(name){
-	var iframe = document.createElement("IFRAME");
-	iframe.style.display="none";
-	document.documentElement.appendChild(iframe);
-	window.frames[0].window.alert(name);
-	iframe.parentNode.removeChild(iframe);
-}
-
-window.confirm = function (message) {
-	var iframe = document.createElement("IFRAME");
-	iframe.style.display = "none";
-	iframe.setAttribute("src", 'data:text/plain,');
-	document.documentElement.appendChild(iframe);
-	var alertFrame = window.frames[0];
-	var result = alertFrame.window.confirm(message);
-	iframe.parentNode.removeChild(iframe);
-	return result;
 }

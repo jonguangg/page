@@ -47,6 +47,17 @@ window.alert = function(name){
 	iframe.parentNode.removeChild(iframe);
 }
 
+window.confirm = function (message) {
+	var iframe = document.createElement("IFRAME");
+	iframe.style.display = "none";
+	iframe.setAttribute("src", 'data:text/plain,');
+	document.documentElement.appendChild(iframe);
+	var alertFrame = window.frames[0];
+	var result = alertFrame.window.confirm(message);
+	iframe.parentNode.removeChild(iframe);
+	return result;
+}
+
 var clientWidth = 1080;
 var videoHeight = clientWidth*9/16;
 var clientHeight = 1920;

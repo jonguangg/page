@@ -91,7 +91,7 @@
 				getID("defaultSpeed").innerHTML = speed;
 			}else{
 				getID("login").style.display = "block";
-				getID("login").style.height = clientHeight+"px";
+				getID("login").style.height = screen.availHeight * window.devicePixelRatio+"px";
 				getID('emailInput').placeholder = (language=="c")?"請輸入已註冊的郵箱":"Email";
 				getID('passwordInput').placeholder = (language=="c")?"請輸入密碼":"Password";
 			}
@@ -103,7 +103,7 @@
 			getID("changePasswordDiv").style.display = "none";
 		}
 		getID('me').style.display = 'block';
-		getID("me").style.height = (clientHeight +0)+ "px";
+		getID("me").style.height = screen.availHeight * window.devicePixelRatio+ "px";
 		indexArea = "me";
 
 		getID("meTitle").innerHTML = (language=="c")?"<span style='font-size:70px;'>個人中心</span>":"<span style='font-size:90px;'>Personal center</span>";
@@ -225,7 +225,7 @@
 	function logout(){
 		setCookie("username","null","2s");
 		getID("login").style.display = "block";
-		getID("login").style.height = clientHeight+"px";
+		getID("login").style.height = screen.availHeight * window.devicePixelRatio+"px";
 		getID('emailInput').placeholder = (language=="c")?"請輸入已註冊的郵箱":"Email";
 		getID('passwordInput').placeholder = (language=="c")?"請輸入密碼":"Password";
 		changeLoginType();
@@ -252,7 +252,7 @@
 		loginType = 4;
 		userId = (getCookie("userId"))?getCookie("userId"):userId;
 		getID("changePassword").style.display = "block";
-		getID("changePassword").style.height = clientHeight+"px";	
+		getID("changePassword").style.height = screen.availHeight * window.devicePixelRatio+"px";	
 		getID("changePasswordTitle").innerHTML = (language=="c")?"修改密碼":"Change password";
 		getID("changePasswordCancle").innerHTML = (language=="c")?"取&emsp;消":"Cancle";
 		getID("changePasswordSubmit").innerHTML = (language=="c")?"提&emsp;交":"Submit";
@@ -282,7 +282,7 @@
 		scrollTo(0, 0);
 		getID("me").style.display = "none";
 		getID('cardKey').style.display = 'block';
-		getID("cardKey").style.height = clientHeight + "px"; //注册VIP卡页面的高
+		getID("cardKey").style.height = screen.availHeight * window.devicePixelRatio + "px"; //注册VIP卡页面的高
 		getID("exp").innerHTML = "Exp. " + expireTime;
 		getID("msg").style.background = ""; //多次进入个人中心，这里可能会显示注册时的信息
 		getID("msg").innerHTML = ""; //所以先清空

@@ -65,7 +65,7 @@ function splashJump(){
 	getID('splash').style.display='none';
 	if( !getCookie("language")){
 		getID("language").style.display = "block";
-		getID("language").style.height = clientHeight+"px";
+		getID("language").style.height = screen.availHeight * window.devicePixelRatio+"px";
 	}
 	if( typeof(window.androidJs)=="undefined" && (!getCookie("username") || getCookie("username").length<1) ){
 		showMe();
