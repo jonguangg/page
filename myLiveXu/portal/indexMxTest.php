@@ -662,11 +662,13 @@
 		scrollTo(0, 0); 
 		indexArea = "vod";
 		getID("vodList"+tab1).style.display = "none";			//	隐藏当前栏目 海报列表
-		getID("nav" + tab1).style.color = "white"; 
+		getID("nav" + tab1).style.color = "white";
+		getID("nav" + tab1).style.fontSize = "40px"; 
 	//	getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"0.png)"; 
 	//	navPos = _tab1;	//注释掉看看有没有影响，后来统一改为tab1了
 		tab1 = _tab1;
 		getID("nav" + tab1).style.color = "f7a333";
+		getID("nav" + tab1).style.fontSize = "50px"; 
 	//	getID("nav" + tab1).style.backgroundImage = "url(img/"+tab1Arr["data"][tab1].channelName+"1.png)"; 
 		getID("vodTab1").scrollLeft = ( (tab1-2)>0 )?(tab1-2)*200:0;
 		getID("searchHistoryCollect").style.display = "none";	//	隐藏搜索 历史 收藏 海报列表
@@ -798,7 +800,7 @@
 		<div class="homeTop" style="top:180px;left:0px;width:100%;">
 			<ul id="vodTab1" class="tab-head">
 				<!--li class="tab-tab1-item" id="nav-1" onClick="getID('liveVideo').muted=false;showLiveList(0);" style="margin-left:15px;">Live<br>直播</li-->
-				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;">精选</li>
+				<li class="tab-tab1-item" id="nav0" onClick="clickTab1(0);" style="margin-left:15px;font-size:50px;">精选</li>
 			</ul>
 		<div style="position:fixed;top:300px;left:5%;width:90%;height:0px;background-color:#333333;"></div>
 		</div>
