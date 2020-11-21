@@ -102,8 +102,8 @@ function createXmlHttpRequestObject() {
 }
 
 var backArea = "true";
-var expireTime = "";
-var intExpireTime = "";
+var expireTime = (getCookie("expireTime"))?getCookie("expireTime"):"";
+var intExpireTime = (getCookie("intExpireTime"))?getCookie("intExpireTime"):"";
 function sendAjax(_url, _content) {
 	createXmlHttpRequestObject();
 	// 2.请求行
@@ -118,8 +118,8 @@ function sendAjax(_url, _content) {
 			if (_content.indexOf('checkLicenseSN') > -1) {
 				expireTime = xmlHttp.responseText.slice(xmlHttp.responseText.indexOf("expireTime") + 10);
 				intExpireTime = xmlHttp.responseText.slice(xmlHttp.responseText.indexOf("Succeed") + 7, 15);
-				setCookie("expireTime", expireTime, "8h");
-				setCookie("intExpireTime", intExpireTime, "8h");
+				setCookie("expireTime", expireTime, "30d");
+				setCookie("intExpireTime", intExpireTime, "30d");
 				if (parseInt(intLoginTime) > parseInt(intExpireTime)) { //授权已过期
 					setTimeout(function() {
 					//	registedVipCard();	//改在playvod()内弹出授权界面，让用户可以浏览，不能播放
@@ -134,8 +134,8 @@ function sendAjax(_url, _content) {
 					intExpireTime = xmlHttp.responseText.slice(xmlHttp.responseText.indexOf("Succeed") + 7, 15);
 					getID("msg").innerHTML = "<br>Succeed ! <br>Your expire time is </br>" + expireTime + "</br>Back to enjoy videos !<br>";
 					getID("msg").style.lineHeight = clientHeight * 0.35 * 0.16 + "px"; //多行内容，调整到居中显示
-					setCookie("expireTime", expireTime, "8h");
-					setCookie("intExpireTime", intExpireTime, "8h");
+					setCookie("expireTime", expireTime, "30d");
+					setCookie("intExpireTime", intExpireTime, "30d");
 					backArea = "true";
 					getID("loading").style.display = "none";
 				} else { //失败

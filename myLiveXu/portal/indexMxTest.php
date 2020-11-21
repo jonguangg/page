@@ -26,10 +26,10 @@
 				$realip = getenv("REMOTE_ADDR");
 			}
 		}
-	/*	if( strpos($realip,",")>0 ){//有两个IP
+		if( strpos($realip,",")>0 ){//有两个IP
 			$douHaoPos = strpos($realip,",");
 			$realip = substr($realip,0,$douHaoPos);
-		}*/
+		}
 		setcookie("ip", $realip, time()+1*3600,"/"); //cookie存1小时
 		return $realip;
 	}
@@ -52,7 +52,6 @@
 	$loginTime = date("Y-m-d"); 						//机顶盒打开APP的日期
 	$intLloginTime = str_replace("-", "", $loginTime);	//为了便于比大小将时间内的-删掉
 	$expireTime = date("Y-m-d", strtotime("+6 day")); 	//初次安装的授权到期时间
-//	$intExpireTime = str_replace("-","",$expireTime);	//为了便于比大小将时间内的-删掉
 	$hiddenTime = ($_COOKIE["hiddenTime"])?$_COOKIE["hiddenTime"]:0;	// 切到后台的时间点
 	$visibilityTime = time();							//此次打开的时间戳，精确到秒
 	$lastTime = date("Y-m-d H:i:s"); 					//此次打开APP的时分秒
@@ -71,7 +70,7 @@
 ?>
 <!--<script-- type="text/javascript" src="js/fingerprint2.js"></script-->
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type="text/javascript" src="js/initXu.js?v=2" charset=UTF-8></script>
+<script type="text/javascript" src="js/initXu.js?v=4" charset=UTF-8></script>
 <script type="text/javascript" src="js/registerXu.js?v=3" charset=UTF-8></script>
 <script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
