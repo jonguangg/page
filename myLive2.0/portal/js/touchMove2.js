@@ -41,10 +41,10 @@ function touchMoveFunc(evt){
 	//	var text = 'TouchMove事件触发:<br>' +'endX:'+endX + '<br>' +'endY:'+ endY+'<br>moveX:'+moveX+'<br>moveY:'+moveY;
 	//	document.getElementById("test").style.display = "block";
 	//	document.getElementById("test").innerHTML = text;
-		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850 && navPos<tagArr[1].length && (indexArea=="home" || indexArea == "vod" || indexArea=="live") ){	//只能向左移
+		if(moveX<0 && Math.abs(moveX)>Math.abs(moveY) && startY>850  && (indexArea=="home" || indexArea == "vod" || indexArea=="live") && navPos<tagArr[1].length ){	//只能向左移
 			if(navPos==-1){
 				document.getElementById("channel").style.left = moveX+"px";
-			}else{
+			}else if(navPos<6){
 				document.getElementById("vodList"+navPos).style.left = moveX+"px";
 			}			
 		}
@@ -65,8 +65,6 @@ function touchEndFunc(evt){
 		var moveY = endY-startY;
 		var text = 'TouchEnd事件触发:<br>' +'startX:'+startX+'<br>'+'startY:'+startY;
 		text += '<br>'+'moveX:'+moveX+'<br>'+'moveY:'+moveY+'<br>scrollTop:'+document.body.scrollTop;
-	//	document.getElementById("test").style.display = "block";
-	//	document.getElementById("test").innerHTML = text;
 		if( navPos>-1 ){	//非直播
 			if( indexArea=="home" || indexArea == "vod" || indexArea=="live" ){		//只在首页和直播时滑动
 				if( moveX < -500 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//左滑
@@ -90,7 +88,7 @@ function touchEndFunc(evt){
 			}
 			if( indexArea=="zhiBo" ){
 				if(zhiBoTemp!=zhiBoPos){
-			//		getID("zhiBo"+zhiBoTemp ).pause();
+					getID("zhiBo"+zhiBoTemp ).pause();
 				}
 				changeZhiBo();
 			}
@@ -101,21 +99,19 @@ function touchEndFunc(evt){
 				if(zhiBoTemp!=zhiBoPos){
 			//		getID("zhiBo"+zhiBoTemp ).pause();
 				}
-				changeZhiBo();
+			//	changeZhiBo();
 			}
 		}
 		
 		if( moveX > -500 ){	//移动距离不满足切换类型时，向右返回当前页面
 			if(navPos==-1){
 				document.getElementById("channel").style.left = "0px";	
-			}else{
+			}else if(navPos<6){
 				document.getElementById("vodList"+navPos).style.left = "0px";
 			}			
 		}
 
-
-	}
-	catch(e){
+	}catch(e){
 		alert('touchEndFunc：' + e.message);
 	}
 }

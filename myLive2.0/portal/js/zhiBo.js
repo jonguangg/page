@@ -35,5 +35,5 @@
 	function playZhiBo(_playUrl){
 	//	alert(_playUrl);
 		isZhiBo = true;
-		window.androidJs.JsPlayZhiBo(_playUrl);
+		window.androidJs.JsPlayZhiBo(_playUrl,screen.availHeight*window.devicePixelRatio);
 	}

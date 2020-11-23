@@ -100,8 +100,8 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		}
 
 		var imgHeight = "280px"; //图片高度，会在init内根据屏幕宽按16:9重新计算
-		var indexArea = "zhiBo";
-		var navPos = 6; //当前分类 0为home 1为movie -1为直播
+		var indexArea = "home";
+		var navPos = 0; //当前分类 0为home 1为movie -1为直播
 
 		function androidBack(){	//供返回键调用
 			window.androidJs.JsClosePlayer();
@@ -274,12 +274,12 @@ if (mysqli_num_rows($sql) > 0) { //如果数据库中有当前机顶盒
 		var clientHeight = 0 ;
 		function init() {
 			stbInfo();			
-		//	scrollDisable();		//禁止页面滚动	
+			scrollDisable();		//禁止页面滚动	
 			bindEvent();		//绑定滑动事件
 			clientWidth = document.body.scrollWidth;
 			clientHeight = window.innerHeight;			
 			getID('bodys').style.width = clientWidth + "px"; //全局宽
-			showSplash();		//显示第二个启动图片
+		//	showSplash();		//显示第二个启动图片
 			showTabList1(6);
 		}
 	</script>
