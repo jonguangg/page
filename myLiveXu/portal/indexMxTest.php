@@ -561,7 +561,15 @@
 						var tempDuration = (json.list[i].videoType==2)?"时长："+json.list[i].videoLength+"分钟":"状态:"+json.list[i].videoState;
 						getID("zoneContent").innerHTML += '<div style="margin-bottom:50px;width:100%;height:360px;float:left;" onclick=indexArea="zone";getID("zone").style.display="none";getID("h5video").muted=false;showDetail("'+json.list[i].videoId+'")><div id=zoneContentImg'+i+' class="zoneImg" style="background:url('+json.list[i].imgUrl+');"></div><div id=zoneContentName'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].videoName+'</div><div id=zoneContentRegion'+i+' class="zoneText">'+json.list[i].showRegion+'</div><div id=zoneContentType'+i+' class="zoneText">'+json.list[i].videoTopic+'</div><div id=zoneContentDuration'+i+' class="zoneText">'+tempDuration+'</div></div>';
 					}
-				}				
+				}
+				if( isGuideZone==1 ){
+					scrollDisable();
+					getID("guide").style.display = "block";
+					getID("redArrow").style.display = "block";
+					getID("redArrow").style.left = clientWidth*0.5+"px";
+					getID("zoneLogo").style.border = "5px red solid";
+					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>离开当前页面<br>&ensp;":"<br>Leave current page<br>&ensp;";
+				}
 			},
 			error: function() {
 			//	alert("something error");
@@ -776,6 +784,7 @@
 		setTimeout(function(){moveHomeLoop(1);preLoadImages();},10000);
 		showGuide();
 		getID("loading").style.display = "none";
+		setCookie("isGuideZone",1,"1d");
 	}	
 </script>
 
@@ -984,7 +993,7 @@
 	<!-- 专栏 -->
 	<div id="zone" style="position: absolute; left:0px;top:50px;width:100%;background-color:black;display:none;z-index:99;-webkit-transition:1s;">
 		<div id="zoneBg" style="position: fixed;left:0px;top:0px;width:100%;height:1920px;background:url(img/null.png); background-size:100% 100%;"></div>
-		<div style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
+		<div id="zoneLogo" style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
 		<div id="zoneName" style="position:relative;top:0px;width:90%;max-height:140px;line-height:70px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
 		<div id="zoneRemark" style="position:relative;top:20px;width:90%;max-height:250px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;overflow:auto;" onclick="moreZoneRemark();"></div>
 		<div id="zoneContent" style="position:relative;top:50px;width:100%;overflow:scroll;font-size:60px;color:white;">

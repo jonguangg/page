@@ -429,5 +429,16 @@ function showGuide(){
 		isGuideMe = 0;
 		setCookie("isGuideMe",0,"1000d");
 		scrollEnable();
+	}else if( indexArea=="zone"){
+		if( guideIndex==1 ){
+			getID("redArrow").style.display = "none";
+			getID("guideContent").innerHTML = (language=="c")?"<br>点击专题简介<br>展开或收缩全部简介<br>&ensp;":"<br>Click the introduction of the zone<br>show or shrinkage the all<br>&ensp;";
+		}else{
+			scrollEnable();
+			isGuideZone = 0;
+			setCookie("isGuideZone",0,"1000d");
+			getID("guide").style.display = "none";
+			getID("zoneLogo").style.border = "0px red solid";
+		}
 	}
 }
