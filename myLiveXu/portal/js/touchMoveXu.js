@@ -138,7 +138,7 @@ function touchEndFunc(evt){
 					getID("me").style.opacity = 1;	
 				},1000);
 			}
-		}else if( indexArea=="zone" && Math.abs(moveX) > Math.abs(moveY) && Math.abs(moveX) > 300 ){//专题页左右划
+		}else if( indexArea=="zone" && isGuideZone==0 && Math.abs(moveX) > Math.abs(moveY) && Math.abs(moveX) > 300 ){//专题页左右划
 			androidBack();
 		}else if( indexArea=="live" ){	//直播
 			if( startY < (videoHeight-100) ){	//在播放窗口滑动
