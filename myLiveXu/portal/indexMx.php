@@ -570,8 +570,8 @@
 					getID("redArrow").style.display = "block";
 					getID("redArrow").style.transform = "rotate(0deg)";
 					getID("redArrow").style.left = clientWidth*0.48+"px";
-				//	getID("zoneLogo").style.border = "5px red solid";
-					getID("zoneLogo").style.animation = "myBorder 3s infinite alternate";
+					getID("zoneLogo").style.border = "5px red solid";
+					getID("zoneLogo").style.webkitAnimation = "myBorder 3s infinite alternate";
 					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>在任意位置左右滑<br>均可离开当前页面<br>&ensp;":"<br>Click the arrow pointing<br>Slide left or right<br>at any area<br>Can also leave current page<br>&ensp;";
 				}		
 			},
@@ -794,6 +794,10 @@
 		showHomeBottomZone();
 		scrollTo(0,0)				
 		setTimeout(function(){moveHomeLoop(1);preLoadImages();},10000);
+		isGuideMe =1;
+		isGuideZone =1;
+		isGuideHome =1;
+		isGuideDetail =1;
 		showGuide();
 		getID("loading").style.display = "none";
 	}	
@@ -1310,7 +1314,7 @@
 </body></html>
 
 <script type=text/javascript src="js/global.js?v=14" charset=UTF-8></script>
-<script type=text/javascript src="js/initS.js?v=4" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=5" charset=UTF-8></script>
 <script type=text/javascript src="js/touchMoveXu.js?v=4" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js?v=4" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>
