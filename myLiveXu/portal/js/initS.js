@@ -407,17 +407,23 @@ function showGuide(){
 				isGuideHome = 0;
 				setCookie("isGuideHome",0,"1000d");
 				scrollEnable();
-				isGuideMe = 1;
+			//	isGuideMe = 1;
+				guideIndex = 0;
 			}
 		}else{
 			getID("guide").style.display = "none";
 			scrollEnable();
 		}
 	}else if( indexArea=="detail" ){
-		getID("guide").style.display = "none";
-		isGuideDetail = 0;
-		setCookie("isGuideDetail",0,"1000d");
-		scrollEnable();
+		if( guideIndex==1){
+			getID("guideContent").innerHTML = (language=="c")?"<br>点击剧情内容<br>显示或收藏全部剧情<br>&ensp;":"<br>Click the plot<br>show or shrinkage the all plot<br>&ensp;";
+		}else{
+			getID("guide").style.display = "none";
+			setCookie("isGuideDetail",0,"1000d");
+			isGuideDetail = 0;
+			scrollEnable();
+			guideIndex = 0;
+		}
 	}else if( indexArea=="me" ){
 		getID("guide").style.display = "none";
 		isGuideMe = 0;
