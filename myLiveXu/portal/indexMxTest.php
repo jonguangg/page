@@ -568,7 +568,7 @@
 					getID("redArrow").style.display = "block";
 					getID("redArrow").style.left = clientWidth*0.5+"px";
 					getID("zoneLogo").style.border = "5px red solid";
-					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>离开当前页面<br>&ensp;":"<br>Leave current page<br>&ensp;";
+					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>在任意位置左右滑<br>均可离开当前页面<br>&ensp;":"<br>Click the arrow pointing<br>Slide left or right<br>at any area<br>Can also leave current page<br>&ensp;";
 				}
 			},
 			error: function() {
@@ -611,7 +611,15 @@
 						var tempDuration = (json.list[i].videoType==2)?"时长："+json.list[i].videoLength+"分钟":"状态:"+json.list[i].videoState;
 						getID("zoneContentC").innerHTML += '<div style="margin-bottom:50px;width:100%;height:360px;float:left;" onclick=getID("zoneC").style.display="none";getID("h5video").muted=false;showDetail("'+json.list[i].videoId+'")><div id=zoneContentImgC'+i+' class="zoneImg" style="background:url('+json.list[i].imgUrl+');"></div><div id=zoneContentNameC'+i+' class="zoneText" style="color:#ff9933">'+json.list[i].videoName+'</div><div id=zoneContentRegionC'+i+' class="zoneText">'+json.list[i].showRegion+'</div><div id=zoneContentTypeC'+i+' class="zoneText">'+json.list[i].videoTopic+'</div><div id=zoneContentDurationC'+i+' class="zoneText">'+tempDuration+'</div></div>';
 					}
-				}				
+				}		/*		
+				if( isGuideZone==1 ){
+					scrollDisable();
+					getID("guide").style.display = "block";
+					getID("redArrow").style.display = "block";
+					getID("redArrow").style.left = clientWidth*0.5+"px";
+					getID("zoneLogo").style.border = "5px red solid";
+					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>在任意位置左右滑<br>均可离开当前页面<br>&ensp;":"<br>Leave current page<br>&ensp;";
+				}			*/
 			},
 			error: function() {
 			//	alert("something error");
