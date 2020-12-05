@@ -383,19 +383,19 @@ function showGuide(){
 			getID("guide").style.display = "block";
 			getID("redArrow").style.display = "block";
 			if( guideIndex==0 ){
-				getID("redArrow").style.left = "180px";
+				getID("redArrow").style.left = "190px";
 				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>进入个人中心<br>&ensp;":"<br>Enter personal center<br>&ensp;";
 				getID("leftUpLogo").style.border = "5px red solid";
 				getID("leftUpLogo").style.webkitAnimation = "myBorder 3s infinite alternate";
 			}else if( guideIndex==1 ){
-				getID("redArrow").style.left = "740px";
+				getID("redArrow").style.left = "755px";
 				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>搜索影片<br>&ensp;":"<br>Search movies<br>&ensp;";
 				getID("leftUpLogo").style.border = "0px red solid";
 				getID("leftUpLogo").style.webkitAnimation = "";
 				getID("searchImg").style.border = "5px red solid";
 				getID("searchImg").style.webkitAnimation = "myBorder 3s infinite alternate";
 			}else if( guideIndex==2){
-				getID("redArrow").style.left = "870px";
+				getID("redArrow").style.left = "885px";
 				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>显示播放历史<br>&ensp;":"<br>Enter history page<br>&ensp;";
 				getID("searchImg").style.border = "0px red solid";
 				getID("searchImg").style.webkitAnimation = "";
@@ -434,7 +434,7 @@ function showGuide(){
 		getID("guide").style.display = "none";
 		isGuideMe = 0;
 		setCookie("isGuideMe",0,"1000d");
-		scrollEnable();
+	//	scrollEnable();
 	}else if( indexArea=="zone"){
 		getID("zoneLogo").style.border = "0px red solid";		
 		getID("zoneLogo").style.webkitAnimation = "";
