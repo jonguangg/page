@@ -228,7 +228,7 @@ function scrollEnable() {
 	});
 }
 
-var preLoadImageArr = ["search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif","delete.png","mixtv.png","loginBg.jpg","login_register.png","login_login.png","ic_launcher.png","shareIOS.png"];
+var preLoadImageArr = ["search1.png","history1.png","collect1.png","vipCard.png","promptBg.png","loading.gif","loading2.gif","delete.png","mixtv.png","loginBg.jpg","login_register.png","login_login.png","ic_launcher.png","shareIOS.png","redArrow.png"];
 
 function preLoadImages(){
 	for(i=0;i<preLoadImageArr.length;i++){

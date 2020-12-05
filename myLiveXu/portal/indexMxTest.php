@@ -40,7 +40,7 @@
 		$city = iconv('GBK', 'UTF-8', $city);
 		$city = trim($city);
 		setcookie("city",$city,time()+1*3600,"/");//cookie存1小时
-		echo '<script>alert("City_'.$city.'")</script>';	
+	//	echo '<script>alert("City_'.$city.'")</script>';	
 		return $city;
 	}
 	$ip = ($_COOKIE["ip"])?$_COOKIE["ip"]:getIP();
@@ -71,7 +71,7 @@
 <!--<script-- type="text/javascript" src="js/fingerprint2.js"></script-->
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type="text/javascript" src="js/initXu.js?v=4" charset=UTF-8></script>
-<script type="text/javascript" src="js/registerXu.js?v=3" charset=UTF-8></script>
+<script type="text/javascript" src="js/registerXu.js?v=4" charset=UTF-8></script>
 <script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -96,7 +96,7 @@
 	<!-- iPhone XsMax	Portrait -->
 	<link rel="apple-touch-startup-image" href="./splash/1242×2688.png" media="(device-width: 736px) and (device-height: 1344px)" >
 
-	<link rel="stylesheet" type="text/css" href="styleXu.css?v=5" >
+	<link rel="stylesheet" type="text/css" href="styleXu.css?v=6" >
 	<link rel="stylesheet" type="text/css" href="circle/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="circle/css/normalize.css" />
 </head>
@@ -443,7 +443,7 @@
 	}
 
 	function showHomeZoneTop(){	//显示首页专栏入口
-		var zoneLogoHeight = clientWidth*0.2;
+		var zoneLogoHeight = clientWidth*0.19;
 		for(i=0;i<homeZoneArr.length;i++){
 			getID('homeNavLive').innerHTML += '<div class="tab-homeLive-item" id=homeLiveGroup'+i+' onClick=showZoneList("'+homeZoneArr[i].columnId+'"); style="height:'+zoneLogoHeight+';background:url('+homeZoneArr[i].imgUrl+') no-repeat center"><div class="tab-homeLive-groupName" style="top:'+(zoneLogoHeight-10)+'px;">'+homeZoneArr[i].title+'</div></div>';
 		}
@@ -753,8 +753,8 @@
 			splashJump();
 		}
 	}
-		
-	function init() {        
+	
+	function init() {
 		clientWidth = document.body.scrollWidth;
 		clientHeight = window.innerHeight;//screen.availHeight * window.devicePixelRatio;   //手机的物理分辨率高（乘以像素比）
 		getID('bodys').style.width = clientWidth + "px"; //全局宽
@@ -773,7 +773,9 @@
 		showHighScore();
 		showHomeBottomZone();
 		scrollTo(0,0);		
-		setTimeout(function(){moveHomeLoop(1);preLoadImages();getID("loading").style.display = "none";},10000);		
+		setTimeout(function(){moveHomeLoop(1);preLoadImages();},10000);
+		showGuide();
+		getID("loading").style.display = "none";
 	}	
 </script>
 
@@ -783,17 +785,17 @@
 	<div id="vod" style="position:absolute;left:0px;width:100%;opacity:0;-webkit-transition:1s;">
 		<!-- 顶部黑底 -->
 		<div style="position:fixed;width:100%;height:315px;background-color:#000;z-index:1;"></div>
-		<!-- 右上角头像 -->
-		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
+		<!-- 左上角头像 -->
+		<div id="leftUpLogo" style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!-- 搜索框 -->
 		<input type="text" id="searchInput" class="homeTop" style="left:315px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:720px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
+		<div id="searchImg" style="position:fixed;top:65px;left:720px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:850px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div id="historyImg" style="position:fixed;top:65px;left:850px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:100%;">
@@ -1257,7 +1259,7 @@
 	<div id="language" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
 		<div style="position: absolute;top:40%;width:100%;text-align:center;font-size:55px;">選擇語言<br>Language choice</div>
 		<div class="login-submit" style="top:55%;" onclick="changeLanguages('c')">中&emsp;文</div>
-		<div class="login-submit" style="top:60%;" onclick="alert('comming soon!')">English</div>
+		<div class="login-submit" style="top:60%;" onclick="changeLanguages('e')">English</div>
 		<div style="position:absolute;top:75%;width:100%;text-align:center;font-size:50px;color:gray;">可以在個人中心切換語言<br>Switch language in the personal center</div>
 	</div>
 
@@ -1273,7 +1275,13 @@
 		</div>
 	</div>
 
-	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9999;display:none;">loading</div>
+	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9999;display:block;">loading</div>
+
+	<div id="guide" style="position:absolute;top:0px;left:0px;width:100%;height:3000px;z-index:999;display: none;">
+		<div id="redArrow" class="line" style="top:0px;left:180px;width:50px;height:0px;background:url(img/redArrow.png);background-size:100% 100%;"></div>
+		<div id="guideContent" class="guide" style="top:900px;"></div>
+		<div id="guideOk" class="guide" style="top:1550px;" onclick="guideIndex++;showGuide();">朕 知 道 了</div>
+	</div>
 
 </div><!-- bodys尾 -->
 
@@ -1284,6 +1292,6 @@
 
 <script type=text/javascript src="js/global.js?v=14" charset=UTF-8></script>
 <script type=text/javascript src="js/initS.js?v=6" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMoveXu.js?v=3" charset=UTF-8></script>
 <script type=text/javascript src="js/detailXu.js?v=1" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>

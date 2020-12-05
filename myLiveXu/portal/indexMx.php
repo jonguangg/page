@@ -69,8 +69,8 @@
 	}
 ?>
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
-<script type="text/javascript" src="js/initXu.js?v=2" charset=UTF-8></script>
-<script type="text/javascript" src="js/registerXu.js?v=2" charset=UTF-8></script>
+<script type="text/javascript" src="js/initXu.js?v=4" charset=UTF-8></script>
+<script type="text/javascript" src="js/registerXu.js?v=3" charset=UTF-8></script>
 <script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -774,9 +774,10 @@
 		showHomeNew(0);
 		showHighScore();
 		showHomeBottomZone();
-		scrollTo(0,0)
-		preLoadImages();		
-		setTimeout(function(){moveHomeLoop(1);},10000);
+		scrollTo(0,0)				
+		setTimeout(function(){moveHomeLoop(1);preLoadImages();},10000);
+		showGuide();
+		getID("loading").style.display = "none";
 	}	
 </script>
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" >
@@ -786,16 +787,16 @@
 		<!-- 顶部黑底 -->
 		<div style="position:fixed;width:100%;height:315px;background-color:#000;z-index:1;"></div>
 		<!-- 右上角头像 -->
-		<div style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
+		<div id="leftUpLogo" style="position:fixed;top:50px;left:50px;width:200px;height:100px;line-height:110px; background:url(img/vip.png) no-repeat;background-size:33% 100% !important; background-color:#000;color:white;font-size:40px;padding-left:100px;z-index:1;" onclick="showMe();">Mix TV</div>
 
 		<!-- 搜索框 -->
 		<input type="text" id="searchInput" class="homeTop" style="left:315px;top:-90px;width:370px;height:80px;line-height:80px;font-size:45px;text-align:center;border-radius:50px;background:transparent;color:white;-webkit-transition:1s;outline:none;" autofocus="autofocus" onclick="getID('searchInput').focus();" />
 
 		<!-- 搜索图标 -->
-		<div style="position:fixed;top:65px;left:720px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
+		<div id="searchImg" style="position:fixed;top:65px;left:720px;width:80px;height:80px;z-index:1;" onclick="showSearchInput();getID('shcContent').innerHTML = '';"><img src="img/search0.png" /></div>
 
 		<!-- 历史图标 -->
-		<div style="position:fixed;top:65px;left:850px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
+		<div id="historyImg" style="position:fixed;top:65px;left:850px;width:80px;height:80px;z-index:1;" onclick="showSHC('history',1,'');getID('shcContent').innerHTML = '';"><img src="img/history0.png" /></div>
 
 		<!-- 首页一级分类导航 -->
 		<div class="homeTop" style="top:180px;left:0px;width:100%;">
@@ -1259,7 +1260,7 @@
 	<div id="language" style="position:fixed;left:0px;top:0px;width:100%;height:3000px;background:url(img/loginBg.jpg) no-repeat;background-size:100% 100%;z-index:11;display:none;">
 		<div style="position: absolute;top:40%;width:100%;text-align:center;font-size:55px;">選擇語言<br>Language choice</div>
 		<div class="login-submit" style="top:55%;" onclick="changeLanguages('c')">中&emsp;文</div>
-		<div class="login-submit" style="top:60%;" onclick="alert('comming soon!')">English</div>
+		<div class="login-submit" style="top:60%;" onclick="changeLanguages('e')">English</div>
 		<div style="position:absolute;top:75%;width:100%;text-align:center;font-size:50px;color:gray;">可以在個人中心切換語言<br>Switch language in the personal center</div>
 	</div>
 
@@ -1275,7 +1276,13 @@
 		</div>
 	</div>
 
-	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9999;display:none;">loading</div>
+	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9999;display:block;">loading</div>
+
+	<div id="guide" style="position:absolute;top:0px;left:0px;width:100%;height:3000px;z-index:999;display: none;">
+		<div id="redArrow" class="line" style="top:0px;left:180px;width:50px;height:0px;background:url(img/redArrow.png);background-size:100% 100%;"></div>
+		<div id="guideContent" class="guide" style="top:900px;"></div>
+		<div id="guideOk" class="guide" style="top:1550px;" onclick="guideIndex++;showGuide();">朕 知 道 了</div>
+	</div>
 
 </div><!-- bodys尾 -->
 
@@ -1285,7 +1292,7 @@
 </body></html>
 
 <script type=text/javascript src="js/global.js?v=14" charset=UTF-8></script>
-<script type=text/javascript src="js/initS.js?v=2" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js?v=1" charset=UTF-8></script>
-<script type=text/javascript src="js/detailXu.js?v=2" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=3" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMoveXu.js?v=2" charset=UTF-8></script>
+<script type=text/javascript src="js/detailXu.js?v=3" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>

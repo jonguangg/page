@@ -119,6 +119,15 @@
 		getID("defaultLanguage").innerHTML = (language=="c")?"中文":"English";
 		getID("mePassword").innerHTML = (language=="c")?"修改密碼":"Change password";
 		getID("meLogout").innerHTML = (language=="c")?"退出登陸":"Log out";
+		
+		if( isGuideMe==1 ){
+			scrollDisable();
+			getID("guide").style.display = "block";
+			getID("redArrow").style.display = "none";
+			getID("guideContent").innerHTML = (language=="c")?"<br>向任意方向滑动<br>均可离开当前页面<br>&ensp;":"Slide to any direction<br>in the screen<br>can also back";
+		}else{
+			getID("guide").style.display = "none";
+		}   
 	}
 
 	var loginType = 0;

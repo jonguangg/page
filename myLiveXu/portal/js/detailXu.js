@@ -58,7 +58,7 @@ function showDetail( _id ){
 			var videoType = json["data"].videoType;
 			father = json["data"].videoName;
 			poster = json["data"].imgUrl;      
-			getID("detailName").innerHTML = "<&ensp;"+father;
+			getID("detailName").innerHTML = father;//"<&ensp;"+father;
 			getID("detailDescription").innerHTML = json["data"].videoBriefing;	
 			
 			if( json["data"].showRegion==null ){
@@ -154,7 +154,16 @@ function showDetail( _id ){
                         var	name = '<marquee behavior="scroll" direction="left" width="100%" scrollamonut="100" scrolldelay="100">'+name +'</marquee>';
                     }
                     getID("guesses").innerHTML += '<div class="tab-guess-item" style="background: url('+poster+')" onClick=showDetail("'+id+'")><div class="tab-guessName">'+name+'</div></div>';
-                });  
+                }
+            );
+            if( isGuideDetail==1 ){
+                scrollDisable();
+                getID("guide").style.display = "block";
+                getID("redArrow").style.display = "none";
+                getID("guideContent").innerHTML = (language=="c")?"<br>在视频区域向任意方向滑动<br>在主演上方左右滑动<br>在视频下方向下滑动<br>均可离开当前页面<br>&ensp;":"Slide to any direction<br>in the video area<br>Slide left or right up the actor<br>Slide down in the video below<br>Can also back";
+            }else{
+                getID("guide").style.display = "none";
+            }
         },
         error: function() {
             //	alert("error");
@@ -197,7 +206,7 @@ function moreZoneRemarkC(){
 function changeCollect( ){
     getID("collectImg").src = ( isCollect==0 )?'img/collect1.png':'img/collect0.png'; 
     isCollect = ( isCollect==0 )?1:0;
-    getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</b>":"<b>已取消收藏</b>";
+    getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</br>":"<b>已取消收藏</b>";
     getID("promptCollect").style.opacity = 1;
     setTimeout(function() {
 		getID("promptCollect").style.opacity = 0;

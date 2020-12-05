@@ -79,7 +79,10 @@ function touchEndFunc(evt){
 		
 		if( indexArea=="home" && tab1==0 ){ //首页向下或向右滑动 刷新页面	alert(moveX+"_"+moveY);
 			if( moveY >900  || moveX >800 ){//alert("我要刷新了\n首页向下或向右滑很多才会刷新\n这是为调试使用的\n上线后会取消");
-				location.href = "./indexMx.php?"+Math.random();
+				var currUrl = window.location.href;
+				currUrl = currUrl.replace("#","");
+			//	location.href = "./indexMx.php?"+Math.random();
+				location.href = currUrl+"?"+Math.random();
 			}else if(startY > 300 && startY < 700 ){
 				ifMoveLoop = true;
 				if( moveX > 100 ){
@@ -96,7 +99,7 @@ function touchEndFunc(evt){
 			}else if(moveX > 300 && Math.abs(moveX)>Math.abs(moveY) && startY>1050){//右滑
 				moveChangeTag(-1);
 			}
-		}else if( indexArea=="detail" ){//详情页左、右、下滑返回首页	alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
+		}else if( indexArea=="detail" && isGuideDetail==0 ){//详情页左、右、下滑返回首页	alert("X_"+moveX+"_Y_"+moveY+"_startY_"+startY);
 			if( startY < (videoHeight-200) && ( moveX < -200 || moveX > 200 || moveY < -200 || moveY > 200 ) ){
 				updateCurrentTime();
 				getID("vod").style.display = "block";
@@ -126,7 +129,7 @@ function touchEndFunc(evt){
 				getID("share").style.display = "none";
 				return;
 			}
-			if( typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
+			if( isGuideMe==0 && typeof(window.androidJs)=="undefined" && getCookie("username") && getCookie("username").length>0 ){ //个人中心有用户名时可以滑出
 				scrollEnable();
 				indexArea = "home";
 				getID("me").style.opacity = 0;

@@ -65,10 +65,12 @@ function splashJump(){
 	getID('splash').style.display='none';
 	if( !getCookie("language")){
 		getID("language").style.display = "block";
-		getID("language").style.height = screen.availHeight * window.devicePixelRatio+"px";
+		getID("language").style.height = clientHeight+"px";
 	}
 	if( typeof(window.androidJs)=="undefined" && (!getCookie("username") || getCookie("username").length<1) ){
 		showMe();
+		isGuideMe = 1;
+		setCookie("isGuideMe",1  ,"1000d");
 	}else{			
 		scrollEnable();		
 		getID("loading").style.display = "none";
@@ -366,3 +368,60 @@ function orient(){	//旋转屏幕
 		}
 		x.send();
 	}
+
+var guideIndex = 0;
+var isGuideMe = ( getCookie("isGuideMe") )?getCookie("isGuideMe"):1;
+var isGuideHome = ( getCookie("isGuideHome") )?getCookie("isGuideHome"):1;
+var isGuideZone = ( getCookie("isGuideZone") )?getCookie("isGuideZone"):1;
+var isGuideDetail = ( getCookie("isGuideDetail") )?getCookie("isGuideDetail"):1;
+
+function showGuide(){
+	scrollDisable();
+	getID("guideOk").innerHTML = (language=="c")?"朕 知 道 了":"I got it";
+	if( indexArea=="home" ){
+		if( isGuideHome==1 ){				
+			getID("guide").style.display = "block";
+			getID("redArrow").style.display = "block";
+			if( guideIndex==0 ){
+				getID("redArrow").style.left = "180px";
+				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>进入个人中心<br>&ensp;":"<br>Enter personal center<br>&ensp;";
+				getID("leftUpLogo").style.border = "5px red solid";
+			}else if( guideIndex==1 ){
+				getID("redArrow").style.left = "740px";
+				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>搜索影片<br>&ensp;":"<br>Search movies<br>&ensp;";
+				getID("leftUpLogo").style.border = "0px red solid";
+				getID("searchImg").style.border = "5px red solid";
+			}else if( guideIndex==2){
+				getID("redArrow").style.left = "870px";
+				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>显示播放历史<br>&ensp;":"<br>Enter history page<br>&ensp;";
+				getID("searchImg").style.border = "0px red solid";
+				getID("historyImg").style.border = "5px red solid";
+			}else if( guideIndex==3 ){
+				getID("redArrow").style.left = "0px";
+				getID("redArrow").style.transform = "rotate(90deg)";
+				getID("guideContent").innerHTML = (language=="c")?"<br>在精选页面<br>从屏幕左侧向右滑<br>重新加载数据<br>&ensp;":"Slide from left to right <br>at any area of major page<br>in the whole screen<br>to refresh page";
+				getID("historyImg").style.border = "0px red solid";
+			}else if( guideIndex==4 ){
+				getID("guide").style.display = "none";
+				getID("redArrow").style.display = "none";
+				isGuideHome = 0;
+				setCookie("isGuideHome",0,"1000d");
+				scrollEnable();
+				isGuideMe = 1;
+			}
+		}else{
+			getID("guide").style.display = "none";
+			scrollEnable();
+		}
+	}else if( indexArea=="detail" ){
+		getID("guide").style.display = "none";
+		isGuideDetail = 0;
+		setCookie("isGuideDetail",0,"1000d");
+		scrollEnable();
+	}else if( indexArea=="me" ){
+		getID("guide").style.display = "none";
+		isGuideMe = 0;
+		setCookie("isGuideMe",0,"1000d");
+		scrollEnable();
+	}
+}
