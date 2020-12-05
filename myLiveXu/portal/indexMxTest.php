@@ -1275,7 +1275,7 @@
 		</div>
 	</div>
 
-	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9999;display:block;">loading</div>
+	<div id="loading" style="position:fixed;left:0px;top:40%; width:100%;height:100px;background:url(img/loading2.gif) center center no-repeat; background-size:10% 30%;padding-top:200px;color:white;text-align:center;font-size:50px;z-index:9;display:block;">loading</div>
 
 	<div id="guide" style="position:absolute;top:0px;left:0px;width:100%;height:3000px;z-index:999;display: none;">
 		<div id="redArrow" class="line" style="top:0px;left:180px;width:50px;height:0px;background:url(img/redArrow.png);background-size:100% 100%;"></div>

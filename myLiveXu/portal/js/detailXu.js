@@ -45,7 +45,6 @@ function showDetail( _id ){
         },
         success: function(json) {
         //    console.log(json);                        //滚到最顶
-		    getID("loading").style.display = "none";
             currentTime = json["currentTime"];  //  视频上次播放的位置
             getID("vod").style.opacity = 0;
             getID("detail").style.display = "block";
@@ -164,6 +163,7 @@ function showDetail( _id ){
             }else{
                 getID("guide").style.display = "none";
             }
+		    getID("loading").style.display = "none";
         },
         error: function() {
             //	alert("error");
@@ -208,8 +208,10 @@ function changeCollect( ){
     isCollect = ( isCollect==0 )?1:0;
     getID("promptCollect").innerHTML = ( isCollect ==1 )?"<b>已收藏</br>":"<b>已取消收藏</b>";
     getID("promptCollect").style.opacity = 1;
+    getID("promptCollect").style.display = "block";
     setTimeout(function() {
-		getID("promptCollect").style.opacity = 0;
+        getID("promptCollect").style.opacity = 0;
+        getID("promptCollect").style.display = "none";
 	}, 1500);
 //	alert(sn+"_"+id+"_"+father+"_"+poster);
     $.ajax({
