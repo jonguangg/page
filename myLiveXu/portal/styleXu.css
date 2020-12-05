@@ -103,14 +103,20 @@
 		transform-origin: 100% 100%;
 	}
 	@keyframes mymove{
-	from {
-		top:900px;
-		height: 0px;
+		from {
+			top:900px;
+			height: 0px;
+		}to{
+			top:150px;
+			height: 750px;
+		}
 	}
-	to{
-		top:150px;
-		height: 750px;
-	}
+	@keyframes myBorder{
+		from{
+			border:10px black solid;
+		}to{
+			border:10px red solid;
+		}
 	}
 	/*
 	@-webkit-keyframes mymove {

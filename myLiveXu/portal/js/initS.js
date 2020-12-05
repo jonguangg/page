@@ -385,22 +385,28 @@ function showGuide(){
 			if( guideIndex==0 ){
 				getID("redArrow").style.left = "180px";
 				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>进入个人中心<br>&ensp;":"<br>Enter personal center<br>&ensp;";
-				getID("leftUpLogo").style.border = "5px red solid";
+			//	getID("leftUpLogo").style.border = "5px red solid";
+				getID("leftUpLogo").style.animation = "myBorder 3s infinite alternate";
 			}else if( guideIndex==1 ){
 				getID("redArrow").style.left = "740px";
 				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>搜索影片<br>&ensp;":"<br>Search movies<br>&ensp;";
-				getID("leftUpLogo").style.border = "0px red solid";
-				getID("searchImg").style.border = "5px red solid";
+			//	getID("leftUpLogo").style.border = "0px red solid";
+				getID("leftUpLogo").style.animation = "";
+			//	getID("searchImg").style.border = "5px red solid";
+				getID("searchImg").style.animation = "myBorder 3s infinite alternate";
 			}else if( guideIndex==2){
 				getID("redArrow").style.left = "870px";
 				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>显示播放历史<br>&ensp;":"<br>Enter history page<br>&ensp;";
-				getID("searchImg").style.border = "0px red solid";
-				getID("historyImg").style.border = "5px red solid";
+			//	getID("searchImg").style.border = "0px red solid";
+				getID("searchImg").style.animation = "";
+			//	getID("historyImg").style.border = "5px red solid";
+				getID("historyImg").style.animation = "myBorder 3s infinite alternate";
 			}else if( guideIndex==3 ){
 				getID("redArrow").style.left = "0px";
 				getID("redArrow").style.transform = "rotate(90deg)";
 				getID("guideContent").innerHTML = (language=="c")?"<br>在精选页面<br>从屏幕左侧向右滑<br>重新加载数据<br>&ensp;":"Slide from left to right <br>at any area of major page<br>in the whole screen<br>to refresh page";
-				getID("historyImg").style.border = "0px red solid";
+			//	getID("historyImg").style.border = "0px red solid";
+				getID("historyImg").style.animation = "";
 			}else if( guideIndex==4 ){
 				getID("guide").style.display = "none";
 				getID("redArrow").style.display = "none";
@@ -430,6 +436,8 @@ function showGuide(){
 		setCookie("isGuideMe",0,"1000d");
 		scrollEnable();
 	}else if( indexArea=="zone"){
+	//	getID("zoneLogo").style.border = "0px red solid";		
+		getID("zoneLogo").style.animation = "";
 		if( guideIndex==1 ){
 			getID("redArrow").style.display = "none";
 			getID("guideContent").innerHTML = (language=="c")?"<br>点击专题简介<br>展开或收缩全部简介<br>&ensp;":"<br>Click the introduction of the zone<br>show or shrinkage the all<br>&ensp;";
@@ -438,7 +446,6 @@ function showGuide(){
 			isGuideZone = 0;
 			setCookie("isGuideZone",0,"1000d");
 			getID("guide").style.display = "none";
-			getID("zoneLogo").style.border = "0px red solid";
 		}
 	}
 }

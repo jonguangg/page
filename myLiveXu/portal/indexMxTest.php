@@ -566,8 +566,10 @@
 					scrollDisable();
 					getID("guide").style.display = "block";
 					getID("redArrow").style.display = "block";
-					getID("redArrow").style.left = clientWidth*0.5+"px";
-					getID("zoneLogo").style.border = "5px red solid";
+					getID("redArrow").style.transform = "rotate(0deg)";
+					getID("redArrow").style.left = clientWidth*0.48+"px";
+				//	getID("zoneLogo").style.border = "5px red solid";
+					getID("zoneLogo").style.animation = "myBorder 3s infinite alternate";
 					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>在任意位置左右滑<br>均可离开当前页面<br>&ensp;":"<br>Click the arrow pointing<br>Slide left or right<br>at any area<br>Can also leave current page<br>&ensp;";
 				}
 			},
@@ -790,9 +792,12 @@
 		showHomeBottomZone();
 		scrollTo(0,0);		
 		setTimeout(function(){moveHomeLoop(1);preLoadImages();},10000);
+		isGuideMe =1;
+		isGuideZone =1;
+		isGuideHome =1;
+		isGuideDetail =1;
 		showGuide();
 		getID("loading").style.display = "none";
-		setCookie("isGuideZone",1,"1d");
 	}	
 </script>
 
@@ -1001,7 +1006,7 @@
 	<!-- 专栏 -->
 	<div id="zone" style="position: absolute; left:0px;top:50px;width:100%;background-color:black;display:none;z-index:99;-webkit-transition:1s;">
 		<div id="zoneBg" style="position: fixed;left:0px;top:0px;width:100%;height:1920px;background:url(img/null.png); background-size:100% 100%;"></div>
-		<div id="zoneLogo" style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
+		<div id="zoneLogo" style="position:relative;top:0px;left:0%;width:93%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
 		<div id="zoneName" style="position:relative;top:0px;width:90%;max-height:140px;line-height:70px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
 		<div id="zoneRemark" style="position:relative;top:20px;width:90%;max-height:250px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;overflow:auto;" onclick="moreZoneRemark();"></div>
 		<div id="zoneContent" style="position:relative;top:50px;width:100%;overflow:scroll;font-size:60px;color:white;">

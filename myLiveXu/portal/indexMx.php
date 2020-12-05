@@ -70,7 +70,7 @@
 ?>
 <script type="text/javascript" src="../jquery-1.11.0.min.js" charset=UTF-8></script>
 <script type="text/javascript" src="js/initXu.js?v=4" charset=UTF-8></script>
-<script type="text/javascript" src="js/registerXu.js?v=3" charset=UTF-8></script>
+<script type="text/javascript" src="js/registerXu.js?v=4" charset=UTF-8></script>
 <script type="text/javascript" src="js/getXuDataToJs.js?v=1" charset=UTF-8></script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -568,8 +568,10 @@
 					scrollDisable();
 					getID("guide").style.display = "block";
 					getID("redArrow").style.display = "block";
-					getID("redArrow").style.left = clientWidth*0.5+"px";
-					getID("zoneLogo").style.border = "5px red solid";
+					getID("redArrow").style.transform = "rotate(0deg)";
+					getID("redArrow").style.left = clientWidth*0.48+"px";
+				//	getID("zoneLogo").style.border = "5px red solid";
+					getID("zoneLogo").style.animation = "myBorder 3s infinite alternate";
 					getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>在任意位置左右滑<br>均可离开当前页面<br>&ensp;":"<br>Click the arrow pointing<br>Slide left or right<br>at any area<br>Can also leave current page<br>&ensp;";
 				}		
 			},
@@ -794,7 +796,6 @@
 		setTimeout(function(){moveHomeLoop(1);preLoadImages();},10000);
 		showGuide();
 		getID("loading").style.display = "none";
-		setCookie("isGuideZone",1,"1d");
 	}	
 </script>
 <body bgcolor="black" leftmargin="0" topmargin="0" onload="init();" >
@@ -1002,7 +1003,7 @@
 	<!-- 专栏 -->
 	<div id="zone" style="position: absolute; left:0px;top:50px;width:100%;background-color:black;display:none;z-index:99;-webkit-transition:1s;">
 		<div id="zoneBg" style="position: fixed;left:0px;top:0px;width:100%;height:1920px;background:url(img/null.png); background-size:100% 100%;"></div>
-		<div id="zoneLogo" style="position:relative;top:0px;left:0%;width:100%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
+		<div id="zoneLogo" style="position:relative;top:0px;left:0%;width:90%;height:150px;line-height:150px;font-size:90px;color:white;background:url(img/mixtv.png) no-repeat center; padding-left:4%;" onclick="androidBack()"> < </div>
 		<div id="zoneName" style="position:relative;top:0px;width:90%;max-height:140px;line-height:70px;font-size:60px;color:#ff9933;padding-left:4%;"></div>
 		<div id="zoneRemark" style="position:relative;top:20px;width:90%;max-height:250px;line-height:50px;font-size:40px;color:#cccccc;padding-left:5%;overflow:auto;" onclick="moreZoneRemark();"></div>
 		<div id="zoneContent" style="position:relative;top:50px;width:100%;overflow:scroll;font-size:60px;color:white;">
@@ -1309,7 +1310,7 @@
 </body></html>
 
 <script type=text/javascript src="js/global.js?v=14" charset=UTF-8></script>
-<script type=text/javascript src="js/initS.js?v=3" charset=UTF-8></script>
-<script type=text/javascript src="js/touchMoveXu.js?v=2" charset=UTF-8></script>
-<script type=text/javascript src="js/detailXu.js?v=3" charset=UTF-8></script>
+<script type=text/javascript src="js/initS.js?v=4" charset=UTF-8></script>
+<script type=text/javascript src="js/touchMoveXu.js?v=4" charset=UTF-8></script>
+<script type=text/javascript src="js/detailXu.js?v=4" charset=UTF-8></script>
 <script type=text/javascript src="js/searchHistoryCollectXu.js?v=1" charset=UTF-8></script>
