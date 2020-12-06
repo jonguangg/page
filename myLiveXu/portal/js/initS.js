@@ -389,7 +389,7 @@ function showGuide(){
 				getID("leftUpLogo").style.webkitAnimation = "myBorder 3s infinite alternate";
 			}else if( guideIndex==1 ){
 				getID("redArrow").style.left = "755px";
-				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>搜索影片<br>&ensp;":"<br>Search movies<br>&ensp;";
+				getID("guideContent").innerHTML = (language=="c")?"<br>点击箭头指向的区域<br>搜索影片<br>可点击输入法的Enter<br>提交搜索<br>&ensp;":"<br>Search movies<br>Can click enter to submit<br>&ensp;";
 				getID("leftUpLogo").style.border = "0px red solid";
 				getID("leftUpLogo").style.webkitAnimation = "";
 				getID("searchImg").style.border = "5px red solid";
@@ -440,12 +440,16 @@ function showGuide(){
 		getID("zoneLogo").style.webkitAnimation = "";
 		if( guideIndex==1 ){
 			getID("redArrow").style.display = "none";
+			getID("zoneRemark").style.border = "5px red solid";
+			getID("zoneRemark").style.webkitAnimation = "myBorder 3s infinite alternate";
 			getID("guideContent").innerHTML = (language=="c")?"<br>点击专题简介<br>展开或收缩全部简介<br>&ensp;":"<br>Click the introduction of the zone<br>show or shrinkage the all<br>&ensp;";
 		}else{
 			scrollEnable();
 			isGuideZone = 0;
 			setCookie("isGuideZone",0,"1000d");
 			getID("guide").style.display = "none";
+			getID("zoneRemark").style.border = "0px red solid";
+			getID("zoneRemark").style.webkitAnimation = "";
 		}
 	}
 }
